@@ -1,0 +1,17 @@
+ion-input{
+  --padding-top: 20px;
+  // --padding-start:40px;
+  --padding-bottom:20px;
+  
+}
+
+ion-icon[name=add]{
+  width: 30px;
+  height: 30px;
+  padding-left: 10px;
+}
+
+.ion-activatable {
+  position: relative;
+  overflow: hidden;
+}

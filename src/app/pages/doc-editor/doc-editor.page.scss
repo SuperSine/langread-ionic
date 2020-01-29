@@ -1,0 +1,39 @@
+ion-content[name=read]{
+  --padding-bottom:20px;
+  --padding-end:20px;
+  --padding-start:20px;
+  // --padding-top:20px;
+}
+
+ion-content[name=edit] {
+
+}
+
+.test{
+  position: fixed;
+  z-index: 200;
+}
+
+.inner{ 
+  position: relative; 
+  height: auto; 
+}
+
+.horizontal-scroll{
+  z-index: -1000;
+  transform: translateY(-200%);
+  opacity: 0;
+}
+
+.bookMarkToggled{
+  .horizontal-scroll{
+    transform: translateY(0);
+    transition: 0.5s;
+    opacity: 1;
+    z-index: 200;
+  }
+  &::after {
+		opacity: 1;
+		visibility: visible;
+	}
+}

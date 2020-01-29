@@ -1,0 +1,89 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.snow.css';
+
+.from-middle-modal .modal-wrapper {
+  height: 450px;
+  width: 380px;
+  // width: 300px;
+  // top: 350px;
+  // bottom:0px;
+  position: absolute; 
+  border-radius: 8px  !important;
+  display: block;  
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+
+}
+
+fieldset{
+  margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; 
+}
+
+@font-face {
+  font-family: 'Baloopaaji-Regular';
+  font-style: 'normal';
+  font-weight: '400';
+  src: url('./assets/fonts/Baloopaaji/Baloopaaji-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Biryani-Regular';
+  font-style: 'normal';
+  font-weight: '400';
+  src: url('./assets/fonts/biryani/Biryani-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Combo-Regular';
+  font-style: 'normal';
+  font-weight: '400';
+  src: url('./assets/fonts/combo/Combo-Regular.ttf');
+}
+
+.top-horizontal-scroll {
+  margin-left: 10px;
+  white-space: nowrap;
+  height: auto;
+  overflow-X: scroll;
+  overflow-y: auto;
+}
+.horizontal-scroll {
+  margin-left: 10px;
+  white-space: nowrap;
+  height: auto;
+  //these will make the body x-scrollable if position is fixed
+  left:0;
+  right:0;
+  
+  overflow-X: scroll;
+  overflow-y: hidden;
+  vertical-align: top !important; /* here */
+  background-color: white;
+  -webkit-overflow-scrolling: touch;
+}

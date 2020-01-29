@@ -1,0 +1,47 @@
+.alert-button-inner{
+  background-color: aquamarine;
+}
+
+
+
+.rowClass{
+  max-width: 320px;
+  min-height: 80px;
+  padding: 6px;
+}
+
+.colClass{
+  border: 2px solid white;
+  text-align: center;
+  font-weight: bold;
+  padding: 12px;
+  //margin: 2px;
+  transition: opacity, border 0.5s;
+}
+
+.colClass:hover{
+  border: 1px solid blue;
+  opacity: 0.9;
+  cursor: pointer;
+  transition: opacity, border 0.5s;
+}
+
+ion-icon[name=checkmark]{
+  display: block;
+  color: #fff;
+  line-height: 1;
+  font-size: 32px;
+  font-weight: 100;
+  opacity: 0;
+}
+
+ion-col[class$=selected] ion-icon{
+  float: right;
+  position:relative;
+  display: block;
+  -webkit-transition: all 200ms ease;
+  transition: all 200ms ease;
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+  opacity: 1;
+}

@@ -1,0 +1,148 @@
+<ion-header style="z-index: 400;">
+  <ion-toolbar [hidden]="isToolbarHidden">
+    <ion-buttons slot="start" [hidden]="mode == DocMode.Edit ? false : true">
+      <ion-back-button color="dark" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button color="dark" (click)="onModeChange($event)">
+        <ion-icon [name]="mode == DocMode.Read ? 'create' : 'book'"></ion-icon>
+      </ion-button>
+      <ion-button color="dark" (click)="onTagClick($event)">
+        <ion-icon name="bookmark"></ion-icon>
+      </ion-button>
+      <ion-button color="dark">
+        <ion-icon name="information-circle"></ion-icon>
+      </ion-button>
+      <ion-button color="dark">
+        <ion-icon slot="icon-only" name="more"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content  name="edit" [hidden]="mode == DocMode.Edit ? true : false" >
+  
+
+
+
+  <quill-editor > 
+    <div quill-editor-toolbar>
+      <span class="ql-formats">
+        <button class="ql-bold" [title]="'Bold'"></button>
+      </span>
+      <span class="ql-formats">
+        <select class="ql-align" [title]="'Aligment'">
+          <option selected></option>
+          <option value="center"></option>
+          <option value="right"></option>
+          <option value="justify"></option>
+        </select>
+        <select class="ql-align" [title]="'Aligment2'">
+          <option selected></option>
+          <option value="center"></option>
+          <option value="right"></option>
+          <option value="justify"></option>
+        </select>
+      </span>
+    </div>
+  </quill-editor>
+  <!-- <!-- <quill-view-html [content]="content" theme="snow"></quill-view-html> --> -->
+</ion-content>
+
+<ion-content name="read" scrollEvents="true" (ionScroll)="onScroll($event)" [hidden]="mode == DocMode.Read ? true : false" [ngClass]="showTags ? 'bookMarkToggled':''">
+  <div class="test horizontal-scroll">  
+
+    <ion-chip *ngFor="let product of [0,1,2,3,4,5,6,7,8,9]">
+      <ion-avatar>
+        <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <ion-label>Avatar Chip</ion-label>
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+
+</div>
+
+
+  <ion-text color="secondary">
+    <h1>H1: The quick brown fox jumps over the lazy dog</h1>
+  </ion-text>
+  
+  <ion-text color="primary">
+    <h2>H2: The quick brown fox jumps over the lazy dog</h2>
+  </ion-text>
+  
+  <ion-text color="light">
+    <h3>H3: The quick brown fox jumps over the lazy dog</h3>
+  </ion-text>
+  
+  <ion-text color="danger">
+    <h4 >H4: The quick brown fox jumps over the lazy dog</h4>
+  </ion-text>
+  
+  <ion-text color="dark">
+    <h5>H5: The quick brown fox jumps over the lazy dog</h5>
+  </ion-text>
+  
+  <p>
+    I saw a werewolf with a Chinese menu in his hand.
+    Walking through the <ion-text color="danger"><sub>streets</sub></ion-text> of Soho in the rain.
+    He <ion-text color="primary"><i>was</i></ion-text> looking for a place called Lee Ho Fook's.
+    Gonna get a <ion-text color="secondary"><a>big dish of beef chow mein.</a></ion-text>
+    <ion-text color="danger"><ion-icon name="cut"></ion-icon></ion-text>
+  </p>
+  <ion-text color="secondary">
+    <h1>H1: The quick brown fox jumps over the lazy dog</h1>
+  </ion-text>
+  
+  <ion-text color="primary">
+    <h2>H2: The quick brown fox jumps over the lazy dog</h2>
+  </ion-text>
+  
+  <ion-text color="light">
+    <h3>H3: The quick brown fox jumps over the lazy dog</h3>
+  </ion-text>
+  
+  <ion-text color="danger">
+    <h4 >H4: The quick brown fox jumps over the lazy dog</h4>
+  </ion-text>
+  
+  <ion-text color="dark">
+    <h5>H5: The quick brown fox jumps over the lazy dog</h5>
+  </ion-text>
+  
+  <p>
+    I saw a werewolf with a Chinese menu in his hand.
+    Walking through the <ion-text color="danger"><sub>streets</sub></ion-text> of Soho in the rain.
+    He <ion-text color="primary"><i>was</i></ion-text> looking for a place called Lee Ho Fook's.
+    Gonna get a <ion-text color="secondary"><a>big dish of beef chow mein.</a></ion-text>
+    <ion-text color="danger"><ion-icon name="cut"></ion-icon></ion-text>
+  </p>
+  <ion-text color="secondary">
+    <h1>H1: The quick brown fox jumps over the lazy dog</h1>
+  </ion-text>
+  
+  <ion-text color="primary">
+    <h2>H2: The quick brown fox jumps over the lazy dog</h2>
+  </ion-text>
+  
+  <ion-text color="light">
+    <h3>H3: The quick brown fox jumps over the lazy dog</h3>
+  </ion-text>
+  
+  <ion-text color="danger">
+    <h4 >H4: The quick brown fox jumps over the lazy dog</h4>
+  </ion-text>
+  
+  <ion-text color="dark">
+    <h5>H5: The quick brown fox jumps over the lazy dog</h5>
+  </ion-text>
+  
+  <p>
+    I saw a werewolf with a Chinese menu in his hand.
+    Walking through the <ion-text color="danger"><sub>streets</sub></ion-text> of Soho in the rain.
+    He <ion-text color="primary"><i>was</i></ion-text> looking for a place called Lee Ho Fook's.
+    Gonna get a <ion-text color="secondary"><a>big dish of beef chow mein.</a></ion-text>
+    <ion-text color="danger"><ion-icon name="cut"></ion-icon></ion-text>
+  </p>
+</ion-content>

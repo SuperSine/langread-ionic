@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="registerForm">
+
+
+      <ion-list lines="none">
+        <ion-text color="dark">
+          <h2 text-center class="ion-margin-bottom main-header7">
+            Create your account!
+          </h2>
+        </ion-text>
+        <ion-item>
+          <ion-icon slot="start" color="lightgrey" name="person"></ion-icon>
+          <ion-input type="text"  formControlName="firstname"  placeholder="First name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-icon slot="start" color="lightgrey" name="person"></ion-icon>
+          <ion-input type="text"  formControlName="lastname"  placeholder="Last Name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+              <ion-icon slot="start" color="lightgrey" name="call"></ion-icon>
+              <ion-input type="text"  formControlName="username"  placeholder="User Name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-icon slot="start" color="lightgrey" name="mail"></ion-icon>
+          <ion-input type="text" formControlName="email"  placeholder="Email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-icon slot="start"  color="lightgrey" name="key"></ion-icon>
+          <ion-input type="text" formControlName="password"  placeholder="Password"></ion-input>
+      </ion-item>
+
+        <ion-button color="greengrab" expand="block" [disabled]="!registerForm.valid" (click)="register()">
+          Create
+        </ion-button>
+        <ion-button color="pink" expand="block" fill="outline"  routerLink="/side-menu/login">
+            Cancel
+        </ion-button>
+      </ion-list>
+
+
+  </form>
+</ion-content>

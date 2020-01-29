@@ -1,0 +1,20 @@
+.lr-activatable {
+  position: relative;
+  overflow: hidden;
+}
+
+ion-input[type=text]{
+  --background: #009f34;
+  --padding-end:50px;
+  --background: rgba(var(--ion-text-color-rgb,0,0,0),0.07);
+  --padding-start: 12px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+}
+
+ion-button[name=download-content]{
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+}
+

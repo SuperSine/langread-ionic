@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Documents</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)">
+  <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-item>
+    <ion-input placeholder="words or http://" type="text" (ionChange)="onChange($event)">
+      <ion-button name="download-content" slot="end" color="light">
+        <ion-icon [name]="iconName"></ion-icon>
+      </ion-button>
+    </ion-input>
+
+  </ion-item>
+  <ion-list>
+    <ion-card class="ion-activatable" *ngFor="let item of docList;">
+      <ng-container>
+        <ion-item>
+          <ion-label>{{item.title}}</ion-label>
+        </ion-item>
+        <ion-card-content>
+          {{firstNwords(item.content)}}
+        </ion-card-content>
+      </ng-container>
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-item lines="none">
+
+          <ion-label color="medium" slot="start">
+            <p>{{item.createDate}}</p>
+          </ion-label>
+          <ion-button color="light" slot="end" (click)="presentActionSheet(item)">
+          <ion-icon  name="more"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+    </ion-card>
+  </ion-list>
+
+  <ng-container *ngIf="!docList">
+    <ion-list>
+      <ion-card *ngFor="let number of [0,1,2,3,4,5,6,7,8,9]">
+        <ng-container>
+          <ion-item>
+            <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          </ion-item>
+          <ion-card-content>
+            <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          </ion-card-content>
+        </ng-container>
+        <ion-item lines="none">
+            <ion-label color="medium" slot="start">
+              <p> <ion-skeleton-text animated style="width:30%"></ion-skeleton-text></p>
+            </ion-label>
+        </ion-item>
+  
+      </ion-card>
+    </ion-list>
+  </ng-container>
+
+  <ion-fab [hidden]="isScrollButtonHidden" (click)="scrollToTop()"  vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="medium">
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-infinite-scroll *ngIf="docList" threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+
+</ion-content>

@@ -1,0 +1,13 @@
+{
+  "name": "langread-ionic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular",
+  "proxies": [
+    {
+      "path": "/auth",
+      "proxyUrl": "http://localhost:5003/api/graphql/"
+    }
+  ]
+}

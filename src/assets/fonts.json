@@ -1,0 +1,20 @@
+[
+    {
+        "font_family":"Combo-Regular",
+        "font_style":"normal",
+        "font_weight":400,
+        "src":"url('../assets/combo/Combo-Regular.ttf')"
+    },
+    {
+        "font_family":"Biryani-Regular",
+        "font_style":"normal",
+        "font_weight":400,
+        "src":"url('../assets/fonts/biryani/Biryani-Regular.ttf')"
+    },
+    {
+        "font_family":"Baloopaaji-Regular",
+        "font_style":"normal",
+        "font_weight":400,
+        "src":"url('../assets/fonts/Baloopaaji/Baloopaaji-Regular.ttf')"
+    }
+]

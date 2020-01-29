@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit/Add Tag</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="close()">
+        <ion-icon slot="icon-only" name="arrow-down"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="editorForm">
+    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+      <ion-item>
+        <ion-label position="stacked">Tag Name</ion-label>
+        <ion-input required formControlName="tagname"></ion-input>
+      </ion-item>    
+      <ion-item>
+        <ion-label position="floating">Tag Font</ion-label>
+        <ion-select required [ngStyle]="{'font-family': editorForm.value.tagfont}" [ngClass]="fontService.prefix + editorForm.value.tagfont" okText="Okay" formControlName="tagfont">
+          <ion-select-option  [ngStyle]="{'font-family': item.font_family}" *ngFor="let item of fontList"  (click)="selected=item.font_family" [value]="item.font_family">{{item.font_family}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="tagcolor" style="display:none;"></ion-input>
+        <ion-label position="stacked">Tag Color</ion-label>
+        <ion-grid>
+          <ion-row class="rowClass">
+            <ion-col size="2" [class.selected]="selectColor==item.value" (click)="selectColor=item.value;onColorClick(item)"  
+                     class="colClass"
+                     *ngFor="let item of colorService.colorList; let i=index" 
+                     [style.background]="item.value">
+              <ion-icon name="checkmark"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+
+    <ion-button color="realgreen" [disabled]="!editorForm.valid"  expand="block" (click)="save()">
+      Save
+    </ion-button>
+  </form>
+
+</ion-content>

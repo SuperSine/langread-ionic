@@ -3,6 +3,7 @@ import { DocService, Doc } from 'src/app/services/doc.service';
 import { QueryRef } from 'apollo-angular';
 import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController } from '@ionic/angular';
 import { runInThisContext } from 'vm';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-doc-list',
@@ -24,17 +25,23 @@ export class DocListPage implements OnInit {
   private docList:Doc[];
   private isScrollButtonHidden:boolean = true;
 
-  constructor(private docService:DocService,private actionSheetCtrl: ActionSheetController) { }
+  constructor(private docService:DocService,private actionSheetCtrl: ActionSheetController, private router: Router) { }
 
   ngOnInit() {
-    this.docService.get('10', this.lastId).valueChanges.subscribe((result) => {
+    this.docService.list('10', this.lastId).valueChanges.subscribe((result) => {
       this.docList = ((result.data) as any).document.list;
       console.log(this.docList);
       this.lastId = this.docList.slice(-1)[0].id;
     });
   }
+
+  onDocClick(item){
+    console.log(item);
+
+  }
+
   onRefresh(event){
-    this.docService.get('10').refetch().then((result) => {
+    this.docService.list('10').refetch().then((result) => {
       console.log('refetch complete!', result);
       event.target.complete();
     });
@@ -65,7 +72,7 @@ export class DocListPage implements OnInit {
   }
 
   loadData(event){
-    this.docService.get('10', this.lastId).valueChanges.subscribe((result) => {
+    this.docService.list('10', this.lastId).valueChanges.subscribe((result) => {
       var newList = ((result.data) as any).document.list;
       this.docList = this.docList.concat(newList);
       console.log('merged docList',this.docList);

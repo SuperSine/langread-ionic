@@ -87,3 +87,12 @@ fieldset{
   background-color: white;
   -webkit-overflow-scrolling: touch;
 }
+
+//******** bottom  ***********//
+.from-bottom-modal .modal-wrapper {
+  height: 80%;
+  
+  top: 20%;
+  position: absolute; 
+  display: block;  
+}

@@ -1,8 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, ElementRef } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { ActivatedRoute } from '@angular/router';
-import { DocService } from 'src/app/services/doc.service';
+import { DocService, Doc } from 'src/app/services/doc.service';
 import { stringify } from 'querystring';
+import { QuillViewHTMLComponent, QuillEditorComponent } from 'ngx-quill';
+import  * as stemmer   from 'stemmer';
+import { ColorService } from 'src/app/services/color.service';
+import { element } from 'protractor';
+import { ModalController, LoadingController } from '@ionic/angular';
+import { TagPickerPage } from '../tag-picker/tag-picker.page';
+import Mercury from "@postlight/mercury-parser";
+import { GlobalService } from 'src/app/services/global.service';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { DocInfoPage } from '../doc-info/doc-info.page';
+import { typeWithParameters } from '@angular/compiler/src/render3/util';
 
 export enum DocMode{
   Read,
@@ -13,31 +24,125 @@ export enum DocMode{
   selector: 'app-doc-editor',
   templateUrl: './doc-editor.page.html',
   styleUrls: ['./doc-editor.page.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DocEditorPage implements OnInit {
   private isToolbarHidden:boolean=false;
   private mode: DocMode;
-  private content:string;
   private showTags:boolean = false;
   private docId:string;
-  private tags:string;
+  private wti:any;
+  private stemmedWti:any;
+  private allTags:any[];
+  private htmlRegEx:RegExp = /(<([^>]+)>|&(nbsp|amp|quot|lt|gt))/g;
   private contentRegEx:RegExp = /(?<=>)[\w\s]+(?=<)/g;
   private nonCharRegEx:RegExp = /--{1,}|[^A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]/g;
-  private getWordRegEx:RegExp = /[^\s]*/g;
+  private getWordRegEx:RegExp = /[^\s\-]*/g;
+  private getWordRegEx1:RegExp = /[\w\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]*/g;
+  private cleanWordRegEx:RegExp = /[a-zA-Z]+/g;
+  private wordTagInfo:any;
+  private doc: Doc;
+  // private tags: any[];
+
+  private form: FormGroup;
 
   @ViewChild("innerHtml",{static:true})
-  private innerHtml: HTMLDivElement;
-  
+  private innerHtml: ElementRef;
 
-  constructor(private activatedRoute:ActivatedRoute, private docService:DocService) {
+  @ViewChild("htmlEditor", {static:false})
+  private htmlEditor: QuillEditorComponent;
+
+  constructor(private loadingCtrl:LoadingController,  private fb:FormBuilder, private globalService:GlobalService, private modalCtrl:ModalController, private activatedRoute:ActivatedRoute, private docService:DocService, private colorService:ColorService) {
     this.docId = activatedRoute.snapshot.paramMap.get('docId');
+    this.wti = {};
+    this.stemmedWti = {};
+
+    this.doc = {} as Doc;
+
+    this.form = this.fb.group({
+      html: new FormControl(this.doc.content)
+    })
   }
 
-  getDoc(){
-    this.docService.get(this.docId).subscribe(({data:{document:{get} }}) => {
-      console.log(get);
-      this.content = get.document.content;
-      this.tags = get.smallWordTagInfo.tags;
+  get tags():any[]{
+    if(!this.doc.wordTagInfo)return;
+
+    return this.doc.wordTagInfo.tags;
+  }
+
+  /**
+   * return {'word':['tag1','tag'2],...}
+   */
+  get TaggedWordInfo():any{
+    let strippedHtml = this.doc.content.replace(this.htmlRegEx, ' ');
+    let wordsList = strippedHtml.replace(this.nonCharRegEx, ' ').split(' ');
+
+    let data = {};
+
+    wordsList.forEach((word) => {
+      if(word.length <= 1)return;
+      word = word.toLowerCase();
+      var stemmed = stemmer(word);
+      
+      if(!(this.wti[stemmed] instanceof Array))return;
+
+      this.wti[stemmed].forEach(wordinfo => {
+        if(!(data[word] instanceof Array))data[word] = [];
+        if(data[word].indexOf(wordinfo.tag.tagName) < 0)
+          data[word].push(wordinfo.tag.tagName);
+      });
+    })
+
+    return data;
+
+  }
+
+  onReaderClick(event){
+    let element = event.path[0].nodeName == "SPAN" ? event.path[0] : null;
+    let word = element.textContent && element.textContent.toLowerCase();
+
+    if(word && !this.nonCharRegEx.test(word)){
+      this.openTagPicker(word, this.wti[stemmer(word)], this.allTags, this.tags);
+    }
+  }
+
+  async getDoc(data:string='', taggedWord:any=null){
+    const loading = await this.loadingCtrl.create({
+      message: "Please wait..."
+    });
+
+    await loading.present();
+
+    if(!data)data = this.docId;
+
+    this.docService.get(data, taggedWord).subscribe(async ({data:{document:{giveItToMe} }}:any) => {
+      console.log(giveItToMe);
+      this.doc.content = giveItToMe.document.content;
+      this.doc.wordTagInfo = giveItToMe.smallWordTagInfo;
+      // this.tags = giveItToMe.smallWordTagInfo.tags;
+      
+      giveItToMe.smallWordTagInfo.wti.forEach((element) => {
+        var word = stemmer(element.word);
+
+        if(!(this.wti[word] instanceof Array))this.wti[word] = [];
+
+        this.wti[word] = this.wti[word].concat(element.wordInfos)
+      });
+
+      console.log('this is wti', this.wti);
+
+      this.allTags = giveItToMe.bigWordTagInfo.tags;
+
+      this.doc.wordTagInfo.tags.forEach((tag)=>{
+        if(!tag.tagColor)return;
+        this.markWordByTag(tag);
+      });
+      
+      this.form.get('html').patchValue(this.doc.content.replace(/(?:\r\n|\r|\n)/g, '<br>'));
+
+      this.onInnerHtmlClick(null);
+
+      await loading.dismiss();
     })
   }
 
@@ -45,51 +150,193 @@ export class DocEditorPage implements OnInit {
     return element.innerText;
   }
 
-  onInnerHtmlClick(event){
-    debugger;
-    var that = this;
-    this.innerHtml.nativeElement.innerHTML = this.content;
-    var allInnerHtml = "";
-    Array.from(this.innerHtml.nativeElement.querySelectorAll("*"), (el) => {
-      console.log("dealing with:", el.cloneNode(true));
-      var currentInnerHtml = "";
-      Array.from(el.childNodes, function(ch){
-          if(ch.nodeType === 3  &&  ch.data.trim().length > 0){
-             ch.data = ch.data.replace(that.getWordRegEx, (word)=>{
-              var span = document.createElement('span');
-              el.insertBefore(span, ch);
-              span.insertAdjacentHTML( 'beforeend', `<span tagpicker> ${word} </span>` );
-              return "";
-             });
-
-
-            //  currentInnerHtml += newHtml;
-         }
-     });
-    //  allInnerHtml += currentInnerHtml;
-     console.log('result:',el);
-   });
-  //  this.innerHtml.nativeElement.innerHTML = allInnerHtml;
-
-    // this.innerHtml.nativeElement.innerHTML = this.content.replace(this.contentRegEx,(substring)=>{
-    //   var value = substring.split(' ').map((value, index)=>{
-    //     return  `<span tagpicker>${substring}</span>`;
-    //   });
-    //   console.log(value);
-
-    //   return value.join(' ');
-    // });
+  createElementFromHTML(htmlString) {
+    var div = document.createElement('div');
+    div.innerHTML = `<span>${htmlString.trim()}</span>`;
+  
+    // Change this to div.childNodes to support multiple top-level nodes
+    return div.firstChild;
   }
 
+  markWordByTag(tag:any){
+    var result = Object.keys(this.wti).filter((word,index,array) => {
+      if(!this.wti[word] || !this.wti[word])return;
+      var subResult = this.wti[word].find((value, index, array) => {
+        return value.tag.tagName === tag.tagName;
+      });
+
+      if(subResult)
+        return this.wti[word];
+    });
+
+    console.log('filted wti result:', result);
+
+    result.forEach(word => {
+      var stemmerWord = stemmer(word);
+
+      this.colorService.addMarkColor(tag);
+    });
+
+  }
+
+  openDocInfo(){
+    this.modalCtrl.create({
+      component: DocInfoPage,
+      componentProps: {
+      },
+      cssClass: 'from-bottom-modal'
+    }).then(modal => {
+      modal.present();
+    });
+  }
+
+  openTagPicker(word, info, bigTags,smallTags){
+    this.modalCtrl.create({
+      component: TagPickerPage,
+      componentProps: {
+        word,
+        info,
+        bigTags,
+        smallTags
+      },
+      // cssClass: 'from-middle-modal'
+    }).then(modal => {
+      modal.present();
+    });
+  }
+
+  onChooseTagClick(tag:any){
+    document.querySelectorAll("span[app-pick]").forEach((element)=>{
+      element.removeAttribute("tag-id");
+    });
+
+    var result = Object.keys(this.wti).filter((word,index,array) => {
+      if(!this.wti[word])return false;
+      var subResult = this.wti[word].find((value, index, array) => {
+        return value.tag.tagName === tag.tagName;
+      });
+
+      if(subResult)
+        return this.wti[word];
+    });
+
+    result.forEach(word => {
+      document.querySelectorAll(`span[app-pick=${word}]`).forEach((element)=>{
+        element.setAttribute('tag-id', tag.tagName);
+      })
+    });
+  }
+
+
+  onInnerHtmlClick(event){
+
+    var that = this;
+    var div = document.createElement("div");
+    div.innerHTML = `<div>${this.doc.content}</div>`;
+    // div.innerHTML = this.htmlEditor.;
+
+    console.log('dealing with:',div.querySelectorAll("*") );
+    Array.from(div.querySelectorAll("*"), (el:any) => {
+      Array.from(el.childNodes, (ch:any)=>{
+        if(ch.nodeType == 3 && ch.data){
+          var newHtml = ch.data.replace(that.getWordRegEx1, (word)=>{
+            var stemmedWord = stemmer(word);
+
+            if(!(that.stemmedWti[stemmedWord] instanceof Array))
+              that.stemmedWti[stemmedWord] = [];
+
+            if(that.stemmedWti[stemmedWord].indexOf(word.toLowerCase()) < 0)
+              that.stemmedWti[stemmedWord].push(word);
+            
+            return `<span class="ion-activatable" app-pick="${stemmedWord}">${word}</span>`
+          })
+
+          ch.parentNode.replaceChild(this.createElementFromHTML(newHtml), ch);
+
+        }
+      })
+      // div.appendChild(el);
+    });
+   /* Array.from(div.querySelectorAll("*"), (el:any) => {
+      
+      Array.from(el.childNodes, (ch:any)=>{
+        console.log('dealing with:',ch.cloneNode(true));
+          if(ch.nodeType === 3  &&  ch.data.trim().length > 0){
+             ch.data = ch.data.replace(that.getWordRegEx, (range)=>{
+              if(range){
+                var word = range.replace(that.nonCharRegEx, "");
+                el.insertAdjacentHTML('beforeend', `<span class="ion-activatable" app-pick="${word.toLowerCase()}">${range}</span>` );
+              }else if(!that.nonCharRegEx.test(range))
+                el.insertAdjacentHTML('beforeend', ' ');
+
+              return "";
+             });
+            //  console.log(el);
+         }
+        
+     });
+   });
+
+   /* Array.from(div.querySelectorAll("*"), (el:any) => {
+      
+      Array.from(el.childNodes, (ch:any)=>{
+        console.log('dealing with:',ch.cloneNode(true));
+          if(ch.nodeType === 3  &&  ch.data.trim().length > 0){
+             ch.data = ch.data.replace(that.getWordRegEx, (range)=>{
+              if(range){
+                var word = range.replace(that.nonCharRegEx, "");
+                el.insertAdjacentHTML('beforeend', `<span class="ion-activatable" app-pick="${word.toLowerCase()}">${range}</span>` );
+              }else if(!that.nonCharRegEx.test(range))
+                el.insertAdjacentHTML('beforeend', ' ');
+
+              return "";
+             });
+            //  console.log(el);
+         }
+        
+     });
+   });*/
+
+   this.innerHtml.nativeElement.innerHTML = `<p>${div.innerHTML}</p>`;
+
+   console.log('the stemmed dict:', this.stemmedWti);
+   console.log('get tagged word info:', this.TaggedWordInfo);
+  }
+  // onInnerHtmlClick(event){
+
+  //   var that = this;
+  //   var div = document.createElement("div");
+  //   div.innerHTML = `<div>${this.content}</div>`;
+  //   Array.from(div.querySelectorAll("*"), (el:any) => {
+  //     Array.from(el.cloneNode(true).childNodes, (ch:any)=>{
+  //         if(ch.nodeType === 3  &&  ch.data.trim().length > 0){
+  //            ch.data = ch.data.replace(that.getWordRegEx, (range)=>{
+  //             if(range){
+  //               var word = range.replace(that.nonCharRegEx, "");
+  //               // debugger;
+  //               // el.innerHTML += `<span class="ion-activatable" app-pick="${word}">${range}</span>`;
+  //               el.insertAdjacentHTML('beforeend', `<span class="ion-activatable" app-pick="${word}">${range}</span>` );
+  //             }else
+  //               el.insertAdjacentHTML('beforeend', ' ');
+
+  //             return "";
+  //            });
+  //        }
+  //    });
+  //  });
+
+  //  this.innerHtml.nativeElement.innerHTML = `<p>${div.childNodes[0].innerHTML.trim()}</p>`;
+
+  // }
+
   getHtml(){
-    var copyContent = (JSON.parse(JSON.stringify(this.content)) as string)
 
     
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.mode = DocMode.Edit
-    this.getDoc();
+    await this.getDoc();
   }
 
   get DocMode(){
@@ -97,7 +344,7 @@ export class DocEditorPage implements OnInit {
   }
 
   onScroll(event){
-    if(event.detail.scrollTop > 200){
+    if(event.detail.scrollTop > 190){
       this.isToolbarHidden = true;
     }else
       this.isToolbarHidden = false;
@@ -110,9 +357,15 @@ export class DocEditorPage implements OnInit {
   onModeChange(event){
     console.log(event);
 
-    if(this.mode == DocMode.Edit)
+    if(this.mode == DocMode.Edit){
       this.mode = DocMode.Read;
-    else
+
+    }else{
       this.mode = DocMode.Edit;
+      // this.onInnerHtmlClick(event);
+      this.getDoc(this.doc.content, this.TaggedWordInfo);
+
+
+    }
   }
 }

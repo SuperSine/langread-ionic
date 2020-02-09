@@ -13,6 +13,7 @@ export interface TagColor{
   providedIn: 'root'
 })
 export class ColorService {
+  private stemmedDict:any;
   private ionPrefix : string = ".ion-color-";
   public colorList : TagColor[] = [
     {id: "flame", value: "#e45a33", name: "Flame" },
@@ -30,11 +31,47 @@ export class ColorService {
 ];
   constructor(@Inject(DOCUMENT) private document: Document) {
     this.colorList.forEach( c => this.addTagColor(c.id, c.value));
+    this.stemmedDict = {};
   }
 
   public getColorValue(colorKey:string):string{
     let idx = this.colorList.map( c=>c.id).indexOf(colorKey);
     return idx == -1 ? undefined : this.colorList[idx].value;
+  }
+
+  public addMarkColor(tag:any){
+    console.log('cached stemmedDict in ColorService:', Object.keys(this.stemmedDict).length);
+    if(this.stemmedDict[tag.id] === true)return;
+
+    let color = new tinycolor(tag.tagColor);
+    
+    if ( !color.isValid() ) {
+      throw new Error(`Invalid color value: ${tag.tagColor}`)
+      return;
+    }
+    let hex = color.toString('hex6');
+    let rgb = color.toRgb();
+
+    let css = 
+    `
+      span[tag-id=${tag.tagName}]::after {
+        background-color: rgba(${rgb.r},${rgb.g},${rgb.b}, 0.5);
+        content: "";
+        display: block;
+        height: 3px;
+        left: 0;
+        top: 100%;
+        position: absolute;
+        transition: all 0.2s ease;
+        width: 100%;
+      }
+    `
+
+    var docStyle = this.document.createElement('style');
+    docStyle.type = 'text/css';
+    docStyle.innerHTML = css;
+    this.document.getElementsByTagName('head')[0].appendChild(docStyle);
+    this.stemmedDict[tag.tagName] = true;
   }
 
   public addTagColor(name:string, baseColor:string){

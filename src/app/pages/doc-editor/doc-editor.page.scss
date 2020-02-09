@@ -1,13 +1,11 @@
 ion-content[name=read]{
-  --padding-bottom:20px;
-  --padding-end:20px;
-  --padding-start:20px;
+  // --padding-bottom:20px;
+  // --padding-end:20px;
+  // --padding-start:20px;
   // --padding-top:20px;
 }
 
-ion-content[name=edit] {
 
-}
 
 .test{
   position: fixed;
@@ -40,4 +38,37 @@ ion-content[name=edit] {
 
 ion-text{
   margin-top: 20px;
+}
+
+ion-avatar > div{
+  border-radius: 50%;
+}
+
+ion-chip ion-icon{
+  display: none;
+}
+
+ion-chip[class$=selected] ion-icon{
+  display: inline;
+}
+
+
+span[app-pick] {
+  color: inherit;
+  position: relative;
+  text-decoration: none;
+}
+
+
+
+span[app-pick]:hover::after {
+  // background-color: rgba(76, 122, 241, 0.75);
+}
+
+span[app-pick].ion-activatable.activated{
+  background-color: yellowgreen;
+}
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
 }

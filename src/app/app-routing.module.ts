@@ -33,6 +33,10 @@ const routes: Routes = [
   {
     path: 'tag-picker',
     loadChildren: () => import('./pages/tag-picker/tag-picker.module').then( m => m.TagPickerPageModule)
+  },
+  {
+    path: 'doc-info',
+    loadChildren: () => import('./pages/doc-info/doc-info.module').then( m => m.DocInfoPageModule)
   }
 ];
 

@@ -24,6 +24,7 @@ export class DocListPage implements OnInit {
   private queryRef:QueryRef<any>;
   private docList:Doc[];
   private isScrollButtonHidden:boolean = true;
+  private userContent:string;
 
   constructor(private docService:DocService,private actionSheetCtrl: ActionSheetController, private router: Router) { }
 
@@ -33,6 +34,7 @@ export class DocListPage implements OnInit {
       console.log(this.docList);
       this.lastId = this.docList.slice(-1)[0].id;
     });
+
   }
 
   onDocClick(item){

@@ -10,7 +10,7 @@
       <ion-button color="dark" (click)="onTagClick($event)">
         <ion-icon name="bookmark"></ion-icon>
       </ion-button>
-      <ion-button color="dark" (click)="onInnerHtmlClick($event)">
+      <ion-button color="dark" (click)="openDocInfo($event)">
         <ion-icon name="information-circle"></ion-icon>
       </ion-button>
       <ion-button color="dark">
@@ -20,45 +20,47 @@
   </ion-toolbar>
 
 </ion-header>
-
+<!-- <div app-pick>pick me</div> -->
 <ion-content  name="edit" [hidden]="mode == DocMode.Edit ? true : false" >
-  <quill-editor [(ngModel)]="content"> 
-    <div quill-editor-toolbar>
-      <span class="ql-formats">
-        <button class="ql-bold" [title]="'Bold'"></button>
-      </span>
-      <span class="ql-formats">
-        <select class="ql-align" [title]="'Aligment'">
-          <option selected></option>
-          <option value="center"></option>
-          <option value="right"></option>
-          <option value="justify"></option>
-        </select>
-        <select class="ql-align" [title]="'Aligment2'">
-          <option selected></option>
-          <option value="center"></option>
-          <option value="right"></option>
-          <option value="justify"></option>
-        </select>
-      </span>
-    </div>
-  </quill-editor>
+  <form [formGroup]="form">
+    <quill-editor #htmlEditor [(ngModel)]='doc.content'  formControlName="html"  format="html" contenteditable="true"> 
+      <div quill-editor-toolbar>
+        <span class="ql-formats">
+          <button class="ql-bold" [title]="'Bold'"></button>
+        </span>
+        <span class="ql-formats">
+          <select class="ql-align" [title]="'Aligment'">
+            <option selected></option>
+            <option value="center"></option>
+            <option value="right"></option>
+            <option value="justify"></option>
+          </select>
+          <select class="ql-align" [title]="'Aligment2'">
+            <option selected></option>
+            <option value="center"></option>
+            <option value="right"></option>
+            <option value="justify"></option>
+          </select>
+        </span>
+      </div>
+    </quill-editor>
+  </form>
 </ion-content>
 
 <ion-content name="read" scrollEvents="true" (ionScroll)="onScroll($event)" [hidden]="mode == DocMode.Read ? true : false" [ngClass]="showTags ? 'bookMarkToggled':''">
   <div class="test horizontal-scroll">
-    <ion-chip *ngFor="let tag of tags">
+    <ion-chip *ngFor="let tag of tags | uniqueTags" [class.selected]='selectedValue === tag.tagName' (click)='onChooseTagClick(tag);selectedValue=tag.tagName;'>
       <ion-avatar>
         <div [style.background-color]="tag.tagColor" style="width: 100%; height: 100%;"></div>
       </ion-avatar>
       <ion-label>{{tag.tagName}}</ion-label>
-      <ion-icon name="close-circle"></ion-icon>
+      <ion-icon name="checkmark-circle"></ion-icon>
     </ion-chip>
 
 </div>
 
+<div #innerHtml class="ql-editor" (click)="onReaderClick($event)">
+</div>
 
-  <div #innerHtml >
-  </div>
 
 </ion-content>

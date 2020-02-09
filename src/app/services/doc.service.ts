@@ -19,6 +19,7 @@ const UserGetDocGql = gql`
             wordInfos{
               tag{
                 id
+                tagName
               }
               count
             }
@@ -26,6 +27,15 @@ const UserGetDocGql = gql`
           }
           tags{
             id
+            tagName
+            tagColor
+          }
+        }
+        bigWordTagInfo{
+          tags{
+            id
+            tagName
+            tagColor
           }
         }
         createTime
@@ -50,13 +60,58 @@ const UserTagListGql = gql`
   }
 `;
 
+const GiveItToMeGql = gql`
+query($content:String!){
+  document{
+    giveItToMe(content:$content){
+			document{
+      docId,
+      id,
+      content,
+      createDate,
+      updateDate,
+      title        
+      }
+      smallWordTagInfo{
+        wti{
+          wordInfos{
+            tag{
+              tagName
+            }
+            count
+          }
+          word
+        }
+        tags{
+          tagName
+          tagColor
+        }
+      }
+      bigWordTagInfo{
+        tags{
+          tagName
+          tagColor
+        }
+      }
+      createTime
+      updateTime
+      status
+    }
+  }
+}
+`;
+
 export interface Doc {
   id?:string,
   docId?:string,
   title?:string,
   content?:string,
   createDate?:string,
-  updateDate?:string
+  updateDate?:string,
+  url?:string,
+  words?:number,
+  tags?:any[],
+  wordTagInfo?:any
 }
 
 @Injectable({
@@ -82,20 +137,17 @@ export class DocService {
     });
   }
 
-  get(docId:string){
+  get(content:string, wordTagLiteStr:any=null){
     return this.getApollo.query({
-      query: UserGetDocGql,
+      query: GiveItToMeGql,
       variables:{
-        docId:docId
+        content,
+        wordTagLiteStr:JSON.stringify(wordTagLiteStr)
       }
     });
   }
 
-  add(){
-
-  }
-
-  update(){
+  save(){
 
   }
 

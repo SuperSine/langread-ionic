@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { TagPickerPageRoutingModule } from './tag-picker-routing.module';
 
 import { TagPickerPage } from './tag-picker.page';
+import { TagsFilterPipe } from 'src/app/pipes/tags-filter.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TagPickerPageRoutingModule
+    TagPickerPageRoutingModule,
+    
   ],
-  declarations: [TagPickerPage]
+  declarations: [TagPickerPage,TagsFilterPipe]
 })
 export class TagPickerPageModule {}

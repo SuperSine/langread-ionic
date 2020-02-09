@@ -15,6 +15,9 @@ import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { AuthService } from './services/auth.service';
+import { PickDirective } from './directives/pick.directive';
+import { GlobalService } from './services/global.service';
+import { ColorService } from './services/color.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,7 +40,9 @@ import { AuthService } from './services/auth.service';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    AuthService
+    AuthService,
+    GlobalService,
+    ColorService
   ],
   bootstrap: [AppComponent]
 })

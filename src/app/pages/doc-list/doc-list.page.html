@@ -10,8 +10,8 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-item>
-    <ion-input placeholder="words or http://" type="text" (ionChange)="onChange($event)">
-      <ion-button name="download-content" slot="end" color="light">
+    <ion-input [(ngModel)]="userContent" placeholder="words or http://" type="text" (ionChange)="onChange($event)">
+      <ion-button name="download-content" slot="end" color="light" [routerLink]="['/doc-editor',{docId:userContent}]">
         <ion-icon [name]="iconName"></ion-icon>
       </ion-button>
     </ion-input>

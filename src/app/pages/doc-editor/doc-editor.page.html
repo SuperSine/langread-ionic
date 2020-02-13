@@ -1,7 +1,7 @@
 <ion-header style="z-index: 400;">
   <ion-toolbar [hidden]="isToolbarHidden">
     <ion-buttons slot="start" [hidden]="mode == DocMode.Edit ? false : true">
-      <ion-back-button color="dark" defaultHref="/"></ion-back-button>
+      <ion-back-button color="dark" defaultHref=""></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="primary">
       <ion-button color="dark" (click)="onModeChange($event)">
@@ -13,8 +13,8 @@
       <ion-button color="dark" (click)="openDocInfo($event)">
         <ion-icon name="information-circle"></ion-icon>
       </ion-button>
-      <ion-button color="dark">
-        <ion-icon slot="icon-only" name="more"></ion-icon>
+      <ion-button color="dark" (click)="openActSheet($event)">
+        <ion-icon slot="icon-only" name="more" ></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -23,7 +23,7 @@
 <!-- <div app-pick>pick me</div> -->
 <ion-content  name="edit" [hidden]="mode == DocMode.Edit ? true : false" >
   <form [formGroup]="form">
-    <quill-editor #htmlEditor [(ngModel)]='doc.content'  formControlName="html"  format="html" contenteditable="true"> 
+    <quill-editor #htmlEditor   formControlName="html"  format="html" contenteditable="true"> 
       <div quill-editor-toolbar>
         <span class="ql-formats">
           <button class="ql-bold" [title]="'Bold'"></button>

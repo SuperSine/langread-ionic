@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { QuitDocEditorGuard } from './guards/quit-doc-editor.guard';
+import { DocInfoPage } from './pages/doc-info/doc-info.page';
 
 const routes: Routes = [
   {
@@ -28,7 +30,8 @@ const routes: Routes = [
   },
   {
     path: 'doc-editor',
-    loadChildren: () => import('./pages/doc-editor/doc-editor.module').then( m => m.DocEditorPageModule)
+    loadChildren: () => import('./pages/doc-editor/doc-editor.module').then( m => m.DocEditorPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'tag-picker',
@@ -42,6 +45,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
+
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]

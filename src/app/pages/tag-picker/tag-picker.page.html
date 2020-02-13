@@ -21,7 +21,7 @@
             <div [style.background]='item.tagColor' style="width:100%;height: 100%;"></div>
           </ion-avatar>
           <ion-label>{{item.tagName}}</ion-label>
-          <ion-checkbox slot="end" [(ngModel)]='item.selected'></ion-checkbox>
+          <ion-checkbox slot="end" [(ngModel)]='item.selected' (click)='onItemSelected($event)'></ion-checkbox>
       </ion-item>
     </ion-row>
   </ion-list>

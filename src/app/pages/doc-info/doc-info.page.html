@@ -3,7 +3,7 @@
 <ion-content>
   <ion-item>
     <ion-label position="stacked">Title</ion-label>
-    <ion-input></ion-input>
+    <ion-input [(ngModel)]='doc.title'></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="stacked">Url</ion-label>
@@ -12,24 +12,24 @@
 
   <ion-item>
     <ion-label>Created</ion-label>
-    <ion-input slot="end" readonly></ion-input>
+    <ion-input slot="end" readonly [value]='doc.createDate'></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Updated</ion-label>
-    <ion-input slot="end" readonly value="2020-02-02 02:02:02" size="100"></ion-input>
+    <ion-input slot="end" readonly [value]="doc.updateDate" size="100"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Words</ion-label>
-    <ion-badge slot="end">22</ion-badge>
+    <ion-badge slot="end">{{doc.wordsCount}}</ion-badge>
   </ion-item>
   <ion-list-header>Tags</ion-list-header>
   <p>
-    <ion-chip>
+    <ion-chip *ngFor="let item of tagInfo | keyvalue">
       <ion-avatar>
         <div style="background-color:#e33e32" style="width: 100%; height: 100%;"></div>
       </ion-avatar>
-      <ion-label>TagName</ion-label>
-      <ion-icon name="close-circle"></ion-icon>
+      <ion-label>{{item.key}}</ion-label>
+      <ion-badge>{{item.value}}</ion-badge>
     </ion-chip>
   </p>
 

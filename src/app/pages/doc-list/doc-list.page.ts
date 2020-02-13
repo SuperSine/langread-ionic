@@ -70,7 +70,8 @@ export class DocListPage implements OnInit {
   }
 
   firstNwords(content:string, wordLength:number=20){
-    return content.split(" ").splice(0,wordLength).join(" ");
+    return content.replace(/(<([^>]+)>|&(nbsp|amp|quot|lt|gt))/g, " ")
+                  .split(" ").splice(0,wordLength).join(" ");
   }
 
   loadData(event){

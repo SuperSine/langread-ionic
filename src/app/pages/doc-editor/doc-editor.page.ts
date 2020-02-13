@@ -7,13 +7,16 @@ import { QuillViewHTMLComponent, QuillEditorComponent } from 'ngx-quill';
 import  * as stemmer   from 'stemmer';
 import { ColorService } from 'src/app/services/color.service';
 import { element } from 'protractor';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, ActionSheetController, AlertController, ToastController } from '@ionic/angular';
 import { TagPickerPage } from '../tag-picker/tag-picker.page';
 import Mercury from "@postlight/mercury-parser";
 import { GlobalService } from 'src/app/services/global.service';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { DocInfoPage } from '../doc-info/doc-info.page';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
+import { Subject } from 'rxjs';
+import { Observable } from 'apollo-link';
+import {CanDeactivateComponent} from '../../guards/quit-doc-editor.guard'
 
 export enum DocMode{
   Read,
@@ -26,7 +29,7 @@ export enum DocMode{
   styleUrls: ['./doc-editor.page.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DocEditorPage implements OnInit {
+export class DocEditorPage implements OnInit, CanDeactivateComponent {
   private isToolbarHidden:boolean=false;
   private mode: DocMode;
   private showTags:boolean = false;
@@ -42,6 +45,8 @@ export class DocEditorPage implements OnInit {
   private cleanWordRegEx:RegExp = /[a-zA-Z]+/g;
   private wordTagInfo:any;
   private doc: Doc;
+  private isDocChanged:boolean;
+  private isGoingBack:boolean;
   // private tags: any[];
 
   private form: FormGroup;
@@ -52,16 +57,72 @@ export class DocEditorPage implements OnInit {
   @ViewChild("htmlEditor", {static:false})
   private htmlEditor: QuillEditorComponent;
 
-  constructor(private loadingCtrl:LoadingController,  private fb:FormBuilder, private globalService:GlobalService, private modalCtrl:ModalController, private activatedRoute:ActivatedRoute, private docService:DocService, private colorService:ColorService) {
+  constructor(private toastCtrl:ToastController, private alertCtrl:AlertController, private actionSheetCtrl: ActionSheetController, private loadingCtrl:LoadingController,  private fb:FormBuilder, private globalService:GlobalService, private modalCtrl:ModalController, private activatedRoute:ActivatedRoute, private docService:DocService, private colorService:ColorService) {
     this.docId = activatedRoute.snapshot.paramMap.get('docId');
     this.wti = {};
     this.stemmedWti = {};
 
     this.doc = {} as Doc;
+    this.isGoingBack = false;
 
     this.form = this.fb.group({
       html: new FormControl(this.doc.content)
-    })
+    });
+    
+
+  }
+
+  goBack(e){
+
+  }
+
+  canDeactivate():Promise<boolean> | boolean{
+    let that = this;
+    return new Promise(async resolve => {
+      if(!that.isDocChanged)return resolve(true);
+
+      const alert = await this.alertCtrl.create({
+        header: 'Confirm!',
+        message: 'Message <strong>text</strong>!!!',
+        buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                  resolve(false);
+                  console.log('Confirm Cancel: blah');
+              }
+            }, {
+                text: 'Okay',
+                handler: () => {
+                    this.saveDoc();
+                    resolve(true);
+                    console.log('Confirm Okay');
+                }
+            }
+        ]
+    });
+      await alert.present();
+    });
+  }
+
+  ofProxyChanges = (target) => {
+    let subject = new Subject;
+    let proxy = new Proxy(target, {
+      set: (target, key, val) => {
+        let oldValue = target[key];
+        target[key] = val;
+        subject.next({
+          type: oldValue === undefined ? "add" : "change",
+          object:target,
+          name:key,
+          oldValue:oldValue
+        });
+        return true;
+      }
+    });
+    return [proxy, subject.asObservable()];
   }
 
   get tags():any[]{
@@ -97,6 +158,28 @@ export class DocEditorPage implements OnInit {
 
   }
 
+  async openActSheet(event){
+    console.log("action sheet opened!");
+    const actionSheet = await this.actionSheetCtrl.create({
+      buttons: [{
+        text: 'Save',
+        icon: 'save',
+        handler: () => {
+          console.log('Share clicked');
+        }
+      },  {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+
+    await actionSheet.present();
+  }
+
   onReaderClick(event){
     let element = event.path[0].nodeName == "SPAN" ? event.path[0] : null;
     let word = element.textContent && element.textContent.toLowerCase();
@@ -104,6 +187,36 @@ export class DocEditorPage implements OnInit {
     if(word && !this.nonCharRegEx.test(word)){
       this.openTagPicker(word, this.wti[stemmer(word)], this.allTags, this.tags);
     }
+  }
+
+  async saveDoc(){
+    const loading = await this.loadingCtrl.create({
+      message: "Please wait..."
+    });
+
+    await loading.present();
+
+    this.docService.save(this.doc.title, this.doc.content, this.TaggedWordInfo, this.doc.id, this.docId).subscribe(async ({data})=>{
+      let alert = await this.toastCtrl.create({
+        message: "Doc Added!",
+        duration:2000,
+        color:"green"
+      });
+      alert.present();
+      loading.dismiss();
+
+    },async (err)=>{
+      let alert = await this.toastCtrl.create({
+        message: err.message,
+        duration:2000,
+        color:"danger"
+      });
+      alert.present();
+      loading.dismiss();
+    })
+    
+    
+    
   }
 
   async getDoc(data:string='', taggedWord:any=null){
@@ -116,9 +229,14 @@ export class DocEditorPage implements OnInit {
     if(!data)data = this.docId;
 
     this.docService.get(data, taggedWord).subscribe(async ({data:{document:{giveItToMe} }}:any) => {
-      console.log(giveItToMe);
       this.doc.content = giveItToMe.document.content;
       this.doc.wordTagInfo = giveItToMe.smallWordTagInfo;
+      this.doc.wordsCount = giveItToMe.document.wordsCount;
+      this.doc.createDate = giveItToMe.document.createDate;
+      this.doc.updateDate = giveItToMe.document.updateDate;
+      this.doc.id = giveItToMe.document.id;
+      this.doc.title = giveItToMe.document.title;
+      this.doc.docId = giveItToMe.document.docId;
       // this.tags = giveItToMe.smallWordTagInfo.tags;
       
       giveItToMe.smallWordTagInfo.wti.forEach((element) => {
@@ -143,6 +261,12 @@ export class DocEditorPage implements OnInit {
       this.onInnerHtmlClick(null);
 
       await loading.dismiss();
+
+      
+      this.form.valueChanges.subscribe((value)=>{
+        console.log('form value is changed!');
+        this.isDocChanged = true;
+      })
     })
   }
 
@@ -180,18 +304,25 @@ export class DocEditorPage implements OnInit {
   }
 
   openDocInfo(){
+    console.log('data pass to doc-info:', this.doc, this.TaggedWordInfo);
+
     this.modalCtrl.create({
       component: DocInfoPage,
       componentProps: {
+        doc:this.doc,
+        taggedWordInfo:this.TaggedWordInfo
       },
       cssClass: 'from-bottom-modal'
     }).then(modal => {
+      modal.onDidDismiss().then((data)=>{
+        // console.log(this.doc);
+      })
       modal.present();
     });
   }
 
-  openTagPicker(word, info, bigTags,smallTags){
-    this.modalCtrl.create({
+  async openTagPicker(word, info, bigTags,smallTags){
+    const modal = await this.modalCtrl.create({
       component: TagPickerPage,
       componentProps: {
         word,
@@ -200,9 +331,15 @@ export class DocEditorPage implements OnInit {
         smallTags
       },
       // cssClass: 'from-middle-modal'
-    }).then(modal => {
-      modal.present();
     });
+
+    modal.onDidDismiss().then(({data}) => {
+      console.log('tag picking is changed:', data);
+      if(!this.isDocChanged)
+        this.isDocChanged = data;
+    })
+
+    return await modal.present();
   }
 
   onChooseTagClick(tag:any){
@@ -297,10 +434,14 @@ export class DocEditorPage implements OnInit {
      });
    });*/
 
+   let [obj3, objChanges3] =  this.ofProxyChanges(this.innerHtml.nativeElement);
+
+   objChanges3.subscribe(console.log);
+
    this.innerHtml.nativeElement.innerHTML = `<p>${div.innerHTML}</p>`;
 
-   console.log('the stemmed dict:', this.stemmedWti);
-   console.log('get tagged word info:', this.TaggedWordInfo);
+  //  console.log('the stemmed dict:', this.stemmedWti);
+  //  console.log('get tagged word info:', this.TaggedWordInfo);
   }
   // onInnerHtmlClick(event){
 
@@ -363,7 +504,8 @@ export class DocEditorPage implements OnInit {
     }else{
       this.mode = DocMode.Edit;
       // this.onInnerHtmlClick(event);
-      this.getDoc(this.doc.content, this.TaggedWordInfo);
+      console.log('the content of doc is changed to:', this.doc.content);
+      this.getDoc(this.form.get('html').value, this.TaggedWordInfo);
 
 
     }

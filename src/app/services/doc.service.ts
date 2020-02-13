@@ -2,6 +2,53 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
+const SaveDocGql = gql`
+  mutation($title:String!, $content:String!, $wordTagLiteStr:String!, $id:String, $docId:String){
+    doc{
+      save(document:{
+        title:$title,
+        content:$content,
+        id:$id,
+        docId:$docId
+      }, wordTagLiteStr:$wordTagLiteStr){
+        document{
+        docId,
+        id,
+        content,
+        createDate,
+        updateDate,
+        title,
+        wordsCount
+      }
+      smallWordTagInfo{
+        wti{
+          wordInfos{
+            tag{
+              tagName
+            }
+            count
+          }
+          word
+        }
+        tags{
+          tagName
+          tagColor
+        }
+      }
+      bigWordTagInfo{
+        tags{
+          tagName
+          tagColor
+        }
+      }
+      createTime
+      updateTime
+      status
+      }
+    }
+  }
+`;
+
 const UserGetDocGql = gql`
   query($docId:String!){
     document{
@@ -65,12 +112,13 @@ query($content:String!){
   document{
     giveItToMe(content:$content){
 			document{
-      docId,
-      id,
-      content,
-      createDate,
-      updateDate,
-      title        
+        docId,
+        id,
+        content,
+        createDate,
+        updateDate,
+        title,
+        wordsCount
       }
       smallWordTagInfo{
         wti{
@@ -111,7 +159,8 @@ export interface Doc {
   url?:string,
   words?:number,
   tags?:any[],
-  wordTagInfo?:any
+  wordTagInfo?:any,
+  wordsCount?:number;
 }
 
 @Injectable({
@@ -147,8 +196,42 @@ export class DocService {
     });
   }
 
-  save(){
+  save(title:string, content:string, wordTagLiteStr:any=null, id:string, docId:string){
+    return this.getApollo.mutate({
+      mutation:SaveDocGql,
+      variables:{
+        title,
+        content,
+        id,
+        docId,
+        wordTagLiteStr:JSON.stringify(wordTagLiteStr)
+      },
+      update: (cache, {data:{doc:save}}:any) => {
+        let result:any  = cache.readQuery({
+          query:GiveItToMeGql,
+          variables:{
+            content:docId,
+            wordTagLiteStr:JSON.stringify(wordTagLiteStr)
+          }
+        });
 
+        console.log('cached data is:', result);
+        console.log('returned data is:', save);
+
+        result.document.giveItToMe = save.save
+
+        cache.writeQuery({
+          query:GiveItToMeGql,
+          variables:{
+            content:docId,
+            wordTagLiteStr:JSON.stringify(wordTagLiteStr)
+          },
+          data:result
+        })
+
+
+      }
+    });
   }
 
   delete(){

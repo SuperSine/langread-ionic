@@ -41,7 +41,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-
+      console.log('the current platform is:',this.platform.platforms());
     });
   }
 }

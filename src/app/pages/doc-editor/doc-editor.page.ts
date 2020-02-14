@@ -83,18 +83,18 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
       const alert = await this.alertCtrl.create({
         header: 'Confirm!',
-        message: 'Message <strong>text</strong>!!!',
+        message: 'Document has been changed, do you wanna save??',
         buttons: [
             {
               text: 'Cancel',
               role: 'cancel',
               cssClass: 'secondary',
               handler: (blah) => {
-                  resolve(false);
+                  resolve(true);
                   console.log('Confirm Cancel: blah');
               }
             }, {
-                text: 'Okay',
+                text: 'Yes',
                 handler: () => {
                     this.saveDoc();
                     resolve(true);
@@ -105,24 +105,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     });
       await alert.present();
     });
-  }
-
-  ofProxyChanges = (target) => {
-    let subject = new Subject;
-    let proxy = new Proxy(target, {
-      set: (target, key, val) => {
-        let oldValue = target[key];
-        target[key] = val;
-        subject.next({
-          type: oldValue === undefined ? "add" : "change",
-          object:target,
-          name:key,
-          oldValue:oldValue
-        });
-        return true;
-      }
-    });
-    return [proxy, subject.asObservable()];
   }
 
   get tags():any[]{
@@ -267,6 +249,15 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
         console.log('form value is changed!');
         this.isDocChanged = true;
       })
+    },async (err) => {
+      let alert = await this.toastCtrl.create({
+        message: err.message,
+        duration:2000,
+        color:"danger"
+      });
+      alert.present();
+
+      loading.dismiss();
     })
   }
 
@@ -392,83 +383,11 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
         }
       })
-      // div.appendChild(el);
     });
-   /* Array.from(div.querySelectorAll("*"), (el:any) => {
-      
-      Array.from(el.childNodes, (ch:any)=>{
-        console.log('dealing with:',ch.cloneNode(true));
-          if(ch.nodeType === 3  &&  ch.data.trim().length > 0){
-             ch.data = ch.data.replace(that.getWordRegEx, (range)=>{
-              if(range){
-                var word = range.replace(that.nonCharRegEx, "");
-                el.insertAdjacentHTML('beforeend', `<span class="ion-activatable" app-pick="${word.toLowerCase()}">${range}</span>` );
-              }else if(!that.nonCharRegEx.test(range))
-                el.insertAdjacentHTML('beforeend', ' ');
-
-              return "";
-             });
-            //  console.log(el);
-         }
-        
-     });
-   });
-
-   /* Array.from(div.querySelectorAll("*"), (el:any) => {
-      
-      Array.from(el.childNodes, (ch:any)=>{
-        console.log('dealing with:',ch.cloneNode(true));
-          if(ch.nodeType === 3  &&  ch.data.trim().length > 0){
-             ch.data = ch.data.replace(that.getWordRegEx, (range)=>{
-              if(range){
-                var word = range.replace(that.nonCharRegEx, "");
-                el.insertAdjacentHTML('beforeend', `<span class="ion-activatable" app-pick="${word.toLowerCase()}">${range}</span>` );
-              }else if(!that.nonCharRegEx.test(range))
-                el.insertAdjacentHTML('beforeend', ' ');
-
-              return "";
-             });
-            //  console.log(el);
-         }
-        
-     });
-   });*/
-
-   let [obj3, objChanges3] =  this.ofProxyChanges(this.innerHtml.nativeElement);
-
-   objChanges3.subscribe(console.log);
 
    this.innerHtml.nativeElement.innerHTML = `<p>${div.innerHTML}</p>`;
-
-  //  console.log('the stemmed dict:', this.stemmedWti);
-  //  console.log('get tagged word info:', this.TaggedWordInfo);
   }
-  // onInnerHtmlClick(event){
 
-  //   var that = this;
-  //   var div = document.createElement("div");
-  //   div.innerHTML = `<div>${this.content}</div>`;
-  //   Array.from(div.querySelectorAll("*"), (el:any) => {
-  //     Array.from(el.cloneNode(true).childNodes, (ch:any)=>{
-  //         if(ch.nodeType === 3  &&  ch.data.trim().length > 0){
-  //            ch.data = ch.data.replace(that.getWordRegEx, (range)=>{
-  //             if(range){
-  //               var word = range.replace(that.nonCharRegEx, "");
-  //               // debugger;
-  //               // el.innerHTML += `<span class="ion-activatable" app-pick="${word}">${range}</span>`;
-  //               el.insertAdjacentHTML('beforeend', `<span class="ion-activatable" app-pick="${word}">${range}</span>` );
-  //             }else
-  //               el.insertAdjacentHTML('beforeend', ' ');
-
-  //             return "";
-  //            });
-  //        }
-  //    });
-  //  });
-
-  //  this.innerHtml.nativeElement.innerHTML = `<p>${div.childNodes[0].innerHTML.trim()}</p>`;
-
-  // }
 
   getHtml(){
 

@@ -25,7 +25,7 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path: 'doc-list',
+    path: '',
     loadChildren: () => import('./pages/doc-list/doc-list.module').then( m => m.DocListPageModule)
   },
   {
@@ -35,11 +35,13 @@ const routes: Routes = [
   },
   {
     path: 'tag-picker',
-    loadChildren: () => import('./pages/tag-picker/tag-picker.module').then( m => m.TagPickerPageModule)
+    loadChildren: () => import('./pages/tag-picker/tag-picker.module').then( m => m.TagPickerPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'doc-info',
-    loadChildren: () => import('./pages/doc-info/doc-info.module').then( m => m.DocInfoPageModule)
+    loadChildren: () => import('./pages/doc-info/doc-info.module').then( m => m.DocInfoPageModule),
+    canActivate:[AuthGuard]
   }
 ];
 

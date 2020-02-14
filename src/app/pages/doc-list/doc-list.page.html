@@ -40,8 +40,8 @@
             <p>{{item.createDate}}</p>
           </ion-label>
           <ion-button color="light" slot="end" (click)="presentActionSheet(item)">
-          <ion-icon  name="more"></ion-icon>
-        </ion-button>
+            <ion-icon name="ellipsis-vertical"></ion-icon>
+          </ion-button>
       </ion-item>
 
     </ion-card>
@@ -73,7 +73,7 @@
 
   <ion-fab [hidden]="isScrollButtonHidden" (click)="scrollToTop()"  vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="medium">
-      <ion-icon name="arrow-dropup"></ion-icon>
+      <ion-icon name="arrow-up"></ion-icon>
     </ion-fab-button>
   </ion-fab>
   <ion-infinite-scroll *ngIf="docList" threshold="100px" (ionInfinite)="loadData($event)">

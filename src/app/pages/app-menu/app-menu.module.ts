@@ -4,18 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { DocListPageRoutingModule } from './doc-list-routing.module';
+import { AppMenuPageRoutingModule } from './app-menu-routing.module';
 
-import { DocListPage } from './doc-list.page';
+import { AppMenuPage } from './app-menu.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DocListPageRoutingModule,
-    
+    AppMenuPageRoutingModule
   ],
-  declarations: [DocListPage]
+  declarations: [AppMenuPage]
 })
-export class DocListPageModule {}
+export class AppMenuPageModule {}

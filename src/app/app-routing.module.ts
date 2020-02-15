@@ -5,6 +5,7 @@ import { QuitDocEditorGuard } from './guards/quit-doc-editor.guard';
 import { DocInfoPage } from './pages/doc-info/doc-info.page';
 
 const routes: Routes = [
+
   {
     path: 'login',
     loadChildren: () => import('./pages/auth-login/auth-login.module').then(m => m.AuthLoginPageModule),
@@ -25,7 +26,7 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path: '',
+    path: 'doc-list',
     loadChildren: () => import('./pages/doc-list/doc-list.module').then( m => m.DocListPageModule)
   },
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
     path: 'doc-info',
     loadChildren: () => import('./pages/doc-info/doc-info.module').then( m => m.DocInfoPageModule),
     canActivate:[AuthGuard]
+  },
+  {
+    path: '',
+    loadChildren: () => import('./pages/app-menu/app-menu.module').then( m => m.AppMenuPageModule)
   }
 ];
 

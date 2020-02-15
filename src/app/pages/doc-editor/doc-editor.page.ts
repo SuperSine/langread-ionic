@@ -164,6 +164,9 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
   onReaderClick(event){
     let element = event.path[0].nodeName == "SPAN" ? event.path[0] : null;
+
+    if(!element)return null;
+
     let word = element.textContent && element.textContent.toLowerCase();
 
     if(word && !this.nonCharRegEx.test(word)){

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DocService, Doc } from 'src/app/services/doc.service';
 import { QueryRef } from 'apollo-angular';
-import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController } from '@ionic/angular';
+import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController, ToastController } from '@ionic/angular';
 import { runInThisContext } from 'vm';
 import { Router } from '@angular/router';
 
@@ -26,13 +26,21 @@ export class DocListPage implements OnInit {
   private isScrollButtonHidden:boolean = true;
   private userContent:string;
 
-  constructor(private docService:DocService,private actionSheetCtrl: ActionSheetController, private router: Router) { }
+  constructor(private toastCtrl:ToastController, private docService:DocService,private actionSheetCtrl: ActionSheetController, private router: Router) { }
 
   ngOnInit() {
     this.docService.list('10', this.lastId).valueChanges.subscribe((result) => {
       this.docList = ((result.data) as any).document.list;
       console.log(this.docList);
       this.lastId = this.docList.slice(-1)[0].id;
+    }, async (err)=>{
+      let alert = await this.toastCtrl.create({
+        message: err.message,
+        duration:2000,
+        color:"danger"
+      });
+      alert.present();
+
     });
 
   }
@@ -46,6 +54,16 @@ export class DocListPage implements OnInit {
     this.docService.list('10').refetch().then((result) => {
       console.log('refetch complete!', result);
       event.target.complete();
+    }, async (err)=>{
+      let alert = await this.toastCtrl.create({
+        message: err.message,
+        duration:2000,
+        color:"danger"
+      });
+      alert.present();
+
+      event.target.complete();
+
     });
   }
 

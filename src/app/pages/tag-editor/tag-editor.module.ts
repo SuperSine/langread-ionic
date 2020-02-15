@@ -14,7 +14,7 @@ import { TagEditorPage } from './tag-editor.page';
     FormsModule,
     IonicModule,
     TagEditorPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [TagEditorPage]
 })

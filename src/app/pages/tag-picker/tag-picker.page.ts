@@ -30,7 +30,8 @@ export class TagPickerPage implements OnInit {
     this.bigTags.filter((value) => value.selected).forEach((tag)=>{
       this.info.push({tag});
       this.smallTags.push(tag);
-      this.colorService.addMarkColor(tag);
+      if(tag.tagColor)
+        this.colorService.addMarkColor(tag);
 
     });
     this.modalCtrl.dismiss(this.isChanged);

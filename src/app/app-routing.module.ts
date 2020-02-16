@@ -27,7 +27,8 @@ const routes: Routes = [
   },
   {
     path: 'doc-list',
-    loadChildren: () => import('./pages/doc-list/doc-list.module').then( m => m.DocListPageModule)
+    loadChildren: () => import('./pages/doc-list/doc-list.module').then( m => m.DocListPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'doc-editor',

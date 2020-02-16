@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent } from '@angular/router';
 import { runInThisContext } from 'vm';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-app-menu',
@@ -22,8 +23,12 @@ export class AppMenuPage implements OnInit {
   ];
 
 
-  constructor(private router:Router) {
+  constructor(private router:Router,private authService:AuthService) {
     this.router.events.subscribe((event:RouterEvent) => {
+      if(event.url == '/login'){
+        this.authService.logout();
+      }
+
       this.selectedPath = event.url;
     })
    }

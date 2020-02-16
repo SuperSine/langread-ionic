@@ -31,9 +31,10 @@ export async function createApollo(httpLink: HttpLink,storage:Storage) {
 })
 export class GraphQLModule {
   constructor(apollo: Apollo, httpLink:HttpLink){
-    var token  = window['tempLangreadUserToken'];
+
 
     const authMiddleware = new ApolloLink((operation, forward) => {
+      var token  = window['tempLangreadUserToken'];
       if (token) {
         operation.setContext({
             headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)

@@ -74,14 +74,16 @@ export class AuthService {
   private apolloBase: ApolloBase<any>;
 
   private _isAuthenticated = new BehaviorSubject(true);
-  private _isApolloCreated = new BehaviorSubject(false);
+  // private _isApolloCreated = new BehaviorSubject(false);
 
    constructor(private storage: Storage, private apollo: Apollo) {
-    this.isApolloCreated.subscribe((isCreated) => {
-      if(isCreated)this.apolloBase = apollo.use('auth');
-    })
+
     
     // this.getUserData();
+  }
+
+  get getApollo(){
+    return this.apollo.use("auth");
   }
 
   setUserId(id:string){
@@ -90,9 +92,9 @@ export class AuthService {
     this._isAuthenticated.next(true);
   }
 
-  setApolloSet(value:boolean){
-    this._isApolloCreated.next(true);
-  }
+  // setApolloSet(value:boolean){
+  //   this._isApolloCreated.next(true);
+  // }
 
   get getUserId(){
     return this.userId;
@@ -107,9 +109,9 @@ export class AuthService {
     return userInfo;
   }
 
-  get isApolloCreated(){
-    return this._isApolloCreated.asObservable();
-  }
+  // get isApolloCreated(){
+  //   return this._isApolloCreated.asObservable();
+  // }
 
   get isAuthenticated() {
     return this._isAuthenticated.asObservable();
@@ -127,11 +129,14 @@ export class AuthService {
     this.storage.set(T_USER_ID, id);
     this.storage.set(T_USER_TOKEN, token);
     this.storage.set(T_USER_SECRET, secret);
+
+    window['tempLangreadUserToken'] = token;
+
     this.setUserId(id);
   }
 
   signUp(credentials: UserInfo){
-    let promise = this.apolloBase.mutate({
+    let promise = this.getApollo.mutate({
       mutation: UserRegisterGql,
       variables:{
         email: credentials.email,
@@ -146,7 +151,7 @@ export class AuthService {
   }
 
   login(credentials: UserInfo){
-    let promise = this.apolloBase.query({
+    let promise = this.getApollo.query({
       query:UerLoginGql,
       variables:{
         email:credentials.email,
@@ -161,6 +166,7 @@ export class AuthService {
       var token = data.auth.auth.token.token;
 
       this.saveUserData(appId, appSecret,  token);
+
     })
     
     return promise;
@@ -170,5 +176,7 @@ export class AuthService {
     this.storage.set(T_USER_ID, null);
     this.storage.set(T_USER_TOKEN, null);
     this.storage.set(T_USER_SECRET, null);
+
+    this.apollo.use('core').getClient().clearStore();
   }
 }

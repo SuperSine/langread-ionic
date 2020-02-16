@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class AuthLoginPage implements OnInit {
 
   public loginForm: FormGroup;
+  private loginWaiting:boolean = false;
 
   constructor(private route: Router, private alertCtrl: ToastController, public formBuilder: FormBuilder, public apollo: Apollo, private authService:AuthService) {
     this.loginForm = formBuilder.group({
@@ -24,8 +25,14 @@ export class AuthLoginPage implements OnInit {
   }
 
   login(){
+    this.loginWaiting = true;
+
     this.authService.login(this.loginForm.value).then((result)=>{
-      this.route.navigateByUrl('/tag-list');
+      this.loginForm.get('email').setValue('');
+      this.loginForm.get('password').setValue('');
+      this.loginWaiting = false;
+
+      this.route.navigateByUrl('/');
     },async (err) => {
       let alert = await this.alertCtrl.create({
         message: err.message,
@@ -36,7 +43,12 @@ export class AuthLoginPage implements OnInit {
     })
   }
 
+  ngOnChanges(){
+
+  }
+
   ngOnInit() {
+
   }
   
 

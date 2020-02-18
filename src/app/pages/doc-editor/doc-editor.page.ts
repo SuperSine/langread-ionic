@@ -36,7 +36,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   private docId:string;
   private wti:any;
   private stemmedWti:any;
-  private allTags:any[];
+  private allTags:any[] = [];
   private htmlRegEx:RegExp = /(<([^>]+)>|&(nbsp|amp|quot|lt|gt))/g;
   private contentRegEx:RegExp = /(?<=>)[\w\s]+(?=<)/g;
   private nonCharRegEx:RegExp = /--{1,}|[^A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]/g;
@@ -117,6 +117,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
    * return {'word':['tag1','tag'2],...}
    */
   get TaggedWordInfo():any{
+    if(!this.doc.content)return;
+
     let strippedHtml = this.doc.content.replace(this.htmlRegEx, ' ');
     let wordsList = strippedHtml.replace(this.nonCharRegEx, ' ').split(' ');
 
@@ -205,23 +207,32 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
   async getDoc(data:string='', taggedWord:any=null){
+    if(!data && !this.docId)return;
+
     const loading = await this.loadingCtrl.create({
       message: "Please wait..."
     });
 
     await loading.present();
 
+
     if(!data)data = this.docId;
 
     this.docService.get(data, taggedWord).subscribe(async ({data:{document:{giveItToMe} }}:any) => {
+
+      var doc  = {...giveItToMe.document};
+
+      console.log('spread doc is:', doc);
+
       this.doc.content = giveItToMe.document.content;
-      this.doc.wordTagInfo = giveItToMe.smallWordTagInfo;
       this.doc.wordsCount = giveItToMe.document.wordsCount;
       this.doc.createDate = giveItToMe.document.createDate;
       this.doc.updateDate = giveItToMe.document.updateDate;
       this.doc.id = giveItToMe.document.id;
       this.doc.title = giveItToMe.document.title;
       this.doc.docId = giveItToMe.document.docId;
+      
+      this.doc.wordTagInfo = giveItToMe.smallWordTagInfo;
       // this.tags = giveItToMe.smallWordTagInfo.tags;
       
       giveItToMe.smallWordTagInfo.wti.forEach((element) => {
@@ -234,7 +245,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
       console.log('this is wti', this.wti);
 
-      this.allTags = giveItToMe.bigWordTagInfo.tags;
+      if(giveItToMe.bigWordTagInfo)
+        this.allTags = giveItToMe.bigWordTagInfo.tags;
 
       this.doc.wordTagInfo.tags.forEach((tag)=>{
         if(!tag.tagColor)return;

@@ -14,8 +14,6 @@ import ApolloClient from 'apollo-client';
 const uri = 'http://localhost:5001'; // <-- add the URL of the GraphQL server here
 export async function createApollo(httpLink: HttpLink,storage:Storage) {
 
-
-  
 }
 
 @NgModule({

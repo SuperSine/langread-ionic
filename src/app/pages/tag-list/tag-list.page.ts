@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./tag-list.page.scss'],
 })
 export class TagListPage implements OnInit {
-  private tags: Tag[];
+  private tags: Tag[] = [];
   private querySubscription: Subscription;
   private queryRef:QueryRef<any>;
   private selectedTag:{

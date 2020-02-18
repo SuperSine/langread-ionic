@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { TagListPageRoutingModule } from './tag-list-routing.module';
 
 import { TagListPage } from './tag-list.page';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TagListPageRoutingModule
+    TagListPageRoutingModule,
+    LangreadComponentsModule
   ],
   declarations: [TagListPage]
 })

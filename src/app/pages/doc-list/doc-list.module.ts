@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DocListPageRoutingModule } from './doc-list-routing.module';
 
 import { DocListPage } from './doc-list.page';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { DocListPage } from './doc-list.page';
     FormsModule,
     IonicModule,
     DocListPageRoutingModule,
-    
+    LangreadComponentsModule
   ],
   declarations: [DocListPage]
 })

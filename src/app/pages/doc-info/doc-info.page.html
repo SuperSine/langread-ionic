@@ -26,9 +26,9 @@
   <p>
     <ion-chip *ngFor="let item of tagInfo | keyvalue">
       <ion-avatar>
-        <div style="background-color:#e33e32" style="width: 100%; height: 100%;"></div>
+        <div [style.background-color]='getTagColor(item.key)' style="width: 100%; height: 100%;"></div>
       </ion-avatar>
-      <ion-label>{{item.key}}</ion-label>
+      <ion-label name="tag-name">{{item.key}}</ion-label>
       <ion-badge>{{item.value}}</ion-badge>
     </ion-chip>
   </p>

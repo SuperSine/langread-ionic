@@ -11,13 +11,22 @@ export class DocInfoPage implements OnInit {
   private doc:{title:string, url:string, createDate:string, updateDate:string, wordsCount:number};
   private taggedWordInfo:any;
   private tagInfo:any;
+  private allTags:any[];
 
   constructor(private modalCtrl: ModalController) {
     this.tagInfo = {};
    }
 
+  getTagColor(tagName:string){
+    var tag = this.allTags.find((tag)=>{
+      return tag.tagName == tagName;
+    });
+
+    return tag ? tag.tagColor : '';
+  }
+
   ngOnInit() {
-    console.log('doc info:', this.doc, this.taggedWordInfo);
+    console.log('doc info:', this.doc, this.taggedWordInfo, this.tagInfo);
     Object.keys(this.taggedWordInfo).forEach((word)=>{
       this.taggedWordInfo[word].forEach((tag) => {
         if(typeof this.tagInfo[tag] != 'number')this.tagInfo[tag]=0;

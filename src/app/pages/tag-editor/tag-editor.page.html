@@ -27,11 +27,11 @@
         <ion-label position="stacked">Tag Color</ion-label>
         <ion-grid>
           <ion-row class="rowClass">
-            <ion-col size="2" [class.selected]="selectColor==item.value" (click)="selectColor=item.value;onColorClick(item)"  
+            <ion-col size="2" [class.selected]="this.selectColor==item.value" (click)="this.selectColor=item.value;onColorClick(item)"  
                      class="colClass"
-                     *ngFor="let item of colorService.colorList; let i=index" 
+                     *ngFor="let item of this.colorList; let i=index" 
                      [style.background]="item.value">
-              <ion-icon name="checkmark"></ion-icon>
+              <ion-icon class="checkmark" name="checkmark"></ion-icon>
             </ion-col>
           </ion-row>
         </ion-grid>

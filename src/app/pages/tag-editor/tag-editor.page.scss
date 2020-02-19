@@ -6,7 +6,7 @@
 
 .rowClass{
   max-width: 320px;
-  min-height: 80px;
+  min-height: 40px;
   padding: 6px;
 }
 
@@ -26,7 +26,7 @@
   transition: opacity, border 0.5s;
 }
 
-ion-icon[name=checkmark]{
+.checkmark[name=checkmark]{
   display: block;
   color: #fff;
   line-height: 1;
@@ -35,8 +35,8 @@ ion-icon[name=checkmark]{
   opacity: 0;
 }
 
-ion-col[class$=selected] ion-icon{
-  float: right;
+.colClass[class*=selected] .checkmark{
+  // float: right;
   position:relative;
   display: block;
   -webkit-transition: all 200ms ease;
@@ -44,4 +44,5 @@ ion-col[class$=selected] ion-icon{
   -webkit-transform: rotate(360deg);
   transform: rotate(360deg);
   opacity: 1;
+  margin: 0 auto;
 }

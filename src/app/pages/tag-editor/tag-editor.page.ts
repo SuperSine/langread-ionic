@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { ColorService, TagColor } from 'src/app/services/color.service';
@@ -8,7 +8,7 @@ import { TagsService } from 'src/app/services/tags.service';
 @Component({
   selector: 'app-tag-editor',
   templateUrl: './tag-editor.page.html',
-  styleUrls: ['./tag-editor.page.scss'],
+  styleUrls: ['./tag-editor.page.scss']
 })
 export class TagEditorPage implements OnInit {
   public editorForm: FormGroup;
@@ -22,8 +22,11 @@ export class TagEditorPage implements OnInit {
   private tagFont:string;
   private selectColor:string;
   private queryRef:any;
+  private colorList:any[];
 
-  constructor( private toastCtrl:ToastController, private tagService:TagsService, private fontService:FontService, public colorService: ColorService,private modalController:ModalController, public formBuilder:FormBuilder) {
+  constructor( private toastCtrl:ToastController, private tagService:TagsService, 
+               private fontService:FontService, public colorService: ColorService,
+               private modalController:ModalController, public formBuilder:FormBuilder) {
     this.editorForm = formBuilder.group({
       tagname: ['', Validators.compose([Validators.required])],
       tagfont: ['', Validators.compose([Validators.required])],
@@ -42,6 +45,8 @@ export class TagEditorPage implements OnInit {
     this.editorForm.get('tagfont').setValue(this.tagFont);
 
     this.selectColor = this.tagColor;
+
+    this.colorList = this.colorService.colorList;
   }
 
   close(){
@@ -78,8 +83,6 @@ export class TagEditorPage implements OnInit {
         alert.present();
 
         this.close();
-
-        
 
       },async (err) => {
         let alert = await this.toastCtrl.create({

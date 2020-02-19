@@ -2,6 +2,14 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 
+const DeleteDocGql = gql`
+  mutation($docId:String!){
+    doc{
+      delete(docId:$docId)
+    }
+  }
+`;
+
 const SaveDocGql = gql`
   mutation($title:String!, $content:String!, $wordTagLiteStr:String!, $id:String, $docId:String){
     doc{
@@ -97,6 +105,7 @@ const UserTagListGql = gql`
   query($pageSize:String!, $lastId:String!, $keywords:String){
     document{
       list(limit:$pageSize,lastId:$lastId, keywords:$keywords){
+        id,
         docId,
         title,
         content,
@@ -234,7 +243,12 @@ export class DocService {
     });
   }
 
-  delete(){
-
+  delete(docId:string){
+    return this.getApollo.mutate({
+      mutation:DeleteDocGql,
+      variables:{
+        docId
+      }
+    })
   }
 }

@@ -37,6 +37,7 @@ export class DocListPage implements OnInit {
       this.docList = ((result.data) as any).document.list;
       console.log(this.docList);
       if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
+
     }, async (err)=>{
       let alert = await this.toastCtrl.create({
         message: err.message,
@@ -104,6 +105,22 @@ export class DocListPage implements OnInit {
     }
   }
 
+  deleteItem(item){
+    this.docList = this.docList.filter((doc)=>{
+      if(doc.docId != item.docId)return item;
+    });
+
+    this.docService.delete(item.docId).subscribe(async ({data:{doc}}:any) => {
+      let toast = await this.toastCtrl.create({
+        message: 'Document Deleted!',
+        duration:2000,
+        color:"green"
+      });
+      toast.present();
+    });
+
+  }
+
   scrollToTop(){
     this.ionContent.scrollToTop(500);
   }
@@ -121,10 +138,12 @@ export class DocListPage implements OnInit {
       this.lastId = newList.slice(-1)[0].id;
 
       this.infiniteScroll.complete();
+
+      console.log('the last id is:', this.lastId);
     });
   }
 
-  async presentActionSheet(item){
+  async presentActionSheet(item:Doc){
     console.log('item clicked', item);
     const actionSheet = await this.actionSheetCtrl.create({
       buttons:[{
@@ -132,6 +151,7 @@ export class DocListPage implements OnInit {
         role:'destructive',
         icon:'trash',
         handler:()=>{
+          this.deleteItem(item);
           console.log('Delete clicked!');
         }
       },

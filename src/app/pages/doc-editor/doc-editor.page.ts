@@ -57,7 +57,14 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   @ViewChild("htmlEditor", {static:false})
   private htmlEditor: QuillEditorComponent;
 
-  constructor(private toastCtrl:ToastController, private alertCtrl:AlertController, private actionSheetCtrl: ActionSheetController, private loadingCtrl:LoadingController,  private fb:FormBuilder, private globalService:GlobalService, private modalCtrl:ModalController, private activatedRoute:ActivatedRoute, private docService:DocService, private colorService:ColorService) {
+  constructor(private toastCtrl:ToastController, private alertCtrl:AlertController, 
+             private actionSheetCtrl: ActionSheetController, 
+             private loadingCtrl:LoadingController,  private fb:FormBuilder, 
+             private globalService:GlobalService, 
+             private modalCtrl:ModalController, 
+             private activatedRoute:ActivatedRoute, 
+             private docService:DocService, 
+             private colorService:ColorService) {
     this.docId = activatedRoute.snapshot.paramMap.get('docId');
     this.wti = {};
     this.stemmedWti = {};
@@ -90,16 +97,24 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
               role: 'cancel',
               cssClass: 'secondary',
               handler: (blah) => {
-                  resolve(true);
+                  resolve(false);
                   console.log('Confirm Cancel: blah');
               }
-            }, {
-                text: 'Yes',
-                handler: () => {
-                    this.saveDoc();
-                    resolve(true);
-                    console.log('Confirm Okay');
-                }
+            },
+            {
+              text: 'No',
+              handler: () => {
+                  resolve(true);
+                  console.log('Confirm No');
+              }
+            },
+            {
+              text: 'Yes',
+              handler: () => {
+                  this.saveDoc();
+                  resolve(true);
+                  console.log('Confirm Okay');
+              }
             }
         ]
     });
@@ -133,6 +148,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
       this.wti[stemmed].forEach(wordinfo => {
         if(!(data[word] instanceof Array))data[word] = [];
+
         if(data[word].indexOf(wordinfo.tag.tagName) < 0)
           data[word].push(wordinfo.tag.tagName);
       });
@@ -165,6 +181,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
   onReaderClick(event){
+    this.showTags = false;
+
     let element = event.path[0].nodeName == "SPAN" ? event.path[0] : null;
 
     if(!element)return null;
@@ -316,7 +334,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       component: DocInfoPage,
       componentProps: {
         doc:this.doc,
-        taggedWordInfo:this.TaggedWordInfo
+        taggedWordInfo:this.TaggedWordInfo,
+        allTags:this.allTags
       },
       cssClass: 'from-bottom-modal'
     }).then(modal => {

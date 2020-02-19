@@ -61,12 +61,12 @@ span[app-pick] {
 
 
 
-span[app-pick]:hover::after {
-  // background-color: rgba(76, 122, 241, 0.75);
-}
+// span[app-pick]:hover::after {
+//   background-color: rgba(76, 122, 241, 0.75);
+// }
 
 span[app-pick].ion-activatable.activated{
-  background-color: yellowgreen;
+  background-color: rgba(76, 122, 241, 0.75);
 }
 [contenteditable] {
   -webkit-user-select: text;

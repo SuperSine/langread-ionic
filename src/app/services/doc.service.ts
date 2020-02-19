@@ -94,10 +94,9 @@ const UserGetDocGql = gql`
 `;
 
 const UserTagListGql = gql`
-  query($pageSize:String!, $lastId:String!){
+  query($pageSize:String!, $lastId:String!, $keywords:String){
     document{
-      list(limit:$pageSize,lastId:$lastId){
-        id,
+      list(limit:$pageSize,lastId:$lastId, keywords:$keywords){
         docId,
         title,
         content,
@@ -176,12 +175,13 @@ export class DocService {
     return this.apollo.use("core");
   }
 
-  list(limit:string, lastId:string=""){
+  list(limit:string, lastId:string="", keywords:string=""){
     return this.getApollo.watchQuery({
       query:UserTagListGql,
       variables:{
         pageSize:limit,
-        lastId
+        lastId,
+        keywords
       }
     });
   }

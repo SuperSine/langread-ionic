@@ -22,11 +22,32 @@ export class DocListPage implements OnInit {
   private iconName:string = "add";
   private lastId:string;
   private queryRef:QueryRef<any>;
-  private docList:Doc[] = [];
+  private docList:Doc[];
   private isScrollButtonHidden:boolean = true;
   private userContent:string = '';
 
   constructor(private toastCtrl:ToastController, private docService:DocService,private actionSheetCtrl: ActionSheetController, private router: Router) { }
+
+  onSearch(event){
+    var keywords = event.target.value;
+
+    this.docList = [];
+
+    this.docService.list('10', this.lastId, keywords).valueChanges.subscribe((result) => {
+      this.docList = ((result.data) as any).document.list;
+      console.log(this.docList);
+      if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
+    }, async (err)=>{
+      let alert = await this.toastCtrl.create({
+        message: err.message,
+        duration:2000,
+        color:"danger"
+      });
+      alert.present();
+
+    });
+
+  }
 
   ngOnInit() {
     this.docService.list('10', this.lastId).valueChanges.subscribe((result) => {

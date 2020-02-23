@@ -12,6 +12,7 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
 import { Apollo } from 'apollo-angular';
 import {Storage} from '@ionic/storage';
 import { HttpLink } from 'apollo-angular-link-http';
+import { FontService } from './services/font.service';
 
 @Component({
   selector: 'app-root',
@@ -25,11 +26,13 @@ export class AppComponent {
     private statusBar: StatusBar,
     private storage: Storage,
     private apollo:Apollo,
-    private authService: AuthService
+    private authService: AuthService,
+    private fontService:FontService
   ) {
 
     this.authService.getUserData().then(()=>{
       this.initializeApp();
+      this.fontService.injectAll();
     });
 
 

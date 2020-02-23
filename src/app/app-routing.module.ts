@@ -48,6 +48,11 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./pages/app-menu/app-menu.module').then( m => m.AppMenuPageModule)
+  },
+  {
+    path: 'word-timeline',
+    loadChildren: () => import('./pages/word-timeline/word-timeline.module').then( m => m.WordTimelinePageModule),
+    canActivate:[AuthGuard]
   }
 ];
 

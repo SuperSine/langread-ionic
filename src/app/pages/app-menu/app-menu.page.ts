@@ -19,6 +19,10 @@ export class AppMenuPage implements OnInit {
     {
       title:'Tags',
       url:'/menu/tag-list'
+    },
+    {
+      title:'Timeline',
+      url:'/menu/word-timeline'
     }
   ];
 

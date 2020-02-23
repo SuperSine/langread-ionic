@@ -35,7 +35,6 @@ export class TagEditorPage implements OnInit {
   }
 
   ngOnInit() {
-    this.fontService.injectAll();
     this.fontList = this.fontService.getFontList;
 
     this.oldTagName = this.tagName;

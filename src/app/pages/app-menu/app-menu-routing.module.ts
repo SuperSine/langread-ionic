@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AppMenuPage } from './app-menu.page';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -15,6 +16,11 @@ const routes: Routes = [
       {
         path:'tag-list',
         loadChildren: () => import('../tag-list/tag-list.module').then( m => m.TagListPageModule)
+      },
+      {
+        path:'word-timeline',
+        loadChildren: () => import('../word-timeline/word-timeline.module').then( m => m.WordTimelinePageModule),
+        canActivate:[AuthGuard]
       }
     ]
   },

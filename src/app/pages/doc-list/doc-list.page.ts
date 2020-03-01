@@ -28,42 +28,35 @@ export class DocListPage implements OnInit {
 
   constructor(private toastCtrl:ToastController, private docService:DocService,private actionSheetCtrl: ActionSheetController, private router: Router) { }
 
+  list(pageSize, lastId, keywords=''){
+    if(!keywords)lastId='';
+    
+    this.docService.list(pageSize, lastId, keywords).valueChanges.subscribe((result) => {
+      this.docList = ((result.data) as any).document.list;
+      console.log(this.docList);
+      if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
+    }, async (err)=>{
+      let alert = await this.toastCtrl.create({
+        message: err.message,
+        duration:2000,
+        color:"danger"
+      });
+      alert.present();
+
+    });
+  }
+
   onSearch(event){
     var keywords = event.target.value;
 
     this.docList = [];
 
-    this.docService.list('10', this.lastId, keywords).valueChanges.subscribe((result) => {
-      this.docList = ((result.data) as any).document.list;
-      console.log(this.docList);
-      if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
-
-    }, async (err)=>{
-      let alert = await this.toastCtrl.create({
-        message: err.message,
-        duration:2000,
-        color:"danger"
-      });
-      alert.present();
-
-    });
+    this.list('10', this.lastId, keywords);
 
   }
 
   ngOnInit() {
-    this.docService.list('10', this.lastId).valueChanges.subscribe((result) => {
-      this.docList = ((result.data) as any).document.list;
-      console.log(this.docList);
-      if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
-    }, async (err)=>{
-      let alert = await this.toastCtrl.create({
-        message: err.message,
-        duration:2000,
-        color:"danger"
-      });
-      alert.present();
-
-    });
+    this.list('10',this.lastId);
 
   }
 

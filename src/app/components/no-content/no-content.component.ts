@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-no-content',
@@ -6,6 +6,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./no-content.component.scss']
 })
 export class NoContentComponent implements OnInit {
+
 
   constructor() { 
 

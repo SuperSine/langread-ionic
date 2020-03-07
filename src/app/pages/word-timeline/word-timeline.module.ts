@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { WordTimelinePageRoutingModule } from './word-timeline-routing.module';
 
 import { WordTimelinePage } from './word-timeline.page';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    WordTimelinePageRoutingModule
+    WordTimelinePageRoutingModule,
+    LangreadComponentsModule
   ],
   declarations: [WordTimelinePage]
 })

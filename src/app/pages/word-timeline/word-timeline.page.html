@@ -5,14 +5,15 @@
     <ion-title>Timeline</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-searchbar [(ngModel)]="keywords"  showCancelButton="focus" debounce="500" (ionChange)='onSearch($event)'></ion-searchbar>
 
 <ion-content>
   <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="onRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-
+  <app-no-content *ngIf="timelineItems && timelineItems.words == 0">
+  </app-no-content>
   <ion-list>
-    <ion-searchbar  showCancelButton="focus" ></ion-searchbar>
     <ng-container *ngIf="this.timelineItems.words.length == 0">
       <ion-list>
   
@@ -26,8 +27,11 @@
 
       <ion-item class="ion-activatable" style="width: 100%;"> 
         <ng-container >
-          <ion-label>
-            <h2>{{ word  }}</h2>
+          <ion-label position="stacked">
+            <h1>{{ word  }}</h1>
+            <p>
+              <word-tag-info *ngFor="let tag of getTags(word)" [tag]="tag.tag"></word-tag-info>
+            </p>
           </ion-label>
         </ng-container>
         <ion-ripple-effect></ion-ripple-effect>

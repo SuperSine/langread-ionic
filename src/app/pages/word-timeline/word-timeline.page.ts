@@ -14,14 +14,25 @@ export class WordTimelinePage implements OnInit {
 
   private lastId:string='';
   private index:number=1;
-  private timelineItems:TimelineItems
+  private size:number=20;
+  private timelineItems:TimelineItems;
+  private keywords:string='';
 
   constructor(private timelineService:TimelineService, private toastCtrl:ToastController) { 
     this.timelineItems = {words:[]};
   }
 
   ngOnInit() {
-    this.timelineService.list(this.lastId, this.index).subscribe(({data:{timeline:{get}}}:any)=>{
+    this.list();
+  }
+
+  getTags(word:string){
+    var tags = this.timelineItems.wordTagInfo.find((wordInfo)=>{return wordInfo.word == word});
+    return tags.wordInfos;
+  }
+
+  list(){
+    this.timelineService.list(this.lastId, this.index, this.size, this.keywords).subscribe(({data:{timeline:{get}}}:any)=>{
       this.timelineItems.words = get.words;
       this.timelineItems.wordTagInfo = get.wordTagInfo.wti;
 
@@ -29,11 +40,20 @@ export class WordTimelinePage implements OnInit {
     })
   }
 
+  onSearch(event){
+    this.keywords = event.target.value;
 
+    this.index = 0;
+    this.lastId = "";
+
+    this.timelineItems = {words:[],wordTagInfo:[]};;
+    
+    this.list();
+  }
 
   onRefresh(event){
 
-    this.timelineService.list('',1).subscribe(({data:{timeline:{get}}}:any) => {
+    this.timelineService.list('',1,this.size, this.keywords).subscribe(({data:{timeline:{get}}}:any) => {
       this.timelineItems.words = get.words;
       this.timelineItems.wordTagInfo = get.wordTagInfo.wti;
       event.target.complete();
@@ -50,7 +70,7 @@ export class WordTimelinePage implements OnInit {
     });
   }
   loadData(event){
-    this.timelineService.list(this.lastId,++this.index).subscribe(({data:{timeline:{get}}}:any) => {
+    this.timelineService.list(this.lastId,++this.index,this.size,this.keywords).subscribe(({data:{timeline:{get}}}:any) => {
       var timelineItems:any = get;
 
       if(timelineItems.lastId != this.lastId)this.index=1;

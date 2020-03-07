@@ -4,9 +4,9 @@ import { Tag } from './tags.service';
 import { Apollo } from 'apollo-angular';
 
 const GetTimelineGql = gql`
-  query($index:String, $size:String, $lastId:String){
+  query($index:String, $size:String, $lastId:String, $keywords:String){
     timeline{
-      get(index:$index,size:$size,lastId:$lastId){
+      get(index:$index,size:$size,lastId:$lastId,keywords:$keywords){
         words,
         wordTagInfo{
           wti{
@@ -56,13 +56,14 @@ export class TimelineService {
     return this.apollo.use("core");
   }
 
-  list(lastId:string='',index:number=1, size:number=100){
+  list(lastId:string='',index:number=1, size:number=100, keywords:string=''){
     return this.Apollo.query({
       query:GetTimelineGql,
       variables:{
         lastId,
         index,
-        size
+        size,
+        keywords
       }
     })
   }

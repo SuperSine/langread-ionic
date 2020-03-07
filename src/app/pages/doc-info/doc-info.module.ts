@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { DocInfoPageRoutingModule } from './doc-info-routing.module';
 
 import { DocInfoPage } from './doc-info.page';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DocInfoPageRoutingModule
+    DocInfoPageRoutingModule,
+    LangreadComponentsModule
   ],
   declarations: [DocInfoPage]
 })

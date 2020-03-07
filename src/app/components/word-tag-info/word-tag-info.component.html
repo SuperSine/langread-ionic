@@ -1,0 +1,7 @@
+<ion-chip (click)="touching($event)">
+  <ion-avatar>
+    <div [style.background-color]='tag.tagColor' style="width: 100%; height: 100%;"></div>
+  </ion-avatar>
+  <ion-label name="tag-name">{{tag.tagName}}</ion-label>
+  <ion-badge>{{displayValue}}</ion-badge>
+</ion-chip>

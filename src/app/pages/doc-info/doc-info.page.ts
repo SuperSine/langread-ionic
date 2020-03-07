@@ -25,6 +25,10 @@ export class DocInfoPage implements OnInit {
     return tag ? tag.tagColor : '';
   }
 
+  getTag(tagName:string){
+    return this.allTags.find((tag)=>{return tag.tagName == tagName});
+  }
+
   ngOnInit() {
     console.log('doc info:', this.doc, this.taggedWordInfo, this.tagInfo);
     Object.keys(this.taggedWordInfo).forEach((word)=>{
@@ -35,6 +39,10 @@ export class DocInfoPage implements OnInit {
     });
 
     console.log('tagInfo is:', this.tagInfo);
+  }
+
+  onTouch(event){
+    console.log('word-tag-info is clicked', event);
   }
 
 }

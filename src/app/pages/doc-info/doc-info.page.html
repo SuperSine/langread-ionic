@@ -24,13 +24,14 @@
   </ion-item>
   <ion-list-header>Tags</ion-list-header>
   <p>
-    <ion-chip *ngFor="let item of tagInfo | keyvalue">
+    <word-tag-info *ngFor="let item of tagInfo | keyvalue" [tag]='getTag(item.key)' [displayValue]='item.value' (onTouch)="onTouch($event)"></word-tag-info>
+    <!-- <ion-chip *ngFor="let item of tagInfo | keyvalue">
       <ion-avatar>
         <div [style.background-color]='getTagColor(item.key)' style="width: 100%; height: 100%;"></div>
       </ion-avatar>
       <ion-label name="tag-name">{{item.key}}</ion-label>
       <ion-badge>{{item.value}}</ion-badge>
-    </ion-chip>
+    </ion-chip> -->
   </p>
 
 </ion-content>

@@ -23,7 +23,7 @@ export class AppMenuPage implements OnInit {
     {
       title:'Timeline',
       url:'/menu/word-timeline'
-    }
+    },
   ];
 
 

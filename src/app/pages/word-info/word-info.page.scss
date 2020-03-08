@@ -1,0 +1,58 @@
+ol, ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+ion-list[name=word]{
+  padding-top: 17%;
+// background-image: linear-gradient(to top, red , white);;
+}
+
+ion-list[name=word] ion-list-header{
+  font-size: 2.5rem;
+  font-weight: 900;
+  display: block;
+  overflow: overlay;
+  overflow: auto;
+}
+
+ion-card{
+  margin-top: 5px;
+}
+
+ion-fab-button{
+  opacity: 0.4;
+}
+
+.XpoqFe {
+  font-weight: normal !important;
+  font-size: 14px !important;
+  line-height: 20px;
+}
+
+.vk_gy {
+  color: #878787 !important;
+}
+
+.eQJLDd {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.S23sjd {
+  padding-left: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  line-height: 16px;
+  color: #70757A;
+}
+
+ion-icon[name=thermometer-outline]{
+  color: #FFc800;
+}
+
+.celsius{
+  display: flex;
+  flex-direction: column;
+}

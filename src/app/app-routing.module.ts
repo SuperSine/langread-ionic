@@ -46,13 +46,19 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path: '',
-    loadChildren: () => import('./pages/app-menu/app-menu.module').then( m => m.AppMenuPageModule)
-  },
-  {
     path: 'word-timeline',
     loadChildren: () => import('./pages/word-timeline/word-timeline.module').then( m => m.WordTimelinePageModule),
     canActivate:[AuthGuard]
+  },
+  {
+    path: 'word-info',
+    loadChildren: () => import('./pages/word-info/word-info.module').then( m => m.WordInfoPageModule),
+    canActivate:[AuthGuard]
+  },
+  //this route need to put to bottom of the list
+  {
+    path: '',
+    loadChildren: () => import('./pages/app-menu/app-menu.module').then( m => m.AppMenuPageModule)
   }
 ];
 

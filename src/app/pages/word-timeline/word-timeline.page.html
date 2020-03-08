@@ -25,7 +25,7 @@
     </ng-container>
     <ion-row *ngFor="let word of this.timelineItems.words" >
 
-      <ion-item class="ion-activatable" style="width: 100%;"> 
+      <ion-item class="ion-activatable" style="width: 100%;" [routerLink]="['/word-info',{word:word}]"> 
         <ng-container >
           <ion-label position="stacked">
             <h1>{{ word  }}</h1>

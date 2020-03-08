@@ -21,7 +21,12 @@ const routes: Routes = [
         path:'word-timeline',
         loadChildren: () => import('../word-timeline/word-timeline.module').then( m => m.WordTimelinePageModule),
         canActivate:[AuthGuard]
-      }
+      },
+      {
+        path: 'word-info',
+        loadChildren: () => import('../word-info/word-info.module').then( m => m.WordInfoPageModule),
+        canActivate:[AuthGuard]
+      }      
     ]
   },
   {

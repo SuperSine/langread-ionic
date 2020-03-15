@@ -13,6 +13,7 @@ import { Apollo } from 'apollo-angular';
 import {Storage} from '@ionic/storage';
 import { HttpLink } from 'apollo-angular-link-http';
 import { FontService } from './services/font.service';
+import { GlobalService } from './services/global.service';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ export class AppComponent {
     private storage: Storage,
     private apollo:Apollo,
     private authService: AuthService,
-    private fontService:FontService
+    private fontService:FontService,
+    private globalService:GlobalService
   ) {
 
     this.authService.getUserData().then(()=>{
@@ -43,6 +45,8 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      this.globalService.subscribeToast();
 
       console.log('the current platform is:',this.platform.platforms());
     });

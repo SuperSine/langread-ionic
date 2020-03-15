@@ -1,22 +1,26 @@
 <ion-header>
   <ion-toolbar>
+    <ion-menu-button slot="start" *ngIf="!defaultWord"></ion-menu-button>
 
-    <ion-menu-button slot="start"></ion-menu-button>
-    <ion-item>
+    <ion-buttons slot="start" *ngIf="defaultWord">
+      <ion-back-button  defaultHref=""></ion-back-button>
+    </ion-buttons>
+
+    
+    <ion-item *ngIf="!defaultWord">
       <ion-input [(ngModel)]="userContent" placeholder="words or http://" type="text" (ionChange)="onChange($event)">
         <ion-button name="download-content" slot="end" color="light" [routerLink]="['/doc-editor',{docId:userContent}]">
           <ion-icon [name]="iconName"></ion-icon>
         </ion-button>
       </ion-input>
-      
     </ion-item>
   </ion-toolbar>
 </ion-header>
 
 
-<ion-searchbar [(ngModel)]="keywords" debounce="500" (ionChange)='onSearch($event)'></ion-searchbar>
 
 <ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)">
+  <ion-searchbar [(ngModel)]="defaultWord" debounce="500"  (ionChange)='onSearch($event)'></ion-searchbar>
   <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="onRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

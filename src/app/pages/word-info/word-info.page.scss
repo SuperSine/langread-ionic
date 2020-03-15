@@ -40,7 +40,7 @@ ion-fab-button{
   flex-direction: column;
 }
 
-.S23sjd {
+.phoneticSpelling {
   padding-left: 10px;
   font-size: 14px;
   line-height: 20px;
@@ -48,11 +48,16 @@ ion-fab-button{
   color: #70757A;
 }
 
-ion-icon[name=thermometer-outline]{
-  color: #FFc800;
-}
+// ion-icon[name=thermometer-outline]{
+//   color: #FFc800;
+// }
 
 .celsius{
   display: flex;
   flex-direction: column;
+}
+
+ion-icon[name=arrow-back-outline]{
+  font-size: 30px;
+  --background: rgba(var(--ion-text-color-rgb,0,0,0)) !important;
 }

@@ -1,6 +1,6 @@
 <!-- <ion-header>
   <ion-buttons slot="start" >
-    <ion-back-button color="dark" defaultHref=""></ion-back-button>
+   
   </ion-buttons>
 </ion-header> -->
 <!-- <ion-header>
@@ -18,13 +18,13 @@
 </ion-header>
    -->
 
-   <ion-fab vertical="top" horizontal="start" slot="fixed">
-    <ion-fab-button color="black"  size="small">
-      <ion-icon name="arrow-back-circle" color="light"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+
 <ion-content>
 
+  <ion-fab vertical="top" horizontal="start" slot="fixed" >
+    <!-- <ion-icon name="arrow-back-outline" color="dark" class="ion-activatable" (click)="goBack($event)"></ion-icon> -->
+    <ion-back-button defaultHref=""></ion-back-button>
+  </ion-fab>
   <!-- <ion-fab vertical="top" horizontal="start" slot="fixed">
     <ion-buttons>
       <ion-back-button text="" icon="arrow-back-outline" color="dark"></ion-back-button>
@@ -34,88 +34,113 @@
 
 
 
-    
-  <ion-list name="word">
-    <ion-list-header>disestablishment!!!!!!!!!!!!!!!!!!!!!!!</ion-list-header>
-  </ion-list>
-  <ion-list>
-    <ion-item>
+  <ng-container *ngIf="wordProfile">
 
-      <ion-button size="small">
-        <ion-icon name="play-circle-outline"></ion-icon>
-      </ion-button>
-      <span class="S23sjd">/ˌdisəˈstabliSH/</span>
-<div class="celsius" slot="end">
+    <ion-list name="word">
+      <ion-list-header>{{wordProfile.word}}</ion-list-header>
+    </ion-list>
+    <ion-list>
+      <ion-item>
 
-  <ion-icon name="thermometer-outline"  style="font-size: x-large;"></ion-icon>
-  <span aria-label="°Celsius" style="font-size:13px;">20°C</span>
-</div>
+        <ng-container *ngIf="wordProfile.dictResult">
 
-    </ion-item>
+          <ion-button size="small" (click)="playAudio()">
+            <ion-icon [name]="isPlaying ? 'pause-circle-outline' :'play-circle-outline'"></ion-icon>
+          </ion-button>
+          <span class="phoneticSpelling">/{{pronunciation.phoneticSpelling}}/</span>
+          
+        </ng-container>
+        
+        <div class="celsius" slot="end">
+
+          <ion-icon name="thermometer-outline" style="font-size: x-large;" [style.color]='wordColor'></ion-icon>
+          <span aria-label="°Celsius" style="font-size:13px;">{{formattedScore}}</span>
+        </div>
+
+      </ion-item>
+
+
       <ion-list-header>Tags</ion-list-header>
-    <ion-card>
-      
-      <ion-card-content>
-        <word-tag-info [tag]="{tagName:'test1'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test2'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test3'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test4'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test5'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test6'}"></word-tag-info>
-    
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+      <ion-card *ngFor="let wti of wordProfile.wordInfo.wti">
+        <ion-card-content>
+          <word-tag-info *ngFor="let item of wti.wordInfos" [tag]="item.tag" [displayValue]="item.count"></word-tag-info>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
 
-  <ion-list>
-    <ion-list-header>Translation</ion-list-header>
-    <ion-card>
-      <ion-card-header>
-        <ion-card-subtitle>adjective</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <ol class="eQJLDd">
-          <li>
-            <div style="display: block;">
-              <div style="margin-left: 20px;">
-                <div class="XpoqFe">
-                  <div style="display:inline" data-dobid="dfn"><span>of an extent, amount, or intensity considerably above the normal or average.</span></div>
-                  <div class="vmod"><div class="vk_gy">"the article was of great interest"</div></div>
+    <ng-container *ngIf="wordProfile.dictResult">
+
+      <ion-list>
+        <ion-list-header>Translation</ion-list-header>
+        
+        <ion-card *ngFor="let resultEntries of wordProfile.dictResult.results">
+          <ng-container *ngFor="let lexicalEntry of resultEntries.lexicalEntries">
+            <ion-card-header>
+              <ion-card-subtitle>{{lexicalEntry.lexicalCategory}}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content *ngFor="let senseEntry of lexicalEntry.entries">
+            <ol class="eQJLDd" >
+              <li *ngFor="let sense of senseEntry.senses">
+                <div style="display: block;">
+                  <div style="margin-left: 20px;">
+                    <div class="XpoqFe">
+                      <div style="display:inline"><span>{{sense.definitions[0]}}</span></div>
+                      <div class="vmod">
+                        <div class="vk_gy" *ngFor="let example of sense.examples">"{{example}}"</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div style="display: block;">
-              <div style="margin-left: 20px;">
-                <div class="XpoqFe">
-                  <div style="display:inline" data-dobid="dfn"><span>of ability, quality, or eminence considerably above the normal or average.</span></div>
-                  <div class="vmod"><div class="vk_gy">""the great Italian conductor"</div></div>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ol>
-
-
+              </li>
+            </ol>
+          </ion-card-content>
+        </ng-container>
+      </ion-card>
+    </ion-list>
+  </ng-container>
     
-      </ion-card-content>
-      <ion-card-header>
-        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <word-tag-info [tag]="{tagName:'test1'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test2'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test3'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test4'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test5'}"></word-tag-info>
-        <word-tag-info [tag]="{tagName:'test6'}"></word-tag-info>
-    
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+    <ion-list>
+      <ion-button expand="block" [routerLink]="['/doc-list',{defaultWord:wordProfile.word}]">Search "{{wordProfile.word}}" in documents</ion-button>
+    </ion-list>
 
-  <ion-list>
-    <ion-button expand="full">Search "disestablishment" in documents</ion-button>
-  </ion-list>
+  </ng-container>
+
+  <ng-container *ngIf="!wordProfile">
+    <ion-list name="word">
+      <ion-list-header>
+        <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+      </ion-list-header>
+    </ion-list>
+    <ion-list>
+      <ion-item>
+
+        <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+
+      </ion-item>
+      <ion-list-header>Tags</ion-list-header>
+      <ion-card>
+
+        <ion-card-content>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>Translation</ion-list-header>
+      <ion-card>
+        <ion-card-content>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </ng-container>
 </ion-content>

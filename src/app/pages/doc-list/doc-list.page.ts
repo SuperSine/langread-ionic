@@ -3,7 +3,8 @@ import { DocService, Doc } from 'src/app/services/doc.service';
 import { QueryRef } from 'apollo-angular';
 import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController, ToastController } from '@ionic/angular';
 import { runInThisContext } from 'vm';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import {DocumentType} from '../../types';
 
 @Component({
   selector: 'app-doc-list',
@@ -22,17 +23,28 @@ export class DocListPage implements OnInit {
   private iconName:string = "add";
   private lastId:string;
   private queryRef:QueryRef<any>;
-  private docList:Doc[];
+  private docList:DocumentType[];
   private isScrollButtonHidden:boolean = true;
   private userContent:string = '';
+  private defaultWord:string = '';
 
-  constructor(private toastCtrl:ToastController, private docService:DocService,private actionSheetCtrl: ActionSheetController, private router: Router) { }
+  constructor(private toastCtrl:ToastController, 
+              private docService:DocService,
+              private actionSheetCtrl: ActionSheetController, 
+              private router: Router,
+              private activatedRoute:ActivatedRoute) { 
+                this.defaultWord = activatedRoute.snapshot.paramMap.get('defaultWord');
+                console.log(this.defaultWord)
+              }
 
   list(pageSize, lastId, keywords=''){
     if(!keywords)lastId='';
     
     this.docService.list(pageSize, lastId, keywords).valueChanges.subscribe((result) => {
+      console.log('doc list:', result);
+      
       this.docList = ((result.data) as any).document.list;
+
       console.log(this.docList);
       if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
     }, async (err)=>{
@@ -47,8 +59,9 @@ export class DocListPage implements OnInit {
   }
 
   onSearch(event){
-    var keywords = event.target.value;
+    var keywords = event.target.value || this.defaultWord;
 
+    this.lastId = '';
     this.docList = [];
 
     this.list('10', this.lastId, keywords);
@@ -56,7 +69,7 @@ export class DocListPage implements OnInit {
   }
 
   ngOnInit() {
-    this.list('10',this.lastId);
+    this.list('10',this.lastId, this.defaultWord);
 
   }
 

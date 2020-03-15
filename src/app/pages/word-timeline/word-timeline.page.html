@@ -5,6 +5,15 @@
     <ion-title>Timeline</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-segment  value="Timeline">
+  <ion-segment-button href="#dogs" value="Timeline">
+    <ion-label>Timeline</ion-label>
+  </ion-segment-button>
+  <ion-segment-button href="#cats" value="Topmost">
+    <ion-label>Topmost</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
 <ion-searchbar [(ngModel)]="keywords"  showCancelButton="focus" debounce="500" (ionChange)='onSearch($event)'></ion-searchbar>
 
 <ion-content>

@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { WordProfileType } from '../types';
-import { ApolloQueryResult } from 'apollo-client';
 
 const WordProfileGql = gql`
   query($word:String!){
@@ -11,17 +9,12 @@ const WordProfileGql = gql`
         word,
         score,
         wordInfo{
-          wti{
-            word,
-            wordInfos{
-              tag{
-                tagFont,
-                tagName,
-                tagColor
-              }
-              count
-            }
+          tag{
+            tagName,
+            tagFont,
+            tagColor
           }
+          count
         }
         dictResult{
           results{
@@ -46,6 +39,24 @@ const WordProfileGql = gql`
           }
         }
         score
+      }
+    }
+  }
+`;
+
+const TopmostGql = gql`
+  query($top:String){
+    wti{
+      topMost(top:$top){
+        word
+        score,
+        wordInfo{
+          tag{
+            tagFont
+            tagName
+            tagColor
+          }
+        }
       }
     }
   }
@@ -76,5 +87,16 @@ export class WordService {
     }).toPromise<any>()
 
     return profile.data.wti.profile;
+  }
+
+  async topMost(top:number=500):Promise<any>{
+    var topMost = await this.Apollo.query({
+      query:TopmostGql,
+      variables:{
+        top
+      }
+    }).toPromise<any>();
+
+    return topMost.data.wti.topMost;
   }
 }

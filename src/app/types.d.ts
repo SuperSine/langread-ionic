@@ -288,7 +288,7 @@ export type WordProfileType = {
   dictResult?: Maybe<SearchResultType>,
   score: Scalars['Float'],
   word: Scalars['String'],
-  wordInfo?: Maybe<WordTagInfoCleanType>,
+  wordInfo?: Maybe<Array<Maybe<InfoCleanType>>>,
 };
 
 export type WordTagDocumentCleanType = {
@@ -306,6 +306,7 @@ export type WordTagInfo = {
   dict?: Maybe<SearchResultType>,
   get?: Maybe<WordTagInfoCleanType>,
   profile?: Maybe<WordProfileType>,
+  topMost?: Maybe<Array<Maybe<WordProfileType>>>,
 };
 
 
@@ -317,6 +318,11 @@ export type WordTagInfoDictArgs = {
 
 export type WordTagInfoProfileArgs = {
   word?: Maybe<Scalars['String']>
+};
+
+
+export type WordTagInfoTopMostArgs = {
+  top?: Maybe<Scalars['String']>
 };
 
 export type WordTagInfoCleanType = {

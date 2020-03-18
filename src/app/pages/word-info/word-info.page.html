@@ -61,9 +61,9 @@
 
 
       <ion-list-header>Tags</ion-list-header>
-      <ion-card *ngFor="let wti of wordProfile.wordInfo.wti">
+      <ion-card *ngFor="let item of wordProfile.wordInfo">
         <ion-card-content>
-          <word-tag-info *ngFor="let item of wti.wordInfos" [tag]="item.tag" [displayValue]="item.count"></word-tag-info>
+          <word-tag-info [tag]="item.tag" [displayValue]="item.count"></word-tag-info>
         </ion-card-content>
       </ion-card>
     </ion-list>

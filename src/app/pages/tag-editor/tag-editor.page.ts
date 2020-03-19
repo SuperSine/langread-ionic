@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { ColorService, TagColor } from 'src/app/services/color.service';
+import { ColorService } from 'src/app/services/color.service';
 import { FontService } from 'src/app/services/font.service';
 import { TagsService } from 'src/app/services/tags.service';
 
@@ -12,7 +12,6 @@ import { TagsService } from 'src/app/services/tags.service';
 })
 export class TagEditorPage implements OnInit {
   public editorForm: FormGroup;
-  private currentColor: TagColor;
   private fontList:any;
 
   private id:string;
@@ -65,6 +64,12 @@ export class TagEditorPage implements OnInit {
     } else {
       event.target.classList.addClass(event.target, className);
     }
+  }
+
+  changeComplete(event){
+    console.log(event);
+
+    this.editorForm.get('tagcolor').setValue(event.color.hex);
   }
 
   save(){

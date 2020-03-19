@@ -1,13 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
 import {DOCUMENT} from '@angular/common'
 
+import ColorList from '../../assets/colors.json';
+
 import tinycolor from 'tinycolor2';
 
-export interface TagColor{
-  id: string;
-  value: string;
-  name: string;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -15,28 +12,10 @@ export interface TagColor{
 export class ColorService {
   private stemmedDict:any;
   private ionPrefix : string = ".ion-color-";
-  public colorList : TagColor[] = [
-    {id: "flame", value: "#e45a33", name: "Flame" },
-    {id: "orange", value: "#fa761e", name: "Orange" },
-    {id: "infrared",     value: "#ef486e", name: "Infrared" },
-    {id: "male",       value: "#4488ff", name: "Male Color" },
-    {id: "female",     value: "#ff44aa", name: "Female Color" },
-    {id: "paleyellow",    value: "#ffd165", name: "Pale Yellow" },
-    {id: "gargoylegas",  value: "#fde84e", name: "Gargoyle Gas" },
-    {id: "androidgreen",   value: "#9ac53e", name: "Android Green" },
-    {id: "carribeangreen",    value: "#05d59e", name: "Carribean Green" },
-    {id: "bluejeans",    value: "#5bbfea", name: "Blue Jeans" },
-		{id: "cyancornflower",    value: "#1089b1", name: "Cyan Cornflower" },
-		{id: "warmblack",    value: "#06394a", name: "Warm Black" },
-];
+  public colorList : string[] = ColorList;
   constructor(@Inject(DOCUMENT) private document: Document) {
-    this.colorList.forEach( c => this.addTagColor(c.id, c.value));
+    // this.colorList.forEach( c => this.addTagColor(c.id, c.value));
     this.stemmedDict = {};
-  }
-
-  public getColorValue(colorKey:string):string{
-    let idx = this.colorList.map( c=>c.id).indexOf(colorKey);
-    return idx == -1 ? undefined : this.colorList[idx].value;
   }
 
   public addMarkColor(tag:any){

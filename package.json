@@ -38,6 +38,7 @@
     "graphql": "^14.5.0",
     "graphql-tag": "^2.10.0",
     "ionic-rich-text": "^0.2.7",
+    "ngx-color": "^5.0.1",
     "ngx-quill": "^7.3.12",
     "punycode": "^2.1.1",
     "quill": "^1.3.7",

@@ -15,3 +15,8 @@ ion-icon[name=add]{
   position: relative;
   overflow: hidden;
 }
+
+
+ion-avatar > div{
+  border-radius: 50%;
+}

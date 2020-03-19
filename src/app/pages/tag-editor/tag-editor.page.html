@@ -25,7 +25,10 @@
       <ion-item>
         <ion-input formControlName="tagcolor" style="display:none;"></ion-input>
         <ion-label position="stacked">Tag Color</ion-label>
-        <ion-grid>
+        <ion-row class="tagColors">
+          <color-circle circleSize='35' [color]='tagColor' [colors]='colorList' (onChangeComplete)="changeComplete($event)"></color-circle>
+        </ion-row>
+        <!-- <ion-grid>
           <ion-row class="rowClass">
             <ion-col size="2" [class.selected]="this.selectColor==item.value" (click)="this.selectColor=item.value;onColorClick(item)"  
                      class="colClass"
@@ -34,7 +37,7 @@
               <ion-icon class="checkmark" name="checkmark"></ion-icon>
             </ion-col>
           </ion-row>
-        </ion-grid>
+        </ion-grid> -->
       </ion-item>
     </ion-list>
 

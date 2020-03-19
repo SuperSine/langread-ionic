@@ -96,7 +96,9 @@ export class TagsService {
       tagName:tagInfo.tagName,
       tagFont:tagInfo.tagFont,
       tagColor:tagInfo.tagColor,
-    }})
+    },refetchQueries:[
+      {query:UserTagListGql}
+    ]});
   }
 
   delete(tagName:string) {

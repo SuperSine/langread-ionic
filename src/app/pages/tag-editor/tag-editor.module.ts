@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { TagEditorPageRoutingModule } from './tag-editor-routing.module';
 
 import { TagEditorPage } from './tag-editor.page';
+import {ColorCircleModule} from 'ngx-color/circle';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { TagEditorPage } from './tag-editor.page';
     IonicModule,
     TagEditorPageRoutingModule,
     ReactiveFormsModule,
+    ColorCircleModule
   ],
   declarations: [TagEditorPage]
 })

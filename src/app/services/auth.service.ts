@@ -33,6 +33,16 @@ const UserRegisterGql = gql`
   }
 `;
 
+const TokenGql = gql`
+  query($appId:String!,$appSecret:String!){
+    token{
+      get(appId:$appId,appSecret:$appSecret){
+        token
+      }
+    }
+  }
+`;
+
 export const T_USER_ID = 'global_user_id';
 export const T_USER_SECRET = 'global_user_secret';
 export const T_USER_TOKEN = 'global_user_token';
@@ -170,6 +180,29 @@ export class AuthService {
     })
     
     return promise;
+  }
+
+  async requestToken(){
+    let appId = await this.storage.get(T_USER_ID);
+    let appSecret = await this.storage.get(T_USER_SECRET);
+
+    if(!appId || !appSecret)this.logout();
+
+
+    this.getApollo.query({
+      query: TokenGql,
+      variables:{
+        appId,
+        appSecret
+      }
+    }).toPromise<any>().then((result)=>{
+      this.saveUserData(appId, appSecret, result.data.token.get.token);
+    },(error)=>{
+      this.logout();
+    })
+      
+
+
   }
 
   logout(){

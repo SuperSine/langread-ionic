@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { WordService } from 'src/app/services/word.service';
 import { GlobalService } from 'src/app/services/global.service';
-import { WordProfileType } from 'src/app/types';
+import { WordProfileType, TimelineValueByMonthType, ValueByMonthType } from 'src/app/types';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-word-info',
@@ -11,9 +12,15 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./word-info.page.scss'],
 })
 export class WordInfoPage implements OnInit {
+  private wordTrends:ValueByMonthType[];
   private wordProfile: WordProfileType;
   private wordColor:string;
   private isPlaying:boolean=false;
+
+  @ViewChild('lineChart',{static:false}) 
+  private lineChart:ElementRef;
+
+  private chart:any;
 
   word:string;
 
@@ -96,12 +103,32 @@ export class WordInfoPage implements OnInit {
 
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     try{
+      this.wordProfileService.profile(this.word).then((result)=>{
+        this.wordProfile  = result.wti.profile;
+        this.wordTrends = result.timeline.wordByMonth.data;
+  
+        this.wordColor = this.getWordColor(this.wordProfile.score);
+        
+        // use setTimeout to avoid null nativeElement access
+        // https://stackoverflow.com/questions/39256703/angular-2-viewchild-returns-undefined
+        setTimeout(()=>{
+          this.displayBarChart(this.wordTrends.map((item)=>{
+            return `${item.yearMonth.year}-${item.yearMonth.month}`;
+          }), this.wordTrends.map((item)=>{
+            return item.total;
+          }));
 
-      this.wordProfile  = await this.wordProfileService.profile(this.word);
-      this.wordColor = this.getWordColor(this.wordProfile.score);
- console.log(this.wordProfile);
+        },0);
+
+  
+
+      });
+      
+
+
+      console.log(this.wordProfile);
       // this.wordProfile = result
 
     }catch(ex){
@@ -112,6 +139,67 @@ export class WordInfoPage implements OnInit {
         message:ex.message
       })
     }
+  }
+
+
+  ngAfterViewInit(){
+
+  }
+
+  async displayBarChart(labels:any[],data:any[]){
+
+    let element = this.lineChart.nativeElement;
+    element.height = 200;
+
+    this.chart = new Chart(this.lineChart.nativeElement,{
+      type:'line',
+      data:{
+        labels: labels,
+        datasets: [{
+          label: `Trends of ${this.word}`,
+          data: data,
+          backgroundColor: 'rgb(38, 194, 129)',
+          borderColor: 'rgb(38, 194, 129)',
+          borderWidth: 1,
+          fill:false,
+          
+        }]
+      },
+      options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: `Trends of ${this.word}`
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Month'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Value'
+            },
+            ticks: {
+              stepSize: 50
+            }
+					}]
+				}
+			}
+    })
   }
 
 }

@@ -66,8 +66,8 @@ span[app-pick] {
 //   background-color: rgba(76, 122, 241, 0.75);
 // }
 
-span[app-pick].ion-activatable.activated{
-  background-color: rgba(76, 122, 241, 0.75);
+span[app-pick].ion-activatable:active{
+  background-color: rgba(76, 122, 241, 0.30);
 }
 [contenteditable] {
   -webkit-user-select: text;

@@ -98,6 +98,15 @@
       </ion-card>
     </ion-list>
   </ng-container>
+
+  <ion-list>
+    <ion-list-header>Trends</ion-list-header>
+    <ion-card>
+      <ion-card-content>
+        <canvas #lineChart></canvas>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
     
     <ion-list>
       <ion-button expand="block" [routerLink]="['/doc-list',{defaultWord:wordProfile.word}]">Search "{{wordProfile.word}}" in documents</ion-button>
@@ -105,7 +114,10 @@
 
   </ng-container>
 
-  <ng-container *ngIf="!wordProfile">
+
+
+
+  <div [hidden]="wordProfile">
     <ion-list name="word">
       <ion-list-header>
         <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
@@ -142,5 +154,19 @@
         </ion-card-content>
       </ion-card>
     </ion-list>
-  </ng-container>
+
+    <ion-list>
+      <ion-list-header>Trends</ion-list-header>
+      <ion-card>
+        <ion-card-content>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  </div>
 </ion-content>

@@ -38,11 +38,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   private stemmedWti:any;
   private allTags:any[] = [];
   private htmlRegEx:RegExp = /(<([^>]+)>|&(nbsp|amp|quot|lt|gt))/g;
-  private contentRegEx:RegExp = /(?<=>)[\w\s]+(?=<)/g;
   private nonCharRegEx:RegExp = /--{1,}|[^A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]/g;
-  private getWordRegEx:RegExp = /[^\s\-]*/g;
   private getWordRegEx1:RegExp = /[\w\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]*/g;
-  private cleanWordRegEx:RegExp = /[a-zA-Z]+/g;
   private wordTagInfo:any;
   private doc: Doc;
   private isDocChanged:boolean;
@@ -180,7 +177,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     await actionSheet.present();
   }
 
-  onReaderClick(event){
+  async onReaderClick(event){
     this.showTags = false;
 
     let element = event.path[0].nodeName == "SPAN" ? event.path[0] : null;
@@ -320,8 +317,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     console.log('filted wti result:', result);
 
     result.forEach(word => {
-      var stemmerWord = stemmer(word);
-
       this.colorService.addMarkColor(tag);
     });
 
@@ -367,26 +362,30 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     return await modal.present();
   }
 
-  onChooseTagClick(tag:any){
+  async onChooseTagClick(tag:any){
     document.querySelectorAll("span[app-pick]").forEach((element)=>{
       element.removeAttribute("tag-id");
     });
 
-    var result = Object.keys(this.wti).filter((word,index,array) => {
-      if(!this.wti[word])return false;
-      var subResult = this.wti[word].find((value, index, array) => {
-        return value.tag.tagName === tag.tagName;
+    await new Promise(()=>{
+      var result = Object.keys(this.wti).filter((word,index,array) => {
+        if(!this.wti[word])return false;
+        var subResult = this.wti[word].find((value, index, array) => {
+          return value.tag.tagName === tag.tagName;
+        });
+  
+        if(subResult)
+          return this.wti[word];
       });
+  
+      result.forEach(word => {
+        document.querySelectorAll(`span[app-pick=${word}]`).forEach((element)=>{
+          element.setAttribute('tag-id', tag.tagName);
+        })
+      });
+    })
 
-      if(subResult)
-        return this.wti[word];
-    });
 
-    result.forEach(word => {
-      document.querySelectorAll(`span[app-pick=${word}]`).forEach((element)=>{
-        element.setAttribute('tag-id', tag.tagName);
-      })
-    });
   }
 
 

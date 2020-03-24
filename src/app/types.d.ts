@@ -246,6 +246,8 @@ export type Timeline = {
    __typename?: 'Timeline',
   get?: Maybe<TimelineItemsType>,
   search?: Maybe<Array<Maybe<Scalars['String']>>>,
+  tagByMonth?: Maybe<TimelineValueByMonthType>,
+  wordByMonth?: Maybe<TimelineValueByMonthType>,
 };
 
 
@@ -262,6 +264,16 @@ export type TimelineSearchArgs = {
   keyword?: Maybe<Scalars['String']>
 };
 
+
+export type TimelineTagByMonthArgs = {
+  tagName?: Maybe<Scalars['String']>
+};
+
+
+export type TimelineWordByMonthArgs = {
+  word?: Maybe<Scalars['String']>
+};
+
 export type TimelineItemsType = {
    __typename?: 'TimelineItemsType',
   count: Scalars['Int'],
@@ -273,9 +285,23 @@ export type TimelineItemsType = {
   wordTagInfo?: Maybe<WordTagInfoCleanType>,
 };
 
+export type TimelineValueByMonthType = {
+   __typename?: 'TimelineValueByMonthType',
+  count: Scalars['Int'],
+  data?: Maybe<Array<Maybe<ValueByMonthType>>>,
+  pageIndex: Scalars['Int'],
+  pageSize: Scalars['Int'],
+};
 
 
 
+
+
+export type ValueByMonthType = {
+   __typename?: 'ValueByMonthType',
+  total: Scalars['Int'],
+  yearMonth?: Maybe<YearMonthType>,
+};
 
 export type WordInfoCleanType = {
    __typename?: 'WordInfoCleanType',
@@ -331,4 +357,10 @@ export type WordTagInfoCleanType = {
   tags?: Maybe<Array<Maybe<TagType>>>,
   updateDate: Scalars['Date'],
   wti?: Maybe<Array<Maybe<WordInfoCleanType>>>,
+};
+
+export type YearMonthType = {
+   __typename?: 'YearMonthType',
+  month: Scalars['Int'],
+  year: Scalars['Int'],
 };

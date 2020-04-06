@@ -3,8 +3,9 @@ import { WordService } from 'src/app/services/word.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { WordProfileType, TimelineValueByMonthType, ValueByMonthType } from 'src/app/types';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { Chart } from 'chart.js';
+import {TagEditorPage} from '../tag-editor/tag-editor.page'
 
 @Component({
   selector: 'app-word-info',
@@ -24,9 +25,19 @@ export class WordInfoPage implements OnInit {
 
   word:string;
 
-  constructor(private navCtrl:NavController, private wordProfileService:WordService, private globalService:GlobalService,private activatedRoute:ActivatedRoute) { 
+  constructor(private modalCtrl:ModalController, private navCtrl:NavController, private wordProfileService:WordService, private globalService:GlobalService,private activatedRoute:ActivatedRoute) { 
     this.word = activatedRoute.snapshot.paramMap.get('word');
 
+  }
+
+  openTagEditor(data){
+    this.modalCtrl.create({
+      component: TagEditorPage,
+      componentProps: data,
+      // cssClass: 'from-middle-modal'
+    }).then(modal => {
+      modal.present();
+    });
   }
 
   interpolateColor(color1, color2, factor) {
@@ -61,7 +72,7 @@ export class WordInfoPage implements OnInit {
     colorArray = colorArray.concat(this.interpolateColors("rgb(255,150,0)", "rgb(255,50,0)", 5));
     colorArray = colorArray.concat(this.interpolateColors("rgb(255,0,48)", "rgb(125,0,0)", 5));
 
-    var index = Math.floor(score * colorArray.length);
+    var index = Math.floor(score * colorArray.length - 1);
     var color = colorArray[index];
 
     return this.rgbToHex(color);

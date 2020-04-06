@@ -61,9 +61,18 @@
 
 
       <ion-list-header>Tags</ion-list-header>
-      <ion-card *ngFor="let item of wordProfile.wordInfo">
+      <ion-card>
         <ion-card-content>
-          <word-tag-info [tag]="item.tag" [displayValue]="item.count"></word-tag-info>
+          <word-tag-info *ngFor="let item of wordProfile.wordInfo" [tag]="item.tag" [displayValue]="item.count" (click)="openTagEditor(item.tag)"></word-tag-info>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>Trends</ion-list-header>
+      <ion-card>
+        <ion-card-content>
+          <canvas #lineChart></canvas>
         </ion-card-content>
       </ion-card>
     </ion-list>
@@ -99,14 +108,7 @@
     </ion-list>
   </ng-container>
 
-  <ion-list>
-    <ion-list-header>Trends</ion-list-header>
-    <ion-card>
-      <ion-card-content>
-        <canvas #lineChart></canvas>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+
     
     <ion-list>
       <ion-button expand="block" [routerLink]="['/doc-list',{defaultWord:wordProfile.word}]">Search "{{wordProfile.word}}" in documents</ion-button>

@@ -13,6 +13,23 @@ export interface Tag{
   hide?:boolean
 }
 
+const UserTagTrendsGql = gql`
+  query($tagName:String!){
+    timeline{
+      tagByMonth(tagName:$tagName){
+        data{
+          total
+          yearMonth{
+            year
+            month
+          }
+        }
+      }
+    }
+
+  }
+`;
+
 const UserTagListGql = gql`
   query{
     tag{
@@ -105,5 +122,25 @@ export class TagsService {
     return this.getApollo.mutate({mutation:UserTagDeleteGql, variables:{
       tagName:tagName,
     }})
+  }
+
+  async trends(tagName:string):Promise<any[]>{
+    var tagTrends = await this.getApollo.query({
+      query:UserTagTrendsGql,
+      variables:{
+        tagName
+      }
+    }).toPromise<any>();
+
+    var result = tagTrends.data.timeline.tagByMonth.data.sort((a,b)=>{
+      var dateA = new Date(a.yearMonth.year, a.yearMonth.month, 1);
+      var dateB = new Date(b.yearMonth.year, b.yearMonth.month, 1);
+
+      if(dateA > dateB)return 1;
+      else if(dateA < dateB)return -1;
+      else return 0;
+    });
+
+    return result;
   }
 }

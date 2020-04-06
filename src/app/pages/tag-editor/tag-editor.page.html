@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Edit/Add Tag</ion-title>
+    <ion-title>Edit Tag</ion-title>
     <ion-buttons slot="end">
       <ion-button color="medium" (click)="close()">
         <ion-icon slot="icon-only" name="arrow-down"></ion-icon>
@@ -39,6 +39,13 @@
           </ion-row>
         </ion-grid> -->
       </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-card>
+        <ion-card-content>
+          <canvas #lineChart></canvas>
+        </ion-card-content>
+      </ion-card>
     </ion-list>
 
     <ion-button color="realgreen" [disabled]="!editorForm.valid"  expand="block" (click)="save()">

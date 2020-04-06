@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ElementRef, ViewChild } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { ColorService } from 'src/app/services/color.service';
 import { FontService } from 'src/app/services/font.service';
 import { TagsService } from 'src/app/services/tags.service';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-tag-editor',
@@ -23,6 +24,11 @@ export class TagEditorPage implements OnInit {
   private queryRef:any;
   private colorList:any[];
 
+  private chart:any;
+
+  @ViewChild('lineChart',{static:false}) 
+  private lineChart:ElementRef;
+
   constructor( private toastCtrl:ToastController, private tagService:TagsService, 
                private fontService:FontService, public colorService: ColorService,
                private modalController:ModalController, public formBuilder:FormBuilder) {
@@ -33,7 +39,7 @@ export class TagEditorPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.fontList = this.fontService.getFontList;
 
     this.oldTagName = this.tagName;
@@ -45,6 +51,14 @@ export class TagEditorPage implements OnInit {
     this.selectColor = this.tagColor;
 
     this.colorList = this.colorService.colorList;
+
+    var tagTrendsResult = await this.tagService.trends(this.tagName);
+
+    this.displayBarChart(tagTrendsResult.map((item)=>{
+      return `${item.yearMonth.year}-${item.yearMonth.month}`;
+    }), tagTrendsResult.map((item)=>{
+      return item.total;
+    }));
   }
 
   close(){
@@ -119,5 +133,61 @@ export class TagEditorPage implements OnInit {
         alert.present();
       })
     }
+  }
+
+  async displayBarChart(labels:any[],data:any[]){
+
+    let element = this.lineChart.nativeElement;
+    element.height = 200;
+
+    this.chart = new Chart(this.lineChart.nativeElement,{
+      type:'line',
+      data:{
+        labels: labels,
+        datasets: [{
+          label: `Trends of ${this.tagName}`,
+          data: data,
+          backgroundColor: 'rgb(38, 194, 129)',
+          borderColor: 'rgb(38, 194, 129)',
+          borderWidth: 1,
+          fill:false,
+          
+        }]
+      },
+      options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: `Trends of ${this.tagName}`
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Month'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Value'
+            },
+            ticks: {
+              stepSize: 100
+            }
+					}]
+				}
+			}
+    })
   }
 }

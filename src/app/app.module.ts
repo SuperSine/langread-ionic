@@ -18,6 +18,7 @@ import { AuthService } from './services/auth.service';
 import { PickDirective } from './directives/pick.directive';
 import { GlobalService } from './services/global.service';
 import { ColorService } from './services/color.service';
+import {UniqueDeviceID} from '@ionic-native/unique-device-id/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,6 +40,7 @@ import { ColorService } from './services/color.service';
   providers: [
     StatusBar,
     SplashScreen,
+    UniqueDeviceID,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AuthService,
     GlobalService,

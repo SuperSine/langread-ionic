@@ -42,13 +42,18 @@ export class AppComponent {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
       this.globalService.subscribeToast();
 
+      var uuid = await this.globalService.getUuid();
+
       console.log('the current platform is:',this.platform.platforms());
+      console.log('the current uuid is:',uuid);
+
+
     });
   }
 }

@@ -54,16 +54,17 @@
           
         </ion-list>
       </ng-container>
-      <ion-row *ngFor="let word of this.timelineItems.words" >
+      <ion-row *ngFor="let word of this.timelineItems.words" class="ion-activatable">
         
-        <ion-item class="ion-activatable" style="width: 100%;" [routerLink]="['/word-info',{word:word}]"> 
+        <ion-item style="width: 100%;" [routerLink]="['/word-info',{word:word}]"> 
           <ng-container >
-            <ion-label position="stacked">
+            <ion-label>
               <h1>{{ word  }}</h1>
-              <p>
+              <div>
                 <word-tag-info *ngFor="let tag of getTags(word)" [tag]="tag.tag"></word-tag-info>
-              </p>
+              </div>   
             </ion-label>
+         
           </ng-container>
           <ion-ripple-effect></ion-ripple-effect>
         </ion-item>

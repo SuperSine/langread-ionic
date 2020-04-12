@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'apollo-link';
-import {Storage} from '@ionic/storage';
+// import {Storage} from '@ionic/storage';
 import { Apollo, ApolloBase } from 'apollo-angular';
 import gql from 'graphql-tag';
 import {map} from 'rxjs/operators';
+import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL, VerifyUserDocument,SendVerifyDocument } from '../graphql-components';
+import { GlobalService } from './global.service';
+import { Plugins } from '@capacitor/core';
+import {TokenDocument} from '../graphql-components';
+
+
+const { Storage } = Plugins;
 
 const UerLoginGql = gql`
   query($email:String!, $password:String!){
@@ -33,15 +40,6 @@ const UserRegisterGql = gql`
   }
 `;
 
-const TokenGql = gql`
-  query($appId:String!,$appSecret:String!){
-    token{
-      get(appId:$appId,appSecret:$appSecret){
-        token
-      }
-    }
-  }
-`;
 
 export const T_USER_ID = 'global_user_id';
 export const T_USER_SECRET = 'global_user_secret';
@@ -81,19 +79,25 @@ export interface AuthResult{
 })
 export class AuthService {
   private userId: string = null;
+  private appSecret: string = null;
   private apolloBase: ApolloBase<any>;
 
   private _isAuthenticated = new BehaviorSubject(true);
+  private _isEmailConfirmed = new BehaviorSubject(true);
   // private _isApolloCreated = new BehaviorSubject(false);
 
-   constructor(private storage: Storage, private apollo: Apollo) {
+   constructor(private apollo: Apollo, private register:RegisterGQL) {
 
-    
+    this.register.client = "auth";
     // this.getUserData();
   }
 
   get getApollo(){
     return this.apollo.use("auth");
+  }
+
+  setEmailConfirmed(confirmed:boolean){
+    this._isEmailConfirmed.next(confirmed);
   }
 
   setUserId(id:string){
@@ -113,8 +117,8 @@ export class AuthService {
   async CurrentUser() {
     let userInfo:CurrentUser;
 
-    userInfo.userid = await this.storage.get(T_USER_ID);
-    userInfo.token =  await this.storage.get(T_USER_TOKEN);
+    userInfo.userid = (await Storage.get({key:T_USER_ID})).value;
+    userInfo.token = (await Storage.get({key:T_USER_TOKEN})).value;
 
     return userInfo;
   }
@@ -123,26 +127,32 @@ export class AuthService {
   //   return this._isApolloCreated.asObservable();
   // }
 
+  get isEmailConfirmed(){
+    return this._isEmailConfirmed.asObservable();
+  }
+
   get isAuthenticated() {
     return this._isAuthenticated.asObservable();
   }
 
   async getUserData(){
-    let value = await this.storage.get(T_USER_ID);
-    if(value)
+    let value = (await Storage.get({key:T_USER_ID})).value
+    if(value && value != "null")
       this.setUserId(value);
     else
       this._isAuthenticated.next(false);
   }
 
-  saveUserData(id: string, secret: string, token: string){
-    this.storage.set(T_USER_ID, id);
-    this.storage.set(T_USER_TOKEN, token);
-    this.storage.set(T_USER_SECRET, secret);
+  saveUserData(appId: string, appSecret: string, token: string){
+    Storage.set({key:T_USER_ID, value:appId});
+    Storage.set({key:T_USER_TOKEN, value:token});
+    Storage.set({key:T_USER_SECRET, value:appSecret});
 
     window['tempLangreadUserToken'] = token;
 
-    this.setUserId(id);
+    this.setUserId(appId);
+    console.log('setting app secret:', appSecret);
+    this.appSecret = appSecret;
   }
 
   signUp(credentials: UserInfo){
@@ -158,6 +168,48 @@ export class AuthService {
     }).toPromise();
 
     return promise;
+  }
+
+  signUpEx(email:string){
+    let ref = this.register.mutate({
+      email
+    });
+
+    return ref;
+  }
+
+  checkEmail(email:string){
+    return this.getApollo.query({
+      query:CheckEmailDocument,
+      variables:{
+        email
+      }
+    });
+  }
+
+  verifyUser(code:string){
+    return this.getApollo.mutate({
+      mutation:VerifyUserDocument,
+      variables:{
+        id:this.userId,
+        code:code
+      }
+    })
+  }
+
+  sendVerify(){
+    return Storage.get({key:T_USER_SECRET}).then(async item=>{
+      var result = await this.getApollo.query({
+        query:SendVerifyDocument,
+        variables:{
+          appId:this.userId,
+          appSecret: item.value
+        }
+      }).toPromise();
+
+      console.log(result);
+    })
+
   }
 
   login(credentials: UserInfo){
@@ -183,20 +235,20 @@ export class AuthService {
   }
 
   async requestToken(){
-    let appId = await this.storage.get(T_USER_ID);
-    let appSecret = await this.storage.get(T_USER_SECRET);
+    let appId = (await Storage.get({key:T_USER_ID})).value;
+    let appSecret = (await Storage.get({key:T_USER_SECRET})).value;
 
     if(!appId || !appSecret)this.logout();
 
 
     this.getApollo.query({
-      query: TokenGql,
+      query: TokenDocument,
       variables:{
         appId,
         appSecret
       }
     }).toPromise<any>().then((result)=>{
-      this.saveUserData(appId, appSecret, result.data.token.get.token);
+      this.saveUserData(appId, appSecret, result.data.token.get);
     },(error)=>{
       this.logout();
     })
@@ -206,9 +258,10 @@ export class AuthService {
   }
 
   logout(){
-    this.storage.set(T_USER_ID, null);
-    this.storage.set(T_USER_TOKEN, null);
-    this.storage.set(T_USER_SECRET, null);
+    Storage.set({key:T_USER_ID,value:null});
+    Storage.set({key:T_USER_TOKEN,value:null});
+    Storage.set({key:T_USER_SECRET,value:null});
+
 
     this.apollo.use('core').getClient().clearStore();
   }

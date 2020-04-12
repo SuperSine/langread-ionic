@@ -21,6 +21,16 @@ export class AuthGuard implements CanActivate {
         this.router.navigateByUrl('/login');
     });
 
+    this.authService.isEmailConfirmed.subscribe((confirmed) => {
+      if(!confirmed){
+        console.log('you should activate your email!!!');
+
+        if(this.router.url != '/auth-confirm')
+          this.router.navigateByUrl('/auth-confirm');
+      }
+
+    })
+
     return this.authService.isAuthenticated;
   }
 }

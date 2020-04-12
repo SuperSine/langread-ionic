@@ -25,12 +25,14 @@
       <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
     </ion-item>
     
+    <ion-item>
+      <a href="">Forgot Password?</a>
+    </ion-item>
 
-
-      <ion-button color="realgreen" expand="block" (click)="login()" [disabled]="!loginForm.valid && !loginWaiting">
-        Sign In
-        <ion-spinner slot="end" [hidden]='!loginWaiting'></ion-spinner>
-      </ion-button>
+    <ion-button color="realgreen" expand="block" (click)="login()" [disabled]="!loginForm.valid && !loginWaiting">
+      Sign In
+      <ion-spinner slot="end" [hidden]='!loginWaiting'></ion-spinner>
+    </ion-button>
 
     <ion-button color="pink" expand="block" routerLink="/register">
       Sign up

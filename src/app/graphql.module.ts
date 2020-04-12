@@ -10,6 +10,7 @@ import {T_USER_TOKEN, AuthService} from './services/auth.service';
 import {mergeMap,map,tap} from 'rxjs/operators';
 import ApolloClient from 'apollo-client';
 import {onError} from 'apollo-link-error';
+import {environment} from '../environments/environment';
 
 const uri = 'http://localhost:5001'; // <-- add the URL of the GraphQL server here
 export async function createApollo(httpLink: HttpLink,storage:Storage) {
@@ -53,7 +54,12 @@ export class GraphQLModule {
           console.log('you can perform logout here!');
           
           this.authService.requestToken();
-        }
+      }else if(
+        networkError && 'status' in networkError &&
+        networkError['status'] === 403
+      ){
+        this.authService.setEmailConfirmed(false);
+      }
     });
 
     let optionA = {

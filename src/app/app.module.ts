@@ -19,6 +19,7 @@ import { PickDirective } from './directives/pick.directive';
 import { GlobalService } from './services/global.service';
 import { ColorService } from './services/color.service';
 import {UniqueDeviceID} from '@ionic-native/unique-device-id/ngx';
+import { CheckEmailValidator } from './pages/auth-register/check-email-validator';
 
 @NgModule({
   declarations: [AppComponent],
@@ -44,7 +45,8 @@ import {UniqueDeviceID} from '@ionic-native/unique-device-id/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AuthService,
     GlobalService,
-    ColorService
+    ColorService,
+    CheckEmailValidator
   ],
   bootstrap: [AppComponent]
 })

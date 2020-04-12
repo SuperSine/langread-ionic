@@ -1,0 +1,19 @@
+<div>
+  <ion-list lines="full">
+
+    <section lines="none">
+      <ion-icon style="font-size:4em" name="mail-unread-outline"></ion-icon>
+      <ion-label><h2>Please enter 6 digits code to confirm your email</h2></ion-label>
+    </section>
+    <ion-item  class="ion-no-margin ion-no-padding">
+      <ion-input [(ngModel)]="verifycode"  name="verifycode" inputmode="numeric" type="number"></ion-input>
+      <ion-button color="secondary" (click)="sendVerify($event)" [disabled]="counter != 0">
+        {{counter == 0 ? 'Resend' : ['Resend(',counter,')'].join('')}}
+      </ion-button>
+    </ion-item>
+
+    <section>
+      <ion-button expand="full" color="primary" (click)="verify($event)" [disabled]="!youCanConfirm">Confirm</ion-button>
+    </section>
+  </ion-list>
+</div>

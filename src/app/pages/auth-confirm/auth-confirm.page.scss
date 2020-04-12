@@ -1,0 +1,19 @@
+div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+ion-label{
+  white-space: pre-wrap;
+}
+
+ion-input[name=verifycode]{
+  font-weight: bolder;
+}
+
+ion-list{
+  width: 80%;
+}

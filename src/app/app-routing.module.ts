@@ -55,11 +55,18 @@ const routes: Routes = [
     loadChildren: () => import('./pages/word-info/word-info.module').then( m => m.WordInfoPageModule),
     canActivate:[AuthGuard]
   },
+  {
+    path: 'auth-confirm',
+    loadChildren: () => import('./pages/auth-confirm/auth-confirm.module').then( m => m.AuthConfirmPageModule),
+    canActivate:[AuthGuard]
+  },
   //this route need to put to bottom of the list
   {
     path: '',
-    loadChildren: () => import('./pages/app-menu/app-menu.module').then( m => m.AppMenuPageModule)
-  }
+    loadChildren: () => import('./pages/app-menu/app-menu.module').then( m => m.AppMenuPageModule),
+    canActivate:[AuthGuard]
+  },
+
 ];
 
 @NgModule({

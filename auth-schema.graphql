@@ -1,0 +1,111 @@
+type Auth {
+  auth(email: String!, password: String!): UserType
+  email(email: String!): Boolean
+  sendreset(appId: String = null, appSecret: String = null): Boolean
+  sendverify(appId: String = null, appSecret: String = null): Boolean
+}
+
+scalar BigInt
+
+scalar Byte
+
+# The `Date` scalar type
+# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+scalar Date
+
+# The `DateTime` scalar type
+# timestamps to be formatted in accordance with the
+# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+scalar DateTime
+
+# The `DateTimeOffset` scalar type
+# `DateTimeOffset` expects timestamps to be formatted in accordance with the
+# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+scalar DateTimeOffset
+
+scalar Decimal
+
+scalar Guid
+
+scalar Long
+
+# The `Milliseconds` scalar type
+scalar Milliseconds
+
+type Mutation {
+  secret: Secret
+  user: User
+}
+
+type Query {
+  auth: Auth
+  token: Token
+}
+
+scalar SByte
+
+# The `Seconds` scalar type
+scalar Seconds
+
+type Secret {
+  update(email: String!, password: String!): UserType
+}
+
+scalar Short
+
+type Token {
+  get(appId: String = null, appSecret: String = null): String
+}
+
+scalar UInt
+
+scalar ULong
+
+input UpdateInputModelType {
+  userName: String = null
+  firstName: String = null
+  lastName: String = null
+}
+
+scalar Uri
+
+type User {
+  email(
+    appId: String = null
+    appSecret: String = null
+    email: String = null
+  ): UserType
+  password(
+    appId: String = null
+    appSecret: String = null
+    token: String = null
+    password: String = null
+  ): Boolean
+  register(
+    email: String!
+    phonenumber: String = null
+    password: String = null
+    username: String = null
+    firstname: String = null
+    lastname: String = null
+  ): UserType
+  update(
+    appId: String = null
+    appSecret: String = null
+    user: UpdateInputModelType = null
+  ): UserType
+  verify(id: String!, code: String!): UserType
+}
+
+type UserType {
+  appId: String!
+  appSecret: String!
+  email: String!
+  firstName: String
+  lastName: String
+  phoneNumber: String!
+  token: String
+}
+
+scalar UShort
+

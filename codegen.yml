@@ -1,5 +1,10 @@
-schema: http://localhost:5300/api/graphql
 generates:
-  ./src/types.d.ts:
+  ./src/app/graphql-components.ts:
+    schema: 
+      - "./schema.graphql"
+      - "./auth-schema.graphql"
+    documents: src/app/services/graphql/*.graphql
     plugins:
       - typescript
+      - typescript-operations
+      - typescript-apollo-angular

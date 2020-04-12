@@ -6,7 +6,9 @@ import {ToastOptions} from '@ionic/core';
 import {UniqueDeviceID} from '@ionic-native/unique-device-id/ngx';
 import { Plugins } from '@capacitor/core';
 import Fingerprint2 from 'fingerprintjs2';
-
+import {pipe} from 'rxjs';
+import { Observable, from } from 'rxjs';
+import {map} from 'rxjs/operators'
 
 const {Device} = Plugins;
 
@@ -30,18 +32,19 @@ export class GlobalService {
     this.toastSubject.next(options);
   }
 
-  getFingerprint = () => new Promise((resolve) => {
+  getFingerprint = () => new Promise<any[]>((resolve) => {
     Fingerprint2.get((result, components) => resolve(result) )
   });
 
   async getUuid(){
     var info = await Device.getInfo();
-    let comp = await this.getFingerprint()
-                         .map(function (comp) { return comp.value });
+    let components = await this.getFingerprint();
 
-    var values = comp;
+    var values = components.map(e => e.value); 
+
     var murmur = Fingerprint2.x64hash128(values.join('')+info.uuid, 31);
     console.log("Fingerprint", murmur);
+
     return info.uuid;
   }
 

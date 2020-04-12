@@ -1,0 +1,50 @@
+query login($email:String!, $password:String!){
+  auth{
+    auth(email:$email, password:$password){
+      appId,
+      appSecret,
+      firstName,
+      lastName,
+      token
+    }
+  }
+}
+
+mutation register($email:String!){
+  user{
+    register(email:$email){
+      appId
+      appSecret
+      email
+      token
+    }
+  }
+}
+
+query token($appId:String!,$appSecret:String!){
+  token{
+    get(appId:$appId,appSecret:$appSecret)
+  }
+}
+
+query checkEmail($email:String!){
+  auth{
+    email(email:$email)
+  }
+}
+
+mutation verifyUser($id:String!,$code:String!){
+  user{
+    verify(id:$id,code:$code){
+      appId
+      appSecret
+      token
+    }
+  }
+}
+
+query sendVerify($appId:String!,$appSecret:String!){
+  auth{
+    sendverify(appId:$appId,appSecret:$appSecret)
+  }
+}

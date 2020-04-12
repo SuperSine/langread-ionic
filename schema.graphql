@@ -1,0 +1,267 @@
+scalar BigInt
+
+scalar Byte
+
+# The `Date` scalar type
+# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+scalar Date
+
+# The `DateTime` scalar type
+# timestamps to be formatted in accordance with the
+# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+scalar DateTime
+
+# The `DateTimeOffset` scalar type
+# `DateTimeOffset` expects timestamps to be formatted in accordance with the
+# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+scalar DateTimeOffset
+
+scalar Decimal
+
+type DictResultType {
+  id: String!
+  language: String!
+  lexicalEntries: [LexicalEntryType]
+  type: String!
+  word: String!
+}
+
+type Doc {
+  add(
+    document: DocumentInputType!
+    wordTagLiteStr: String = null
+  ): WordTagDocumentCleanType
+  delete(docId: String = null): Int
+  save(
+    document: DocumentInputType!
+    wordTagLiteStr: String = null
+  ): WordTagDocumentCleanType
+  update(
+    docId: String = null
+    document: DocumentInputType!
+    wordTagLiteStr: String = null
+  ): WordTagDocumentCleanType
+}
+
+input DocumentInputType {
+  title: String!
+  content: String!
+  id: String = null
+  docId: String = null
+}
+
+type DocumentQueryType {
+  get(
+    docId: String = null
+    includeWti: Boolean = true
+  ): WordTagDocumentCleanType
+  giveItToMe(
+    content: String = null
+    wordTagLiteStr: String = null
+  ): WordTagDocumentCleanType
+  infoDocuments(
+    word: String = null
+    lastId: String = null
+    limit: String = "10"
+  ): InfoDocumentsCleanType
+  list(
+    lastId: String = null
+    limit: String = null
+    keywords: String = null
+  ): [DocumentType]
+  search(
+    keywords: String = null
+    lastId: String = null
+    limit: Int = 10
+  ): [DocumentType]
+}
+
+type DocumentType {
+  content: String!
+  createDate: Date!
+  docId: String!
+  id: String!
+  status: Int!
+  title: String!
+  updateDate: Date!
+  wordsCount: Int!
+}
+
+type EntryType {
+  homographNumber: String!
+  senses: [SenseType]
+}
+
+scalar Guid
+
+type InfoCleanType {
+  count: Int!
+  tag: TagType
+}
+
+type InfoDocumentsCleanType {
+  documents: [DocumentType]
+  wordTagInfo: WordTagInfoCleanType
+}
+
+type LexicalEntryType {
+  entries: [EntryType]
+  language: String!
+  lexicalCategory: String!
+  pronunciations: [PronunciationType]
+  text: String!
+}
+
+scalar Long
+
+# The `Milliseconds` scalar type
+scalar Milliseconds
+
+type Mutation {
+  doc: Doc
+  tag: TagMutation
+}
+
+type PronunciationType {
+  audioFile: String
+  dialects: [String]
+  phoneticNotation: String
+  phoneticSpelling: String
+}
+
+type Query {
+  document: DocumentQueryType
+  tag: TagQuery
+  timeline: Timeline
+  wti: WordTagInfo
+}
+
+scalar SByte
+
+type SearchResultType {
+  results: [DictResultType]
+}
+
+# The `Seconds` scalar type
+scalar Seconds
+
+type SenseType {
+  definitions: [String]!
+  domains: [String]!
+  examples: [String]!
+}
+
+scalar Short
+
+input TagInput {
+  tagName: String!
+  tagFont: String!
+  tagColor: String!
+}
+
+type TagMutation {
+  add(tag: TagInput!): TagType
+  delete(tagName: String!): Int
+  update(tagName: String!, tag: TagInput!): Int
+}
+
+type TagQuery {
+  all: [TagType]
+}
+
+type TagType {
+  # create date of tag
+  createDate: Date!
+  # the unique id of tag
+  id: String!
+  # color of tag
+  tagColor: String!
+  # font of tag
+  tagFont: String!
+  # name of tag
+  tagName: String!
+}
+
+type Timeline {
+  get(
+    lastId: String = null
+    limitDocs: String = "10"
+    index: String = "1"
+    size: String = "20"
+    keywords: String = null
+  ): TimelineItemsType
+  search(keyword: String = null): [String]
+  tagByMonth(tagName: String = null): TimelineValueByMonthType
+  wordByMonth(word: String = null): TimelineValueByMonthType
+}
+
+type TimelineItemsType {
+  count: Int!
+  lastId: String!
+  nextId: String
+  pageIndex: Int!
+  pageSize: Int!
+  words: [String]
+  wordTagInfo: WordTagInfoCleanType
+}
+
+type TimelineValueByMonthType {
+  count: Int!
+  data: [ValueByMonthType]
+  pageIndex: Int!
+  pageSize: Int!
+}
+
+scalar UInt
+
+scalar ULong
+
+scalar Uri
+
+scalar UShort
+
+type ValueByMonthType {
+  total: Int!
+  yearMonth: YearMonthType
+}
+
+type WordInfoCleanType {
+  word: String!
+  wordInfos: [InfoCleanType]
+}
+
+type WordProfileType {
+  dictResult: SearchResultType
+  score: Float!
+  word: String!
+  wordInfo: [InfoCleanType]
+}
+
+type WordTagDocumentCleanType {
+  bigWordTagInfo: WordTagInfoCleanType
+  createTime: Date!
+  document: DocumentType
+  smallWordTagInfo: WordTagInfoCleanType
+  status: Int!
+  updateTime: Date!
+}
+
+type WordTagInfo {
+  dict(word: String = null, lang: String = "en-us"): SearchResultType
+  get: WordTagInfoCleanType
+  profile(word: String = null): WordProfileType
+  topMost(top: String = "500"): [WordProfileType]
+}
+
+type WordTagInfoCleanType {
+  createDate: Date!
+  tags: [TagType]
+  updateDate: Date!
+  wti: [WordInfoCleanType]
+}
+
+type YearMonthType {
+  month: Int!
+  year: Int!
+}
+

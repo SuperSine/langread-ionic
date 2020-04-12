@@ -49,7 +49,6 @@ export class AppComponent {
       this.globalService.subscribeToast();
 
       var uuid = await this.globalService.getUuid();
-
       console.log('the current platform is:',this.platform.platforms());
       console.log('the current uuid is:',uuid);
 

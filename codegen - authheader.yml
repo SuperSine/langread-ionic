@@ -1,0 +1,13 @@
+generates:
+  ./src/graphql-components.ts:
+    schema: 
+      - http://localhost:5003/api/graphql:
+          headers:
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI0YTg4MTllZS1kNTg5LTQ4M2ItYTNlZi1hMzcyMzlkYmU1ZjgiLCJqdGkiOiJkMjI5ZmM3My0zMjNiLTQyZDItODIzNy02MjFjYjJlNGM1YmEiLCJlbWFpbCI6ImJpZ2JpYW40QG91dGxvb2suY29tIiwibmJmIjoxNTg2NTgxOTY0LCJleHAiOjE1ODkxNzM5NjQsImlzcyI6Imlzc3VlciIsImF1ZCI6ImF1ZGllbmNlIn0.QDlqJkzuG2v6uin7PWqg22c8ctTJ-7OcmktLaY6o9Ic"    
+    plugins:
+      - schema-ast
+      - typescript
+      - typescript-operations
+      - typescript-apollo-angular
+    config:
+      commentDescriptions: false

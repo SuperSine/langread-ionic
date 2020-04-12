@@ -409,7 +409,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
             if(that.stemmedWti[stemmedWord].indexOf(word.toLowerCase()) < 0)
               that.stemmedWti[stemmedWord].push(word);
             
-            return `<span class="ion-activatable" app-pick="${stemmedWord}">${word}</span>`
+            return `<span app-pick="${stemmedWord}">${word}</span>`
           })
 
           ch.parentNode.replaceChild(this.createElementFromHTML(newHtml), ch);

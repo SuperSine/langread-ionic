@@ -28,6 +28,14 @@ export class GlobalService {
     })
   }
 
+  throwError(errs:any[]){
+    errs.forEach(err => this.publishToast({
+      duration:2000,
+      message:err.message,
+      color:"danger"
+    }));
+  }
+
   publishToast(options:ToastOptions){
     this.toastSubject.next(options);
   }

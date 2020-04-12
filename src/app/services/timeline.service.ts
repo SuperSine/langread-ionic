@@ -13,6 +13,7 @@ const GetTimelineGql = gql`
             word,
             wordInfos{
               tag{
+                id
                 tagName,
                 tagColor,
                 tagFont

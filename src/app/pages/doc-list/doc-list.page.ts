@@ -4,7 +4,7 @@ import { QueryRef } from 'apollo-angular';
 import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController, ToastController } from '@ionic/angular';
 import { runInThisContext } from 'vm';
 import { Router, ActivatedRoute } from '@angular/router';
-import {DocumentType} from '../../types';
+import {DocumentType} from '../../graphql-components';
 
 @Component({
   selector: 'app-doc-list',

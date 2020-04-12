@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { WordService } from 'src/app/services/word.service';
 import { GlobalService } from 'src/app/services/global.service';
-import { WordProfileType, TimelineValueByMonthType, ValueByMonthType } from 'src/app/types';
+import { WordProfileType, TimelineValueByMonthType, ValueByMonthType } from 'src/app/graphql-components';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ModalController } from '@ionic/angular';
 import { Chart } from 'chart.js';

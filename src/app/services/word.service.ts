@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { TimelineValueByMonthType } from '../types';
+import { TimelineValueByMonthType } from '../graphql-components';
 
 const WordProfileGql = gql`
   query($word:String!){

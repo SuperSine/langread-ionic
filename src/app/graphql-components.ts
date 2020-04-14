@@ -582,6 +582,54 @@ export type SendVerifyQuery = (
   )> }
 );
 
+export type UpdateEmailMutationVariables = {
+  appId: Scalars['String'];
+  appSecret: Scalars['String'];
+  email: Scalars['String'];
+};
+
+
+export type UpdateEmailMutation = (
+  { __typename?: 'Mutation' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & { email?: Maybe<(
+      { __typename?: 'UserType' }
+      & Pick<UserType, 'appId' | 'appSecret' | 'token' | 'email'>
+    )> }
+  )> }
+);
+
+export type SendRestQueryVariables = {
+  appId: Scalars['String'];
+  appSecret: Scalars['String'];
+};
+
+
+export type SendRestQuery = (
+  { __typename?: 'Query' }
+  & { auth?: Maybe<(
+    { __typename?: 'Auth' }
+    & Pick<Auth, 'sendreset'>
+  )> }
+);
+
+export type ChangePasswordMutationVariables = {
+  appId: Scalars['String'];
+  appSecret: Scalars['String'];
+  token: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type ChangePasswordMutation = (
+  { __typename?: 'Mutation' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'password'>
+  )> }
+);
+
 export type GetDocumentQueryVariables = {
   docId: Scalars['String'];
 };
@@ -789,6 +837,56 @@ export const SendVerifyDocument = gql`
   })
   export class SendVerifyGQL extends Apollo.Query<SendVerifyQuery, SendVerifyQueryVariables> {
     document = SendVerifyDocument;
+    
+  }
+export const UpdateEmailDocument = gql`
+    mutation updateEmail($appId: String!, $appSecret: String!, $email: String!) {
+  user {
+    email(appId: $appId, appSecret: $appSecret, email: $email) {
+      appId
+      appSecret
+      token
+      email
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateEmailGQL extends Apollo.Mutation<UpdateEmailMutation, UpdateEmailMutationVariables> {
+    document = UpdateEmailDocument;
+    
+  }
+export const SendRestDocument = gql`
+    query sendRest($appId: String!, $appSecret: String!) {
+  auth {
+    sendreset(appId: $appId, appSecret: $appSecret)
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SendRestGQL extends Apollo.Query<SendRestQuery, SendRestQueryVariables> {
+    document = SendRestDocument;
+    
+  }
+export const ChangePasswordDocument = gql`
+    mutation changePassword($appId: String!, $appSecret: String!, $token: String!, $password: String!) {
+  user {
+    password(appId: $appId, appSecret: $appSecret, token: $token, password: $password)
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ChangePasswordGQL extends Apollo.Mutation<ChangePasswordMutation, ChangePasswordMutationVariables> {
+    document = ChangePasswordDocument;
     
   }
 export const GetDocumentDocument = gql`

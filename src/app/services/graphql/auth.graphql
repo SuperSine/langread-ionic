@@ -48,3 +48,26 @@ query sendVerify($appId:String!,$appSecret:String!){
     sendverify(appId:$appId,appSecret:$appSecret)
   }
 }
+
+mutation updateEmail($appId:String!, $appSecret:String!, $email:String!){
+  user{
+    email(appId:$appId,appSecret:$appSecret,email:$email){
+      appId
+      appSecret
+      token
+      email
+    }
+  }
+}
+
+query sendRest($appId:String!,$appSecret:String!){
+  auth{
+    sendreset(appId:$appId, appSecret:$appSecret)
+  }
+}
+
+mutation changePassword($appId:String!,$appSecret:String!,$token:String!,$password:String!){
+  user{
+    password(appId:$appId, appSecret:$appSecret,token:$token, password:$password)
+  }
+}

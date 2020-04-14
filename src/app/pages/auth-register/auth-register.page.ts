@@ -22,13 +22,11 @@ export class AuthRegisterPage implements OnInit {
   private youCanClick:boolean;
   
   constructor(private checkEmailValidtor:CheckEmailValidator, public formBuilder: FormBuilder, private authService: AuthService, private toastCtrl: ToastController, private route: Router,private globalService:GlobalService) {
-    let EMAIL_REGEXP = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-
     this.registerForm = formBuilder.group({
       firstname: ['', Validators.compose([Validators.minLength(3)])],
       lastname: ['', Validators.compose([Validators.minLength(3)])],
       // phone: ['', Validators.compose([Validators.minLength(2), Validators.required])],
-      email:  ['', Validators.compose([Validators.required, Validators.pattern(EMAIL_REGEXP)]),[this.checkEmailValidtor.checkEmail.bind(this.checkEmailValidtor)]],
+      email:  ['', Validators.compose([Validators.required, Validators.pattern(checkEmailValidtor.EMAIL_REGEXP)]),[this.checkEmailValidtor.checkEmail.bind(this.checkEmailValidtor)]],
       password:  ['', Validators.compose([Validators.minLength(3)])],
       username: ['', Validators.compose([Validators.minLength(4)])],
 

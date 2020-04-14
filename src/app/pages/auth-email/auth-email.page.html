@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Change Email</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+
+  <ion-list lines="none"  >
+    <form [formGroup]="emailForm" style="width: 90%;">
+    <ion-item >
+      <ion-icon slot="start" color="lightgrey" name="mail"></ion-icon>
+      <ion-input type="text" formControlName="email"  placeholder="Update your email"></ion-input>
+      <ion-icon [style.display]="(!isEmailTaken() && emailForm.valid)? 'block' : 'none'"  name="checkmark-done-outline" color="green"></ion-icon>
+
+    </ion-item>
+    <span class="error ion-padding" *ngIf="emailForm.controls.email.hasError('emailInUser')">
+      <ion-text  color="danger" slot="end">
+        Email has been taken!
+      </ion-text>
+    </span>
+    <!-- <ion-item *ngIf="isEmailTaken()">
+
+    </ion-item> -->
+
+
+    <ion-button name="updateEmail" expand="full" [disabled]="!emailForm.valid || !youCanClick" (click)="updateEmail($event)">
+      Next
+    </ion-button>
+    </form>
+  </ion-list>
+
+
+
+
+
+</ion-content>

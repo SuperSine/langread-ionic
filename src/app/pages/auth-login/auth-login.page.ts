@@ -40,6 +40,7 @@ export class AuthLoginPage implements OnInit {
         color:"danger"
       });
       alert.present();
+      this.loginWaiting = false;
     })
   }
 

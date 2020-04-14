@@ -5,7 +5,7 @@ import { Observable } from 'apollo-link';
 import { Apollo, ApolloBase } from 'apollo-angular';
 import gql from 'graphql-tag';
 import {map} from 'rxjs/operators';
-import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL, VerifyUserDocument,SendVerifyDocument } from '../graphql-components';
+import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL, VerifyUserDocument,SendVerifyDocument,UpdateEmailDocument,SendRestDocument,ChangePasswordDocument,LoginDocument } from '../graphql-components';
 import { GlobalService } from './global.service';
 import { Plugins } from '@capacitor/core';
 import {TokenDocument} from '../graphql-components';
@@ -100,8 +100,9 @@ export class AuthService {
     this._isEmailConfirmed.next(confirmed);
   }
 
-  setUserId(id:string){
+  setUserId(id:string, secret:string){
     this.userId = id;
+    this.appSecret = secret;
 
     this._isAuthenticated.next(true);
   }
@@ -136,9 +137,10 @@ export class AuthService {
   }
 
   async getUserData(){
-    let value = (await Storage.get({key:T_USER_ID})).value
-    if(value && value != "null")
-      this.setUserId(value);
+    let appId = (await Storage.get({key:T_USER_ID})).value
+    let appSecret = (await Storage.get({key:T_USER_SECRET})).value
+    if(appId && appId != "null" && appSecret && appSecret != "null")
+      this.setUserId(appId, appSecret);
     else
       this._isAuthenticated.next(false);
   }
@@ -150,9 +152,7 @@ export class AuthService {
 
     window['tempLangreadUserToken'] = token;
 
-    this.setUserId(appId);
-    console.log('setting app secret:', appSecret);
-    this.appSecret = appSecret;
+    this.setUserId(appId, appSecret);
   }
 
   signUp(credentials: UserInfo){
@@ -194,27 +194,60 @@ export class AuthService {
         id:this.userId,
         code:code
       }
+    });
+  }
+
+  updateEmail(email:string){
+    return this.getApollo.mutate({
+      mutation:UpdateEmailDocument,
+      variables:{
+        appId: this.userId,
+        appSecret: this.appSecret,
+        email: email
+      }
+    });
+  }
+
+  sendRest(){
+    var result = this.getApollo.query({
+      query:SendRestDocument,
+      variables:{
+        appId: this.userId,
+        appSecret: this.appSecret
+      }
+    }).toPromise();
+  }
+
+  changePassword(token:string,password:string){
+    return this.getApollo.mutate({
+      mutation:ChangePasswordDocument,
+      variables:{
+        appId: this.userId,
+        appSecret: this.appSecret,
+        token,
+        password
+      }
     })
   }
 
   sendVerify(){
-    return Storage.get({key:T_USER_SECRET}).then(async item=>{
-      var result = await this.getApollo.query({
-        query:SendVerifyDocument,
-        variables:{
-          appId:this.userId,
-          appSecret: item.value
-        }
-      }).toPromise();
 
-      console.log(result);
-    })
+    var result = this.getApollo.query({
+      query:SendVerifyDocument,
+      variables:{
+        appId: this.userId,
+        appSecret: this.appSecret
+      }
+    }).toPromise();
+
+    console.log(result);
+
 
   }
 
   login(credentials: UserInfo){
     let promise = this.getApollo.query({
-      query:UerLoginGql,
+      query:LoginDocument,
       variables:{
         email:credentials.email,
         password:credentials.password
@@ -225,7 +258,7 @@ export class AuthService {
       var data = result.data as any;
       var appId = data.auth.auth.appId;
       var appSecret = data.auth.auth.appSecret;
-      var token = data.auth.auth.token.token;
+      var token = data.auth.auth.token;
 
       this.saveUserData(appId, appSecret,  token);
 

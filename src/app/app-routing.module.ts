@@ -60,12 +60,22 @@ const routes: Routes = [
     loadChildren: () => import('./pages/auth-confirm/auth-confirm.module').then( m => m.AuthConfirmPageModule),
     canActivate:[AuthGuard]
   },
+  {
+    path: 'auth-email',
+    loadChildren: () => import('./pages/auth-email/auth-email.module').then( m => m.AuthEmailPageModule)
+  },
+  {
+    path: 'auth-password',
+    loadChildren: () => import('./pages/auth-password/auth-password.module').then( m => m.AuthPasswordPageModule)
+  },
   //this route need to put to bottom of the list
   {
     path: '',
     loadChildren: () => import('./pages/app-menu/app-menu.module').then( m => m.AppMenuPageModule),
     canActivate:[AuthGuard]
   },
+
+
 
 ];
 

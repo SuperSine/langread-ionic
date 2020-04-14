@@ -4,15 +4,14 @@ import { FormControl } from '@angular/forms';
 
 @Injectable({  providedIn: 'root'})
 export class CheckEmailValidator{
-  private debouncer:any;
-
+  
   constructor(private authService:AuthService){
-
+    
   }
-
+  
   checkEmail(control:FormControl):any{
     clearTimeout(this.debouncer);
-
+    
     return new Promise(resolve => {
       this.debouncer = setTimeout(() => {
         this.authService.checkEmail(control.value).subscribe((result:any)=>{
@@ -27,4 +26,7 @@ export class CheckEmailValidator{
       }, 1000);
     })
   }
+  private debouncer:any;
+  
+  public EMAIL_REGEXP = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 }

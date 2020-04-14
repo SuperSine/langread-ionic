@@ -21,7 +21,7 @@
           <ion-icon slot="start" color="lightgrey" name="mail"></ion-icon>
           <ion-input type="text" formControlName="email"  placeholder="Email"></ion-input>
 
-          <ion-icon *ngIf="!isEmailTaken() && registerForm.valid" name="checkmark-done-outline"></ion-icon>
+          <ion-icon *ngIf="!isEmailTaken() && registerForm.valid" name="checkmark-done-outline" color="green"></ion-icon>
         </ion-item>
         <ion-item *ngIf="isEmailTaken()">
           <ion-text  color="danger" slot="end">

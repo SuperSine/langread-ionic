@@ -6,6 +6,7 @@
       <ion-label><h2>Please enter 6 digits code to confirm your email</h2></ion-label>
     </section>
     <ion-item  class="ion-no-margin ion-no-padding">
+      <ion-icon slot="start" name="keypad-outline"></ion-icon>
       <ion-input [(ngModel)]="verifycode"  name="verifycode" inputmode="numeric" type="number"></ion-input>
       <ion-button color="secondary" (click)="sendVerify($event)" [disabled]="counter != 0">
         {{counter == 0 ? 'Resend' : ['Resend(',counter,')'].join('')}}

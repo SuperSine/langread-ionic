@@ -33,7 +33,7 @@ export class AppComponent {
   ) {
 
     //app needs to check user has logged in or not
-    this.authService.getUserData().then(()=>{
+    this.authService.getUserObj().then(()=>{
       this.initializeApp();
       this.fontService.injectAll();
     });

@@ -38,6 +38,7 @@ export class AuthEmailPage implements OnInit {
       if(typeof result == 'boolean')
         this.youCanClick = result;
       else{
+        this.authService.saveUserObj(result);
         this.router.navigateByUrl('/auth-confirm');
       }
     });

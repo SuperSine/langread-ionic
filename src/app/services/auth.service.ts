@@ -5,7 +5,7 @@ import { Observable } from 'apollo-link';
 import { Apollo, ApolloBase } from 'apollo-angular';
 import gql from 'graphql-tag';
 import {map} from 'rxjs/operators';
-import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL, VerifyUserDocument,SendVerifyDocument,UpdateEmailDocument,SendRestDocument,ChangePasswordDocument,LoginDocument } from '../graphql-components';
+import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL,SendVerifyDocument,UpdateEmailDocument,SendRestDocument,ChangePasswordDocument,LoginDocument, SendTotpDocument, VerifyCodeDocument, TokenPurpose } from '../graphql-components';
 import { GlobalService } from './global.service';
 import { Plugins } from '@capacitor/core';
 import {TokenDocument} from '../graphql-components';
@@ -44,6 +44,7 @@ const UserRegisterGql = gql`
 export const T_USER_ID = 'global_user_id';
 export const T_USER_SECRET = 'global_user_secret';
 export const T_USER_TOKEN = 'global_user_token';
+export const T_USER_KEY = 'global_user_key';
 
 export interface UserInfo{
   email: string,
@@ -78,6 +79,7 @@ export interface AuthResult{
   providedIn: 'root'
 })
 export class AuthService {
+  private userObj:UserType;
   private userId: string = null;
   private appSecret: string = null;
   private apolloBase: ApolloBase<any>;
@@ -90,6 +92,10 @@ export class AuthService {
 
     this.register.client = "auth";
     // this.getUserData();
+
+    new Promise(async (resolve)=>{
+      this.userObj = await this.getUserObj();
+    })
   }
 
   get getApollo(){
@@ -134,6 +140,25 @@ export class AuthService {
 
   get isAuthenticated() {
     return this._isAuthenticated.asObservable();
+  }
+
+  async getUserObj(){
+    let userData = (await Storage.get({key:T_USER_KEY})).value;
+    let userObj = JSON.parse(userData);
+    if(userObj != null)
+      this.setUserId(userObj.appId, userObj.appSecret);
+    else
+      this._isAuthenticated.next(false);
+
+    return userObj;
+  }
+
+  saveUserObj(user:UserType){
+    Storage.set({key:T_USER_KEY, value: JSON.stringify(user)});
+
+    window['tempLangreadUserToken'] = user.token;
+    this.userObj = user;
+    this.setUserId(user.appId, user.appSecret);
   }
 
   async getUserData(){
@@ -189,10 +214,11 @@ export class AuthService {
 
   verifyUser(code:string){
     return this.getApollo.mutate({
-      mutation:VerifyUserDocument,
+      mutation:VerifyCodeDocument,
       variables:{
-        id:this.userId,
-        code:code
+        email: this.userObj.email,
+        code: code,
+        purpose: TokenPurpose.Email
       }
     });
   }
@@ -241,8 +267,28 @@ export class AuthService {
     }).toPromise();
 
     console.log(result);
+  }
 
+  sendTotp(email:string){
+    var result = this.getApollo.query({
+      query:SendTotpDocument,
+      variables:{
+        email
+      }
+    }).toPromise();
 
+    console.log(result);
+  }
+
+  verifyCode(email:string, code:string){
+    return this.getApollo.mutate({
+      mutation:VerifyCodeDocument,
+      variables:{
+        email:email,
+        code:code,
+        purpose:TokenPurpose.UserLogin
+      }
+    });
   }
 
   login(credentials: UserInfo){
@@ -255,12 +301,10 @@ export class AuthService {
     }).toPromise();
 
     promise.then((result) => {
+      debugger;
       var data = result.data as any;
-      var appId = data.auth.auth.appId;
-      var appSecret = data.auth.auth.appSecret;
-      var token = data.auth.auth.token;
 
-      this.saveUserData(appId, appSecret,  token);
+      this.saveUserObj(data.auth.auth);
 
     })
     
@@ -268,20 +312,19 @@ export class AuthService {
   }
 
   async requestToken(){
-    let appId = (await Storage.get({key:T_USER_ID})).value;
-    let appSecret = (await Storage.get({key:T_USER_SECRET})).value;
-
-    if(!appId || !appSecret)this.logout();
-
+    if(!this.userObj)this.logout();
 
     this.getApollo.query({
       query: TokenDocument,
       variables:{
-        appId,
-        appSecret
+        appId:this.userObj.appId,
+        appSecret:this.userObj.appSecret,
       }
-    }).toPromise<any>().then((result)=>{
-      this.saveUserData(appId, appSecret, result.data.token.get);
+    }).toPromise<any>().then(async (result)=>{
+
+      this.userObj.token = result.data.token;
+      this.saveUserObj(this.userObj);
+      
     },(error)=>{
       this.logout();
     })
@@ -295,6 +338,7 @@ export class AuthService {
     Storage.set({key:T_USER_TOKEN,value:null});
     Storage.set({key:T_USER_SECRET,value:null});
 
+    Storage.set({key:T_USER_KEY, value:null});
 
     this.apollo.use('core').getClient().clearStore();
   }

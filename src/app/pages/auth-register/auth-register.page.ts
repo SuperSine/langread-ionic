@@ -47,7 +47,7 @@ export class AuthRegisterPage implements OnInit {
             console.log('tap result',result);
             if(!(typeof result == 'boolean')){
               let data = result.data.user.register;
-              this.authService.saveUserData(data.appId, data.appSecret, data.token);
+              this.authService.saveUserObj(data);
             };
 
             return result;

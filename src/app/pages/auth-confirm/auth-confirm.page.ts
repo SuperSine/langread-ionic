@@ -39,7 +39,7 @@ export class AuthConfirmPage implements OnInit {
 
       if(!(typeof result == 'boolean')){
         let data = result.data.user.verify;
-        this.authService.saveUserData(data.appId, data.appSecret, data.token);
+        this.authService.saveUserObj(data);
 
         this.router.navigateByUrl('/');
       }else{

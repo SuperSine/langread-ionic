@@ -57,23 +57,29 @@ const routes: Routes = [
   },
   {
     path: 'auth-confirm',
-    loadChildren: () => import('./pages/auth-confirm/auth-confirm.module').then( m => m.AuthConfirmPageModule),
-    canActivate:[AuthGuard]
+    loadChildren: () => import('./pages/auth-confirm/auth-confirm.module').then( m => m.AuthConfirmPageModule)
   },
   {
     path: 'auth-email',
-    loadChildren: () => import('./pages/auth-email/auth-email.module').then( m => m.AuthEmailPageModule)
+    loadChildren: () => import('./pages/auth-email/auth-email.module').then( m => m.AuthEmailPageModule),
+    canActivate:[AuthGuard]
   },
   {
     path: 'auth-password',
-    loadChildren: () => import('./pages/auth-password/auth-password.module').then( m => m.AuthPasswordPageModule)
+    loadChildren: () => import('./pages/auth-password/auth-password.module').then( m => m.AuthPasswordPageModule),
+    canActivate:[AuthGuard]
+  },
+  {
+    path: 'auth-totp',
+    loadChildren: () => import('./pages/auth-totp/auth-totp.module').then( m => m.AuthTotpPageModule)
   },
   //this route need to put to bottom of the list
   {
     path: '',
     loadChildren: () => import('./pages/app-menu/app-menu.module').then( m => m.AppMenuPageModule),
     canActivate:[AuthGuard]
-  },
+  }
+
 
 
 

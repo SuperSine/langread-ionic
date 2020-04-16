@@ -5,6 +5,7 @@ query login($email:String!, $password:String!){
       appSecret,
       firstName,
       lastName,
+      email,
       token
     }
   }
@@ -13,9 +14,11 @@ query login($email:String!, $password:String!){
 mutation register($email:String!){
   user{
     register(email:$email){
-      appId
-      appSecret
-      email
+      appId,
+      appSecret,
+      firstName,
+      lastName,
+      email,
       token
     }
   }
@@ -30,16 +33,6 @@ query token($appId:String!,$appSecret:String!){
 query checkEmail($email:String!){
   auth{
     email(email:$email)
-  }
-}
-
-mutation verifyUser($id:String!,$code:String!){
-  user{
-    verify(id:$id,code:$code){
-      appId
-      appSecret
-      token
-    }
   }
 }
 
@@ -69,5 +62,24 @@ query sendRest($appId:String!,$appSecret:String!){
 mutation changePassword($appId:String!,$appSecret:String!,$token:String!,$password:String!){
   user{
     password(appId:$appId, appSecret:$appSecret,token:$token, password:$password)
+  }
+}
+
+query sendTotp($email:String!){
+  auth{
+    sendauthcode(email:$email)
+  }
+}
+
+mutation verifyCode($email:String!, $code:String!, $purpose:TokenPurpose){
+  user{
+    verify(email:$email,code:$code, purpose:$purpose){
+      appId,
+      appSecret,
+      firstName,
+      lastName,
+      email,
+      token
+    }
   }
 }

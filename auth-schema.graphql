@@ -1,6 +1,7 @@
 type Auth {
   auth(email: String!, password: String!): UserType
   email(email: String!): Boolean
+  sendauthcode(email: String!): Boolean
   sendreset(appId: String = null, appSecret: String = null): Boolean
   sendverify(appId: String = null, appSecret: String = null): Boolean
 }
@@ -57,6 +58,12 @@ type Token {
   get(appId: String = null, appSecret: String = null): String
 }
 
+enum TokenPurpose {
+  EMAIL
+  PHONE_NUMBER
+  USER_LOGIN
+}
+
 scalar UInt
 
 scalar ULong
@@ -94,7 +101,7 @@ type User {
     appSecret: String = null
     user: UpdateInputModelType = null
   ): UserType
-  verify(id: String!, code: String!): UserType
+  verify(email: String!, code: String!, purpose: TokenPurpose = null): UserType
 }
 
 type UserType {

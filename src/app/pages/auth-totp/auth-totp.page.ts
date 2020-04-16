@@ -7,19 +7,19 @@ import { GlobalService } from 'src/app/services/global.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-auth-password',
-  templateUrl: './auth-password.page.html',
-  styleUrls: ['./auth-password.page.scss'],
+  selector: 'app-auth-totp',
+  templateUrl: './auth-totp.page.html',
+  styleUrls: ['./auth-totp.page.scss'],
 })
-export class AuthPasswordPage implements OnInit {
+export class AuthTotpPage implements OnInit {
 
   constructor(private router:Router, private globalService:GlobalService, private authService:AuthService, private formBuilder:FormBuilder) { 
-    this.passwordForm = formBuilder.group({
-      password:[
+    this.loginForm = formBuilder.group({
+      email:[
         '', 
-        Validators.compose([Validators.required, Validators.minLength(3)])
+        Validators.compose([Validators.required, Validators.email])
       ],
-      verifycode:[
+      code:[
         '',
         Validators.compose([Validators.required, Validators.minLength(6),Validators.maxLength(6),])
       ]
@@ -30,10 +30,10 @@ export class AuthPasswordPage implements OnInit {
     this.counter = 0;
   }
 
-  changePassword(event){
-    this.authService.changePassword(this.passwordForm.get('verifycode').value, this.passwordForm.get('password').value).pipe(
+  login(event){
+    this.authService.verifyCode(this.loginForm.get('email').value, this.loginForm.get('code').value).pipe(
       switchMap((result:any)=>{
-        if(!result.data.user.password)
+        if(!result.data.user.verify)
           return of(true);
 
         return of(result);
@@ -41,17 +41,20 @@ export class AuthPasswordPage implements OnInit {
       startWith(false)
     ).subscribe((result) => {
       if(!(typeof result == 'boolean')){
+        let data = result.data.user.verify;
+        this.authService.saveUserObj(data);
+
         this.router.navigateByUrl('/');
       }else{
         this.youCanClick = result;
         if(result)
-          this.globalService.throwError([{message:'Verify code incorrect!'}]);
+          this.globalService.throwError([{message:'Totp Code incorrect!'}]);
       }
     });
   }
 
-  sendReset(){
-    this.authService.sendRest();
+  sendTotp(event){
+    this.authService.sendTotp(this.loginForm.get('email').value);
     this.startCountDown(null);
   }
 
@@ -73,7 +76,7 @@ export class AuthPasswordPage implements OnInit {
     });
   }
 
-  private passwordForm:FormGroup;
+  private loginForm:FormGroup;
   private youCanClick:boolean = true;
   private counter:number;
 }

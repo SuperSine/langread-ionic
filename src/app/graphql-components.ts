@@ -33,6 +33,7 @@ export type Auth = {
    __typename?: 'Auth';
   auth?: Maybe<UserType>;
   email?: Maybe<Scalars['Boolean']>;
+  sendauthcode?: Maybe<Scalars['Boolean']>;
   sendreset?: Maybe<Scalars['Boolean']>;
   sendverify?: Maybe<Scalars['Boolean']>;
 };
@@ -45,6 +46,11 @@ export type AuthAuthArgs = {
 
 
 export type AuthEmailArgs = {
+  email: Scalars['String'];
+};
+
+
+export type AuthSendauthcodeArgs = {
   email: Scalars['String'];
 };
 
@@ -355,6 +361,12 @@ export type TokenGetArgs = {
   appSecret?: Maybe<Scalars['String']>;
 };
 
+export enum TokenPurpose {
+  Email = 'EMAIL',
+  PhoneNumber = 'PHONE_NUMBER',
+  UserLogin = 'USER_LOGIN'
+}
+
 
 
 export type UpdateInputModelType = {
@@ -407,8 +419,9 @@ export type UserUpdateArgs = {
 
 
 export type UserVerifyArgs = {
-  id: Scalars['String'];
+  email: Scalars['String'];
   code: Scalars['String'];
+  purpose?: Maybe<TokenPurpose>;
 };
 
 export type UserType = {
@@ -503,7 +516,7 @@ export type LoginQuery = (
     { __typename?: 'Auth' }
     & { auth?: Maybe<(
       { __typename?: 'UserType' }
-      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'token'>
+      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'email' | 'token'>
     )> }
   )> }
 );
@@ -519,7 +532,7 @@ export type RegisterMutation = (
     { __typename?: 'User' }
     & { register?: Maybe<(
       { __typename?: 'UserType' }
-      & Pick<UserType, 'appId' | 'appSecret' | 'email' | 'token'>
+      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'email' | 'token'>
     )> }
   )> }
 );
@@ -548,23 +561,6 @@ export type CheckEmailQuery = (
   & { auth?: Maybe<(
     { __typename?: 'Auth' }
     & Pick<Auth, 'email'>
-  )> }
-);
-
-export type VerifyUserMutationVariables = {
-  id: Scalars['String'];
-  code: Scalars['String'];
-};
-
-
-export type VerifyUserMutation = (
-  { __typename?: 'Mutation' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
-    & { verify?: Maybe<(
-      { __typename?: 'UserType' }
-      & Pick<UserType, 'appId' | 'appSecret' | 'token'>
-    )> }
   )> }
 );
 
@@ -627,6 +623,37 @@ export type ChangePasswordMutation = (
   & { user?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'password'>
+  )> }
+);
+
+export type SendTotpQueryVariables = {
+  email: Scalars['String'];
+};
+
+
+export type SendTotpQuery = (
+  { __typename?: 'Query' }
+  & { auth?: Maybe<(
+    { __typename?: 'Auth' }
+    & Pick<Auth, 'sendauthcode'>
+  )> }
+);
+
+export type VerifyCodeMutationVariables = {
+  email: Scalars['String'];
+  code: Scalars['String'];
+  purpose?: Maybe<TokenPurpose>;
+};
+
+
+export type VerifyCodeMutation = (
+  { __typename?: 'Mutation' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & { verify?: Maybe<(
+      { __typename?: 'UserType' }
+      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'email' | 'token'>
+    )> }
   )> }
 );
 
@@ -742,6 +769,7 @@ export const LoginDocument = gql`
       appSecret
       firstName
       lastName
+      email
       token
     }
   }
@@ -761,6 +789,8 @@ export const RegisterDocument = gql`
     register(email: $email) {
       appId
       appSecret
+      firstName
+      lastName
       email
       token
     }
@@ -803,25 +833,6 @@ export const CheckEmailDocument = gql`
   })
   export class CheckEmailGQL extends Apollo.Query<CheckEmailQuery, CheckEmailQueryVariables> {
     document = CheckEmailDocument;
-    
-  }
-export const VerifyUserDocument = gql`
-    mutation verifyUser($id: String!, $code: String!) {
-  user {
-    verify(id: $id, code: $code) {
-      appId
-      appSecret
-      token
-    }
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class VerifyUserGQL extends Apollo.Mutation<VerifyUserMutation, VerifyUserMutationVariables> {
-    document = VerifyUserDocument;
     
   }
 export const SendVerifyDocument = gql`
@@ -887,6 +898,43 @@ export const ChangePasswordDocument = gql`
   })
   export class ChangePasswordGQL extends Apollo.Mutation<ChangePasswordMutation, ChangePasswordMutationVariables> {
     document = ChangePasswordDocument;
+    
+  }
+export const SendTotpDocument = gql`
+    query sendTotp($email: String!) {
+  auth {
+    sendauthcode(email: $email)
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SendTotpGQL extends Apollo.Query<SendTotpQuery, SendTotpQueryVariables> {
+    document = SendTotpDocument;
+    
+  }
+export const VerifyCodeDocument = gql`
+    mutation verifyCode($email: String!, $code: String!, $purpose: TokenPurpose) {
+  user {
+    verify(email: $email, code: $code, purpose: $purpose) {
+      appId
+      appSecret
+      firstName
+      lastName
+      email
+      token
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class VerifyCodeGQL extends Apollo.Mutation<VerifyCodeMutation, VerifyCodeMutationVariables> {
+    document = VerifyCodeDocument;
     
   }
 export const GetDocumentDocument = gql`

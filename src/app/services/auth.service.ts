@@ -5,10 +5,11 @@ import { Observable } from 'apollo-link';
 import { Apollo, ApolloBase } from 'apollo-angular';
 import gql from 'graphql-tag';
 import {map} from 'rxjs/operators';
-import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL,SendVerifyDocument,UpdateEmailDocument,SendRestDocument,ChangePasswordDocument,LoginDocument, SendTotpDocument, VerifyCodeDocument, TokenPurpose } from '../graphql-components';
+import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL,SendVerifyDocument,UpdateEmailDocument,SendRestDocument,ChangePasswordDocument,LoginDocument, SendTotpDocument, VerifyCodeDocument, TokenPurpose, UpdateUserDocument, UpdateUserViewModelType } from '../graphql-components';
 import { GlobalService } from './global.service';
 import { Plugins } from '@capacitor/core';
 import {TokenDocument} from '../graphql-components';
+import {environment} from 'src/environments/environment';
 
 
 const { Storage } = Plugins;
@@ -79,7 +80,7 @@ export interface AuthResult{
   providedIn: 'root'
 })
 export class AuthService {
-  private userObj:UserType;
+  public userObj:UserType;
   private userId: string = null;
   private appSecret: string = null;
   private apolloBase: ApolloBase<any>;
@@ -178,6 +179,17 @@ export class AuthService {
     window['tempLangreadUserToken'] = token;
 
     this.setUserId(appId, appSecret);
+  }
+
+  updateUser(user:UpdateUserViewModelType){
+    return this.getApollo.mutate({
+      mutation:UpdateUserDocument,
+      variables:{
+        appId:this.userObj.appId,
+        appSecret:this.userObj.appSecret,
+        user
+      }
+    })
   }
 
   signUp(credentials: UserInfo){
@@ -341,5 +353,9 @@ export class AuthService {
     Storage.set({key:T_USER_KEY, value:null});
 
     this.apollo.use('core').getClient().clearStore();
+  }
+
+  get avatarUrl(){
+    return `${environment.avatarUrl}?text=${this.userObj.appId}&dimension=120`;
   }
 }

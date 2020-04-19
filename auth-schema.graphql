@@ -4,6 +4,7 @@ type Auth {
   sendauthcode(email: String!): Boolean
   sendreset(appId: String = null, appSecret: String = null): Boolean
   sendverify(appId: String = null, appSecret: String = null): Boolean
+  username(username: String!): Boolean
 }
 
 scalar BigInt
@@ -68,10 +69,11 @@ scalar UInt
 
 scalar ULong
 
-input UpdateInputModelType {
+input UpdateUserViewModelType {
   userName: String = null
   firstName: String = null
   lastName: String = null
+  phoneNumber: String = null
 }
 
 scalar Uri
@@ -99,7 +101,7 @@ type User {
   update(
     appId: String = null
     appSecret: String = null
-    user: UpdateInputModelType = null
+    user: UpdateUserViewModelType = null
   ): UserType
   verify(email: String!, code: String!, purpose: TokenPurpose = null): UserType
 }
@@ -112,6 +114,7 @@ type UserType {
   lastName: String
   phoneNumber: String!
   token: String
+  userName: String!
 }
 
 scalar UShort

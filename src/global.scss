@@ -96,3 +96,14 @@ fieldset{
   position: absolute; 
   display: block;  
 }
+
+.info-card{
+  background-color: #fff;
+  padding: 10px 15px 25px 15px;
+  border-radius: 0px  !important;
+  // remove shadow //
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  -webkit-box-shadow: 0 4px 16px rgba(0, 0, 0, 0)  !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0) !important;
+}

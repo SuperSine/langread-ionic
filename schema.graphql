@@ -74,6 +74,7 @@ type DocumentQueryType {
     lastId: String = null
     limit: Int = 10
   ): [DocumentType]
+  stats: WordTagStaticsType
 }
 
 type DocumentType {
@@ -258,6 +259,12 @@ type WordTagInfoCleanType {
   tags: [TagType]
   updateDate: Date!
   wti: [WordInfoCleanType]
+}
+
+type WordTagStaticsType {
+  documentCount: Long!
+  tagCount: Int!
+  tagWordCount: Int!
 }
 
 type YearMonthType {

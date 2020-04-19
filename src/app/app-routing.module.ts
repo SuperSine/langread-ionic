@@ -73,6 +73,16 @@ const routes: Routes = [
     path: 'auth-totp',
     loadChildren: () => import('./pages/auth-totp/auth-totp.module').then( m => m.AuthTotpPageModule)
   },
+  {
+    path: 'app-profile',
+    loadChildren: () => import('./pages/app-profile/app-profile.module').then( m => m.AppProfilePageModule),
+    canActivate:[AuthGuard]
+  },
+  {
+    path: 'profile-editor',
+    loadChildren: () => import('./pages/profile-editor/profile-editor.module').then( m => m.ProfileEditorPageModule),
+    canActivate:[AuthGuard]
+  },
   //this route need to put to bottom of the list
   {
     path: '',

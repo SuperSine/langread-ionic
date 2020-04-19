@@ -78,7 +78,22 @@ mutation verifyCode($email:String!, $code:String!, $purpose:TokenPurpose){
       appSecret,
       firstName,
       lastName,
+      userName
       email,
+      token
+    }
+  }
+}
+
+mutation updateUser($appId:String,$appSecret:String,$user:UpdateUserViewModelType){
+  user{
+    update(appId:$appId,appSecret:$appSecret,user:$user){
+      firstName
+      lastName
+      email
+      userName
+      appId
+      appSecret
       token
     }
   }

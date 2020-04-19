@@ -91,3 +91,13 @@ query giveItToMe($content:String!){
     }
   }
 }
+
+query getStats{
+  document{
+    stats{
+      documentCount
+      tagCount
+      tagWordCount
+    }
+  }
+}

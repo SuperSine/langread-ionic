@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Change Email</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -26,7 +29,7 @@
     </ion-item> -->
 
 
-    <ion-button name="updateEmail" expand="full" [disabled]="!emailForm.valid || !youCanClick" (click)="updateEmail($event)">
+    <ion-button name="updateEmail" expand="block" [disabled]="!emailForm.valid || !youCanClick" (click)="updateEmail($event)">
       Next
     </ion-button>
     </form>

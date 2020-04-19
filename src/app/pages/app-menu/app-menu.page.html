@@ -8,9 +8,34 @@
     </ion-header>
  
     <ion-content>
+      <div class="menu-header">
+        <img class="user-avatar round" [src]="authService.avatarUrl"/>
+        <p class="name">{{ user?.userName ? user?.userName : user?.email  }}</p>
+        <ion-grid >
+          <ion-row class="profile1-numbers">
+    
+            <ion-col size="4">
+              <span>{{stats?.documentCount}}</span>
+              <p>Docs</p>
+            </ion-col>
+    
+            <ion-col size="4">   
+              <span>{{stats?.tagWordCount}}</span>
+              <p>Words</p>
+            </ion-col>
+    
+            <ion-col size="4">
+              <span>{{stats?.tagCount}}</span>
+              <p>Tags</p>
+            </ion-col>
+    
+          </ion-row>
+        </ion-grid>
+      </div>
       <ion-list>
         <ion-menu-toggle auto-hide="false" *ngFor="let p of pages">
           <ion-item [routerLink]="p.url" routerDirection="root" [class.active-item]="selectedPath === p.url">
+            <ion-icon [name]="p.icon" slot="start"></ion-icon>
             <ion-label>
               {{ p.title }}
             </ion-label>
@@ -21,7 +46,9 @@
       </ion-list>
       <ion-item lines="full"  name="logout" routerLink="/login" routerDirection="root">
         <ion-icon name="log-out" slot="start"></ion-icon>
-        Logout
+        <ion-label>
+          Logout
+        </ion-label>
       </ion-item>
     </ion-content>
  

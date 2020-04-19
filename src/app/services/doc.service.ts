@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
+import { GetStatsDocument } from '../graphql-components';
 
 const DeleteDocGql = gql`
   mutation($docId:String!){
@@ -250,5 +251,11 @@ export class DocService {
         docId
       }
     })
+  }
+
+  stats(){
+    return this.getApollo.query({
+      query:GetStatsDocument
+    });
   }
 }

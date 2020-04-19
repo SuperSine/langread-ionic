@@ -8,3 +8,29 @@ ion-item[name=logout]{
   bottom: 0;
 }
 
+.menu-header {
+  text-align: center;
+  margin: auto;
+  // width: 50%;
+  // margin-top: 10px;
+  margin-bottom: 20px;
+  padding: 5px 15px;
+  background-color: #fff;
+  color:#000;
+  .name {
+    margin-top:8px;
+    font-weight: 500;
+    font-size:16px;
+    margin-bottom: 3px;
+  }
+  .email {
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+  .user-avatar {
+    padding: .5em;
+    height: 15vh;
+    margin-top: 15px;
+    // border: 3px solid #fff;
+  }
+}

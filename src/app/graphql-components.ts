@@ -10,13 +10,13 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: any;
+  Long: any;
   BigInt: any;
   Byte: any;
   DateTime: any;
   DateTimeOffset: any;
   Decimal: any;
   Guid: any;
-  Long: any;
   Milliseconds: any;
   SByte: any;
   Seconds: any;
@@ -36,6 +36,7 @@ export type Auth = {
   sendauthcode?: Maybe<Scalars['Boolean']>;
   sendreset?: Maybe<Scalars['Boolean']>;
   sendverify?: Maybe<Scalars['Boolean']>;
+  username?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -64,6 +65,11 @@ export type AuthSendresetArgs = {
 export type AuthSendverifyArgs = {
   appId?: Maybe<Scalars['String']>;
   appSecret?: Maybe<Scalars['String']>;
+};
+
+
+export type AuthUsernameArgs = {
+  username: Scalars['String'];
 };
 
 
@@ -127,6 +133,7 @@ export type DocumentQueryType = {
   infoDocuments?: Maybe<InfoDocumentsCleanType>;
   list?: Maybe<Array<Maybe<DocumentType>>>;
   search?: Maybe<Array<Maybe<DocumentType>>>;
+  stats?: Maybe<WordTagStaticsType>;
 };
 
 
@@ -369,10 +376,11 @@ export enum TokenPurpose {
 
 
 
-export type UpdateInputModelType = {
+export type UpdateUserViewModelType = {
   userName?: Maybe<Scalars['String']>;
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
 };
 
 
@@ -414,7 +422,7 @@ export type UserRegisterArgs = {
 export type UserUpdateArgs = {
   appId?: Maybe<Scalars['String']>;
   appSecret?: Maybe<Scalars['String']>;
-  user?: Maybe<UpdateInputModelType>;
+  user?: Maybe<UpdateUserViewModelType>;
 };
 
 
@@ -433,6 +441,7 @@ export type UserType = {
   lastName?: Maybe<Scalars['String']>;
   phoneNumber: Scalars['String'];
   token?: Maybe<Scalars['String']>;
+  userName: Scalars['String'];
 };
 
 
@@ -496,6 +505,13 @@ export type WordTagInfoCleanType = {
   tags?: Maybe<Array<Maybe<TagType>>>;
   updateDate: Scalars['Date'];
   wti?: Maybe<Array<Maybe<WordInfoCleanType>>>;
+};
+
+export type WordTagStaticsType = {
+   __typename?: 'WordTagStaticsType';
+  documentCount: Scalars['Long'];
+  tagCount: Scalars['Int'];
+  tagWordCount: Scalars['Int'];
 };
 
 export type YearMonthType = {
@@ -652,7 +668,25 @@ export type VerifyCodeMutation = (
     { __typename?: 'User' }
     & { verify?: Maybe<(
       { __typename?: 'UserType' }
-      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'email' | 'token'>
+      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'userName' | 'email' | 'token'>
+    )> }
+  )> }
+);
+
+export type UpdateUserMutationVariables = {
+  appId?: Maybe<Scalars['String']>;
+  appSecret?: Maybe<Scalars['String']>;
+  user?: Maybe<UpdateUserViewModelType>;
+};
+
+
+export type UpdateUserMutation = (
+  { __typename?: 'Mutation' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & { update?: Maybe<(
+      { __typename?: 'UserType' }
+      & Pick<UserType, 'firstName' | 'lastName' | 'email' | 'userName' | 'appId' | 'appSecret' | 'token'>
     )> }
   )> }
 );
@@ -757,6 +791,20 @@ export type GiveItToMeQuery = (
           & Pick<TagType, 'tagName' | 'tagColor'>
         )>>> }
       )> }
+    )> }
+  )> }
+);
+
+export type GetStatsQueryVariables = {};
+
+
+export type GetStatsQuery = (
+  { __typename?: 'Query' }
+  & { document?: Maybe<(
+    { __typename?: 'DocumentQueryType' }
+    & { stats?: Maybe<(
+      { __typename?: 'WordTagStaticsType' }
+      & Pick<WordTagStaticsType, 'documentCount' | 'tagCount' | 'tagWordCount'>
     )> }
   )> }
 );
@@ -923,6 +971,7 @@ export const VerifyCodeDocument = gql`
       appSecret
       firstName
       lastName
+      userName
       email
       token
     }
@@ -935,6 +984,29 @@ export const VerifyCodeDocument = gql`
   })
   export class VerifyCodeGQL extends Apollo.Mutation<VerifyCodeMutation, VerifyCodeMutationVariables> {
     document = VerifyCodeDocument;
+    
+  }
+export const UpdateUserDocument = gql`
+    mutation updateUser($appId: String, $appSecret: String, $user: UpdateUserViewModelType) {
+  user {
+    update(appId: $appId, appSecret: $appSecret, user: $user) {
+      firstName
+      lastName
+      email
+      userName
+      appId
+      appSecret
+      token
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateUserGQL extends Apollo.Mutation<UpdateUserMutation, UpdateUserMutationVariables> {
+    document = UpdateUserDocument;
     
   }
 export const GetDocumentDocument = gql`
@@ -1056,5 +1128,24 @@ export const GiveItToMeDocument = gql`
   })
   export class GiveItToMeGQL extends Apollo.Query<GiveItToMeQuery, GiveItToMeQueryVariables> {
     document = GiveItToMeDocument;
+    
+  }
+export const GetStatsDocument = gql`
+    query getStats {
+  document {
+    stats {
+      documentCount
+      tagCount
+      tagWordCount
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetStatsGQL extends Apollo.Query<GetStatsQuery, GetStatsQueryVariables> {
+    document = GetStatsDocument;
     
   }

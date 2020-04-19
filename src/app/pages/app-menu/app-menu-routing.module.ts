@@ -26,7 +26,12 @@ const routes: Routes = [
         path: 'word-info',
         loadChildren: () => import('../word-info/word-info.module').then( m => m.WordInfoPageModule),
         canActivate:[AuthGuard]
-      }      
+      },
+      {
+        path: 'app-profile',
+        loadChildren: () => import('../app-profile/app-profile.module').then( m => m.AppProfilePageModule),
+        canActivate:[AuthGuard]
+      }
     ]
   },
   {

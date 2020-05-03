@@ -10,10 +10,10 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: any;
+  DateTime: any;
   Long: any;
   BigInt: any;
   Byte: any;
-  DateTime: any;
   DateTimeOffset: any;
   Decimal: any;
   Guid: any;
@@ -124,6 +124,7 @@ export type DocumentInputType = {
   content: Scalars['String'];
   id?: Maybe<Scalars['String']>;
   docId?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
 };
 
 export type DocumentQueryType = {
@@ -172,12 +173,13 @@ export type DocumentQueryTypeSearchArgs = {
 export type DocumentType = {
    __typename?: 'DocumentType';
   content: Scalars['String'];
-  createDate: Scalars['Date'];
+  createDate?: Maybe<Scalars['DateTime']>;
   docId: Scalars['String'];
   id: Scalars['String'];
   status: Scalars['Int'];
   title: Scalars['String'];
-  updateDate: Scalars['Date'];
+  updateDate?: Maybe<Scalars['DateTime']>;
+  url?: Maybe<Scalars['String']>;
   wordsCount: Scalars['Int'];
 };
 
@@ -217,6 +219,7 @@ export type Mutation = {
   secret?: Maybe<Secret>;
   tag?: Maybe<TagMutation>;
   user?: Maybe<User>;
+  wti?: Maybe<WordTagInfoMutation>;
 };
 
 export type PronunciationType = {
@@ -468,11 +471,11 @@ export type WordProfileType = {
 export type WordTagDocumentCleanType = {
    __typename?: 'WordTagDocumentCleanType';
   bigWordTagInfo?: Maybe<WordTagInfoCleanType>;
-  createTime: Scalars['Date'];
+  createTime?: Maybe<Scalars['DateTime']>;
   document?: Maybe<DocumentType>;
   smallWordTagInfo?: Maybe<WordTagInfoCleanType>;
   status: Scalars['Int'];
-  updateTime: Scalars['Date'];
+  updateTime?: Maybe<Scalars['DateTime']>;
 };
 
 export type WordTagInfo = {
@@ -505,6 +508,17 @@ export type WordTagInfoCleanType = {
   tags?: Maybe<Array<Maybe<TagType>>>;
   updateDate: Scalars['Date'];
   wti?: Maybe<Array<Maybe<WordInfoCleanType>>>;
+};
+
+export type WordTagInfoMutation = {
+   __typename?: 'WordTagInfoMutation';
+  remove?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type WordTagInfoMutationRemoveArgs = {
+  word: Scalars['String'];
+  tagName: Scalars['String'];
 };
 
 export type WordTagStaticsType = {
@@ -766,7 +780,7 @@ export type GiveItToMeQuery = (
       & Pick<WordTagDocumentCleanType, 'createTime' | 'updateTime' | 'status'>
       & { document?: Maybe<(
         { __typename?: 'DocumentType' }
-        & Pick<DocumentType, 'docId' | 'id' | 'content' | 'createDate' | 'updateDate' | 'title' | 'wordsCount'>
+        & Pick<DocumentType, 'docId' | 'id' | 'content' | 'createDate' | 'updateDate' | 'title' | 'url' | 'wordsCount'>
       )>, smallWordTagInfo?: Maybe<(
         { __typename?: 'WordTagInfoCleanType' }
         & { wti?: Maybe<Array<Maybe<(
@@ -806,6 +820,81 @@ export type GetStatsQuery = (
       { __typename?: 'WordTagStaticsType' }
       & Pick<WordTagStaticsType, 'documentCount' | 'tagCount' | 'tagWordCount'>
     )> }
+  )> }
+);
+
+export type RemoveTagMutationVariables = {
+  word: Scalars['String'];
+  tagName: Scalars['String'];
+};
+
+
+export type RemoveTagMutation = (
+  { __typename?: 'Mutation' }
+  & { wti?: Maybe<(
+    { __typename?: 'WordTagInfoMutation' }
+    & Pick<WordTagInfoMutation, 'remove'>
+  )> }
+);
+
+export type SaveDocumentMutationVariables = {
+  title: Scalars['String'];
+  content: Scalars['String'];
+  wordTagLiteStr: Scalars['String'];
+  id?: Maybe<Scalars['String']>;
+  docId?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+
+export type SaveDocumentMutation = (
+  { __typename?: 'Mutation' }
+  & { doc?: Maybe<(
+    { __typename?: 'Doc' }
+    & { save?: Maybe<(
+      { __typename?: 'WordTagDocumentCleanType' }
+      & Pick<WordTagDocumentCleanType, 'createTime' | 'updateTime' | 'status'>
+      & { document?: Maybe<(
+        { __typename?: 'DocumentType' }
+        & Pick<DocumentType, 'docId' | 'id' | 'content' | 'createDate' | 'updateDate' | 'title' | 'wordsCount' | 'url'>
+      )>, smallWordTagInfo?: Maybe<(
+        { __typename?: 'WordTagInfoCleanType' }
+        & { wti?: Maybe<Array<Maybe<(
+          { __typename?: 'WordInfoCleanType' }
+          & Pick<WordInfoCleanType, 'word'>
+          & { wordInfos?: Maybe<Array<Maybe<(
+            { __typename?: 'InfoCleanType' }
+            & Pick<InfoCleanType, 'count'>
+            & { tag?: Maybe<(
+              { __typename?: 'TagType' }
+              & Pick<TagType, 'tagName'>
+            )> }
+          )>>> }
+        )>>>, tags?: Maybe<Array<Maybe<(
+          { __typename?: 'TagType' }
+          & Pick<TagType, 'tagName' | 'tagColor'>
+        )>>> }
+      )>, bigWordTagInfo?: Maybe<(
+        { __typename?: 'WordTagInfoCleanType' }
+        & { tags?: Maybe<Array<Maybe<(
+          { __typename?: 'TagType' }
+          & Pick<TagType, 'tagName' | 'tagColor'>
+        )>>> }
+      )> }
+    )> }
+  )> }
+);
+
+export type DeleteDocumentMutationVariables = {
+  docId: Scalars['String'];
+};
+
+
+export type DeleteDocumentMutation = (
+  { __typename?: 'Mutation' }
+  & { doc?: Maybe<(
+    { __typename?: 'Doc' }
+    & Pick<Doc, 'delete'>
   )> }
 );
 
@@ -1092,6 +1181,7 @@ export const GiveItToMeDocument = gql`
         createDate
         updateDate
         title
+        url
         wordsCount
       }
       smallWordTagInfo {
@@ -1147,5 +1237,85 @@ export const GetStatsDocument = gql`
   })
   export class GetStatsGQL extends Apollo.Query<GetStatsQuery, GetStatsQueryVariables> {
     document = GetStatsDocument;
+    
+  }
+export const RemoveTagDocument = gql`
+    mutation removeTag($word: String!, $tagName: String!) {
+  wti {
+    remove(word: $word, tagName: $tagName)
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class RemoveTagGQL extends Apollo.Mutation<RemoveTagMutation, RemoveTagMutationVariables> {
+    document = RemoveTagDocument;
+    
+  }
+export const SaveDocumentDocument = gql`
+    mutation saveDocument($title: String!, $content: String!, $wordTagLiteStr: String!, $id: String, $docId: String, $url: String) {
+  doc {
+    save(document: {title: $title, content: $content, id: $id, docId: $docId, url: $url}, wordTagLiteStr: $wordTagLiteStr) {
+      document {
+        docId
+        id
+        content
+        createDate
+        updateDate
+        title
+        wordsCount
+        url
+      }
+      smallWordTagInfo {
+        wti {
+          wordInfos {
+            tag {
+              tagName
+            }
+            count
+          }
+          word
+        }
+        tags {
+          tagName
+          tagColor
+        }
+      }
+      bigWordTagInfo {
+        tags {
+          tagName
+          tagColor
+        }
+      }
+      createTime
+      updateTime
+      status
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SaveDocumentGQL extends Apollo.Mutation<SaveDocumentMutation, SaveDocumentMutationVariables> {
+    document = SaveDocumentDocument;
+    
+  }
+export const DeleteDocumentDocument = gql`
+    mutation deleteDocument($docId: String!) {
+  doc {
+    delete(docId: $docId)
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteDocumentGQL extends Apollo.Mutation<DeleteDocumentMutation, DeleteDocumentMutationVariables> {
+    document = DeleteDocumentDocument;
     
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation, ElementRef } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { ActivatedRoute } from '@angular/router';
-import { DocService, Doc } from 'src/app/services/doc.service';
+import { DocService,Doc } from 'src/app/services/doc.service';
 import { stringify } from 'querystring';
 import { QuillViewHTMLComponent, QuillEditorComponent } from 'ngx-quill';
 import  * as stemmer   from 'stemmer';
@@ -198,7 +198,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
     await loading.present();
 
-    this.docService.save(this.doc.title, this.doc.content, this.TaggedWordInfo, this.doc.id, this.docId).subscribe(async ({data})=>{
+    this.docService.save(this.doc, this.TaggedWordInfo, ).subscribe(async ({data})=>{
       let alert = await this.toastCtrl.create({
         message: "Doc Added!",
         duration:2000,
@@ -233,23 +233,36 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
     if(!data)data = this.docId;
 
-    this.docService.get(data, taggedWord).subscribe(async ({data:{document:{giveItToMe} }}:any) => {
+    this.docService.get(data).subscribe(async ({data:{document:{giveItToMe} }}:any) => {
 
       var doc  = {...giveItToMe.document};
 
       console.log('spread doc is:', doc);
 
-      this.doc.content = giveItToMe.document.content;
-      this.doc.wordsCount = giveItToMe.document.wordsCount;
-      this.doc.createDate = giveItToMe.document.createDate;
-      this.doc.updateDate = giveItToMe.document.updateDate;
-      this.doc.id = giveItToMe.document.id;
-      this.doc.title = giveItToMe.document.title;
-      this.doc.docId = giveItToMe.document.docId;
-      
+      //user editing the content, just request content updating
+      if(data != this.docId){
+        this.doc.content = giveItToMe.document.content;
+        this.doc.wordsCount = giveItToMe.document.wordsCount;
+        this.doc.updateDate = giveItToMe.document.updateDate;
+        
+      }else{
+        this.doc.content = giveItToMe.document.content;
+        this.doc.wordsCount = giveItToMe.document.wordsCount;
+        this.doc.updateDate = giveItToMe.document.updateDate;
+
+        this.doc.createDate = giveItToMe.document.createDate;
+        this.doc.id = giveItToMe.document.id;
+        this.doc.title = giveItToMe.document.title;
+        this.doc.docId = giveItToMe.document.docId;
+        this.doc.url = giveItToMe.document.url;
+      }
+
+
       this.doc.wordTagInfo = giveItToMe.smallWordTagInfo;
+      
       // this.tags = giveItToMe.smallWordTagInfo.tags;
       
+      //put unsaved taginfos together
       giveItToMe.smallWordTagInfo.wti.forEach((element) => {
         var word = stemmer(element.word);
 

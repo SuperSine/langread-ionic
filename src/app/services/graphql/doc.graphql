@@ -62,6 +62,7 @@ query giveItToMe($content:String!){
         createDate,
         updateDate,
         title,
+        url,
         wordsCount
       }
       smallWordTagInfo{
@@ -99,5 +100,65 @@ query getStats{
       tagCount
       tagWordCount
     }
+  }
+}
+
+mutation removeTag($word:String!, $tagName:String!){
+  wti{
+    remove(word:$word, tagName:$tagName)
+  }
+}
+
+
+mutation saveDocument($title:String!, $content:String!, $wordTagLiteStr:String!, $id:String, $docId:String, $url:String){
+  doc{
+    save(document:{
+      title:$title,
+      content:$content,
+      id:$id,
+      docId:$docId,
+      url:$url
+    }, wordTagLiteStr:$wordTagLiteStr){
+      document{
+      docId,
+      id,
+      content,
+      createDate,
+      updateDate,
+      title,
+      wordsCount,
+      url
+    }
+    smallWordTagInfo{
+      wti{
+        wordInfos{
+          tag{
+            tagName
+          }
+          count
+        }
+        word
+      }
+      tags{
+        tagName
+        tagColor
+      }
+    }
+    bigWordTagInfo{
+      tags{
+        tagName
+        tagColor
+      }
+    }
+    createTime
+    updateTime
+    status
+    }
+  }
+}
+
+mutation deleteDocument($docId:String!){
+  doc{
+    delete(docId:$docId)
   }
 }

@@ -1,162 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { GetStatsDocument } from '../graphql-components';
-
-const DeleteDocGql = gql`
-  mutation($docId:String!){
-    doc{
-      delete(docId:$docId)
-    }
-  }
-`;
-
-const SaveDocGql = gql`
-  mutation($title:String!, $content:String!, $wordTagLiteStr:String!, $id:String, $docId:String){
-    doc{
-      save(document:{
-        title:$title,
-        content:$content,
-        id:$id,
-        docId:$docId
-      }, wordTagLiteStr:$wordTagLiteStr){
-        document{
-        docId,
-        id,
-        content,
-        createDate,
-        updateDate,
-        title,
-        wordsCount
-      }
-      smallWordTagInfo{
-        wti{
-          wordInfos{
-            tag{
-              tagName
-            }
-            count
-          }
-          word
-        }
-        tags{
-          tagName
-          tagColor
-        }
-      }
-      bigWordTagInfo{
-        tags{
-          tagName
-          tagColor
-        }
-      }
-      createTime
-      updateTime
-      status
-      }
-    }
-  }
-`;
-
-const UserGetDocGql = gql`
-  query($docId:String!){
-    document{
-      get(docId:$docId){
-        document{
-          docId,
-          id,
-          content,
-          createDate,
-          updateDate,
-          title
-        }
-        smallWordTagInfo{
-          wti{
-            wordInfos{
-              tag{
-                id
-                tagName
-              }
-              count
-            }
-            word
-          }
-          tags{
-            id
-            tagName
-            tagColor
-          }
-        }
-        bigWordTagInfo{
-          tags{
-            id
-            tagName
-            tagColor
-          }
-        }
-        createTime
-        updateTime
-        status
-      }
-    }
-  }
-`;
-
-const UserTagListGql = gql`
-  query($pageSize:String!, $lastId:String!, $keywords:String){
-    document{
-      list(limit:$pageSize,lastId:$lastId, keywords:$keywords){
-        id,
-        docId,
-        title,
-        content,
-        createDate
-      }
-    }
-  }
-`;
-
-const GiveItToMeGql = gql`
-query($content:String!){
-  document{
-    giveItToMe(content:$content){
-			document{
-        docId,
-        id,
-        content,
-        createDate,
-        updateDate,
-        title,
-        wordsCount
-      }
-      smallWordTagInfo{
-        wti{
-          wordInfos{
-            tag{
-              tagName
-            }
-            count
-          }
-          word
-        }
-        tags{
-          tagName
-          tagColor
-        }
-      }
-      bigWordTagInfo{
-        tags{
-          tagName
-          tagColor
-        }
-      }
-      createTime
-      updateTime
-      status
-    }
-  }
-}
-`;
+import { GetStatsDocument,GiveItToMeDocument, GetDocumentDocument, GetDocumentsDocument, SaveDocumentDocument, DeleteDocumentDocument } from '../graphql-components';
 
 export interface Doc {
   id?:string,
@@ -187,7 +32,7 @@ export class DocService {
 
   list(limit:string, lastId:string="", keywords:string=""){
     return this.getApollo.watchQuery({
-      query:UserTagListGql,
+      query:GetDocumentsDocument,
       variables:{
         pageSize:limit,
         lastId,
@@ -196,45 +41,44 @@ export class DocService {
     });
   }
 
-  get(content:string, wordTagLiteStr:any=null){
+  get(content:string){
     return this.getApollo.query({
-      query: GiveItToMeGql,
+      query: GiveItToMeDocument,
       variables:{
-        content,
-        wordTagLiteStr:JSON.stringify(wordTagLiteStr)
+        content
       }
     });
   }
 
-  save(title:string, content:string, wordTagLiteStr:any=null, id:string, docId:string){
+  save(doc:Doc,wordTagLiteStr:any=null){
     return this.getApollo.mutate({
-      mutation:SaveDocGql,
+      mutation:SaveDocumentDocument,
       variables:{
-        title,
-        content,
-        id,
-        docId,
-        wordTagLiteStr:JSON.stringify(wordTagLiteStr)
+        title:doc.title,
+        content:doc.content,
+        id:doc.id,
+        docId:doc.docId,
+        wordTagLiteStr:JSON.stringify(wordTagLiteStr),
+        url:doc.url
       },
       update: (cache, {data:{doc:save}}:any) => {
+        console.log('returned data is:', save);
+
         let result:any  = cache.readQuery({
-          query:GiveItToMeGql,
+          query:GiveItToMeDocument,
           variables:{
-            content:docId,
-            wordTagLiteStr:JSON.stringify(wordTagLiteStr)
+            content:doc.docId
           }
         });
 
         console.log('cached data is:', result);
-        console.log('returned data is:', save);
 
         result.document.giveItToMe = save.save
 
         cache.writeQuery({
-          query:GiveItToMeGql,
+          query:GiveItToMeDocument,
           variables:{
-            content:docId,
-            wordTagLiteStr:JSON.stringify(wordTagLiteStr)
+            content:doc.docId
           },
           data:result
         })
@@ -246,7 +90,7 @@ export class DocService {
 
   delete(docId:string){
     return this.getApollo.mutate({
-      mutation:DeleteDocGql,
+      mutation:DeleteDocumentDocument,
       variables:{
         docId
       }

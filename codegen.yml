@@ -1,7 +1,7 @@
 generates:
   ./src/app/graphql-components.ts:
     schema: 
-      - "./schema.graphql"
+      - "./core-schema.graphql"
       - "./auth-schema.graphql"
     documents: src/app/services/graphql/*.graphql
     plugins:

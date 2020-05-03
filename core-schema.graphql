@@ -48,6 +48,7 @@ input DocumentInputType {
   content: String!
   id: String = null
   docId: String = null
+  url: String = null
 }
 
 type DocumentQueryType {
@@ -79,12 +80,13 @@ type DocumentQueryType {
 
 type DocumentType {
   content: String!
-  createDate: Date!
+  createDate: DateTime
   docId: String!
   id: String!
   status: Int!
   title: String!
-  updateDate: Date!
+  updateDate: DateTime
+  url: String
   wordsCount: Int!
 }
 
@@ -121,6 +123,7 @@ scalar Milliseconds
 type Mutation {
   doc: Doc
   tag: TagMutation
+  wti: WordTagInfoMutation
 }
 
 type PronunciationType {
@@ -240,11 +243,11 @@ type WordProfileType {
 
 type WordTagDocumentCleanType {
   bigWordTagInfo: WordTagInfoCleanType
-  createTime: Date!
+  createTime: DateTime
   document: DocumentType
   smallWordTagInfo: WordTagInfoCleanType
   status: Int!
-  updateTime: Date!
+  updateTime: DateTime
 }
 
 type WordTagInfo {
@@ -259,6 +262,10 @@ type WordTagInfoCleanType {
   tags: [TagType]
   updateDate: Date!
   wti: [WordInfoCleanType]
+}
+
+type WordTagInfoMutation {
+  remove(word: String!, tagName: String!): Boolean
 }
 
 type WordTagStaticsType {

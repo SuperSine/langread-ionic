@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { TimelineValueByMonthType } from '../graphql-components';
+import { TimelineValueByMonthType, RemoveTagDocument } from '../graphql-components';
 
 const WordProfileGql = gql`
   query($word:String!){
@@ -121,7 +121,15 @@ export class WordService {
     return this.apollo.use("core");
   }
 
-
+  remove(word:string,tagName:string){
+    return this.Apollo.mutate({
+      mutation: RemoveTagDocument,
+      variables:{
+        word,
+        tagName
+      }
+    });
+  }
 
   async profile(word:string):Promise<any>{
     var profile = await this.Apollo.query({

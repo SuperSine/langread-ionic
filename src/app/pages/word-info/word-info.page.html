@@ -63,7 +63,7 @@
       <ion-list-header>Tags</ion-list-header>
       <ion-card>
         <ion-card-content>
-          <word-tag-info *ngFor="let item of wordProfile.wordInfo" [tag]="item.tag" [displayValue]="item.count" (click)="openTagEditor(item.tag)"></word-tag-info>
+          <word-tag-info *ngFor="let item of wordProfile.wordInfo" [tag]="item.tag" [displayValue]="item.count" (tagClick)="openTagEditor(item.tag)"  (close)="tagRemove(item.tag)"></word-tag-info>
         </ion-card-content>
       </ion-card>
     </ion-list>

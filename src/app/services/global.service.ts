@@ -36,6 +36,13 @@ export class GlobalService {
     }));
   }
 
+  tip(messages:string[]){
+    messages.forEach(msg => this.publishToast({
+      duration:2000,
+      message:msg
+    }));
+  }
+
   publishToast(options:ToastOptions){
     this.toastSubject.next(options);
   }

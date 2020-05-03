@@ -14,14 +14,25 @@ export class WordTagInfoComponent implements OnInit {
   displayValue:string;
 
   @Output()
-  onTouch: EventEmitter<Tag> = new EventEmitter();
+  close: EventEmitter<Tag> = new EventEmitter();
+
+  @Output()
+  tagClick:EventEmitter<Tag> = new EventEmitter();
+
+  showClose:boolean = false;
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.showClose = this.close.observers.length >= 1;
+  }
 
-  touching(event){
-    this.onTouch.emit(this.tag);
+  closing(event){
+    this.close.emit(this.tag);
+  }
+
+  tagClicking(event){
+    this.tagClick.emit(this.tag);
   }
 
 }

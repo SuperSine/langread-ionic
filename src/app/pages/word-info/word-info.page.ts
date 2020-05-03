@@ -30,6 +30,24 @@ export class WordInfoPage implements OnInit {
 
   }
 
+  tagRemove(tag){
+    this.wordProfileService.remove(this.word, tag.tagName).subscribe((result)=>{
+      if(result.errors && result.errors.length > 0){
+        this.globalService.throwError(result.errors.map(item=>item));
+        return;
+      }else{
+        var index = this.wordProfile.wordInfo.findIndex((item)=>item.tag.tagName == tag.tagName);
+        this.wordProfile.wordInfo.splice(index,1);
+
+        this.globalService.tip(['Tag Deleted']);
+      }
+
+
+    })
+
+
+  }
+
   openTagEditor(data){
     this.modalCtrl.create({
       component: TagEditorPage,

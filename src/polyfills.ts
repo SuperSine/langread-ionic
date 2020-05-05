@@ -52,7 +52,9 @@
  *
  */
 
-import './zone-flags.ts';
+//https://stackoverflow.com/questions/60182031/src-zone-flags-ts-is-missing-from-the-typescript-compilation-after-upgrading-to
+
+import './zone-flags';
 
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.

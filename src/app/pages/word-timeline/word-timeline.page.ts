@@ -15,10 +15,10 @@ const WordCloud = require('wordcloud');
 })
 export class WordTimelinePage implements OnInit {
 
-  @ViewChild(IonInfiniteScroll,{static:false}) 
+  @ViewChild(IonInfiniteScroll, {static:false}) 
   infiniteScroll: IonInfiniteScroll;
 
-  @ViewChild("htmlCanvas",{static:false})
+  @ViewChild("htmlCanvas", {static:false})
   private htmlCanvas: ElementRef;
 
   private lastId:string='';

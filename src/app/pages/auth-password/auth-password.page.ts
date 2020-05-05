@@ -5,6 +5,7 @@ import {takeUntil, map, mergeMap, retry, switchMap, startWith, tap, mapTo } from
 import { AuthService } from 'src/app/services/auth.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-auth-password',
@@ -13,7 +14,9 @@ import { Router } from '@angular/router';
 })
 export class AuthPasswordPage implements OnInit {
 
-  constructor(private router:Router, private globalService:GlobalService, private authService:AuthService, private formBuilder:FormBuilder) { 
+  constructor(private router:Router, private globalService:GlobalService, 
+            private authService:AuthService, private formBuilder:FormBuilder,
+            private translate:TranslateService) { 
     this.passwordForm = formBuilder.group({
       password:[
         '', 
@@ -26,8 +29,9 @@ export class AuthPasswordPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.counter = 0;
+    this.lang = await this.translate.get("auth-password").toPromise();
   }
 
   changePassword(event){
@@ -73,7 +77,8 @@ export class AuthPasswordPage implements OnInit {
     });
   }
 
-  private passwordForm:FormGroup;
-  private youCanClick:boolean = true;
-  private counter:number;
+  public passwordForm:FormGroup;
+  public youCanClick:boolean = true;
+  public counter:number;
+  public lang:any;
 }

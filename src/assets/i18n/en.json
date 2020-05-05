@@ -1,0 +1,153 @@
+{
+  "appMenu":{
+    "docs" : "Docs",
+    "words" : "Words",
+    "tags" : "Tags",
+    "document-title": "Document",
+    "tags-title":"Tags",
+    "timeline-title":"Timeline",
+    "profile-title":"Profile",
+    "logout":"Logout"
+  },
+  "app-profile":{
+    "profile-title":"Profile",
+    "logout":"LOGOUT",
+    "title-info":"Info",
+    "title-account":"Account",
+    "label-firstname":"First Name",
+    "label-lastname":"Last Name",
+    "label-username":"User Name",
+    "label-changeemail":"Change Email",
+    "label-changepassword":"Change Password"
+  },
+  "auth-confirm":{
+    "confirmEmail":"Please enter 6 digits code to confirm your email",
+    "send":"Send",
+    "reSend":"Resend",
+    "displayDesc":"Here are some description of the Display Langauge",
+    "targetDesc":"Here are some description of the Target Langauge",
+    "displayLabel":"Display Language",
+    "targetLabel":"Target Language",
+    "incorrectCode":"Verify code incorrect!",
+    "confirm":"Confirm"
+  },
+  "auth-email":{
+    "title":"Change Email",
+    "emailAddress":"Update your email",
+    "emailTaken":"Email has been taken!",
+    "next":"Next"
+  },
+  "auth-login":{
+    "title":"Login",
+    "email":"Email",
+    "password":"Password",
+    "signInDesc":"Sign in to continue",
+    "forgotPassword":"Forgot Password?",
+    "signIn":"Sign In",
+    "signUp":"Sign Up"
+  },
+  "auth-password":{
+    "title":"Change Password",
+    "send":"Send",
+    "reSend":"Resend",
+    "confirmCode":"Enter 6-digits code here",
+    "confirmPassword":"Enter your new password",
+    "change":"Change"
+  },
+  "auth-register":{
+    "title":"Title",
+    "createDesc":"Create your account!",
+    "email":"Email",
+    "emailTaken":"Email has been taken!",
+    "create":"Create",
+    "cancel":"Cancel"
+  },
+  "auth-totp":{
+    "email":"Email",
+    "confirmCode":"Enter 6-digits code here",
+    "send":"Send",
+    "reSend":"Resend",
+    "login":"Login",
+    "totpIncorrect":"One password incorrect!"
+  },
+  "doc-editor":{
+    "backHeader":"Confirm!",
+    "backMessage":"Document has been changed, do you wanna save??",
+    "backCancel":"Cancel",
+    "backNo":"No",
+    "backYes":"Yes",
+    "actionSave":"Save",
+    "actionCancel":"Cancel",
+    "waitMsg":"Please wait...",
+    "successMsg":"Content Added!"
+  },
+  "doc-info":{
+    "title":"Title",
+    "url":"Url",
+    "created":"Created",
+    "updated":"Updated",
+    "words":"Words",
+    "tags":"Tags"
+  },
+  "doc-list":{
+    "add":"Add Document!",
+    "deleted":"Document Deleted!",
+    "delete": "Delete",
+    "cancel": "Cancel"
+  },
+  "profile-editor":{
+    "title":"Edit Profile",
+    "profileCard": "Profile",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "userName": "User Name",
+    "languageCard": "Language",
+    "displayLabel":"Display",
+    "targetLabel":"Dictionary",
+    "darkMode":"Dark Mode",
+    "save":"Save"
+  },
+  "tag-editor":{
+    "title":"Edit Tag",
+    "tagName":"Tag Name",
+    "tagFont":"Tag Font",
+    "tagColor":"Tag Color",
+    "save":"Save",
+    "updatedMsg":"Tag Updated!",
+    "addMsg":"Tag Added!",
+    "chartTrends": "Trend",
+    "chartMonth":"Month",
+    "chartCount":"Count"
+  },
+  "tag-list":{
+    "title":"Tags",
+    "addTag":"Add Tag",
+    "createTag":"Create",
+    "createDate":"Created at",
+    "deleteTag":"Delete",
+    "deleteHeader":"Confirm!",
+    "deleteConfirmMessage":"Are you sure to delete this tag?",
+    "deleteConfirm":"Okay",
+    "deleteCancel":"Cancel",
+    "deleteMsg":"Tag Deleted!"
+  },
+  "tag-picker":{
+    "title":"Tag Picker",
+    "pickHeader":"Pick Tags for '{{word}}'"
+  },
+  "word-info":{
+    "tagHeader":"Tags",
+    "trendHeader":"Trends",
+    "translateHeader":"Translation",
+    "searchWord":"Search {{word}} in documents",
+    "tagDeleteMsg":"Tag Deleted!",
+    "chartTrends": "Trends of {{word}}",
+    "chartMonth":"Month",
+    "chartCount":"Count"
+  },
+  "word-timeline":{
+    "title":"Timeline",
+    "timelineLabel":"Timeline",
+    "topmostLabel":"Topmost"
+  }
+}

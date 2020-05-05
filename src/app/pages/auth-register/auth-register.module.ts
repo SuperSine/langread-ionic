@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AuthRegisterPageRoutingModule } from './auth-register-routing.module';
 
 import { AuthRegisterPage } from './auth-register.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { AuthRegisterPage } from './auth-register.page';
     FormsModule,
     IonicModule,
     AuthRegisterPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule.forChild()
   ],
   declarations: [AuthRegisterPage]
 })

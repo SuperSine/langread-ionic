@@ -18,8 +18,8 @@ import { CheckEmailValidator } from './check-email-validator';
 })
 export class AuthRegisterPage implements OnInit {
   public registerForm : FormGroup;
-  private clickSubject = new  BehaviorSubject<boolean>(null);
-  private youCanClick:boolean;
+  public clickSubject = new  BehaviorSubject<boolean>(null);
+  public youCanClick:boolean;
   
   constructor(private checkEmailValidtor:CheckEmailValidator, public formBuilder: FormBuilder, private authService: AuthService, private toastCtrl: ToastController, private route: Router,private globalService:GlobalService) {
     this.registerForm = formBuilder.group({

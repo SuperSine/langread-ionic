@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Edit Tag</ion-title>
+    <ion-title>{{lang?.title}}</ion-title>
     <ion-buttons slot="end">
       <ion-button color="medium" (click)="close()">
         <ion-icon slot="icon-only" name="arrow-down"></ion-icon>
@@ -13,18 +13,18 @@
   <form [formGroup]="editorForm">
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
       <ion-item>
-        <ion-label position="stacked">Tag Name</ion-label>
+        <ion-label position="stacked">{{lang?.tagName}}</ion-label>
         <ion-input required formControlName="tagname"></ion-input>
       </ion-item>    
       <ion-item>
-        <ion-label position="floating">Tag Font</ion-label>
+        <ion-label position="stacked">{{lang?.tagFont}}</ion-label>
         <ion-select required [ngStyle]="{'font-family': editorForm.value.tagfont}" [ngClass]="fontService.prefix + editorForm.value.tagfont" okText="Okay" formControlName="tagfont">
-          <ion-select-option  [ngStyle]="{'font-family': item.font_family}" *ngFor="let item of fontList"  (click)="selected=item.font_family" [value]="item.font_family">{{item.font_family}}</ion-select-option>
+          <ion-select-option  [ngStyle]="{'font-family': item.font_family}" *ngFor="let item of fontList"   [value]="item.font_family">{{item.font_family}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
         <ion-input formControlName="tagcolor" style="display:none;"></ion-input>
-        <ion-label position="stacked">Tag Color</ion-label>
+        <ion-label position="stacked">{{lang?.tagColor}}</ion-label>
         <ion-row class="tagColors">
           <color-circle circleSize='35' [color]='tagColor' [colors]='colorList' (onChangeComplete)="changeComplete($event)"></color-circle>
         </ion-row>
@@ -49,7 +49,7 @@
     </ion-list>
 
     <ion-button color="realgreen" [disabled]="!editorForm.valid"  expand="block" (click)="save()">
-      Save
+      {{lang?.save}}
     </ion-button>
   </form>
 

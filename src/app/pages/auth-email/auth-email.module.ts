@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AuthEmailPageRoutingModule } from './auth-email-routing.module';
 
 import { AuthEmailPage } from './auth-email.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { AuthEmailPage } from './auth-email.page';
     FormsModule,
     IonicModule,
     AuthEmailPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule.forChild()
   ],
   declarations: [AuthEmailPage]
 })

@@ -5,34 +5,24 @@ import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController, ToastCont
 import { runInThisContext } from 'vm';
 import { Router, ActivatedRoute } from '@angular/router';
 import {DocumentType} from '../../graphql-components';
-
+import {environment} from 'src/environments/environment';
+import { GlobalService } from 'src/app/services/global.service';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-doc-list',
   templateUrl: './doc-list.page.html',
   styleUrls: ['./doc-list.page.scss'],
 })
 export class DocListPage implements OnInit {
-  @ViewChild(IonInfiniteScroll,{static:false}) 
-  infiniteScroll: IonInfiniteScroll;
 
-  @ViewChild(IonContent, {static:false})
-  ionContent: IonContent;
-  
-  private urlReg:RegExp = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm;
-
-  private iconName:string = "add";
-  private lastId:string;
-  private queryRef:QueryRef<any>;
-  private docList:DocumentType[];
-  private isScrollButtonHidden:boolean = true;
-  private userContent:string = '';
-  private defaultWord:string = '';
 
   constructor(private toastCtrl:ToastController, 
               private docService:DocService,
               private actionSheetCtrl: ActionSheetController, 
               private router: Router,
-              private activatedRoute:ActivatedRoute) { 
+              private activatedRoute:ActivatedRoute,
+              private globalService:GlobalService,
+              private translate:TranslateService) { 
                 this.defaultWord = activatedRoute.snapshot.paramMap.get('defaultWord');
                 console.log(this.defaultWord)
               }
@@ -48,13 +38,7 @@ export class DocListPage implements OnInit {
       console.log(this.docList);
       if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
     }, async (err)=>{
-      let alert = await this.toastCtrl.create({
-        message: err.message,
-        duration:2000,
-        color:"danger"
-      });
-      alert.present();
-
+        this.globalService.throwError([err]);
     });
   }
 
@@ -64,13 +48,14 @@ export class DocListPage implements OnInit {
     this.lastId = '';
     this.docList = [];
 
-    this.list('10', this.lastId, keywords);
+    this.list(environment.pageSize, this.lastId, keywords);
 
   }
 
-  ngOnInit() {
-    this.list('10',this.lastId, this.defaultWord);
+  async ngOnInit() {
+    this.list(environment.pageSize,this.lastId, this.defaultWord);
 
+    this.lang = await this.translate.get("doc-list").toPromise();
   }
 
   onDocClick(item){
@@ -79,16 +64,11 @@ export class DocListPage implements OnInit {
   }
 
   onRefresh(event){
-    this.docService.list('10').refetch().then((result) => {
+    this.docService.list(environment.pageSize).refetch().then((result) => {
       console.log('refetch complete!', result);
       event.target.complete();
     }, async (err)=>{
-      let alert = await this.toastCtrl.create({
-        message: err.message,
-        duration:2000,
-        color:"danger"
-      });
-      alert.present();
+      this.globalService.throwError([err]);
 
       event.target.complete();
 
@@ -117,12 +97,7 @@ export class DocListPage implements OnInit {
     });
 
     this.docService.delete(item.docId).subscribe(async ({data:{doc}}:any) => {
-      let toast = await this.toastCtrl.create({
-        message: 'Document Deleted!',
-        duration:2000,
-        color:"green"
-      });
-      toast.present();
+      this.globalService.tip(this.lang.deleted);
     });
 
   }
@@ -137,12 +112,20 @@ export class DocListPage implements OnInit {
   }
 
   loadData(event){
-    this.docService.list('10', this.lastId).valueChanges.subscribe((result) => {
-      var newList = ((result.data) as any).document.list;
-      this.docList = this.docList.concat(newList);
-      console.log('merged docList',this.docList);
-      this.lastId = newList.slice(-1)[0].id;
 
+    this.docService.list(environment.pageSize, this.lastId).valueChanges.subscribe((result) => {
+      
+      var newList = ((result.data) as any).document.list;
+      
+      if(newList.length >= 1){
+
+        
+        this.docList = this.docList.concat(newList);
+        console.log('merged docList',this.docList);
+        this.lastId = newList.slice(-1)[0].id;
+        
+      }
+      
       this.infiniteScroll.complete();
 
       console.log('the last id is:', this.lastId);
@@ -153,7 +136,7 @@ export class DocListPage implements OnInit {
     console.log('item clicked', item);
     const actionSheet = await this.actionSheetCtrl.create({
       buttons:[{
-        text:'Delete',
+        text:this.lang.delete,
         role:'destructive',
         icon:'trash',
         handler:()=>{
@@ -162,7 +145,7 @@ export class DocListPage implements OnInit {
         }
       },
       {
-        text:'Cancel',
+        text:this.lang.cancel,
         icon:'close',
         role:'cancel',
         handler:()=>{
@@ -173,4 +156,22 @@ export class DocListPage implements OnInit {
 
     await actionSheet.present();
   }
+
+  @ViewChild(IonInfiniteScroll,{static:false}) 
+  public infiniteScroll: IonInfiniteScroll;
+
+  @ViewChild(IonContent, {static:false})
+  public ionContent: IonContent;
+  
+  public urlReg:RegExp = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm;
+
+  public iconName:string = "add";
+  public lastId:string;
+  public queryRef:QueryRef<any>;
+  public docList:DocumentType[];
+  public isScrollButtonHidden:boolean = true;
+  public userContent:string = '';
+  public defaultWord:string = '';
+
+  public lang:any;
 }

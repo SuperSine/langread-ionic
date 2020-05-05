@@ -12,6 +12,7 @@ import { PickDirective } from 'src/app/directives/pick.directive';
 import { TagPickerPageModule } from '../tag-picker/tag-picker.module';
 import { DocInfoPageModule } from '../doc-info/doc-info.module';
 import { UniqueTagsPipe } from 'src/app/pipes/unique-tags.pipe';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { UniqueTagsPipe } from 'src/app/pipes/unique-tags.pipe';
         syntax: true
       }
     }),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule.forChild()
   ],
   declarations: [UniqueTagsPipe,DocEditorPage, PickDirective ]
 })

@@ -39,7 +39,8 @@ export class GlobalService {
   tip(messages:string[]){
     messages.forEach(msg => this.publishToast({
       duration:2000,
-      message:msg
+      message:msg,
+      color:"green"
     }));
   }
 

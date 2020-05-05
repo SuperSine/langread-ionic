@@ -8,6 +8,7 @@ import { WordTimelinePageRoutingModule } from './word-timeline-routing.module';
 
 import { WordTimelinePage } from './word-timeline.page';
 import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.
     FormsModule,
     IonicModule,
     WordTimelinePageRoutingModule,
-    LangreadComponentsModule
+    LangreadComponentsModule,
+    TranslateModule
   ],
   declarations: [WordTimelinePage]
 })

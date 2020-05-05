@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Change Email</ion-title>
+    <ion-title>{{'auth-email.title' | translate}}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
@@ -15,13 +15,13 @@
     <form [formGroup]="emailForm" style="width: 90%;">
     <ion-item >
       <ion-icon slot="start" color="lightgrey" name="mail"></ion-icon>
-      <ion-input type="text" formControlName="email"  placeholder="Update your email"></ion-input>
+      <ion-input type="text" formControlName="email"  [placeholder]="'auth-email.emailAddress' | translate"></ion-input>
       <ion-icon [style.display]="(!isEmailTaken() && emailForm.valid)? 'block' : 'none'"  name="checkmark-done-outline" color="green"></ion-icon>
 
     </ion-item>
     <span class="error ion-padding" *ngIf="emailForm.controls.email.hasError('emailInUser')">
       <ion-text  color="danger" slot="end">
-        Email has been taken!
+        {{'auth-email.emailTaken' | translate}}
       </ion-text>
     </span>
     <!-- <ion-item *ngIf="isEmailTaken()">
@@ -30,7 +30,7 @@
 
 
     <ion-button name="updateEmail" expand="block" [disabled]="!emailForm.valid || !youCanClick" (click)="updateEmail($event)">
-      Next
+      {{'auth-email.next' | translate}}
     </ion-button>
     </form>
   </ion-list>

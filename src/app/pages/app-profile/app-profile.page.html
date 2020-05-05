@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-menu-button slot="start"></ion-menu-button>
-    <ion-title>Profile</ion-title>
+    <ion-title>{{'app-profile.profile-title' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +13,7 @@
         </ion-avatar>
         <ion-label>
             <h3>{{(userDetail | async)?.firstname}}</h3>
-            <p (click)="logout()">LOGOUT</p>
+            <p (click)="logout()">{{'app-profile.logout' | translate}}</p>
  
           </ion-label>
     
@@ -24,16 +24,16 @@
   <ion-card class="info-card">
       <ion-list>
           <ion-list-header>
-              Info
+              {{'app-profile.title-info' | translate}}
             </ion-list-header>
           <ion-item href="#" routerLink="/profile-editor">
-              <ion-label>First Name: {{user?.firstName}} </ion-label>
+              <ion-label>{{'app-profile.label-firstname' | translate}}: {{user?.firstName}} </ion-label>
             </ion-item>
             <ion-item href="#" routerLink="/profile-editor">
-              <ion-label>Last Name: {{user?.lastName}}</ion-label>
+              <ion-label>{{'app-profile.label-lastname' | translate}}: {{user?.lastName}}</ion-label>
             </ion-item>
             <ion-item href="#" routerLink="/profile-editor">
-              <ion-label>User Name: {{user?.userName}}</ion-label>
+              <ion-label>{{'app-profile.label-username' | translate}}: {{user?.userName}}</ion-label>
             </ion-item>            
 
       </ion-list>
@@ -44,13 +44,13 @@
   <ion-card class="info-card">
       <ion-list>
           <ion-list-header>
-              Account
+              {{'app-profile.title-account' | translate}}
             </ion-list-header>
               <ion-item href="#" routerLink="/auth-email">
-                  <ion-label>Change Email</ion-label>
+                  <ion-label>{{'app-profile.label-changeemail' | translate}}</ion-label>
              </ion-item>
              <ion-item href="#" routerLink="/auth-password">
-              <ion-label>Change Password</ion-label>
+              <ion-label>{{'app-profile.label-changepassword' | translate}}</ion-label>
          </ion-item>
         </ion-list>
   </ion-card>

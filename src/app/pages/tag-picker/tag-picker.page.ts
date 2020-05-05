@@ -8,13 +8,7 @@ import { ColorService } from 'src/app/services/color.service';
   styleUrls: ['./tag-picker.page.scss'],
 })
 export class TagPickerPage implements OnInit {
-  private bigTags:any[];
-  private smallTags:any[];
-  private word:string;
-  private info:any[];
-  private count:number;
-  private searchTagName:any;
-  private isChanged:boolean;
+
 
   constructor(private modalCtrl: ModalController,private colorService: ColorService) { }
 
@@ -22,9 +16,13 @@ export class TagPickerPage implements OnInit {
     console.log(this.word, this.info, this.bigTags);
     this.isChanged = false;
     // this.count = this.info[0].count;
+
+    this.translateParams = {
+      word:this.word
+    }
   }
 
-  close(){
+  close(event){
     this.info.splice(0, this.info.length);
 
     this.bigTags.filter((value) => value.selected).forEach((tag)=>{
@@ -37,15 +35,25 @@ export class TagPickerPage implements OnInit {
     this.modalCtrl.dismiss(this.isChanged);
   }
 
-  onItemSelected(){
+  onItemSelected(event){
     this.isChanged = true;
   }
 
-  onSearch(){
+  onSearch(event){
     var searchTagName = this.searchTagName
     this.bigTags.forEach(tag => {
       const isVisible =  tag.tagName.toLowerCase().indexOf(searchTagName) > -1;
       tag.hide = !isVisible;
     })
   }
+
+  public bigTags:any[];
+  public smallTags:any[];
+  public word:string;
+  public info:any[];
+  public count:number;
+  public searchTagName:any;
+  public isChanged:boolean;
+
+  public translateParams:any;
 }

@@ -5,6 +5,8 @@ import { ColorService } from 'src/app/services/color.service';
 import { FontService } from 'src/app/services/font.service';
 import { TagsService } from 'src/app/services/tags.service';
 import { Chart } from 'chart.js';
+import { TranslateService } from '@ngx-translate/core';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-tag-editor',
@@ -12,26 +14,14 @@ import { Chart } from 'chart.js';
   styleUrls: ['./tag-editor.page.scss']
 })
 export class TagEditorPage implements OnInit {
-  public editorForm: FormGroup;
-  private fontList:any;
 
-  private id:string;
-  private tagColor:string;
-  private oldTagName:string;
-  private tagName:string;
-  private tagFont:string;
-  private selectColor:string;
-  private queryRef:any;
-  private colorList:any[];
-
-  private chart:any;
-
-  @ViewChild('lineChart',{static:false}) 
-  private lineChart:ElementRef;
 
   constructor( private toastCtrl:ToastController, private tagService:TagsService, 
-               private fontService:FontService, public colorService: ColorService,
-               private modalController:ModalController, public formBuilder:FormBuilder) {
+               public fontService:FontService, public colorService: ColorService,
+               private modalController:ModalController, 
+               public formBuilder:FormBuilder,
+               private translate:TranslateService,
+               private globalService:GlobalService) {
     this.editorForm = formBuilder.group({
       tagname: ['', Validators.compose([Validators.required])],
       tagfont: ['', Validators.compose([Validators.required])],
@@ -40,6 +30,8 @@ export class TagEditorPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.lang = await this.translate.get('tag-editor').toPromise();
+
     this.fontList = this.fontService.getFontList;
 
     this.oldTagName = this.tagName;
@@ -93,22 +85,12 @@ export class TagEditorPage implements OnInit {
         tagFont:this.editorForm.get('tagfont').value,
         tagName:this.editorForm.get('tagname').value
       }).subscribe(async (result)=>{
-        let alert = await this.toastCtrl.create({
-          message: "Tag Updated!",
-          duration:2000,
-          color:"green"
-        });
-        alert.present();
+        this.globalService.tip([this.lang.updateMsg]);
 
         this.close();
 
       },async (err) => {
-        let alert = await this.toastCtrl.create({
-          message: err.message,
-          duration:2000,
-          color:"danger"
-        });
-        alert.present();
+        this.globalService.throwError([err]);
       })
     }else{
       this.tagService.add({
@@ -116,21 +98,12 @@ export class TagEditorPage implements OnInit {
         tagFont:this.editorForm.get('tagfont').value,
         tagName:this.editorForm.get('tagname').value
       }).subscribe(async (result)=>{
-        let alert = await this.toastCtrl.create({
-          message: "Tag Added!",
-          duration:2000,
-          color:"green"
-        });
-        alert.present();
+
+        this.globalService.tip([this.lang.addMsg]);
 
         this.close();
       },async (err) => {
-        let alert = await this.toastCtrl.create({
-          message: err.message,
-          duration:2000,
-          color:"danger"
-        });
-        alert.present();
+        this.globalService.throwError([err]);
       })
     }
   }
@@ -145,7 +118,7 @@ export class TagEditorPage implements OnInit {
       data:{
         labels: labels,
         datasets: [{
-          label: `Trends of ${this.tagName}`,
+          label: `'${this.tagName}' ` + this.lang.chartTrends,
           data: data,
           backgroundColor: 'rgb(38, 194, 129)',
           borderColor: 'rgb(38, 194, 129)',
@@ -156,10 +129,6 @@ export class TagEditorPage implements OnInit {
       },
       options: {
 				responsive: true,
-				title: {
-					display: true,
-					text: `Trends of ${this.tagName}`
-				},
 				tooltips: {
 					mode: 'index',
 					intersect: false,
@@ -173,14 +142,14 @@ export class TagEditorPage implements OnInit {
 						display: true,
 						scaleLabel: {
 							display: true,
-							labelString: 'Month'
+							labelString: this.lang.chartMonth
 						}
 					}],
 					yAxes: [{
 						display: true,
 						scaleLabel: {
 							display: true,
-							labelString: 'Value'
+							labelString: this.lang.chartCount
             },
             ticks: {
               stepSize: 100
@@ -190,4 +159,24 @@ export class TagEditorPage implements OnInit {
 			}
     })
   }
+
+  public editorForm: FormGroup;
+  public fontList:any;
+
+  public id:string;
+  public tagColor:string;
+  public oldTagName:string;
+  public tagName:string;
+  public tagFont:string;
+  
+  public selectColor:string;
+  public queryRef:any;
+  public colorList:any[];
+
+  public chart:any;
+
+  @ViewChild('lineChart', {static:false}) 
+  public lineChart:ElementRef;
+
+  public lang:any;
 }

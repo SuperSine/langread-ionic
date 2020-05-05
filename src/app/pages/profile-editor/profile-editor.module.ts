@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProfileEditorPageRoutingModule } from './profile-editor-routing.module';
 
 import { ProfileEditorPage } from './profile-editor.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { ProfileEditorPage } from './profile-editor.page';
     FormsModule,
     IonicModule,
     ProfileEditorPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule.forChild()
   ],
   declarations: [ProfileEditorPage]
 })

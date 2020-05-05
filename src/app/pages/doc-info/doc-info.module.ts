@@ -8,6 +8,7 @@ import { DocInfoPageRoutingModule } from './doc-info-routing.module';
 
 import { DocInfoPage } from './doc-info.page';
 import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.
     FormsModule,
     IonicModule,
     DocInfoPageRoutingModule,
-    LangreadComponentsModule
+    LangreadComponentsModule,
+    TranslateModule.forChild()
   ],
   declarations: [DocInfoPage]
 })

@@ -2,15 +2,15 @@
 
   <ion-toolbar>
     <ion-menu-button slot="start"></ion-menu-button>
-    <ion-title>Timeline</ion-title>
+    <ion-title>{{'word-timeline.title' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-segment  value="Timeline" (ionChange)="segmentChanged($event)">
-  <ion-segment-button href="#dogs" value="Timeline">
-    <ion-label>Timeline</ion-label>
+  <ion-segment-button value="Timeline">
+    <ion-label>{{'word-timeline.timelineLabel' | translate}}</ion-label>
   </ion-segment-button>
-  <ion-segment-button href="#cats" value="Topmost">
-    <ion-label>Topmost</ion-label>
+  <ion-segment-button value="Topmost">
+    <ion-label>{{'word-timeline.topmostLabel' | translate}}</ion-label>
   </ion-segment-button>
 </ion-segment>
 
@@ -48,7 +48,7 @@
       <ng-container *ngIf="this.timelineItems.words.length == 0">
         <ion-list>
           
-          <ion-item *ngFor="let number of [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]">
+          <ion-item *ngFor="let number of [].constructor(20)">
             <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
           </ion-item>
           

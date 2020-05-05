@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 export class AuthLoginPage implements OnInit {
 
   public loginForm: FormGroup;
-  private loginWaiting:boolean = false;
+  public loginWaiting:boolean = false;
 
   constructor(private route: Router, private alertCtrl: ToastController, public formBuilder: FormBuilder, public apollo: Apollo, private authService:AuthService) {
     this.loginForm = formBuilder.group({

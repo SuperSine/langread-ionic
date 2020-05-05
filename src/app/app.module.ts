@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import {TagEditorPageModule} from '../app/pages/tag-editor/tag-editor.module';
 import { GraphQLModule } from './graphql.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HttpClient } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { AuthService } from './services/auth.service';
 import { PickDirective } from './directives/pick.directive';
@@ -20,6 +20,14 @@ import { GlobalService } from './services/global.service';
 import { ColorService } from './services/color.service';
 import {UniqueDeviceID} from '@ionic-native/unique-device-id/ngx';
 import { CheckEmailValidator } from './pages/auth-register/check-email-validator';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+
+export function createTranslateLoader(http:HttpClient){
+  return new TranslateHttpLoader(http, './assets/i18n/','.json');
+}
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,7 +44,14 @@ import { CheckEmailValidator } from './pages/auth-register/check-email-validator
     FormsModule, 
     ReactiveFormsModule,
     TagEditorPageModule,
-    HttpClientModule
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader:{
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     StatusBar,

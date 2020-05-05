@@ -5,6 +5,7 @@ import {takeUntil, map, mergeMap, retry, switchMap, startWith, tap, mapTo } from
 import { AuthService } from 'src/app/services/auth.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-auth-totp',
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class AuthTotpPage implements OnInit {
 
-  constructor(private router:Router, private globalService:GlobalService, private authService:AuthService, private formBuilder:FormBuilder) { 
+  constructor(private translate:TranslateService, private router:Router, private globalService:GlobalService, private authService:AuthService, private formBuilder:FormBuilder) { 
     this.loginForm = formBuilder.group({
       email:[
         '', 
@@ -26,8 +27,9 @@ export class AuthTotpPage implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.counter = 0;
+    this.lang = await this.translate.get('auth-totp').toPromise();
   }
 
   login(event){
@@ -48,7 +50,7 @@ export class AuthTotpPage implements OnInit {
       }else{
         this.youCanClick = result;
         if(result)
-          this.globalService.throwError([{message:'Totp Code incorrect!'}]);
+          this.globalService.throwError([{message:this.lang.totpIncorrect}]);
       }
     });
   }
@@ -60,14 +62,14 @@ export class AuthTotpPage implements OnInit {
 
   startCountDown(event){
     const source = interval(1000);
-    const example = source.pipe(
+    const countDown = source.pipe(
       map(val => {
         return 30-val;
       }),
       takeUntil(timer(32000))
       );
       
-    const subscribe = example.subscribe({
+    const subscribe = countDown.subscribe({
       next: val => {
         this.counter = val;
         console.log(val)
@@ -76,7 +78,8 @@ export class AuthTotpPage implements OnInit {
     });
   }
 
-  private loginForm:FormGroup;
-  private youCanClick:boolean = true;
-  private counter:number;
+  public loginForm:FormGroup;
+  public youCanClick:boolean = true;
+  public counter:number;
+  public lang:any;
 }

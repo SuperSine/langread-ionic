@@ -60,7 +60,7 @@
       </ion-item>
 
 
-      <ion-list-header>Tags</ion-list-header>
+      <ion-list-header>{{lang?.tagHeader}}</ion-list-header>
       <ion-card>
         <ion-card-content>
           <word-tag-info *ngFor="let item of wordProfile.wordInfo" [tag]="item.tag" [displayValue]="item.count" (tagClick)="openTagEditor(item.tag)"  (close)="tagRemove(item.tag)"></word-tag-info>
@@ -69,7 +69,7 @@
     </ion-list>
 
     <ion-list>
-      <ion-list-header>Trends</ion-list-header>
+      <ion-list-header>{{lang?.trendHeader}}</ion-list-header>
       <ion-card>
         <ion-card-content>
           <canvas #lineChart></canvas>
@@ -80,7 +80,7 @@
     <ng-container *ngIf="wordProfile.dictResult">
 
       <ion-list>
-        <ion-list-header>Translation</ion-list-header>
+        <ion-list-header>{{lang?.translateHeader}}</ion-list-header>
         
         <ion-card *ngFor="let resultEntries of wordProfile.dictResult.results">
           <ng-container *ngFor="let lexicalEntry of resultEntries.lexicalEntries">
@@ -111,7 +111,7 @@
 
     
     <ion-list>
-      <ion-button expand="block" [routerLink]="['/doc-list',{defaultWord:wordProfile.word}]">Search "{{wordProfile.word}}" in documents</ion-button>
+      <ion-button expand="block" [routerLink]="['/doc-list',{defaultWord:wordProfile.word}]">{{lang?.searchWord}}</ion-button>
     </ion-list>
 
   </ng-container>
@@ -131,7 +131,7 @@
         <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
 
       </ion-item>
-      <ion-list-header>Tags</ion-list-header>
+      <ion-list-header>{{lang?.tagHeader}}</ion-list-header>
       <ion-card>
 
         <ion-card-content>
@@ -144,7 +144,7 @@
     </ion-list>
 
     <ion-list>
-      <ion-list-header>Translation</ion-list-header>
+      <ion-list-header>{{lang?.translateHeader}}</ion-list-header>
       <ion-card>
         <ion-card-content>
           <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>
@@ -158,7 +158,7 @@
     </ion-list>
 
     <ion-list>
-      <ion-list-header>Trends</ion-list-header>
+      <ion-list-header>{{lang?.trendHeader}}</ion-list-header>
       <ion-card>
         <ion-card-content>
           <ion-skeleton-text animated style="width:100%"></ion-skeleton-text>

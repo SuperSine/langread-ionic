@@ -4,6 +4,8 @@ import { runInThisContext } from 'vm';
 import { AuthService } from 'src/app/services/auth.service';
 import { DocService } from 'src/app/services/doc.service';
 import { WordTagStaticsType, UserType } from 'src/app/graphql-components';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-app-menu',
@@ -13,37 +15,42 @@ import { WordTagStaticsType, UserType } from 'src/app/graphql-components';
 export class AppMenuPage implements OnInit {
   private selectedPath:string = '';
 
-  private pages = [
+  public pages = [
     {
-      title:'Document',
+      title:'document-title',
       url:'/menu/doc-list',
       icon:'newspaper-outline'
     },
     {
-      title:'Tags',
+      title:'tags-title',
       url:'/menu/tag-list',
       icon:'pricetags-outline'
     },
     {
-      title:'Timeline',
+      title:'timeline-title',
       url:'/menu/word-timeline',
       icon:'pulse-outline'
     },
     {
-      title:'Profile',
+      title:'profile-title',
       url:'/menu/app-profile',
       icon:'person-outline'
     },    
   ];
 
-
-  constructor(private docService:DocService, private router:Router,private authService:AuthService) {
+  constructor(private translateService:TranslateService, private docService:DocService, private router:Router,private authService:AuthService) {
     this.router.events.subscribe((event:RouterEvent) => {
       if(event.url == '/login'){
         this.authService.logout();
       }
 
       this.selectedPath = event.url;
+    })
+
+    this.transSub = this.translateService.get('appMenu').subscribe(res => {
+      this.pages.forEach((item)=>{
+        item.title = res[item.title];
+      })
     })
    }
 
@@ -55,6 +62,12 @@ export class AppMenuPage implements OnInit {
     this.user = await this.authService.getUserObj();
   }
 
+  ngOnDestroy(){
+    this.transSub.unsubscribe();
+  }
+
   private stats: WordTagStaticsType
   private user: UserType
+
+  private transSub:Subscription;
 }

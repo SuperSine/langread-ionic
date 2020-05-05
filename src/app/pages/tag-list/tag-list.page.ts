@@ -7,6 +7,8 @@ import { Observable } from 'apollo-link';
 import { map, take } from 'rxjs/operators';
 import { ApolloQueryResult } from 'apollo-client';
 import { Subscription } from 'rxjs';
+import { GlobalService } from 'src/app/services/global.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -15,55 +17,41 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./tag-list.page.scss'],
 })
 export class TagListPage implements OnInit {
-  private tags: Tag[] = [];
-  private querySubscription: Subscription;
-  private queryRef:QueryRef<any>;
-  private selectedTag:{
-    tagName:string,
-    tagColor:string,
-    tagFont:string
+
+
+  constructor(private toastCtrl:ToastController, 
+              private alertController:AlertController, 
+              private modalController: ModalController, 
+              private tagsService: TagsService,
+              private globalService:GlobalService,
+              private translate:TranslateService) { 
   }
 
-  private searchBar:{tagName:string;} = {
-    tagName:""
-  };
-
-  constructor(private toastCtrl:ToastController, private alertController:AlertController, private modalController: ModalController, private tagsService: TagsService) { 
+  async ngOnInit() {
+    this.lang = await this.translate.get('tag-list').toPromise();
   }
 
-  ngOnInit() {
-
-  }
   async presentDeleteConfirm(tag) {
     const alert = await this.alertController.create({
-      header: 'Confirm!',
-      message: 'How you sure to delete this tag?',
+      header: this.lang.deleteHeader,
+      message: this.lang.deleteConfirmMessage,
       buttons: [
         {
-          text: 'Cancel',
+          text: this.lang.deleteCancel,
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
           }
         }, {
-          text: 'Okay',
+          text: this.lang.deleteConfirm,
           handler: () => {
             console.log('Confirm Okay');
             this.tagsService.delete(tag.tagName).subscribe(async (result)=>{
-              let alert = await this.toastCtrl.create({
-                message: "Tag Deleted!",
-                duration:2000,
-                color:"green"
-              });
-              alert.present();
+
+              this.globalService.tip([this.lang.deleteMsg]);
+
             },async(err)=>{
-              let alert = await this.toastCtrl.create({
-                message: err.message,
-                duration:2000,
-                color:"danger"
-              });
-              alert.present();
+              this.globalService.throwError([err]);
             })
           }
         }
@@ -111,4 +99,19 @@ export class TagListPage implements OnInit {
       event.target.complete();
     });
   }
+
+  public tags: Tag[] = [];
+  public querySubscription: Subscription;
+  public queryRef:QueryRef<any>;
+  public selectedTag:{
+    tagName:string,
+    tagColor:string,
+    tagFont:string
+  }
+
+  public searchBar:{tagName:string;} = {
+    tagName:""
+  };
+
+  public lang:any;
 }

@@ -1,0 +1,153 @@
+{
+  "appMenu": {
+    "docs": "文档",
+    "words": "单词",
+    "tags": "标签",
+    "document-title": "文档",
+    "tags-title": "标签",
+    "timeline-title": "单词时间轴",
+    "profile-title": "我的",
+    "logout": "注销"
+  },
+  "app-profile": {
+    "profile-title": "我的",
+    "logout": "LOGOUT",
+    "title-info": "信息",
+    "title-account": "帐户",
+    "label-firstname": "名字",
+    "label-lastname": "姓氏",
+    "label-username": "用户名",
+    "label-changeemail": "更改电子邮件",
+    "label-changepassword": "更改密码"
+  },
+  "auth-confirm": {
+    "confirmEmail": "请输入6位数字以确认您的电子邮件",
+    "send": "发送",
+    "reSend": "重新发送",
+    "displayDesc": "以下是Display Langauge的一些说明",
+    "targetDesc": "这里是对目标语言的一些描述",
+    "displayLabel": "显示语言",
+    "targetLabel": "目标语言",
+    "incorrectCode": "验证代码不正确！",
+    "confirm": "确认"
+  },
+  "auth-email": {
+    "title": "更改电子邮件",
+    "emailAddress": "更新您的电子邮件",
+    "emailTaken": "电子邮件已被接收！",
+    "next": "下一个"
+  },
+  "auth-login": {
+    "title": "登录",
+    "email": "电子邮件",
+    "password": "密码",
+    "signInDesc": "登录以继续",
+    "forgotPassword": "忘记密码了？",
+    "signIn": "登录",
+    "signUp": "注册"
+  },
+  "auth-password": {
+    "title": "更改密码",
+    "send": "发送",
+    "reSend": "重新发送",
+    "confirmCode": "在这里输入6位数代码",
+    "confirmPassword": "输入您的新密码",
+    "change": "更改"
+  },
+  "auth-register": {
+    "title": "标题",
+    "createDesc": "创建您的帐户！",
+    "email": "电子邮件",
+    "emailTaken": "电子邮件已被接收！",
+    "create": "创建",
+    "cancel": "取消"
+  },
+  "auth-totp": {
+    "email": "电子邮件",
+    "confirmCode": "在这里输入6位数代码",
+    "send": "发送",
+    "reSend": "重新发送",
+    "login": "登录",
+    "totpIncorrect": "一个密码不正确！"
+  },
+  "doc-editor": {
+    "backHeader": "确认！",
+    "backMessage": "文档已更改,您要保存吗？",
+    "backCancel": "取消",
+    "backNo": "否",
+    "backYes": "是",
+    "actionSave": "保存",
+    "actionCancel": "取消",
+    "waitMsg": "请稍候...",
+    "successMsg": "内容已添加！"
+  },
+  "doc-info": {
+    "title": "标题",
+    "url": "网址",
+    "created": "创建时间",
+    "updated": "更新时间",
+    "words": "单词",
+    "tags": "标签"
+  },
+  "doc-list": {
+    "add": "添加文档！",
+    "deleted": "文档已删除！",
+    "delete": "删除",
+    "cancel": "取消"
+  },
+  "profile-editor": {
+    "title": "编辑我的",
+    "profileCard": "我的",
+    "firstName": "名字",
+    "lastName": "姓氏",
+    "userName": "用户名",
+    "languageCard": "语言",
+    "displayLabel": "显示",
+    "targetLabel": "字典",
+    "darkMode": "暗黑模式",
+    "save": "保存"
+  },
+  "tag-editor": {
+    "title": "编辑标签",
+    "tagName": "标签名称",
+    "tagFont": "标签字体",
+    "tagColor": "标签颜色",
+    "save": "保存",
+    "updatedMsg": "标签已更新！",
+    "addMsg": "添加标签！",
+    "chartTrends": "趋势",
+    "chartMonth": "月",
+    "chartCount": "计数"
+  },
+  "tag-list": {
+    "title": "标签",
+    "addTag": "添加标签",
+    "createTag": "创建",
+    "createDate": "创建于",
+    "deleteTag": "删除",
+    "deleteHeader": "确认！",
+    "deleteConfirmMessage": "您确定要删除此标签吗？",
+    "deleteConfirm": "好",
+    "deleteCancel": "取消",
+    "deleteMsg": "标签已删除！"
+  },
+  "tag-picker": {
+    "title": "标签选择器",
+    "pickHeader": "选择'{{word}}'的标签"
+  },
+  "word-info": {
+    "tagHeader": "标签",
+    "trendHeader": "趋势",
+    "translateHeader": "翻译",
+    "searchWord": "在文档中搜索{{word}}",
+    "tagDeleteMsg": "标签已删除！",
+    "chartTrends": "{{word}}的趋势",
+    "chartMonth": "月",
+    "chartCount": "计数"
+  },
+  "word-timeline": {
+    "title": "单词时间轴",
+    "timelineLabel": "单词时间轴",
+    "topmostLabel": "最高记录"
+  }
+}

@@ -20,7 +20,7 @@
   </ion-toolbar>
 
 </ion-header>
-<!-- <div app-pick>pick me</div> -->
+
 <ion-content  name="edit" [hidden]="mode == DocMode.Edit ? true : false" >
   <form [formGroup]="form">
     <quill-editor #htmlEditor   formControlName="html"  format="html" contenteditable="true"> 
@@ -47,7 +47,8 @@
   </form>
 </ion-content>
 
-<ion-content name="read" scrollEvents="true" (ionScroll)="onScroll($event)" [hidden]="mode == DocMode.Read ? true : false" [ngClass]="showTags ? 'bookMarkToggled':''">
+<ion-content name="read" scrollEvents="true" (ionScroll)="onScroll($event)" [hidden]="mode == DocMode.Read ? true : false" 
+            [ngClass]="showTags ? 'bookMarkToggled':''">
   <div class="test horizontal-scroll">
     <ion-chip *ngFor="let tag of tags | uniqueTags" [class.selected]='selectedValue === tag.tagName' (click)='onChooseTagClick(tag);selectedValue=tag.tagName;'>
       <ion-avatar>

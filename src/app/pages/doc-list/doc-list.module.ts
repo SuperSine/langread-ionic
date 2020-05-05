@@ -8,6 +8,7 @@ import { DocListPageRoutingModule } from './doc-list-routing.module';
 
 import { DocListPage } from './doc-list.page';
 import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.
     FormsModule,
     IonicModule,
     DocListPageRoutingModule,
-    LangreadComponentsModule
+    LangreadComponentsModule,
+    TranslateModule.forChild()
   ],
   declarations: [DocListPage]
 })

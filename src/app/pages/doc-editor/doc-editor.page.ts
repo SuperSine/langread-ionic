@@ -9,7 +9,6 @@ import { ColorService } from 'src/app/services/color.service';
 import { element } from 'protractor';
 import { ModalController, LoadingController, ActionSheetController, AlertController, ToastController } from '@ionic/angular';
 import { TagPickerPage } from '../tag-picker/tag-picker.page';
-import Mercury from "@postlight/mercury-parser";
 import { GlobalService } from 'src/app/services/global.service';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { DocInfoPage } from '../doc-info/doc-info.page';
@@ -17,6 +16,7 @@ import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { Subject } from 'rxjs';
 import { Observable } from 'apollo-link';
 import {CanDeactivateComponent} from '../../guards/quit-doc-editor.guard'
+import { TranslateService } from '@ngx-translate/core';
 
 export enum DocMode{
   Read,
@@ -30,29 +30,7 @@ export enum DocMode{
   encapsulation: ViewEncapsulation.None
 })
 export class DocEditorPage implements OnInit, CanDeactivateComponent {
-  private isToolbarHidden:boolean=false;
-  private mode: DocMode;
-  private showTags:boolean = false;
-  private docId:string;
-  private wti:any;
-  private stemmedWti:any;
-  private allTags:any[] = [];
-  private htmlRegEx:RegExp = /(<([^>]+)>|&(nbsp|amp|quot|lt|gt))/g;
-  private nonCharRegEx:RegExp = /--{1,}|[^A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]/g;
-  private getWordRegEx1:RegExp = /[\w\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]*/g;
-  private wordTagInfo:any;
-  private doc: Doc;
-  private isDocChanged:boolean;
-  private isGoingBack:boolean;
-  // private tags: any[];
 
-  private form: FormGroup;
-
-  @ViewChild("innerHtml",{static:true})
-  private innerHtml: ElementRef;
-
-  @ViewChild("htmlEditor", {static:false})
-  private htmlEditor: QuillEditorComponent;
 
   constructor(private toastCtrl:ToastController, private alertCtrl:AlertController, 
              private actionSheetCtrl: ActionSheetController, 
@@ -61,7 +39,9 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
              private modalCtrl:ModalController, 
              private activatedRoute:ActivatedRoute, 
              private docService:DocService, 
-             private colorService:ColorService) {
+             private colorService:ColorService,
+             private translate:TranslateService
+             ) {
     this.docId = activatedRoute.snapshot.paramMap.get('docId');
     this.wti = {};
     this.stemmedWti = {};
@@ -73,7 +53,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       html: new FormControl(this.doc.content)
     });
     
-
+    
   }
 
   goBack(e){
@@ -86,31 +66,28 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       if(!that.isDocChanged)return resolve(true);
 
       const alert = await this.alertCtrl.create({
-        header: 'Confirm!',
-        message: 'Document has been changed, do you wanna save??',
+        header: this.lang.backHeader,
+        message: this.lang.backMessage,
         buttons: [
             {
-              text: 'Cancel',
+              text: this.lang.backCancel,
               role: 'cancel',
               cssClass: 'secondary',
               handler: (blah) => {
                   resolve(false);
-                  console.log('Confirm Cancel: blah');
               }
             },
             {
-              text: 'No',
+              text: this.lang.backNo,
               handler: () => {
                   resolve(true);
-                  console.log('Confirm No');
               }
             },
             {
-              text: 'Yes',
+              text: this.lang.backYes,
               handler: () => {
                   this.saveDoc();
                   resolve(true);
-                  console.log('Confirm Okay');
               }
             }
         ]
@@ -156,16 +133,15 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
   async openActSheet(event){
-    console.log("action sheet opened!");
     const actionSheet = await this.actionSheetCtrl.create({
       buttons: [{
-        text: 'Save',
+        text: this.lang.actionSave,
         icon: 'save',
         handler: () => {
-          console.log('Share clicked');
+          console.log('Save clicked');
         }
       },  {
-        text: 'Cancel',
+        text: this.lang.actionCancel,
         icon: 'close',
         role: 'cancel',
         handler: () => {
@@ -193,14 +169,14 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
   async saveDoc(){
     const loading = await this.loadingCtrl.create({
-      message: "Please wait..."
+      message: this.lang.waitMsg
     });
 
     await loading.present();
 
     this.docService.save(this.doc, this.TaggedWordInfo, ).subscribe(async ({data})=>{
       let alert = await this.toastCtrl.create({
-        message: "Doc Added!",
+        message: this.lang.successMsg,
         duration:2000,
         color:"green"
       });
@@ -225,7 +201,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     if(!data && !this.docId)return;
 
     const loading = await this.loadingCtrl.create({
-      message: "Please wait..."
+      message: this.lang.waitMsg
     });
 
     await loading.present();
@@ -347,9 +323,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       },
       cssClass: 'from-bottom-modal'
     }).then(modal => {
-      modal.onDidDismiss().then((data)=>{
-        // console.log(this.doc);
-      })
+
       modal.present();
     });
   }
@@ -441,6 +415,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
   async ngOnInit() {
+    this.lang = await this.translate.get("doc-editor").toPromise();
+    
     this.mode = DocMode.Edit
     await this.getDoc();
   }
@@ -475,4 +451,31 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
     }
   }
+
+  public selectedValue:any;
+  public isToolbarHidden:boolean=false;
+  public mode: DocMode;
+  public showTags:boolean = false;
+  public docId:string;
+  public wti:any;
+  public stemmedWti:any;
+  public allTags:any[] = [];
+  public htmlRegEx:RegExp = /(<([^>]+)>|&(nbsp|amp|quot|lt|gt))/g;
+  public nonCharRegEx:RegExp = /--{1,}|[^A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]/g;
+  public getWordRegEx1:RegExp = /[\w\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]*/g;
+  public wordTagInfo:any;
+  public doc: Doc;
+  public isDocChanged:boolean;
+  public isGoingBack:boolean;
+  // public tags: any[];
+
+  public form: FormGroup;
+
+  @ViewChild("innerHtml",{static:true})
+  public innerHtml: ElementRef;
+
+  @ViewChild("htmlEditor",{static:false})
+  public htmlEditor: QuillEditorComponent;
+
+  public lang:any;
 }

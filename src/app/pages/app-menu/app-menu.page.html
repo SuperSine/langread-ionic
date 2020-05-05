@@ -16,17 +16,17 @@
     
             <ion-col size="4">
               <span>{{stats?.documentCount}}</span>
-              <p>Docs</p>
+              <p>{{ 'appMenu.docs' | translate }}</p>
             </ion-col>
     
             <ion-col size="4">   
               <span>{{stats?.tagWordCount}}</span>
-              <p>Words</p>
+              <p>{{ 'appMenu.words' | translate }}</p>
             </ion-col>
     
             <ion-col size="4">
               <span>{{stats?.tagCount}}</span>
-              <p>Tags</p>
+              <p>{{ 'appMenu.tags' | translate }}</p>
             </ion-col>
     
           </ion-row>
@@ -47,7 +47,7 @@
       <ion-item lines="full"  name="logout" routerLink="/login" routerDirection="root">
         <ion-icon name="log-out" slot="start"></ion-icon>
         <ion-label>
-          Logout
+          {{'appMenu.logout' | translate}}
         </ion-label>
       </ion-item>
     </ion-content>

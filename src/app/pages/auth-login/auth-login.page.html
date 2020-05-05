@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Login</ion-title>
+    <ion-title>{{'auth-login.title' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,30 +12,30 @@
     <ion-list lines="none">
       <ion-text color="dark">
         <h2 text-center class="ion-margin-bottom main-header7">
-          Sign in to continue
+          {{'auth-login.signInDesc' | translate}}
       </h2>
     </ion-text>
     <ion-item>
       <ion-icon slot="start" color="lightgrey" name="mail"></ion-icon>
-      <ion-input required  formControlName="email" type="email" placeholder="Email"></ion-input>
+      <ion-input required  formControlName="email" type="email" [placeholder]="'auth-login.email' | translate"></ion-input>
     </ion-item>
     
     <ion-item>
       <ion-icon slot="start" color="lightgrey" name="key"></ion-icon>
-      <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
+      <ion-input formControlName="password" type="password" placeholder="'auth-login.password' | translate"></ion-input>
     </ion-item>
     
     <ion-item>
-      <a routerLink="/auth-totp">Forgot Password?</a>
+      <a routerLink="/auth-totp">{{'auth-login.forgotPassword' | translate}}</a>
     </ion-item>
 
     <ion-button color="realgreen" expand="block" (click)="login()" [disabled]="!loginForm.valid && !loginWaiting">
-      Sign In
+      {{'auth-login.signIn' | translate}}
       <ion-spinner slot="end" [hidden]='!loginWaiting'></ion-spinner>
     </ion-button>
 
     <ion-button color="pink" expand="block" routerLink="/register">
-      Sign up
+      {{'auth-login.signUp' | translate}}
     </ion-button>
   </ion-list>
   

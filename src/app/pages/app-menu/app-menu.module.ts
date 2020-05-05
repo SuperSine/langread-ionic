@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { AppMenuPageRoutingModule } from './app-menu-routing.module';
 
 import { AppMenuPage } from './app-menu.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AppMenuPageRoutingModule
+    AppMenuPageRoutingModule,
+    TranslateModule.forChild()
   ],
   declarations: [AppMenuPage]
 })

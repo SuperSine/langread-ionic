@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { AuthLoginPageRoutingModule } from './auth-login-routing.module';
 
 import { AuthLoginPage } from './auth-login.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { AuthLoginPage } from './auth-login.page';
     IonicModule,
     AuthLoginPageRoutingModule,
     ReactiveFormsModule,
+    TranslateModule.forChild()
   ],
   declarations: [AuthLoginPage]
 })

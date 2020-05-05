@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { AuthConfirmPageRoutingModule } from './auth-confirm-routing.module';
 
 import { AuthConfirmPage } from './auth-confirm.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AuthConfirmPageRoutingModule
+    AuthConfirmPageRoutingModule,
+    TranslateModule
   ],
   declarations: [AuthConfirmPage]
 })

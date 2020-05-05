@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NavController, ModalController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import {TagEditorPage} from '../tag-editor/tag-editor.page'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-word-info',
@@ -13,20 +14,16 @@ import {TagEditorPage} from '../tag-editor/tag-editor.page'
   styleUrls: ['./word-info.page.scss'],
 })
 export class WordInfoPage implements OnInit {
-  private wordTrends:ValueByMonthType[];
-  private wordProfile: WordProfileType;
-  private wordColor:string;
-  private isPlaying:boolean=false;
 
-  @ViewChild('lineChart',{static:false}) 
-  private lineChart:ElementRef;
 
-  private chart:any;
-
-  word:string;
-
-  constructor(private modalCtrl:ModalController, private navCtrl:NavController, private wordProfileService:WordService, private globalService:GlobalService,private activatedRoute:ActivatedRoute) { 
+  constructor(private modalCtrl:ModalController, 
+              private navCtrl:NavController, 
+              private wordProfileService:WordService, 
+              private globalService:GlobalService,
+              private activatedRoute:ActivatedRoute,
+              private translate:TranslateService) { 
     this.word = activatedRoute.snapshot.paramMap.get('word');
+    
 
   }
 
@@ -132,7 +129,18 @@ export class WordInfoPage implements OnInit {
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+
+    const result = await this.translate.get(this.langKeys,{word:this.word}).toPromise();
+
+    Object.keys(result).forEach((key,i)=>{
+      var newKey = key.split('.')[1];
+
+      this.lang[newKey] = result[key];
+    })
+
+
     try{
       this.wordProfileService.profile(this.word).then((result)=>{
         this.wordProfile  = result.wti.profile;
@@ -185,20 +193,19 @@ export class WordInfoPage implements OnInit {
       data:{
         labels: labels,
         datasets: [{
-          label: `Trends of ${this.word}`,
+          label: this.lang.chartTrends,
           data: data,
           backgroundColor: 'rgb(38, 194, 129)',
           borderColor: 'rgb(38, 194, 129)',
           borderWidth: 1,
           fill:false,
-          
         }]
       },
       options: {
 				responsive: true,
 				title: {
 					display: true,
-					text: `Trends of ${this.word}`
+					text: this.lang.chartTrends
 				},
 				tooltips: {
 					mode: 'index',
@@ -213,14 +220,14 @@ export class WordInfoPage implements OnInit {
 						display: true,
 						scaleLabel: {
 							display: true,
-							labelString: 'Month'
+							labelString: this.lang.chartMonth
 						}
 					}],
 					yAxes: [{
 						display: true,
 						scaleLabel: {
 							display: true,
-							labelString: 'Value'
+							labelString: this.lang.chartCount
             },
             ticks: {
               stepSize: 50
@@ -230,5 +237,30 @@ export class WordInfoPage implements OnInit {
 			}
     })
   }
+
+  public wordTrends:ValueByMonthType[];
+  public wordProfile: WordProfileType;
+  public wordColor:string;
+  public isPlaying:boolean=false;
+
+  @ViewChild('lineChart', {static:false}) 
+  public lineChart:ElementRef;
+
+  public chart:any;
+
+  public word:string;
+
+  private langKeys:string[] = [
+    'word-info.tagHeader',
+    'word-info.trendHeader',
+    'word-info.translateHeader',
+    'word-info.searchWord',
+    'word-info.tagDeleteMsg',
+    'word-info.chartTrends',
+    'word-info.chartMonth',
+    'word-info.chartCount',
+  ]
+
+  public lang:any={};
 
 }

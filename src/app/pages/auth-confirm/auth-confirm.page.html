@@ -1,20 +1,60 @@
-<div>
-  <ion-list lines="full">
+<ion-content fullscreen class="ion-padding" scroll-y="false">
+<ion-slides #slides  pagger="true" scrollbar="true">
 
-    <section lines="none">
-      <ion-icon style="font-size:4em" name="mail-unread-outline"></ion-icon>
-      <ion-label><h2>Please enter 6 digits code to confirm your email</h2></ion-label>
-    </section>
-    <ion-item  class="ion-no-margin ion-no-padding">
-      <ion-icon slot="start" name="keypad-outline"></ion-icon>
-      <ion-input [(ngModel)]="verifycode"  name="verifycode" inputmode="numeric" type="number"></ion-input>
-      <ion-button color="secondary" (click)="sendVerify($event)" [disabled]="counter != 0">
-        {{counter == 0 ? 'Resend' : ['Resend(',counter,')'].join('')}}
-      </ion-button>
-    </ion-item>
+  <ion-slide>
 
-    <section>
-      <ion-button expand="block" color="primary" (click)="verify($event)" [disabled]="!youCanConfirm">Confirm</ion-button>
-    </section>
-  </ion-list>
-</div>
+    <ion-list lines="full">
+      
+      <section lines="none">
+        <ion-icon style="font-size:4em" name="mail-unread-outline"></ion-icon>
+        <ion-label><h2>{{ langs?.confirmEmail }}</h2></ion-label>
+      </section>
+      <ion-item  class="ion-no-margin ion-no-padding">
+        <ion-icon slot="start" name="keypad-outline"></ion-icon>
+        <ion-input [(ngModel)]="verifycode"  name="verifycode" inputmode="numeric" type="number"></ion-input>
+        <ion-button color="secondary" (click)="sendVerify($event)" [disabled]="counter != 0">
+          {{counter == 0 ? langs?.send : [langs?.reSend,'(',counter,')'].join('')}}
+        </ion-button>
+      </ion-item>
+      
+      <section>
+        <ion-button expand="block" color="primary" (click)="verify($event)" [disabled]="!youCanConfirm">{{langs?.confirm}}</ion-button>
+      </section>
+    </ion-list>
+    
+  </ion-slide>
+
+  <ion-slide>
+
+    <ion-list lines="full">
+
+      <section lines="none">
+        <ion-label>
+          <h2>{{ langs?.displayDesc }}</h2>
+        </ion-label>
+      </section>
+        <ion-item>
+          
+          <ion-label position="floating">{{langs?.displayLabel}}</ion-label>
+          <ion-select [(ngModel)]="data.displayLanguage" name="displayLanguage" ok-text="Okay">
+            <ion-select-option *ngFor="let item of displayLanguages" [value]="item.code">{{item.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        
+      <section lines="none">
+        <ion-label>
+          <h2>{{ langs?.targetDesc }}</h2>
+        </ion-label>
+      </section>
+      <ion-item>
+        <ion-label position="floating">{{langs?.targetLabel}}</ion-label>
+        <ion-select [(ngModel)]="data.targetLanguage"  name="targetLanguage" ok-text="Okay">
+          <ion-select-option *ngFor="let item of targetLanguages" [value]="item.code">{{item.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  
+</ion-slide>
+</ion-slides>
+</ion-content>

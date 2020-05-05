@@ -9,6 +9,7 @@ import { WordInfoPageRoutingModule } from './word-info-routing.module';
 import { WordInfoPage } from './word-info.page';
 import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 import { TagEditorPageModule } from '../tag-editor/tag-editor.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { TagEditorPageModule } from '../tag-editor/tag-editor.module';
     IonicModule,
     WordInfoPageRoutingModule,
     LangreadComponentsModule,
-    TagEditorPageModule
+    TagEditorPageModule,
+    TranslateModule.forChild()
   ],
   declarations: [WordInfoPage]
 })

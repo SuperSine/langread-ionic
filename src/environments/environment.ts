@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   pageSize:'10',
   avatarUrl:'http://localhost:81/api/v1/user/avatar',
+  buildInLanguages:['en','zh'],
   displayLanguages:[
     {
       code:"en",
@@ -21,24 +22,21 @@ export const environment = {
     }
   ],
   targetLanguages:[
+
     {
-      code:"en-us",
-      name:"American English"
+      code:"en",
+      name:"English"
     },
     {
-      code:"en-gb",
-      name:"British English"
-    },
-    {
-      code:"es-es",
+      code:"es",
       name:"Español"
     },
     {
-      code:"it-IT",
+      code:"it",
       name:"Italiano"
     },
     {
-      code:"de-DE",
+      code:"de",
       name:"Deutsch"
     }
 

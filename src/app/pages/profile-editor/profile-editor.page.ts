@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UserType } from 'src/app/graphql-components';
 import { Router } from '@angular/router';
 import {Location} from '@angular/common';
+import {environment} from 'src/environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile-editor',
@@ -16,11 +18,18 @@ import {Location} from '@angular/common';
 })
 export class ProfileEditorPage implements OnInit {
 
-  constructor(private router:Router,private authService:AuthService, private globalService:GlobalService, private formBuilder:FormBuilder) {
+  constructor(
+              private translate:TranslateService,
+              private router:Router,
+              private authService:AuthService, 
+              private globalService:GlobalService, 
+              private formBuilder:FormBuilder) {
     this.profileForm = formBuilder.group({
       firstName: ['', Validators.compose([Validators.minLength(3)])],
       lastName: ['', Validators.compose([Validators.minLength(3)])],
-      userName: ['', Validators.compose([Validators.minLength(3)])]
+      userName: ['', Validators.compose([Validators.minLength(3)])],
+      displayLanguage:['', Validators.compose([Validators.required])],
+      targetLanguage:['', Validators.compose([Validators.required])],
     });
   }
 
@@ -30,7 +39,9 @@ export class ProfileEditorPage implements OnInit {
     this.profileForm.patchValue({
       firstName:this.user.firstName,
       lastName:this.user.lastName,
-      userName:this.user.userName
+      userName:this.user.userName,
+      displayLanguage:this.user.displayLanguage,
+      targetLanguage:this.user.targetLanguage
     });
   }
 
@@ -42,6 +53,8 @@ export class ProfileEditorPage implements OnInit {
         if(!(typeof result == 'boolean')){
           let data = result.data.user.update;
           this.authService.saveUserObj(data);
+debugger;
+          this.translate.use(data.displayLanguage);
         };
 
         return result;
@@ -57,8 +70,11 @@ export class ProfileEditorPage implements OnInit {
 
   }
 
-  private profileForm:FormGroup;
-  private youCanClick:boolean = true;
-  private user:UserType;
+  public profileForm:FormGroup;
+  public youCanClick:boolean = true;
+  public user:UserType;
+
+  public displayLanguages:any[] = environment.displayLanguages;
+  public targetLanguages:any[] = environment.targetLanguages;
 
 }

@@ -1,79 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { TimelineValueByMonthType, RemoveTagDocument } from '../graphql-components';
-
-const WordProfileGql = gql`
-  query($word:String!){
-    wti{
-      profile(word:$word){
-        word,
-        score,
-        wordInfo{
-          tag{
-            tagName,
-            tagFont,
-            tagColor
-          }
-          count
-        }
-        dictResult{
-          results{
-            lexicalEntries{
-              language
-              lexicalCategory
-              entries{
-                senses{
-                  domains
-                  definitions
-                  examples
-                }
-              }
-              pronunciations{
-                phoneticNotation,
-                phoneticSpelling,
-                audioFile,
-                dialects
-              }
-            }
-            type
-          }
-        }
-        score
-      }
-    }
-
-    timeline{
-      wordByMonth(word:$word){
-        data{
-          total,
-          yearMonth{
-            year
-            month
-          }
-        }
-      }
-    }
-  }
-`;
-
-const TopmostGql = gql`
-  query($top:String){
-    wti{
-      topMost(top:$top){
-        word
-        score,
-        wordInfo{
-          tag{
-            tagFont
-            tagName
-            tagColor
-          }
-        }
-      }
-    }
-  }
-`;
+import { TimelineValueByMonthType, RemoveTagDocument, GetWordProfileDocument, GetTopmostDocument, WordProfileType } from '../graphql-components';
 
 const WordByMonthGql = gql`
   query($word:String!){
@@ -131,11 +59,12 @@ export class WordService {
     });
   }
 
-  async profile(word:string):Promise<any>{
+  async profile(word:string,lang:string):Promise<any>{
     var profile = await this.Apollo.query({
-      query:WordProfileGql,
+      query:GetWordProfileDocument,
       variables:{
-        word
+        word,
+        lang
       }
     }).toPromise<any>()
 
@@ -151,15 +80,15 @@ export class WordService {
     return profile.data;
   }
 
-  async topMost(top:number=500):Promise<any>{
-    var topMost = await this.Apollo.query({
-      query:TopmostGql,
+  async topMost(top:number=500):Promise<WordProfileType[]>{
+    var {data:{wti:{topMost}}} = await this.Apollo.query({
+      query:GetTopmostDocument,
       variables:{
         top
       }
     }).toPromise<any>();
 
-    return topMost.data.wti.topMost;
+    return topMost;
   }
 
   async wordByMonth(word:string):Promise<any>{

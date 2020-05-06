@@ -18,6 +18,12 @@ scalar DateTimeOffset
 
 scalar Decimal
 
+type DefinitionType {
+  description: String!
+  example: String
+  synonyms: [String]
+}
+
 type DictResultType {
   id: String!
   language: String!
@@ -90,6 +96,13 @@ type DocumentType {
   wordsCount: Int!
 }
 
+type EntryResultType {
+  meanings: [MeaningType]
+  origin: String
+  phonetic: String
+  word: String!
+}
+
 type EntryType {
   homographNumber: String!
   senses: [SenseType]
@@ -116,6 +129,11 @@ type LexicalEntryType {
 }
 
 scalar Long
+
+type MeaningType {
+  definitions: [DefinitionType]
+  partOfSpeech: String!
+}
 
 # The `Milliseconds` scalar type
 scalar Milliseconds
@@ -236,6 +254,7 @@ type WordInfoCleanType {
 
 type WordProfileType {
   dictResult: SearchResultType
+  entryResults: [EntryResultType]
   score: Float!
   word: String!
   wordInfo: [InfoCleanType]
@@ -253,7 +272,7 @@ type WordTagDocumentCleanType {
 type WordTagInfo {
   dict(word: String = null, lang: String = "en-us"): SearchResultType
   get: WordTagInfoCleanType
-  profile(word: String = null): WordProfileType
+  profile(word: String = null, sourceLang: String = null): WordProfileType
   topMost(top: String = "500"): [WordProfileType]
 }
 

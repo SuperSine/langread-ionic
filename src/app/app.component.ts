@@ -16,7 +16,7 @@ import { FontService } from './services/font.service';
 import { GlobalService } from './services/global.service';
 import { TranslateService } from '@ngx-translate/core';
 
-const buildInLang = ['en','zh'];
+
 
 @Component({
   selector: 'app-root',
@@ -35,9 +35,17 @@ export class AppComponent {
     private globalService:GlobalService,
     private translate: TranslateService
   ) {
-
     //app needs to check user has logged in or not
-    this.authService.getUserObj().then(()=>{
+    this.authService.getUserObj(true).then(async (user)=>{
+      const defaultLang = this.globalService.appLang;
+
+      this.translate.setDefaultLang(defaultLang);
+      if(user)
+        this.translate.use(user.displayLanguage);
+      else
+        this.translate.use(defaultLang);
+
+
       this.initializeApp();
       this.fontService.injectAll();
     });
@@ -47,6 +55,15 @@ export class AppComponent {
   }
 
   initializeApp() {
+
+    // Use matchMedia to check the user preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+    this.toggleDarkTheme(prefersDark.matches);
+    
+    // Listen for changes to the prefers-color-scheme media query
+    prefersDark.addListener((mediaQuery) => this.toggleDarkTheme(mediaQuery.matches));
+
     this.platform.ready().then(async () => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
@@ -57,12 +74,13 @@ export class AppComponent {
       console.log('the current platform is:',this.platform.platforms());
       console.log('the current uuid is:',uuid);
 
-      const lang = this.translate.getBrowserLang();;
-      // const lang = 'zh';
-      const defaultLang = buildInLang.indexOf(lang) != -1 ? lang : 'en';
 
-      this.translate.setDefaultLang(defaultLang);
-      this.translate.use(defaultLang);
     });
+  }
+
+
+  // Add or remove the "dark" class based on if the media query matches
+  toggleDarkTheme(shouldAdd) {
+    document.body.classList.toggle('dark', shouldAdd);
   }
 }

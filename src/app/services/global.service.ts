@@ -9,6 +9,8 @@ import Fingerprint2 from 'fingerprintjs2';
 import {pipe} from 'rxjs';
 import { Observable, from } from 'rxjs';
 import {map} from 'rxjs/operators'
+import { TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
 
 const {Device} = Plugins;
 
@@ -18,7 +20,10 @@ const {Device} = Plugins;
 export class GlobalService {
   private toastSubject = new Subject<ToastOptions>();
 
-  constructor( private http: HttpClient, private toastCtrl:ToastController) { }
+  constructor( 
+               private translate:TranslateService,
+               private http: HttpClient, 
+               private toastCtrl:ToastController) { }
 
   subscribeToast(){
     this.toastSubject.subscribe(async (options)=>{
@@ -51,6 +56,18 @@ export class GlobalService {
   getFingerprint = () => new Promise<any[]>((resolve) => {
     Fingerprint2.get((result, components) => resolve(result) )
   });
+
+
+  get appLang(){
+    const buildInLang = environment.buildInLanguages;
+    const lang = this.translate.getBrowserLang();
+
+
+    const defaultLang = buildInLang.indexOf(lang) != -1 ? lang : 'en';
+
+    return defaultLang;
+
+  }
 
   async getUuid(){
     var info = await Device.getInfo();

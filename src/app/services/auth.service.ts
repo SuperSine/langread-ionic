@@ -5,7 +5,7 @@ import { Observable } from 'apollo-link';
 import { Apollo, ApolloBase } from 'apollo-angular';
 import gql from 'graphql-tag';
 import {map} from 'rxjs/operators';
-import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL,SendVerifyDocument,UpdateEmailDocument,SendRestDocument,ChangePasswordDocument,LoginDocument, SendTotpDocument, VerifyCodeDocument, TokenPurpose, UpdateUserDocument, UpdateUserViewModelType } from '../graphql-components';
+import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL,SendVerifyDocument,UpdateEmailDocument,SendRestDocument,ChangePasswordDocument,LoginDocument, SendTotpDocument, VerifyCodeDocument, TokenPurpose, UpdateUserDocument, UpdateUserViewModelType,GetProfileDocument } from '../graphql-components';
 import { GlobalService } from './global.service';
 import { Plugins } from '@capacitor/core';
 import {TokenDocument} from '../graphql-components';
@@ -143,12 +143,40 @@ export class AuthService {
     return this._isAuthenticated.asObservable();
   }
 
-  async getUserObj(){
+  async getUserObj(refresh:boolean=false){
+
     let userData = (await Storage.get({key:T_USER_KEY})).value;
-    let userObj = JSON.parse(userData);
-    if(userObj != null)
-      this.setUserId(userObj.appId, userObj.appSecret);
-    else
+    let userObj:UserType = JSON.parse(userData);
+
+    if(userObj != null){
+      if(refresh){
+        this.getApollo.query({
+          query: GetProfileDocument,
+          variables:{
+            appId:userObj.appId,
+            appSecret:userObj.appSecret
+          }
+        }).subscribe(({data})=>{
+          
+          const {auth:{profile}}:any = data;
+          
+          userObj.displayLanguage = profile.displayLanguage;
+          userObj.targetLanguage = profile.targetLanguage;
+          userObj.email = profile.email;
+          userObj.emailConfirmed = profile.emailConfirmed;
+          userObj.firstName = profile.firstName;
+          userObj.lastName = profile.lastName;
+          userObj.phoneNumber = profile.phoneNumber;
+          userObj.userName = profile.userName;
+
+          this.saveUserObj(userObj);
+        })
+      }else{
+        this.setUserId(userObj.appId, userObj.appSecret);
+      }
+      
+
+    }else
       this._isAuthenticated.next(false);
 
     return userObj;
@@ -207,9 +235,10 @@ export class AuthService {
     return promise;
   }
 
-  signUpEx(email:string){
+  signUpEx(email:string, lang:string){
     let ref = this.register.mutate({
-      email
+      email,
+      displayLanguage:lang
     });
 
     return ref;
@@ -313,7 +342,6 @@ export class AuthService {
     }).toPromise();
 
     promise.then((result) => {
-      debugger;
       var data = result.data as any;
 
       this.saveUserObj(data.auth.auth);

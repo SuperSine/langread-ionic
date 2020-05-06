@@ -7,6 +7,7 @@ import { NavController, ModalController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import {TagEditorPage} from '../tag-editor/tag-editor.page'
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-word-info',
@@ -21,7 +22,8 @@ export class WordInfoPage implements OnInit {
               private wordProfileService:WordService, 
               private globalService:GlobalService,
               private activatedRoute:ActivatedRoute,
-              private translate:TranslateService) { 
+              private translate:TranslateService,
+              private authService:AuthService) { 
     this.word = activatedRoute.snapshot.paramMap.get('word');
     
 
@@ -134,6 +136,8 @@ export class WordInfoPage implements OnInit {
 
     const result = await this.translate.get(this.langKeys,{word:this.word}).toPromise();
 
+    const userObj = await this.authService.getUserObj();
+
     Object.keys(result).forEach((key,i)=>{
       var newKey = key.split('.')[1];
 
@@ -142,7 +146,7 @@ export class WordInfoPage implements OnInit {
 
 
     try{
-      this.wordProfileService.profile(this.word).then((result)=>{
+      this.wordProfileService.profile(this.word, userObj.targetLanguage).then((result)=>{
         this.wordProfile  = result.wti.profile;
         this.wordTrends = result.timeline.wordByMonth.data;
   

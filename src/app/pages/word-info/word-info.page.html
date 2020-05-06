@@ -77,12 +77,12 @@
       </ion-card>
     </ion-list>
 
-    <ng-container *ngIf="wordProfile.dictResult">
+    <ng-container *ngIf="wordProfile.entryResults">
 
       <ion-list>
         <ion-list-header>{{lang?.translateHeader}}</ion-list-header>
         
-        <ion-card *ngFor="let resultEntries of wordProfile.dictResult.results">
+        <!-- <ion-card *ngFor="let resultEntries of wordProfile.dictResult.results">
           <ng-container *ngFor="let lexicalEntry of resultEntries.lexicalEntries">
             <ion-card-header>
               <ion-card-subtitle>{{lexicalEntry.lexicalCategory}}</ion-card-subtitle>
@@ -103,6 +103,30 @@
               </li>
             </ol>
           </ion-card-content>
+        </ng-container>
+      </ion-card> -->
+
+      <ion-card *ngFor="let entryResult of wordProfile.entryResults">
+        <ng-container *ngFor="let meaning of entryResult.meanings">
+          <ion-card-header>
+            <ion-card-subtitle>{{meaning.partOfSpeech}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+          <ol class="eQJLDd" >
+            <li *ngFor="let definition of meaning.definitions">
+              <div style="display: block;">
+                <div style="margin-left: 20px;">
+                  <div class="XpoqFe">
+                    <div style="display:inline"><span>{{definition.description}}</span></div>
+                    <div class="vmod">
+                      <div class="vk_gy">"{{definition.example}}"</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ol>
+        </ion-card-content>
         </ng-container>
       </ion-card>
     </ion-list>

@@ -21,7 +21,12 @@ export class AuthRegisterPage implements OnInit {
   public clickSubject = new  BehaviorSubject<boolean>(null);
   public youCanClick:boolean;
   
-  constructor(private checkEmailValidtor:CheckEmailValidator, public formBuilder: FormBuilder, private authService: AuthService, private toastCtrl: ToastController, private route: Router,private globalService:GlobalService) {
+  constructor(private checkEmailValidtor:CheckEmailValidator, 
+            public formBuilder: FormBuilder, 
+            private authService: AuthService, 
+            private toastCtrl: ToastController, 
+            private route: Router,
+            private globalService:GlobalService) {
     this.registerForm = formBuilder.group({
       firstname: ['', Validators.compose([Validators.minLength(3)])],
       lastname: ['', Validators.compose([Validators.minLength(3)])],
@@ -34,6 +39,7 @@ export class AuthRegisterPage implements OnInit {
   }
 
   ngOnInit() {
+    const defaultLang = this.globalService.appLang;
     this.clickSubject.asObservable().pipe(
       // takeWhile((value) => {
       //   console.log('taking', value);
@@ -41,7 +47,7 @@ export class AuthRegisterPage implements OnInit {
       // }),
       filter((value) => {console.log('filting', value); return value == true;}),
       switchMap((event) => {
-        return this.authService.signUpEx(this.registerForm.get("email").value).pipe(
+        return this.authService.signUpEx(this.registerForm.get("email").value, defaultLang).pipe(
           catchError(err => { this.globalService.throwError(err.graphQLErrors); return of(true);}),
           tap((result:any)=>{
             console.log('tap result',result);
@@ -58,10 +64,10 @@ export class AuthRegisterPage implements OnInit {
       startWith(true)  
     ).subscribe(youCanClick =>{ 
     
-
-
       if(typeof youCanClick == 'boolean')
         this.youCanClick = youCanClick as boolean;
+      else
+      this.route.navigateByUrl('/');
 
       console.log('can you click?',youCanClick); 
     
@@ -71,20 +77,6 @@ export class AuthRegisterPage implements OnInit {
 
   register(event){
     this.clickSubject.next(this.youCanClick);
-    // this.authService.signUpEx(this.registerForm.get("email").value).subscribe((result)=>{
-    //   result.
-    // })
-    // console.log(this.registerForm.value);
-    // this.authService.signUpEx(this.registerForm.get("email").value).then((result) => {
-    //   this.route.navigateByUrl('/login');
-    // },async (err) => {
-    //   let alert = await this.toastCtrl.create({
-    //     message: err.message,
-    //     duration:2000,
-    //     color:"danger"
-    //   });
-    //   alert.present();
-    // })
   }
 
   isEmailTaken(): boolean {

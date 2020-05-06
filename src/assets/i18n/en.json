@@ -1,4 +1,8 @@
 {
+  "general":{
+    "selectOk":"Okay",
+    "selectCancel":"Nah"
+  },
   "appMenu":{
     "docs" : "Docs",
     "words" : "Words",

@@ -11,15 +11,16 @@ query login($email:String!, $password:String!){
   }
 }
 
-mutation register($email:String!){
+mutation register($email:String!, $displayLanguage:String!){
   user{
-    register(email:$email){
+    register(email:$email,displayLanguage:$displayLanguage){
       appId,
       appSecret,
       firstName,
       lastName,
       email,
-      token
+      token,
+      displayLanguage
     }
   }
 }
@@ -95,6 +96,8 @@ mutation updateUser($appId:String,$appSecret:String,$user:UpdateUserViewModelTyp
       appId
       appSecret
       token
+      displayLanguage
+      targetLanguage
     }
   }
 }

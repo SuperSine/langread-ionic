@@ -162,3 +162,75 @@ mutation deleteDocument($docId:String!){
     delete(docId:$docId)
   }
 }
+
+query getProfile($appId:String!, $appSecret:String!){
+  auth{
+    profile(appId:$appId,appSecret:$appSecret){
+      firstName
+      lastName
+      email
+      phoneNumber
+      userName
+      emailConfirmed
+      displayLanguage
+      targetLanguage
+    }
+  }
+}
+
+query getWordProfile($word:String!,$lang:String!){
+  wti{
+    profile(word:$word,sourceLang:$lang){
+      word
+      score
+      wordInfo{
+        tag{
+          tagFont
+          tagName
+          tagColor
+          id
+        }
+        count
+      }
+      entryResults{
+        origin
+        word
+        phonetic
+        meanings{
+          definitions{
+            description
+            example
+          }
+          partOfSpeech
+        }
+      }
+    }
+  }
+  timeline{
+    wordByMonth(word:$word){
+      data{
+        total,
+        yearMonth{
+          year
+          month
+        }
+      }
+    }
+  }  
+}
+
+query getTopmost($top:String){
+  wti{
+    topMost(top:$top){
+      word
+      score,
+      wordInfo{
+        tag{
+          tagFont
+          tagName
+          tagColor
+        }
+      }
+    }
+  }
+}

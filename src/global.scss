@@ -28,6 +28,8 @@
 @import '~quill/dist/quill.core.css';
 @import '~quill/dist/quill.snow.css';
 
+@import './assets/dark.css';
+
 .from-middle-modal .modal-wrapper {
   height: 450px;
   width: 380px;
@@ -98,7 +100,6 @@ fieldset{
 }
 
 .info-card{
-  background-color: #fff;
   padding: 10px 15px 25px 15px;
   border-radius: 0px  !important;
   // remove shadow //

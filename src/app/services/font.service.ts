@@ -13,7 +13,7 @@ export class FontService {
   injectFont(font:any){
     let css = 
     `${this.prefix}${font.font_family} {
-      font-family: '${font.font_family} !important';
+      font-family: ${font.font_family} !important;
       font-style: '${font.font_style}';
       font-weight: '${font.font_weight}';
     }
@@ -28,7 +28,6 @@ export class FontService {
 
   injectAll(){
     FontList.forEach((font) => {
-      console.log(font);
       this.injectFont(font);
     })
   }

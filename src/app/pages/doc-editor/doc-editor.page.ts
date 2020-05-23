@@ -311,7 +311,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
   }
 
-  openDocInfo(){
+  openDocInfo(event){
     console.log('data pass to doc-info:', this.doc, this.TaggedWordInfo);
 
     this.modalCtrl.create({

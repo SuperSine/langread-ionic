@@ -54,7 +54,7 @@ export class AuthPasswordPage implements OnInit {
     });
   }
 
-  sendReset(){
+  sendReset($event){
     this.authService.sendRest();
     this.startCountDown(null);
   }

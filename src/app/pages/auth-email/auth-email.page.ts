@@ -48,6 +48,6 @@ export class AuthEmailPage implements OnInit {
     return this.emailForm.get('email').hasError('emailInUser');
   }
 
-  private emailForm:FormGroup;
-  private youCanClick:boolean = true;
+  public emailForm:FormGroup;
+  public youCanClick:boolean = true;
 }

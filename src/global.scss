@@ -91,13 +91,23 @@ fieldset{
 }
 
 //******** bottom  ***********//
-.from-bottom-modal .modal-wrapper {
-  height: 80%;
-  
-  top: 20%;
-  position: absolute; 
-  display: block;  
+
+
+.from-bottom-modal {
+  ion-backdrop{
+    z-index: 15;
+    
+  }
+  .modal-wrapper {
+    height: 80%;
+    
+    top: 20%;
+    position: absolute;
+    z-index: 20;
+  }
 }
+
+
 
 .info-card{
   padding: 10px 15px 25px 15px;

@@ -5,18 +5,18 @@
     <ion-title>{{'word-timeline.title' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-segment  value="Timeline" (ionChange)="segmentChanged($event)">
-  <ion-segment-button value="Timeline">
-    <ion-label>{{'word-timeline.timelineLabel' | translate}}</ion-label>
-  </ion-segment-button>
-  <ion-segment-button value="Topmost">
-    <ion-label>{{'word-timeline.topmostLabel' | translate}}</ion-label>
-  </ion-segment-button>
-</ion-segment>
+
 
 
 <ion-content>
-
+  <ion-segment  value="Timeline" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="Timeline">
+      <ion-label>{{'word-timeline.timelineLabel' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Topmost">
+      <ion-label>{{'word-timeline.topmostLabel' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
   <div [style.display]="currentSegment == 'Topmost' ? 'inline':'none'" >
     <ion-item [hidden]="topList == null">
@@ -25,8 +25,8 @@
         <ion-label slot="end" size="small" name="contrast">1000</ion-label>
       </ion-range>
     </ion-item>
-    <div  id="canvasContainer">
 
+    <div  id="canvasContainer">
       <ion-spinner name="dots" [hidden]="topList != null"></ion-spinner>
       <div class="canvas" style="width:100%;height:90%;" #htmlCanvas [hidden]="topList == null" (click)="onCanvasClick($event)"></div>
     </div>
@@ -42,10 +42,10 @@
     <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="onRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <app-no-content *ngIf="timelineItems && timelineItems.words == 0">
+    <app-no-content *ngIf="timelineItems?.words.length == 0">
     </app-no-content>
     <ion-list>
-      <ng-container *ngIf="this.timelineItems.words.length == 0">
+      <ng-container *ngIf="!timelineItems">
         <ion-list>
           
           <ion-item *ngFor="let number of [].constructor(20)">
@@ -54,7 +54,7 @@
           
         </ion-list>
       </ng-container>
-      <ion-row *ngFor="let word of this.timelineItems.words" class="ion-activatable">
+      <ion-row *ngFor="let word of timelineItems?.words" class="ion-activatable">
         
         <ion-item style="width: 100%;" [routerLink]="['/word-info',{word:word}]"> 
           <ng-container >

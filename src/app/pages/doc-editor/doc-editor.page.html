@@ -1,7 +1,7 @@
 <ion-header style="z-index: 400;">
   <ion-toolbar [hidden]="isToolbarHidden">
     <ion-buttons slot="start" [hidden]="mode == DocMode.Edit ? false : true">
-      <ion-back-button color="dark" defaultHref=""></ion-back-button>
+      <ion-back-button defaultHref=""></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="primary">
       <ion-button color="dark" (click)="onModeChange($event)">

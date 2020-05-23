@@ -13,7 +13,6 @@ import { Observable, Subscription } from 'rxjs';
   styleUrls: ['./app-menu.page.scss'],
 })
 export class AppMenuPage implements OnInit {
-  private selectedPath:string = '';
 
   public pages = [
     {
@@ -38,7 +37,10 @@ export class AppMenuPage implements OnInit {
     },    
   ];
 
-  constructor(private translateService:TranslateService, private docService:DocService, private router:Router,private authService:AuthService) {
+  constructor(private translateService:TranslateService, 
+              private docService:DocService, 
+              private router:Router,
+              public authService:AuthService) {
     this.router.events.subscribe((event:RouterEvent) => {
       if(event.url == '/login'){
         this.authService.logout();
@@ -66,8 +68,9 @@ export class AppMenuPage implements OnInit {
     this.transSub.unsubscribe();
   }
 
-  private stats: WordTagStaticsType
-  private user: UserType
+  public stats: WordTagStaticsType
+  public user: UserType
 
-  private transSub:Subscription;
+  public transSub:Subscription;
+  public selectedPath:string;
 }

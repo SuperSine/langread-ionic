@@ -11,8 +11,9 @@ h2{
 }
 
 :host{
-  height: 100%;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  height: 80vh;
+
 }

@@ -72,7 +72,7 @@ export class AuthConfirmPage implements OnInit {
     });
   }
 
-  sendVerify(){
+  sendVerify($event){
     this.authService.sendVerify();
     this.startCountDown(null);
   }

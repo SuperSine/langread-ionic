@@ -16,7 +16,7 @@
       </ion-item>
       <ion-item class="ion-no-margin ion-no-padding">
         <ion-icon slot="start" name="keypad-outline"></ion-icon>
-        <ion-input [(ngModel)]="code" formControlName="code"  name="code" inputmode="numeric" type="number" [placeholder]="lang?.confirmCode"></ion-input>
+        <ion-input formControlName="code"  name="code" inputmode="numeric" type="number" [placeholder]="lang?.confirmCode"></ion-input>
         <ion-button color="secondary" (click)="sendTotp($event)" [disabled]="counter != 0">
           {{counter == 0 ? lang?.send : [lang?.reSend,'(',counter,')'].join('')}}
         </ion-button>

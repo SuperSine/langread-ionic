@@ -44,9 +44,9 @@ type ProfileType {
   displayLanguage: String
   email: String!
   emailConfirmed: Boolean!
-  firstName: String!
-  lastName: String!
-  phoneNumber: String!
+  firstName: String
+  lastName: String
+  phoneNumber: String
   targetLanguage: String
   userName: String!
 }
@@ -129,7 +129,7 @@ type UserType {
   emailConfirmed: Boolean!
   firstName: String
   lastName: String
-  phoneNumber: String!
+  phoneNumber: String
   targetLanguage: String!
   token: String
   userName: String!

@@ -41,16 +41,18 @@ export class TagEditorPage implements OnInit {
     this.editorForm.get('tagfont').setValue(this.tagFont);
 
     this.selectColor = this.tagColor;
-
     this.colorList = this.colorService.colorList;
 
-    var tagTrendsResult = await this.tagService.trends(this.tagName);
+    if(this.tagName != ""){
 
-    this.displayBarChart(tagTrendsResult.map((item)=>{
-      return `${item.yearMonth.year}-${item.yearMonth.month}`;
-    }), tagTrendsResult.map((item)=>{
-      return item.total;
-    }));
+      var tagTrendsResult = await this.tagService.trends(this.tagName);
+      
+      this.displayBarChart(tagTrendsResult.map((item)=>{
+        return `${item.yearMonth.year}-${item.yearMonth.month}`;
+      }), tagTrendsResult.map((item)=>{
+        return item.total;
+      }));
+    }
   }
 
   close(){
@@ -164,10 +166,10 @@ export class TagEditorPage implements OnInit {
   public fontList:any;
 
   public id:string;
-  public tagColor:string;
+  public tagColor:string = "";
   public oldTagName:string;
-  public tagName:string;
-  public tagFont:string;
+  public tagName:string = "";
+  public tagFont:string = "";
   
   public selectColor:string;
   public queryRef:any;

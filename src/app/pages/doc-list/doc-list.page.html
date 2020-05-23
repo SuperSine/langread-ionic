@@ -52,9 +52,6 @@
   </ng-container>
 
   <ng-container *ngIf="docList && docList.length > 0">
-
-    
-    
     <ion-list>
       <ion-card class="ion-activatable" *ngFor="let item of docList;" >
         <a [routerLink]="['/doc-editor',{docId:item.docId}]" routerDirection="forward">

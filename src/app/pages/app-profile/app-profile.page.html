@@ -12,7 +12,7 @@
           <img [src]="authService.avatarUrl">
         </ion-avatar>
         <ion-label>
-            <h3>{{(userDetail | async)?.firstname}}</h3>
+            <h3>{{user?.firstName}}</h3>
             <p (click)="logout()">{{'app-profile.logout' | translate}}</p>
  
           </ion-label>
@@ -27,13 +27,13 @@
               {{'app-profile.title-info' | translate}}
             </ion-list-header>
           <ion-item href="#" routerLink="/profile-editor">
-              <ion-label>{{'app-profile.label-firstname' | translate}}: {{user?.firstName}} </ion-label>
+              <ion-label>{{'app-profile.label-firstname' | translate}}: {{( user | async)?.firstName}} </ion-label>
             </ion-item>
             <ion-item href="#" routerLink="/profile-editor">
-              <ion-label>{{'app-profile.label-lastname' | translate}}: {{user?.lastName}}</ion-label>
+              <ion-label>{{'app-profile.label-lastname' | translate}}: {{( user | async)?.lastName}}</ion-label>
             </ion-item>
             <ion-item href="#" routerLink="/profile-editor">
-              <ion-label>{{'app-profile.label-username' | translate}}: {{user?.userName}}</ion-label>
+              <ion-label>{{'app-profile.label-username' | translate}}: {{( user | async)?.userName}}</ion-label>
             </ion-item>            
 
       </ion-list>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserType } from 'src/app/graphql-components';
 import { ProfileService } from 'src/app/services/profile.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-app-profile',
@@ -10,16 +11,21 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class AppProfilePage implements OnInit {
 
-  constructor(private authService:AuthService) { }
+  constructor(public authService:AuthService) { }
 
   async ngOnInit() {
-    this.user = await this.authService.getUserObj();
+    this.user = this.authService.watchProfile();
+    
   }
 
-  ionViewWillEnter(){
+  async ionViewWillEnter(){
     console.log(123123123);
   }
 
-  private user:UserType
+  logout(){
+    this.authService.logout();
+  }
+
+  public user: Observable<UserType | null>
 
 }

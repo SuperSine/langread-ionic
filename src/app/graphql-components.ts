@@ -255,9 +255,9 @@ export type ProfileType = {
   displayLanguage?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   emailConfirmed: Scalars['Boolean'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  phoneNumber: Scalars['String'];
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
   targetLanguage?: Maybe<Scalars['String']>;
   userName: Scalars['String'];
 };
@@ -487,7 +487,7 @@ export type UserType = {
   emailConfirmed: Scalars['Boolean'];
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
-  phoneNumber: Scalars['String'];
+  phoneNumber?: Maybe<Scalars['String']>;
   targetLanguage: Scalars['String'];
   token?: Maybe<Scalars['String']>;
   userName: Scalars['String'];

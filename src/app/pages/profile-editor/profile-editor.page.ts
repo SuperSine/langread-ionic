@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProfileService } from 'src/app/services/profile.service';
-import { GlobalService } from 'src/app/services/global.service';
+import { GlobalService, LocalSetting } from 'src/app/services/global.service';
 import { catchError, tap, startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
@@ -30,22 +30,34 @@ export class ProfileEditorPage implements OnInit {
       userName: ['', Validators.compose([Validators.minLength(3)])],
       displayLanguage:['', Validators.compose([Validators.required])],
       targetLanguage:['', Validators.compose([Validators.required])],
+      darkMode:[false]
     });
+
+    this.localSetting = {
+      darkMode:false
+    };
   }
 
   async ngOnInit() {
     this.user = await this.authService.getUserObj();
+    this.localSetting = await this.globalService.getSetting();
 
     this.profileForm.patchValue({
       firstName:this.user.firstName,
       lastName:this.user.lastName,
       userName:this.user.userName,
       displayLanguage:this.user.displayLanguage,
-      targetLanguage:this.user.targetLanguage
+      targetLanguage:this.user.targetLanguage,
+      darkMode: this.localSetting.darkMode
     });
+
   }
 
   save(event){
+    this.localSetting.darkMode = this.profileForm.value.darkMode;
+
+    this.globalService.saveSetting(this.localSetting);
+
     this.authService.updateUser(this.profileForm.value).pipe(
       catchError(err => { this.globalService.throwError(err.graphQLErrors); return of(true);}),
       tap((result:any)=>{
@@ -53,7 +65,6 @@ export class ProfileEditorPage implements OnInit {
         if(!(typeof result == 'boolean')){
           let data = result.data.user.update;
           this.authService.saveUserObj(data);
-debugger;
           this.translate.use(data.displayLanguage);
         };
 
@@ -76,5 +87,6 @@ debugger;
 
   public displayLanguages:any[] = environment.displayLanguages;
   public targetLanguages:any[] = environment.targetLanguages;
+  public localSetting:LocalSetting;
 
 }

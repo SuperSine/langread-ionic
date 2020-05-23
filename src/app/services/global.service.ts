@@ -12,7 +12,13 @@ import {map} from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 
-const {Device} = Plugins;
+const {Device, Storage} = Plugins;
+
+export const T_USER_SETTING = "global_user_setting";
+
+export interface LocalSetting  {
+  darkMode: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +62,24 @@ export class GlobalService {
   getFingerprint = () => new Promise<any[]>((resolve) => {
     Fingerprint2.get((result, components) => resolve(result) )
   });
+
+  async getSetting():Promise<LocalSetting>{
+    var {value} = await Storage.get({key:T_USER_SETTING});
+    var setting = JSON.parse(value);
+
+    if(setting == undefined)setting = {};
+
+    return setting as LocalSetting;
+  }
+
+  saveSetting(value:LocalSetting){
+
+    Storage.set({key:T_USER_SETTING, value:JSON.stringify(value)});
+  }
+
+
+
+
 
 
   get appLang(){

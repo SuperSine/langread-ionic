@@ -81,6 +81,8 @@ export interface AuthResult{
 })
 export class AuthService {
   public userObj:UserType;
+
+  private userObj$ = new BehaviorSubject<UserType | null>(null);
   private userId: string = null;
   private appSecret: string = null;
   private apolloBase: ApolloBase<any>;
@@ -143,6 +145,10 @@ export class AuthService {
     return this._isAuthenticated.asObservable();
   }
 
+  watchProfile(){
+    return this.userObj$.asObservable();
+  }
+
   async getUserObj(refresh:boolean=false){
 
     let userData = (await Storage.get({key:T_USER_KEY})).value;
@@ -175,7 +181,7 @@ export class AuthService {
         this.setUserId(userObj.appId, userObj.appSecret);
       }
       
-
+      this.userObj$.next(userObj);
     }else
       this._isAuthenticated.next(false);
 
@@ -188,6 +194,7 @@ export class AuthService {
     window['tempLangreadUserToken'] = user.token;
     this.userObj = user;
     this.setUserId(user.appId, user.appSecret);
+    this.userObj$.next(user);
   }
 
   async getUserData(){
@@ -215,7 +222,15 @@ export class AuthService {
       variables:{
         appId:this.userObj.appId,
         appSecret:this.userObj.appSecret,
-        user
+        user:{
+          userName : user.userName,
+          firstName : user.firstName,
+          lastName : user.lastName,
+          phoneNumber : user.phoneNumber,
+          displayLanguage : user.displayLanguage,
+          targetLanguage : user.targetLanguage
+
+        }
       }
     })
   }
@@ -381,6 +396,8 @@ export class AuthService {
     Storage.set({key:T_USER_KEY, value:null});
 
     this.apollo.use('core').getClient().clearStore();
+
+    this._isAuthenticated.next(false);
   }
 
   get avatarUrl(){

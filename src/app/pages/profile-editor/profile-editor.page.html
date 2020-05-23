@@ -16,7 +16,7 @@
         </ion-list-header>
         <ion-item>
           <ion-label position="stacked">{{'profile-editor.firstName' | translate}}</ion-label>
-          <ion-input type="text" formControlName="firstName"  [placeholder]="'profile-editor.firstNamee' | translate"></ion-input>
+          <ion-input type="text" formControlName="firstName"  [placeholder]="'profile-editor.firstName' | translate"></ion-input>
         </ion-item>
         
         <ion-item>
@@ -55,7 +55,7 @@
 
         <ion-item>
           <ion-label>{{'profile-editor.darkModel'}}</ion-label>
-          <ion-toggle color="primary"></ion-toggle>
+          <ion-toggle color="primary" formControlName="darkMode"></ion-toggle>
         </ion-item>
 
         
@@ -67,4 +67,6 @@
 
 
 </form>
+
+
 </ion-content>

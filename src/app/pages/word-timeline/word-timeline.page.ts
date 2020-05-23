@@ -110,6 +110,8 @@ export class WordTimelinePage implements OnInit {
       for (let child of childElements) {
         this.renderer.removeChild(this.htmlCanvas.nativeElement, child);
       }
+      var style = getComputedStyle(document.body);
+
       setTimeout(()=>{
         WordCloud(this.htmlCanvas.nativeElement, { 
           list: this.topList.map((value)=>[value.word,(70 - 30*factor)*value.score]),
@@ -126,7 +128,8 @@ export class WordTimelinePage implements OnInit {
 
             return tagColor;
 
-          }
+          },
+          backgroundColor:style.getPropertyValue('--ion-background-color')
         } 
         );
       }, 10); 

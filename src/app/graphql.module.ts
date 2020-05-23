@@ -11,6 +11,7 @@ import {mergeMap,map,tap} from 'rxjs/operators';
 import ApolloClient from 'apollo-client';
 import {onError} from 'apollo-link-error';
 import {environment} from '../environments/environment';
+import { GlobalService } from './services/global.service';
 
 const uri = 'http://localhost:5001'; // <-- add the URL of the GraphQL server here
 export async function createApollo(httpLink: HttpLink,storage:Storage) {
@@ -29,7 +30,9 @@ export async function createApollo(httpLink: HttpLink,storage:Storage) {
   // ],
 })
 export class GraphQLModule {
-  constructor(apollo: Apollo, httpLink:HttpLink, private authService:AuthService){
+  constructor(apollo: Apollo, httpLink:HttpLink, 
+              private authService:AuthService,
+              private globalService:GlobalService){
 
 
     const authMiddleware = new ApolloLink((operation, forward) => {
@@ -48,7 +51,8 @@ export class GraphQLModule {
      * property statusCode missing in networkError object
      * https://github.com/apollographql/apollo-link/issues/300
      */
-    const renewTokenLink = onError(({networkError})=>{
+    const renewTokenLink = onError((result)=>{
+      var networkError = result.networkError;
       if(networkError && 'status' in networkError &&
         networkError['status'] === 401){
           console.log('you can perform logout here!');
@@ -59,6 +63,8 @@ export class GraphQLModule {
         networkError['status'] === 403
       ){
         this.authService.setEmailConfirmed(false);
+      }else if(result.graphQLErrors){
+        this.globalService.throwError(result.graphQLErrors as any[]);
       }
     });
 

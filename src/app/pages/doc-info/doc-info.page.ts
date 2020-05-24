@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import {DateTime} from 'luxon';
+import { GlobalService } from 'src/app/services/global.service';
+
 
 @Component({
   selector: 'app-doc-info',
@@ -11,7 +12,8 @@ export class DocInfoPage implements OnInit {
 
 
 
-  constructor(private modalCtrl: ModalController) {
+  constructor(private modalCtrl: ModalController,
+              private globalService: GlobalService) {
     this.tagInfo = {};
 
     // console.log("offsetNameShort",DateTime.local().toFormat('ff'));
@@ -40,8 +42,8 @@ export class DocInfoPage implements OnInit {
       })
     });
 
-
-    // this.doc.createDate = DateTime.fromISO(this.doc.createDate).toLocal().toFormat('ff');
+    this.doc.createDate = this.globalService.toLocalDate(this.doc.createDate);
+    this.doc.updateDate = this.globalService.toLocalDate(this.doc.updateDate);
 
   }
 

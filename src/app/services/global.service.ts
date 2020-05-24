@@ -11,6 +11,7 @@ import { Observable, from } from 'rxjs';
 import {map} from 'rxjs/operators'
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
+import {DateTime} from 'luxon';
 
 const {Device, Storage} = Plugins;
 
@@ -77,7 +78,9 @@ export class GlobalService {
     Storage.set({key:T_USER_SETTING, value:JSON.stringify(value)});
   }
 
-
+  toLocalDate(date:string, format:string='ff'){
+    return DateTime.fromISO(date).setLocale(this.translate.currentLang).toLocal().toFormat(format);
+  }
 
 
 

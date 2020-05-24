@@ -203,7 +203,7 @@ export class WordInfoPage implements OnInit {
           borderColor: 'rgb(38, 194, 129)',
           borderWidth: 1,
           fill:false,
-        }]
+        }],
       },
       options: {
 				responsive: true,
@@ -221,6 +221,7 @@ export class WordInfoPage implements OnInit {
 				},
 				scales: {
 					xAxes: [{
+            gridLines: { zeroLineColor: "#131c2b" },
 						display: true,
 						scaleLabel: {
 							display: true,
@@ -228,6 +229,7 @@ export class WordInfoPage implements OnInit {
 						}
 					}],
 					yAxes: [{
+            gridLines: { zeroLineColor: "#131c2b" },
 						display: true,
 						scaleLabel: {
 							display: true,

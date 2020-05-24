@@ -29,12 +29,12 @@
       <a routerLink="/auth-totp">{{'auth-login.forgotPassword' | translate}}</a>
     </ion-item>
 
-    <ion-button color="realgreen" expand="block" (click)="login()" [disabled]="!loginForm.valid && !loginWaiting">
+    <ion-button color="primary" expand="full" (click)="login()" [disabled]="!loginForm.valid && !loginWaiting">
       {{'auth-login.signIn' | translate}}
       <ion-spinner slot="end" [hidden]='!loginWaiting'></ion-spinner>
     </ion-button>
 
-    <ion-button color="pink" expand="block" routerLink="/register">
+    <ion-button color="secondary" expand="full" routerLink="/register">
       {{'auth-login.signUp' | translate}}
     </ion-button>
   </ion-list>

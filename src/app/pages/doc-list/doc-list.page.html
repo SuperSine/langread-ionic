@@ -7,8 +7,8 @@
     </ion-buttons>
 
     
-    <ion-item *ngIf="!defaultWord">
-      <ion-input [(ngModel)]="userContent" placeholder="words or http://" type="text" (ionChange)="onChange($event)">
+    <ion-item *ngIf="!defaultWord" >
+      <ion-input class="ion-no-margin" [(ngModel)]="userContent" placeholder="words or http://" type="text" (ionChange)="onChange($event)">
         <ion-button name="download-content" slot="end" color="light" [routerLink]="['/doc-editor',{docId:userContent}]">
           <ion-icon [name]="iconName"></ion-icon>
         </ion-button>
@@ -69,8 +69,8 @@
         
         <ion-item lines="none">
           
-          <ion-label color="medium" slot="start">
-            <p>{{item.createDate}}</p>
+          <ion-label color="medium">
+            <p>{{globalService.toLocalDate(item.createDate)}}</p>
           </ion-label>
           <ion-button color="light" slot="end" (click)="presentActionSheet(item)">
             <ion-icon name="ellipsis-vertical"></ion-icon>

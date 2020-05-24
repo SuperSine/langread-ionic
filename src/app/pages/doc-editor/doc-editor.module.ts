@@ -25,7 +25,8 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
     TagPickerPageModule,
     QuillModule.forRoot({
       modules: {
-        syntax: true
+        syntax: true,
+        toolbar:[[{ 'font': ['Georgia'] }]]
       }
     }),
     ReactiveFormsModule,

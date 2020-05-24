@@ -56,19 +56,28 @@ export class AppComponent {
 
   initializeApp() {
 
-    // Use matchMedia to check the user preference
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-    this.toggleDarkTheme(prefersDark.matches);
-    
-    // Listen for changes to the prefers-color-scheme media query
-    prefersDark.addListener((mediaQuery) => this.toggleDarkTheme(mediaQuery.matches));
 
     this.platform.ready().then(async () => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
       this.globalService.subscribeToast();
+
+      const setting = await this.globalService.getSetting();
+      let isDarkMode = false;
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+      if(setting.darkMode == undefined){
+        isDarkMode = prefersDark.matches;
+
+      }else{
+        isDarkMode = setting.darkMode;
+      }
+
+      this.toggleDarkTheme(isDarkMode);
+        
+      prefersDark.addListener((mediaQuery) => this.toggleDarkTheme(isDarkMode));
 
       var uuid = await this.globalService.getUuid();
       console.log('the current platform is:',this.platform.platforms());

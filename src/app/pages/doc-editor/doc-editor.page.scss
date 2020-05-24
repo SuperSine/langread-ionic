@@ -22,6 +22,7 @@
   transform: translateY(-200%);
   transition: 0.5s;
   opacity: 0;
+  background-color: rgba(var(--ion-toolbar-background));
 }
 
 .bookMarkToggled{
@@ -30,6 +31,7 @@
     transition: 0.5s;
     opacity: 1;
     z-index: 200;
+    background-color:var(--ion-color-step-250);
   }
   &::after {
 		opacity: 1;
@@ -66,10 +68,18 @@ span[app-pick] {
 //   background-color: rgba(76, 122, 241, 0.75);
 // }
 
-span[app-pick].ion-activatable:active{
+span[app-pick]:active{
   background-color: rgba(76, 122, 241, 0.30);
 }
 [contenteditable] {
   -webkit-user-select: text;
   user-select: text;
+}
+
+.ql-container{
+  font-family: Georgia,Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  height: 100%;
+  margin: 0px;
+  position: relative;
 }

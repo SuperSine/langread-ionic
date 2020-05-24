@@ -1,9 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{'auth-register.title' | translate}}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
 
   <form [formGroup]="registerForm">
@@ -29,10 +23,10 @@
           </ion-text>
         </ion-item>
 
-        <ion-button color="greengrab" expand="block" [disabled]="!registerForm.valid || !youCanClick" (click)="register($event)">
+        <ion-button color="primary" expand="full" [disabled]="!registerForm.valid || !youCanClick" (click)="register($event)">
           {{'auth-register.create' | translate}}
         </ion-button>
-        <ion-button color="pink" expand="block" fill="outline"  routerLink="/side-menu/login">
+        <ion-button color="secondary" expand="full" fill="outline"  routerLink="/side-menu/login">
             {{'auth-register.cancel' | translate}}
         </ion-button>
       </ion-list>

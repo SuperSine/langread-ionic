@@ -21,7 +21,7 @@ export class DocListPage implements OnInit {
               private actionSheetCtrl: ActionSheetController, 
               private router: Router,
               private activatedRoute:ActivatedRoute,
-              private globalService:GlobalService,
+              public globalService:GlobalService,
               private translate:TranslateService) { 
                 this.defaultWord = activatedRoute.snapshot.paramMap.get('defaultWord');
                 console.log(this.defaultWord)

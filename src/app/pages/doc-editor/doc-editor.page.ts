@@ -13,10 +13,10 @@ import { GlobalService } from 'src/app/services/global.service';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { DocInfoPage } from '../doc-info/doc-info.page';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
-import { Subject } from 'rxjs';
-import { Observable } from 'apollo-link';
+import { Subject, Observable } from 'rxjs';
 import {CanDeactivateComponent} from '../../guards/quit-doc-editor.guard'
 import { TranslateService } from '@ngx-translate/core';
+import { ApolloQueryResult } from 'apollo-client';
 
 export enum DocMode{
   Read,
@@ -209,8 +209,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
     if(!data)data = this.docId;
 
-    this.docService.get(data).subscribe(async ({data:{document:{giveItToMe} }}:any) => {
-
+    this.docService.get(data).toPromise().then(async ({data:{document:{giveItToMe} }}:any) => {
       var doc  = {...giveItToMe.document};
 
       console.log('spread doc is:', doc);
@@ -233,6 +232,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
         this.doc.url = giveItToMe.document.url;
       }
 
+      await loading.dismiss();
 
       this.doc.wordTagInfo = giveItToMe.smallWordTagInfo;
       
@@ -248,7 +248,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       });
 
       console.log('this is wti', this.wti);
-
+      
       if(giveItToMe.bigWordTagInfo)
         this.allTags = giveItToMe.bigWordTagInfo.tags;
 
@@ -259,9 +259,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       
       this.form.get('html').patchValue(this.doc.content.replace(/(?:\r\n|\r|\n)/g, '<br>'));
 
-      this.onInnerHtmlClick(null);
+      this.updateWordTagInfo(null);
 
-      await loading.dismiss();
 
       
       this.form.valueChanges.subscribe((value)=>{
@@ -376,7 +375,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
 
-  onInnerHtmlClick(event){
+  updateWordTagInfo(event){
 
     var that = this;
     var div = document.createElement("div");
@@ -478,4 +477,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   public htmlEditor: QuillEditorComponent;
 
   public lang:any;
+
+  private docQueryRef:Observable<ApolloQueryResult<unknown>>;
 }

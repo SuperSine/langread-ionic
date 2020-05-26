@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { DocListPageRoutingModule } from './doc-list-routing.module';
 
-import { DocListPage } from './doc-list.page';
+import { DocListPage,PopOverMenuComponent } from './doc-list.page';
 import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -19,6 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
     LangreadComponentsModule,
     TranslateModule.forChild()
   ],
-  declarations: [DocListPage]
+  declarations: [DocListPage,PopOverMenuComponent],
+  entryComponents:[PopOverMenuComponent]
 })
 export class DocListPageModule {}

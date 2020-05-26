@@ -37,7 +37,6 @@ export function createTranslateLoader(http:HttpClient){
       name: '__mydb',
       driverOrder: ['sqlite', 'indexeddb', 'localstorage']
     }),
-    GraphQLModule,
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule, 
@@ -51,7 +50,8 @@ export function createTranslateLoader(http:HttpClient){
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    })
+    }),
+    GraphQLModule
   ],
   providers: [
     StatusBar,

@@ -32,6 +32,6 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule.forChild()
   ],
-  declarations: [UniqueTagsPipe,DocEditorPage, PickDirective ]
+  declarations: [UniqueTagsPipe, DocEditorPage, PickDirective ]
 })
 export class DocEditorPageModule {}

@@ -6,6 +6,8 @@ export const environment = {
   production: false,
   pageSize:'10',
   avatarUrl:'http://localhost:81/api/v1/user/avatar',
+  authEndpoint:'http://localhost:81/api/graphql',
+  coreEndpoint:'http://localhost:5003/api/graphql',
   buildInLanguages:['en','zh'],
   displayLanguages:[
     {

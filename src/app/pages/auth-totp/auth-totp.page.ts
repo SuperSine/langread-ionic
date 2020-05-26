@@ -7,6 +7,8 @@ import { GlobalService } from 'src/app/services/global.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { start } from 'repl';
+import { PopoverController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-auth-totp',
@@ -15,7 +17,13 @@ import { start } from 'repl';
 })
 export class AuthTotpPage implements OnInit {
 
-  constructor(private translate:TranslateService, private router:Router, private globalService:GlobalService, private authService:AuthService, private formBuilder:FormBuilder) { 
+  constructor(private translate:TranslateService, 
+              private router:Router, 
+              private globalService:GlobalService, 
+              private authService:AuthService, 
+              private formBuilder:FormBuilder,
+              private popoverCtrl:PopoverController) { 
+
     this.loginForm = formBuilder.group({
       email:[
         '', 
@@ -27,6 +35,8 @@ export class AuthTotpPage implements OnInit {
       ]
     });
   }
+
+
 
   async ngOnInit() {
     this.counter = 0;

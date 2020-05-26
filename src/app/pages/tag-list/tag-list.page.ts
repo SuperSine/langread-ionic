@@ -50,8 +50,6 @@ export class TagListPage implements OnInit {
 
               this.globalService.tip([this.lang.deleteMsg]);
 
-            },async(err)=>{
-              this.globalService.throwError([err]);
             })
           }
         }

@@ -38,10 +38,8 @@ export class WordInfoPage implements OnInit {
         var index = this.wordProfile.wordInfo.findIndex((item)=>item.tag.tagName == tag.tagName);
         this.wordProfile.wordInfo.splice(index,1);
 
-        this.globalService.tip(['Tag Deleted']);
+        this.globalService.tip([this.lang.tagDeleteMsg]);
       }
-
-
     })
 
 
@@ -163,8 +161,6 @@ export class WordInfoPage implements OnInit {
 
         },0);
 
-  
-
       });
       
 
@@ -265,6 +261,7 @@ export class WordInfoPage implements OnInit {
     'word-info.chartTrends',
     'word-info.chartMonth',
     'word-info.chartCount',
+    'word-info.tagDeleteMsg'
   ]
 
   public lang:any={};

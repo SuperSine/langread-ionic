@@ -1,7 +1,10 @@
 {
   "general":{
     "selectOk":"Okay",
-    "selectCancel":"Nah"
+    "selectCancel":"Nah",
+    "offline":"Your network is offline",
+    "emptyContent":"You have nothing here, it's empty.",
+    "search":"Search"
   },
   "appMenu":{
     "docs" : "Docs",

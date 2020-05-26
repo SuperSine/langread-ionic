@@ -1,13 +1,73 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DocService, Doc } from 'src/app/services/doc.service';
 import { QueryRef } from 'apollo-angular';
-import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController, ToastController } from '@ionic/angular';
+import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController, ToastController, PopoverController, AlertController } from '@ionic/angular';
 import { runInThisContext } from 'vm';
 import { Router, ActivatedRoute } from '@angular/router';
 import {DocumentType} from '../../graphql-components';
 import {environment} from 'src/environments/environment';
 import { GlobalService } from 'src/app/services/global.service';
 import { TranslateService } from '@ngx-translate/core';
+
+
+@Component({
+  selector:'popover-menu',
+  templateUrl:'./popover-menu/popover-menu.component.html',
+  styleUrls:['./popover-menu/popover-menu.component.scss']
+})
+export class PopOverMenuComponent implements OnInit{
+  constructor(private alertController: AlertController){
+
+  }
+
+  @Input()
+  public dismiss = (event) =>{}
+
+  async ngOnInit(){
+
+  }
+
+  async goToEditor(){
+    this.dismiss(null);
+  }
+
+  async presentAlertPrompt() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Input the URL',
+      inputs: [
+        {
+          name: 'url',
+          type: 'text',
+          placeholder: 'https://...'
+        },
+
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (event) => {
+            console.log('Confirm Cancel');
+            this.dismiss(event);
+          }
+        }, {
+          text: 'Ok',
+          handler: (event) => {
+            console.log('Confirm Ok', event);
+            this.dismiss(event);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+}
+
+
+
 @Component({
   selector: 'app-doc-list',
   templateUrl: './doc-list.page.html',
@@ -22,10 +82,34 @@ export class DocListPage implements OnInit {
               private router: Router,
               private activatedRoute:ActivatedRoute,
               public globalService:GlobalService,
-              private translate:TranslateService) { 
+              private translate:TranslateService,
+              private popoverCtrl:PopoverController) { 
                 this.defaultWord = activatedRoute.snapshot.paramMap.get('defaultWord');
                 console.log(this.defaultWord)
               }
+
+  async popoverActions(event:any){
+    const popover = await this.popoverCtrl.create({
+      component:PopOverMenuComponent,
+      event: event,
+      translucent: true,
+      cssClass:"popover",
+      componentProps:{
+        dismiss:async (event) => {
+          console.log('popover dismiss', event);
+
+          if(event){
+            debugger;
+            this.router.navigate(["/doc-editor",{docId:event.url}]);
+          }
+
+          await popover.dismiss();
+        }
+      }
+    });
+
+    return await popover.present();
+  }
 
   list(pageSize, lastId, keywords=''){
     if(!keywords)lastId='';
@@ -37,8 +121,6 @@ export class DocListPage implements OnInit {
 
       console.log(this.docList);
       if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
-    }, async (err)=>{
-        this.globalService.throwError([err]);
     });
   }
 

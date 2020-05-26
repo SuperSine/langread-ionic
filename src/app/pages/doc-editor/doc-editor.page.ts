@@ -7,7 +7,7 @@ import { QuillViewHTMLComponent, QuillEditorComponent } from 'ngx-quill';
 import  * as stemmer   from 'stemmer';
 import { ColorService } from 'src/app/services/color.service';
 import { element } from 'protractor';
-import { ModalController, LoadingController, ActionSheetController, AlertController, ToastController } from '@ionic/angular';
+import { ModalController, LoadingController, ActionSheetController, AlertController, ToastController, PopoverController } from '@ionic/angular';
 import { TagPickerPage } from '../tag-picker/tag-picker.page';
 import { GlobalService } from 'src/app/services/global.service';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
@@ -32,15 +32,18 @@ export enum DocMode{
 export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
 
-  constructor(private toastCtrl:ToastController, private alertCtrl:AlertController, 
+  constructor(private toastCtrl:ToastController, 
+             private alertCtrl:AlertController, 
              private actionSheetCtrl: ActionSheetController, 
-             private loadingCtrl:LoadingController,  private fb:FormBuilder, 
+             private loadingCtrl:LoadingController,  
+             private fb:FormBuilder, 
              private globalService:GlobalService, 
              private modalCtrl:ModalController, 
              private activatedRoute:ActivatedRoute, 
              private docService:DocService, 
              private colorService:ColorService,
-             private translate:TranslateService
+             private translate:TranslateService,
+             private popoverCtrl:PopoverController
              ) {
     this.docId = activatedRoute.snapshot.paramMap.get('docId');
     this.wti = {};
@@ -59,6 +62,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   goBack(e){
 
   }
+
+
 
   canDeactivate():Promise<boolean> | boolean{
     let that = this;

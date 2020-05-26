@@ -108,11 +108,4 @@ export class GlobalService {
     return info.uuid;
   }
 
-  async getArticle(url:string): Promise<any> {
-    return this.http.get("http://localhost:5004/article/get",{
-      params:{
-        url
-      }
-    }).toPromise();
-  }
 }

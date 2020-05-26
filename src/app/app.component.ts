@@ -45,7 +45,6 @@ export class AppComponent {
       else
         this.translate.use(defaultLang);
 
-
       this.initializeApp();
       this.fontService.injectAll();
     });

@@ -1,4 +1,11 @@
 {
+  "general":{
+    "selectOk":"Okay",
+    "selectCancel":"Nah",
+    "offline":"您的网络离线了",
+    "emptyContent":"什么东西都没有",
+    "search":"搜索"
+  },
   "appMenu": {
     "docs": "文档",
     "words": "单词",

@@ -91,8 +91,6 @@ export class TagEditorPage implements OnInit {
 
         this.close();
 
-      },async (err) => {
-        this.globalService.throwError([err]);
       })
     }else{
       this.tagService.add({
@@ -104,8 +102,6 @@ export class TagEditorPage implements OnInit {
         this.globalService.tip([this.lang.addMsg]);
 
         this.close();
-      },async (err) => {
-        this.globalService.throwError([err]);
       })
     }
   }

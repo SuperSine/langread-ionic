@@ -39,15 +39,15 @@ export class ProfileEditorPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.user = await this.authService.getUserObj();
+    this.user = await this.authService.getUserObj(true);
     this.localSetting = await this.globalService.getSetting();
 
     this.profileForm.patchValue({
       firstName:this.user.firstName,
       lastName:this.user.lastName,
       userName:this.user.userName,
-      displayLanguage:this.user.displayLanguage,
-      targetLanguage:this.user.targetLanguage,
+      displayLanguage:this.user.displayLanguage.toLowerCase(),
+      targetLanguage:this.user.targetLanguage.toLowerCase(),
       darkMode: this.localSetting.darkMode
     });
 

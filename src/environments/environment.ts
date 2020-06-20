@@ -5,40 +5,47 @@
 export const environment = {
   production: false,
   pageSize:'10',
-  avatarUrl:'http://localhost:81/api/v1/user/avatar',
-  authEndpoint:'http://localhost:81/api/graphql',
-  coreEndpoint:'http://localhost:5003/api/graphql',
-  buildInLanguages:['en','zh'],
+  // avatarUrl:'http://localhost:81/api/v1/user/avatar',
+  // // authEndpoint:'https://localhost/api/graphql',
+  // // coreEndpoint:'http://localhost:5003/api/graphql',
+  // authEndpoint:'http://localhost:81/api/graphql/auth',
+  // coreEndpoint:'http://localhost:5003/api/graphql/core',
+  // wordSoundUrl:'http://localhost:5003/api/v1/dictionary/sound',
+  avatarUrl:'https://auth-api.langreed.com/api/v1/user/avatar',
+  authEndpoint:'https://api.langreed.com/api/graphql/auth',
+  coreEndpoint:'https://api.langreed.com/api/graphql/core',
+  wordSoundUrl:'http://core-api.langreed.com/api/v1/dictionary/sound',
+  buildInLanguages:['en-us','zh-cn'],
   displayLanguages:[
     {
-      code:"en",
+      code:"en-us",
       name:"English"
     },
     {
-      code:"zh",
+      code:"zh-cn",
       name:"中文"
     },
     {
-      code:"es",
+      code:"es-es",
       name:"Español"
     }
   ],
   targetLanguages:[
 
     {
-      code:"en",
+      code:"en-us",
       name:"English"
     },
     {
-      code:"es",
+      code:"es-es",
       name:"Español"
     },
     {
-      code:"it",
+      code:"it-it",
       name:"Italiano"
     },
     {
-      code:"de",
+      code:"de-de",
       name:"Deutsch"
     }
 

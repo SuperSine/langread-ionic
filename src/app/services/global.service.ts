@@ -87,10 +87,10 @@ export class GlobalService {
 
   get appLang(){
     const buildInLang = environment.buildInLanguages;
-    const lang = this.translate.getBrowserLang();
 
+    const lang = this.translate.getBrowserCultureLang().toLowerCase();
 
-    const defaultLang = buildInLang.indexOf(lang) != -1 ? lang : 'en';
+    const defaultLang = buildInLang.indexOf(lang) != -1 ? lang : 'en-us';
 
     return defaultLang;
 

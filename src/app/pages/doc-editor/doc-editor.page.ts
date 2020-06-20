@@ -49,12 +49,14 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     this.wti = {};
     this.stemmedWti = {};
 
-    this.doc = {} as Doc;
+    this.doc = {url:""} as Doc;
     this.isGoingBack = false;
 
     this.form = this.fb.group({
       html: new FormControl(this.doc.content)
     });
+
+
     
     
   }
@@ -143,14 +145,14 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
         text: this.lang.actionSave,
         icon: 'save',
         handler: () => {
-          console.log('Save clicked');
+
         }
       },  {
         text: this.lang.actionCancel,
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
+
         }
       }]
     });
@@ -161,7 +163,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   async onReaderClick(event){
     this.showTags = false;
 
-    let element = event.path[0].nodeName == "SPAN" ? event.path[0] : null;
+    let element = event.target.tagName == "SPAN" ? event.target : null;
 
     if(!element)return null;
 
@@ -189,12 +191,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       loading.dismiss();
 
     },async (err)=>{
-      let alert = await this.toastCtrl.create({
-        message: err.message,
-        duration:2000,
-        color:"danger"
-      });
-      alert.present();
       loading.dismiss();
     })
     
@@ -217,14 +213,13 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     this.docService.get(data).toPromise().then(async ({data:{document:{giveItToMe} }}:any) => {
       var doc  = {...giveItToMe.document};
 
-      console.log('spread doc is:', doc);
 
       //user editing the content, just request content updating
       if(data != this.docId){
         this.doc.content = giveItToMe.document.content;
         this.doc.wordsCount = giveItToMe.document.wordsCount;
         this.doc.updateDate = giveItToMe.document.updateDate;
-        
+        this.doc.createDate = giveItToMe.document.createDate;
       }else{
         this.doc.content = giveItToMe.document.content;
         this.doc.wordsCount = giveItToMe.document.wordsCount;
@@ -251,8 +246,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
         this.wti[word] = this.wti[word].concat(element.wordInfos)
       });
-
-      console.log('this is wti', this.wti);
       
       if(giveItToMe.bigWordTagInfo)
         this.allTags = giveItToMe.bigWordTagInfo.tags;
@@ -269,17 +262,9 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
       
       this.form.valueChanges.subscribe((value)=>{
-        console.log('form value is changed!');
         this.isDocChanged = true;
       })
     },async (err) => {
-      let alert = await this.toastCtrl.create({
-        message: err.message,
-        duration:2000,
-        color:"danger"
-      });
-      alert.present();
-
       loading.dismiss();
     })
   }
@@ -291,6 +276,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   createElementFromHTML(htmlString) {
     var div = document.createElement('div');
     div.innerHTML = `<span>${htmlString.trim()}</span>`;
+    // div.innerHTML = htmlString.trim();
   
     // Change this to div.childNodes to support multiple top-level nodes
     return div.firstChild;
@@ -307,8 +293,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
         return this.wti[word];
     });
 
-    console.log('filted wti result:', result);
-
     result.forEach(word => {
       this.colorService.addMarkColor(tag);
     });
@@ -316,7 +300,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
   openDocInfo(event){
-    console.log('data pass to doc-info:', this.doc, this.TaggedWordInfo);
 
     this.modalCtrl.create({
       component: DocInfoPage,
@@ -341,11 +324,10 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
         bigTags,
         smallTags
       },
-      // cssClass: 'from-middle-modal'
+      cssClass: 'from-bottom-modal'
     });
 
     modal.onDidDismiss().then(({data}) => {
-      console.log('tag picking is changed:', data);
       if(!this.isDocChanged)
         this.isDocChanged = data;
     })
@@ -387,11 +369,12 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     div.innerHTML = `<div>${this.doc.content}</div>`;
     // div.innerHTML = this.htmlEditor.;
 
-    console.log('dealing with:',div.querySelectorAll("*") );
     Array.from(div.querySelectorAll("*"), (el:any) => {
       Array.from(el.childNodes, (ch:any)=>{
         if(ch.nodeType == 3 && ch.data){
           var newHtml = ch.data.replace(that.getWordRegEx1, (word)=>{
+            if(!word)return word;
+
             var stemmedWord = stemmer(word);
 
             if(!(that.stemmedWti[stemmedWord] instanceof Array))
@@ -409,19 +392,18 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       })
     });
 
-   this.innerHtml.nativeElement.innerHTML = `<p>${div.innerHTML}</p>`;
-  }
+  //  this.innerHtml.nativeElement.innerHTML = `<p>${div.innerHTML}</p>`;
+    this.displayContent = div.innerHTML;
 
-
-  getHtml(){
-
-    
   }
 
   async ngOnInit() {
     this.lang = await this.translate.get("doc-editor").toPromise();
     
-    this.mode = DocMode.Edit
+    this.mode = DocMode.Edit;
+
+    this.doc.title = this.lang.untitled;
+
     await this.getDoc();
   }
 
@@ -449,12 +431,13 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     }else{
       this.mode = DocMode.Edit;
       // this.onInnerHtmlClick(event);
-      console.log('the content of doc is changed to:', this.doc.content);
       this.getDoc(this.form.get('html').value, this.TaggedWordInfo);
 
 
     }
   }
+
+  public displayContent:string = "";
 
   public selectedValue:any;
   public isToolbarHidden:boolean=false;
@@ -475,8 +458,11 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
   public form: FormGroup;
 
-  @ViewChild("innerHtml",{static:true})
-  public innerHtml: ElementRef;
+  // @ViewChild("innerHtml",{static:true})
+  // public innerHtml: ElementRef;
+
+  @ViewChild("innerHtml",{static:false})
+  public innerHtml: QuillViewHTMLComponent;
 
   @ViewChild("htmlEditor",{static:false})
   public htmlEditor: QuillEditorComponent;

@@ -22,25 +22,45 @@
 </ion-header>
 
 <ion-content  name="edit" [hidden]="mode == DocMode.Edit ? true : false" >
+  <ion-input name="title" [(ngModel)]="doc.title"></ion-input>
   <form [formGroup]="form">
-    <quill-editor #htmlEditor   formControlName="html"  format="html" contenteditable="true"> 
+    <quill-editor #htmlEditor formControlName="html"  format="html" [placeholder]="lang?.insertContent"> 
       <div quill-editor-toolbar>
         <span class="ql-formats">
-          <button class="ql-bold" [title]="'Bold'"></button>
+          <select class="ql-font">
+            <option selected></option>
+            <option value="serif"></option>
+            <option value="monospace"></option>
+          </select>
+          <select class="ql-size">
+            <option value="small"></option>
+            <option selected></option>
+            <option value="large"></option>
+            <option value="huge"></option>
+          </select>
         </span>
         <span class="ql-formats">
-          <select class="ql-align" [title]="'Aligment'">
+          <button class="ql-bold"></button>
+          <button class="ql-italic"></button>
+          <button class="ql-underline"></button>
+          <button class="ql-strike"></button>
+        </span>
+        <span class="ql-formats">
+          <select class="ql-color"></select>
+          <select class="ql-background"></select>
+        </span>
+        <span class="ql-formats">
+          <button class="ql-list" value="ordered"></button>
+          <button class="ql-list" value="bullet"></button>
+          <select class="ql-align">
             <option selected></option>
             <option value="center"></option>
             <option value="right"></option>
             <option value="justify"></option>
           </select>
-          <select class="ql-align" [title]="'Aligment2'">
-            <option selected></option>
-            <option value="center"></option>
-            <option value="right"></option>
-            <option value="justify"></option>
-          </select>
+        </span>
+        <span class="ql-formats">
+          <button class="ql-image"></button>
         </span>
       </div>
     </quill-editor>
@@ -49,19 +69,21 @@
 
 <ion-content name="read" scrollEvents="true" (ionScroll)="onScroll($event)" [hidden]="mode == DocMode.Read ? true : false" 
             [ngClass]="showTags ? 'bookMarkToggled':''">
-  <div class="test horizontal-scroll">
-    <ion-chip *ngFor="let tag of tags | uniqueTags" [class.selected]='selectedValue === tag.tagName' (click)='onChooseTagClick(tag);selectedValue=tag.tagName;'>
-      <ion-avatar>
-        <div [style.background-color]="tag.tagColor" style="width: 100%; height: 100%;"></div>
-      </ion-avatar>
-      <ion-label>{{tag.tagName}}</ion-label>
-      <ion-icon name="checkmark-circle"></ion-icon>
-    </ion-chip>
+    <div class="test horizontal-scroll">
+      <ion-chip *ngFor="let tag of tags | uniqueTags" [class.selected]='selectedValue === tag.tagName' (click)='onChooseTagClick(tag);selectedValue=tag.tagName;'>
+        <ion-avatar>
+          <div [style.background-color]="tag.tagColor" style="width: 100%; height: 100%;"></div>
+        </ion-avatar>
+        <ion-label>{{tag.tagName}}</ion-label>
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </ion-chip>
 
-</div>
+  </div>
 
-<div #innerHtml class="ql-editor" (click)="onReaderClick($event)">
-</div>
+<!-- <div #innerHtml class="ql-editor" >
+</div> -->
+
+  <quill-view-html class="reader" #innerHtml [content]="displayContent" theme="snow" (click)="onReaderClick($event)"></quill-view-html>
 
 
 </ion-content>

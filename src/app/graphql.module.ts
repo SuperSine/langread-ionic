@@ -13,7 +13,6 @@ import {onError} from 'apollo-link-error';
 import {environment} from '../environments/environment';
 import { GlobalService } from './services/global.service';
 import { TranslateService } from '@ngx-translate/core';
-const uri = 'http://localhost:5001'; // <-- add the URL of the GraphQL server here
 export async function createApollo(httpLink: HttpLink,storage:Storage) {
 
 }
@@ -36,13 +35,18 @@ export class GraphQLModule {
               private translate:TranslateService){
 
 
-      const authMiddleware = new ApolloLink((operation, forward) => {
+      const headerMiddleware = new ApolloLink((operation, forward) => {
         var token  = window['tempLangreadUserToken'];
+        var headers = {};
         if (token) {
-          operation.setContext({
-              headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
-          });
+          headers['Authorization'] = `Bearer ${token}`;
         }
+
+        headers['Accept-Language'] = this.translate.getBrowserCultureLang();
+
+        operation.setContext({
+          headers: new HttpHeaders(headers)
+        });
   
         return forward(operation);
       });
@@ -54,12 +58,16 @@ export class GraphQLModule {
        */
       const renewTokenLink = onError((result)=>{
         (async () => {
-          const offline = await this.translate.get("general.offline").toPromise();
+          const offline = await this.translate.get('general.offline').toPromise();
           var networkError = result.networkError;
           if(networkError && 'status' in networkError){
             if(networkError['status'] === 401){
-              console.log('you can perform logout here!');
-              this.authService.requestToken();
+              // console.log('you can perform logout here!');
+              
+              if(this.authService.userObj != null)
+                this.authService.requestToken();
+              else
+                this.authService.logout();
   
             }else if(networkError['status'] === 403){
               this.authService.setEmailConfirmed(false);
@@ -81,12 +89,12 @@ export class GraphQLModule {
   
       const http = httpLink.create({uri: environment.coreEndpoint});
       let optionB = {
-        link: from([authMiddleware, renewTokenLink, http]),
+        link: from([headerMiddleware, renewTokenLink, http]),
         cache: new InMemoryCache(),
       };
   
-      apollo.create(optionA,"auth");
-      apollo.create(optionB,"core");
+      apollo.create(optionA,'auth');
+      apollo.create(optionB,'core');
 
 
   }

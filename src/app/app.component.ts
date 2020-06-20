@@ -15,6 +15,8 @@ import { HttpLink } from 'apollo-angular-link-http';
 import { FontService } from './services/font.service';
 import { GlobalService } from './services/global.service';
 import { TranslateService } from '@ngx-translate/core';
+import {distinctUntilChanged} from 'rxjs/operators'
+import { Router } from '@angular/router';
 
 
 
@@ -33,7 +35,8 @@ export class AppComponent {
     private authService: AuthService,
     private fontService:FontService,
     private globalService:GlobalService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private router: Router
   ) {
     //app needs to check user has logged in or not
     this.authService.getUserObj(true).then(async (user)=>{
@@ -49,14 +52,28 @@ export class AppComponent {
       this.fontService.injectAll();
     });
 
+    this.authService.isAuthenticated.pipe(distinctUntilChanged()).subscribe((isAuthenticated) => {
+      if(!isAuthenticated){
+        this.router.navigateByUrl('/login');
+      }
+    })
+
+
+    this.authService.isEmailConfirmed.pipe(distinctUntilChanged()).subscribe((confirmed) => {
+      if(!confirmed){
+        console.log('you should activate your email!!!');
+
+        if(this.router.url != '/auth-confirm')
+          this.router.navigateByUrl('/auth-confirm');
+      }
+
+    })
 
 
   }
 
   initializeApp() {
-
-
-
+    
     this.platform.ready().then(async () => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
@@ -80,7 +97,7 @@ export class AppComponent {
 
       var uuid = await this.globalService.getUuid();
       console.log('the current platform is:',this.platform.platforms());
-      console.log('the current uuid is:',uuid);
+      // console.log('the current uuid is:',uuid);
 
 
     });

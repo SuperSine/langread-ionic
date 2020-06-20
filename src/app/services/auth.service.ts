@@ -150,7 +150,6 @@ export class AuthService {
   }
 
   async getUserObj(refresh:boolean=false){
-
     let userData = (await Storage.get({key:T_USER_KEY})).value;
     let userObj:UserType = JSON.parse(userData);
 

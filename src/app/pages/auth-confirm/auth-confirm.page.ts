@@ -24,7 +24,6 @@ export class AuthConfirmPage implements OnInit {
     this.displayLanguages = environment.displayLanguages;
     this.targetLanguages = environment.targetLanguages;
 
-    console.log('you current lang is',this.translate.currentLang);
 
     
   }
@@ -63,7 +62,7 @@ export class AuthConfirmPage implements OnInit {
         let data = result.data.user.verify;
         this.authService.saveUserObj(data);
 
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/')
       }else{
         this.youCanClick = result;
         if(result)

@@ -12,24 +12,11 @@ export class AuthGuard implements CanActivate {
     // authService.getUserData();
   }
 
-  canActivate():Observable<boolean>{
+  canActivate():Observable<boolean> | boolean{
     let isAuth:boolean;
     
-    this.authService.isAuthenticated.subscribe((isAuthenticated) => {
-      console.log(isAuthenticated);
-      if(!isAuthenticated)
-        this.router.navigateByUrl('/login');
-    });
+    // if(this.router.url == '/login')return false;
 
-    this.authService.isEmailConfirmed.subscribe((confirmed) => {
-      if(!confirmed){
-        console.log('you should activate your email!!!');
-
-        if(this.router.url != '/auth-confirm')
-          this.router.navigateByUrl('/auth-confirm');
-      }
-
-    })
 
     return this.authService.isAuthenticated;
   }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterEvent } from '@angular/router';
-import { runInThisContext } from 'vm';
 import { AuthService } from 'src/app/services/auth.service';
 import { DocService } from 'src/app/services/doc.service';
 import { WordTagStaticsType, UserType } from 'src/app/graphql-components';
@@ -45,8 +44,11 @@ export class AppMenuPage implements OnInit {
       if(event.url == '/login'){
         this.authService.logout();
       }
-
-      this.selectedPath = event.url;
+      
+      if(event.url)
+        this.selectedPath = event.url;
+      else
+        this.selectedPath = '/menu/doc-list';
     })
 
     this.transSub = this.translateService.get('appMenu').subscribe(res => {
@@ -57,7 +59,7 @@ export class AppMenuPage implements OnInit {
    }
 
   async ngOnInit() {
-    this.docService.stats().toPromise().then((result:any) => {
+    this.docService.stats().valueChanges.subscribe((result:any) => {
       this.stats = result.data.document.stats;
     });
 

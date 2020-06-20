@@ -12,11 +12,11 @@
 
   <ion-item>
     <ion-label position="stacked">{{'doc-info.created' | translate}}</ion-label>
-    <ion-input readonly [value]='doc.createDate'></ion-input>
+    <ion-input readonly [value]='displayCreateDate'></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="stacked">{{'doc-info.updated' | translate}}</ion-label>
-    <ion-input readonly [value]="doc.updateDate" size="100"></ion-input>
+    <ion-input readonly [value]="displayUpdateDate" size="100"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>{{'doc-info.words' | translate}}</ion-label>

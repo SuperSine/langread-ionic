@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { GlobalService } from 'src/app/services/global.service';
+import { DateTime } from 'luxon';
 
 
 @Component({
@@ -17,8 +18,6 @@ export class DocInfoPage implements OnInit {
     this.tagInfo = {};
 
     // console.log("offsetNameShort",DateTime.local().toFormat('ff'));
-
-  
    }
 
   getTagColor(tagName:string){
@@ -42,8 +41,10 @@ export class DocInfoPage implements OnInit {
       })
     });
 
-    this.doc.createDate = this.globalService.toLocalDate(this.doc.createDate);
-    this.doc.updateDate = this.globalService.toLocalDate(this.doc.updateDate);
+    if(this.doc != undefined){
+      this.displayCreateDate = this.globalService.toLocalDate(this.doc.createDate);
+      this.displayUpdateDate = this.globalService.toLocalDate(this.doc.updateDate);
+    }
 
   }
 
@@ -52,6 +53,8 @@ export class DocInfoPage implements OnInit {
   }
 
   public doc:{title:string, url:string, createDate:string, updateDate:string, wordsCount:number};
+  public displayCreateDate:string;
+  public displayUpdateDate:string;
   public taggedWordInfo:any;
   public tagInfo:any;
   public allTags:any[];

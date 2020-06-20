@@ -799,7 +799,7 @@ export type GetDocumentQuery = (
 
 export type GetDocumentsQueryVariables = {
   pageSize: Scalars['String'];
-  lastId: Scalars['String'];
+  lastId?: Maybe<Scalars['String']>;
   keywords?: Maybe<Scalars['String']>;
 };
 
@@ -1291,7 +1291,7 @@ export const GetDocumentDocument = gql`
     
   }
 export const GetDocumentsDocument = gql`
-    query getDocuments($pageSize: String!, $lastId: String!, $keywords: String) {
+    query getDocuments($pageSize: String!, $lastId: String, $keywords: String) {
   document {
     list(limit: $pageSize, lastId: $lastId, keywords: $keywords) {
       id

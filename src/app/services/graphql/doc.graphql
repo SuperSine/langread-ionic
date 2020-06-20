@@ -40,7 +40,7 @@ query getDocument($docId:String!){
   }
 }
 
-query getDocuments($pageSize:String!, $lastId:String!, $keywords:String){
+query getDocuments($pageSize:String!, $lastId:String, $keywords:String){
   document{
     list(limit:$pageSize,lastId:$lastId, keywords:$keywords){
       id,

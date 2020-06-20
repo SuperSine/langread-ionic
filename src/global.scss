@@ -118,3 +118,29 @@ fieldset{
   -webkit-box-shadow: 0 4px 16px rgba(0, 0, 0, 0)  !important;
   box-shadow: 0 4px 16px rgba(0,0,0,0) !important;
 }
+
+
+
+@media (min-width:1301px){
+  // ion-menu-button{
+  //   display: none;
+  // }
+
+  // ion-toolbar{
+  //   position: absolute;
+  // }
+
+  // ion-app{
+  //   border: 1px solid #D2D2D2;
+  //   box-shadow: 1px 0px 20px 0px #CCC;
+  // }
+
+  ion-content{
+    max-width: 768px;
+  }
+
+  .ion-page{
+    align-items: center;
+    justify-content: center;
+  }
+}

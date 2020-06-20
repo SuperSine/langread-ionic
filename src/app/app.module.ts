@@ -12,7 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import {TagEditorPageModule} from '../app/pages/tag-editor/tag-editor.module';
 import { GraphQLModule } from './graphql.module';
-import { HttpClientModule,HttpClient } from '@angular/common/http';
+import { HttpClientModule,HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 import { AuthService } from './services/auth.service';
 import { PickDirective } from './directives/pick.directive';
@@ -22,6 +22,9 @@ import {UniqueDeviceID} from '@ionic-native/unique-device-id/ngx';
 import { CheckEmailValidator } from './pages/auth-register/check-email-validator';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { BasicAuthInterceptor } from './helpers/HttpAuthInterceptor';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 export function createTranslateLoader(http:HttpClient){
@@ -51,7 +54,8 @@ export function createTranslateLoader(http:HttpClient){
         deps: [HttpClient]
       }
     }),
-    GraphQLModule
+    GraphQLModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     StatusBar,
@@ -61,7 +65,8 @@ export function createTranslateLoader(http:HttpClient){
     AuthService,
     GlobalService,
     ColorService,
-    CheckEmailValidator
+    CheckEmailValidator,
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

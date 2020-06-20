@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { GetStatsDocument,GiveItToMeDocument, GetDocumentDocument, GetDocumentsDocument, SaveDocumentDocument, DeleteDocumentDocument } from '../graphql-components';
+import {environment} from 'src/environments/environment';
+import { last } from 'rxjs/operators';
 
 export interface Doc {
   id?:string,
@@ -61,7 +63,16 @@ export class DocService {
         wordTagLiteStr:JSON.stringify(wordTagLiteStr),
         url:doc.url
       },
+      refetchQueries:[{
+        query:GetDocumentsDocument,
+        variables:{pageSize:environment.pageSize,lastId:"",keywords:""}
+      },{
+        query:GetStatsDocument
+      }],
       update: (cache, {data:{doc:save}}:any) => {
+        //only update cache when updating document
+        if(!doc.id)return;
+
         console.log('returned data is:', save);
 
         let result:any  = cache.readQuery({
@@ -70,6 +81,7 @@ export class DocService {
             content:doc.docId
           }
         });
+
 
         console.log('cached data is:', result);
 
@@ -82,8 +94,6 @@ export class DocService {
           },
           data:result
         })
-
-
       }
     });
   }
@@ -98,7 +108,7 @@ export class DocService {
   }
 
   stats(){
-    return this.getApollo.query({
+    return this.getApollo.watchQuery({
       query:GetStatsDocument
     });
   }

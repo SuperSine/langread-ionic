@@ -104,7 +104,9 @@ export class TagsService {
       tagName:tag.tagName,
       tagColor:tag.tagColor,
       tagFont:tag.tagFont
-    }})
+    }, refetchQueries:[{
+      query:UserTagListGql
+    }]})
   }
 
   update(tagName:string, tagInfo:Tag) {

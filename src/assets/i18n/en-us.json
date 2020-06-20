@@ -86,7 +86,9 @@
     "actionSave":"Save",
     "actionCancel":"Cancel",
     "waitMsg":"Please wait...",
-    "successMsg":"Content Added!"
+    "successMsg":"Content Added!",
+    "insertContent":"Insert or paste content here...",
+    "untitled":"Untitled"
   },
   "doc-info":{
     "title":"Title",

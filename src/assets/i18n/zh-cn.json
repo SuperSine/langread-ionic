@@ -86,7 +86,9 @@
     "actionSave": "保存",
     "actionCancel": "取消",
     "waitMsg": "请稍候...",
-    "successMsg": "内容已添加！"
+    "successMsg": "内容已添加！",
+    "insertContent":"请在此添加或粘贴内容",
+    "untitled":"Untitled"
   },
   "doc-info": {
     "title": "标题",

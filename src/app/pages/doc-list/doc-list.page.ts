@@ -49,13 +49,11 @@ export class PopOverMenuComponent implements OnInit{
           role: 'cancel',
           cssClass: 'secondary',
           handler: (event) => {
-            console.log('Confirm Cancel');
             this.dismiss(event);
           }
         }, {
           text: 'Ok',
           handler: (event) => {
-            console.log('Confirm Ok', event);
             this.dismiss(event);
           }
         }
@@ -84,8 +82,7 @@ export class DocListPage implements OnInit {
               public globalService:GlobalService,
               private translate:TranslateService,
               private popoverCtrl:PopoverController) { 
-                this.defaultWord = activatedRoute.snapshot.paramMap.get('defaultWord');
-                console.log(this.defaultWord)
+                this.defaultWord = activatedRoute.snapshot.paramMap.get('defaultWord') || '';
               }
 
   async popoverActions(event:any){
@@ -96,10 +93,8 @@ export class DocListPage implements OnInit {
       cssClass:"popover",
       componentProps:{
         dismiss:async (event) => {
-          console.log('popover dismiss', event);
 
           if(event){
-            debugger;
             this.router.navigate(["/doc-editor",{docId:event.url}]);
           }
 
@@ -115,11 +110,9 @@ export class DocListPage implements OnInit {
     if(!keywords)lastId='';
     
     this.docService.list(pageSize, lastId, keywords).valueChanges.subscribe((result) => {
-      console.log('doc list:', result);
       
       this.docList = ((result.data) as any).document.list;
 
-      console.log(this.docList);
       if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
     });
   }
@@ -146,14 +139,11 @@ export class DocListPage implements OnInit {
   }
 
   onRefresh(event){
-    this.docService.list(environment.pageSize).refetch().then((result) => {
-      console.log('refetch complete!', result);
+    this.docService.list(environment.pageSize).refetch().then(({data:{document:{list}}}:any) => {
+      this.docList = list;
       event.target.complete();
     }, async (err)=>{
-      this.globalService.throwError([err]);
-
       event.target.complete();
-
     });
   }
 
@@ -165,7 +155,6 @@ export class DocListPage implements OnInit {
   }
 
   onChange(event){
-    console.log(event.detail.value);
     if(this.urlReg.test(event.detail.value)){
       this.iconName = "cloud-download";
     }else{
@@ -203,19 +192,16 @@ export class DocListPage implements OnInit {
 
         
         this.docList = this.docList.concat(newList);
-        console.log('merged docList',this.docList);
         this.lastId = newList.slice(-1)[0].id;
         
       }
       
       this.infiniteScroll.complete();
 
-      console.log('the last id is:', this.lastId);
     });
   }
 
   async presentActionSheet(item:Doc){
-    console.log('item clicked', item);
     const actionSheet = await this.actionSheetCtrl.create({
       buttons:[{
         text:this.lang.delete,
@@ -223,7 +209,6 @@ export class DocListPage implements OnInit {
         icon:'trash',
         handler:()=>{
           this.deleteItem(item);
-          console.log('Delete clicked!');
         }
       },
       {
@@ -231,7 +216,6 @@ export class DocListPage implements OnInit {
         icon:'close',
         role:'cancel',
         handler:()=>{
-          console.log('Cancel clicked!');
         }
       }]
     });
@@ -250,7 +234,7 @@ export class DocListPage implements OnInit {
   public iconName:string = "add";
   public lastId:string;
   public queryRef:QueryRef<any>;
-  public docList:DocumentType[];
+  public docList:DocumentType[] = null;
   public isScrollButtonHidden:boolean = true;
   public userContent:string = '';
   public defaultWord:string = '';

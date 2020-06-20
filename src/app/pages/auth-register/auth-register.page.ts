@@ -45,7 +45,7 @@ export class AuthRegisterPage implements OnInit {
       //   console.log('taking', value);
       //   return  value != null
       // }),
-      filter((value) => {console.log('filting', value); return value == true;}),
+      filter((value) => {return value == true;}),
       switchMap((event) => {
         return this.authService.signUpEx(this.registerForm.get("email").value, defaultLang).pipe(
           catchError(err => { this.globalService.throwError(err.graphQLErrors); return of(true);}),

@@ -19,7 +19,6 @@ export class AppProfilePage implements OnInit {
   }
 
   async ionViewWillEnter(){
-    console.log(123123123);
   }
 
   logout(){

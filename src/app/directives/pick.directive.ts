@@ -15,6 +15,6 @@ export class PickDirective implements AfterViewInit {
   }
   @HostListener("click")
   onClick(event){
-    console.log(this.el);
+
   }
 }

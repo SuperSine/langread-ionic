@@ -29,16 +29,20 @@ export class TagEditorPage implements OnInit {
     });
   }
 
+  compareWith(option1, option2):boolean{
+    return option1 == option2;
+  };
+
   async ngOnInit() {
     this.lang = await this.translate.get('tag-editor').toPromise();
+
+    this.editorForm.get('tagfont').setValue(this.tagFont);
+    this.editorForm.get('tagcolor').setValue(this.tagColor);
+    this.editorForm.get('tagname').setValue(this.tagName);
 
     this.fontList = this.fontService.getFontList;
 
     this.oldTagName = this.tagName;
-
-    this.editorForm.get('tagcolor').setValue(this.tagColor);
-    this.editorForm.get('tagname').setValue(this.tagName);
-    this.editorForm.get('tagfont').setValue(this.tagFont);
 
     this.selectColor = this.tagColor;
     this.colorList = this.colorService.colorList;
@@ -53,6 +57,8 @@ export class TagEditorPage implements OnInit {
         return item.total;
       }));
     }
+
+    this.editorForm.updateValueAndValidity();
   }
 
   close(){
@@ -122,7 +128,6 @@ export class TagEditorPage implements OnInit {
           borderColor: 'rgb(38, 194, 129)',
           borderWidth: 1,
           fill:false,
-          
         }]
       },
       options: {
@@ -159,7 +164,7 @@ export class TagEditorPage implements OnInit {
   }
 
   public editorForm: FormGroup;
-  public fontList:any;
+  public fontList:any[];
 
   public id:string;
   public tagColor:string = "";

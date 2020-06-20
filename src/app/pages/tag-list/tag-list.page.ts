@@ -80,7 +80,8 @@ export class TagListPage implements OnInit {
   }
 
   openTagEditor(data){
-    if(!data)data = this.searchBar;
+    if(!data.tagName)
+      data = this.searchBar;
 
     this.modalController.create({
       component: TagEditorPage,

@@ -45,3 +45,8 @@
   opacity: 1;
   margin: 0 auto;
 }
+
+//this is a walkaround for fixing no value of tag font when re-enter the editor
+ion-select{
+  --placeholder-opacity: 1;
+}

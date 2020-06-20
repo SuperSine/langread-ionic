@@ -42,12 +42,12 @@
     <ion-list>
       <ion-item>
 
-        <ng-container *ngIf="wordProfile.dictResult">
+        <ng-container *ngIf="wordProfile.entryResults">
 
           <ion-button size="small" (click)="playAudio($event)">
             <ion-icon [name]="isPlaying ? 'pause-circle-outline' :'play-circle-outline'"></ion-icon>
           </ion-button>
-          <span class="phoneticSpelling">/{{pronunciation.phoneticSpelling}}/</span>
+          <span class="phoneticSpelling">{{pronunciation}}</span>
           
         </ng-container>
         

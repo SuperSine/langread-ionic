@@ -8,6 +8,7 @@ import { Chart } from 'chart.js';
 import {TagEditorPage} from '../tag-editor/tag-editor.page'
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-word-info',
@@ -106,16 +107,13 @@ export class WordInfoPage implements OnInit {
   }
 
   get pronunciation(){
-    return this.wordProfile.dictResult
-                           .results[0]
-                           .lexicalEntries[0]
-                           .pronunciations[0];
+    return this.wordProfile.entryResults[0].phonetic;
   }
 
   async playAudio(pron){
     if(this.isPlaying)return;
 
-    var audio = new Audio(this.pronunciation.audioFile);
+    var audio = new Audio(this.soundUrl);
     this.isPlaying = true;
     
     audio.onended= ()=>{
@@ -149,6 +147,8 @@ export class WordInfoPage implements OnInit {
         this.wordTrends = result.timeline.wordByMonth.data;
   
         this.wordColor = this.getWordColor(this.wordProfile.score);
+
+        this.soundUrl = `${environment.wordSoundUrl}/${this.word}?lang=${userObj.targetLanguage}`;
         
         // use setTimeout to avoid null nativeElement access
         // https://stackoverflow.com/questions/39256703/angular-2-viewchild-returns-undefined
@@ -251,6 +251,8 @@ export class WordInfoPage implements OnInit {
   public chart:any;
 
   public word:string;
+
+  public soundUrl:string;
 
   private langKeys:string[] = [
     'word-info.tagHeader',

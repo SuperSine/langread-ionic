@@ -4,6 +4,7 @@ import {HttpLinkModule, HttpLink} from 'apollo-angular-link-http';
 import { createHttpLink } from "apollo-link-http";
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import { ApolloLink, Observable, from } from 'apollo-link';
+import { RetryLink } from 'apollo-link-retry';
 import { HttpHeaders } from '@angular/common/http';
 import {Storage} from '@ionic/storage';
 import {T_USER_TOKEN, AuthService} from './services/auth.service';
@@ -81,6 +82,18 @@ export class GraphQLModule {
         })();
 
       });
+
+      const retryLink = new RetryLink({
+        delay: {
+          initial: 3000,
+          max: Infinity,
+          jitter: true
+        },
+        attempts: {
+          max: 10,
+          retryIf: (error, _operation) => !!error
+        }
+      });
   
       let optionA = {
         link: createHttpLink({uri: environment.authEndpoint}),
@@ -89,7 +102,7 @@ export class GraphQLModule {
   
       const http = httpLink.create({uri: environment.coreEndpoint});
       let optionB = {
-        link: from([headerMiddleware, renewTokenLink, http]),
+        link: from([retryLink, headerMiddleware, renewTokenLink, http]),
         cache: new InMemoryCache(),
       };
   

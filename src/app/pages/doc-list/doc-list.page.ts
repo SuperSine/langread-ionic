@@ -3,7 +3,7 @@ import { DocService, Doc } from 'src/app/services/doc.service';
 import { QueryRef } from 'apollo-angular';
 import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController, ToastController, PopoverController, AlertController } from '@ionic/angular';
 import { runInThisContext } from 'vm';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import {DocumentType} from '../../graphql-components';
 import {environment} from 'src/environments/environment';
 import { GlobalService } from 'src/app/services/global.service';

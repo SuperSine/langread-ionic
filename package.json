@@ -1,6 +1,6 @@
 {
   "name": "langread-ionic",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "author": "Sine Zhang",
   "homepage": "https://www.langreed.com/",
   "scripts": {
@@ -41,6 +41,7 @@
     "apollo-link": "^1.2.11",
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
+    "apollo-link-retry": "^2.2.16",
     "chart.js": "^2.9.3",
     "core-js": "^2.5.4",
     "fingerprintjs2": "^2.1.0",

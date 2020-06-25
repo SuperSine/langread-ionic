@@ -16,7 +16,8 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls:['./popover-menu/popover-menu.component.scss']
 })
 export class PopOverMenuComponent implements OnInit{
-  constructor(private alertController: AlertController){
+  constructor(private alertController: AlertController,
+             private translateService: TranslateService){
 
   }
 
@@ -24,7 +25,7 @@ export class PopOverMenuComponent implements OnInit{
   public dismiss = (event) =>{}
 
   async ngOnInit(){
-
+    this.lang = await this.translateService.get("doc-list").toPromise();
   }
 
   async goToEditor(){
@@ -34,7 +35,7 @@ export class PopOverMenuComponent implements OnInit{
   async presentAlertPrompt() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Input the URL',
+      header: this.lang.inputUrl,
       inputs: [
         {
           name: 'url',
@@ -62,6 +63,8 @@ export class PopOverMenuComponent implements OnInit{
 
     await alert.present();
   }
+
+  private lang:any;
 }
 
 

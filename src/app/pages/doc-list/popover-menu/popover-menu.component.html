@@ -1,10 +1,10 @@
 <ion-list>
   <ion-item class="ion-activatable" (click)="presentAlertPrompt()" button>
     <ion-icon name="link-outline"></ion-icon>
-    <ion-label slot="end">URL</ion-label>
+    <ion-label slot="end">{{'doc-list.url' | translate}}</ion-label>
   </ion-item>
   <ion-item class="ion-activatable" (click)="goToEditor()" [routerLink]="['/doc-editor']">
     <ion-icon name="document-text-outline"></ion-icon>
-    <ion-label slot="end">Content</ion-label>
+    <ion-label slot="end">{{'doc-list.content' | translate}}</ion-label>
   </ion-item>
 </ion-list>

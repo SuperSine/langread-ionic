@@ -102,7 +102,10 @@
     "add": "添加文档！",
     "deleted": "文档已删除！",
     "delete": "删除",
-    "cancel": "取消"
+    "cancel": "取消",
+    "url":"超链接",
+    "content":"文本",
+    "inputUrl":"输入超链接"
   },
   "profile-editor": {
     "title": "编辑我的",

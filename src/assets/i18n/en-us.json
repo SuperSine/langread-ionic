@@ -102,7 +102,10 @@
     "add":"Add Document!",
     "deleted":"Document Deleted!",
     "delete": "Delete",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "url":"URL",
+    "content":"Content",
+    "inputUrl":"Input the Url"
   },
   "profile-editor":{
     "title":"Edit Profile",

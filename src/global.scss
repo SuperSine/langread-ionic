@@ -51,21 +51,21 @@ fieldset{
   font-family: 'Baloopaaji-Regular';
   font-style: 'normal';
   font-weight: '400';
-  src: url('./assets/fonts/Baloopaaji/Baloopaaji-Regular.ttf');
+  src:url('~/assets/fonts/Baloopaaji/Baloopaaji-Regular.ttf');
 }
 
 @font-face {
   font-family: 'Biryani-Regular';
   font-style: 'normal';
   font-weight: '400';
-  src: url('./assets/fonts/biryani/Biryani-Regular.ttf');
+  src:url('~/assets/fonts/biryani/Biryani-Regular.ttf');
 }
 
 @font-face {
   font-family: 'Combo-Regular';
   font-style: 'normal';
   font-weight: '400';
-  src: url('./assets/fonts/combo/Combo-Regular.ttf');
+  src:url('~/assets/fonts/combo/Combo-Regular.ttf');
 }
 
 .top-horizontal-scroll {
@@ -137,6 +137,10 @@ fieldset{
 
   ion-content{
     max-width: 768px;
+
+    img {
+      height: auto !important;
+    }
   }
 
   .ion-page{

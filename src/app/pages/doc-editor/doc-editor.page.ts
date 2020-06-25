@@ -275,7 +275,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
   createElementFromHTML(htmlString) {
     var div = document.createElement('div');
-    div.innerHTML = `<span>${htmlString.trim()}</span>`;
+    div.innerHTML = `<span>${htmlString}</span>`;
     // div.innerHTML = htmlString.trim();
   
     // Change this to div.childNodes to support multiple top-level nodes
@@ -367,12 +367,18 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     var that = this;
     var div = document.createElement("div");
     div.innerHTML = `<div>${this.doc.content}</div>`;
-    // div.innerHTML = this.htmlEditor.;
 
     Array.from(div.querySelectorAll("*"), (el:any) => {
       Array.from(el.childNodes, (ch:any)=>{
-        if(ch.nodeType == 3 && ch.data){
-          var newHtml = ch.data.replace(that.getWordRegEx1, (word)=>{
+        if((ch.nodeType == 3 && ch.data) || (ch.nodeType == 1 && ch.nodeName == "A")){
+          var data = "";
+
+          if(ch.nodeType == 1){
+            data = ch.textContent;
+          }else
+            data = ch.data;
+
+          var newHtml = data.replace(that.getWordRegEx1, (word)=>{
             if(!word)return word;
 
             var stemmedWord = stemmer(word);
@@ -387,7 +393,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
           })
 
           ch.parentNode.replaceChild(this.createElementFromHTML(newHtml), ch);
-
         }
       })
     });

@@ -46,6 +46,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
              private popoverCtrl:PopoverController
              ) {
     this.docId = activatedRoute.snapshot.paramMap.get('docId');
+
     this.wti = {};
     this.stemmedWti = {};
 
@@ -405,11 +406,17 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   async ngOnInit() {
     this.lang = await this.translate.get("doc-editor").toPromise();
     
-    this.mode = DocMode.Edit;
-
     this.doc.title = this.lang.untitled;
 
     await this.getDoc();
+
+
+    if(this.docId == null){
+      this.mode = DocMode.Read;
+    }else{
+      this.mode = DocMode.Edit;
+    }
+
   }
 
   get DocMode(){
@@ -428,7 +435,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
   onModeChange(event){
-    console.log(event);
+    console.log('current mode is', this.mode);
 
     if(this.mode == DocMode.Edit){
       this.mode = DocMode.Read;

@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-buttons slot="primary">
       <ion-button color="dark" (click)="onModeChange($event)">
-        <ion-icon [name]="mode == DocMode.Read ? 'create' : 'book'"></ion-icon>
+        <ion-icon [name]="mode == DocMode.Read ? 'book' : 'create'"></ion-icon>
       </ion-button>
       <ion-button color="dark" (click)="onTagClick($event)">
         <ion-icon name="bookmark"></ion-icon>
@@ -79,9 +79,6 @@
       </ion-chip>
 
   </div>
-
-<!-- <div #innerHtml class="ql-editor" >
-</div> -->
 
   <quill-view-html class="reader" #innerHtml [content]="displayContent" theme="snow" (click)="onReaderClick($event)"></quill-view-html>
 

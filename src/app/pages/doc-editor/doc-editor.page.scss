@@ -5,7 +5,10 @@
 //   // --padding-top:20px;
 // }
 
-
+ion-content[name=edit]{
+  overflow: hidden !important;
+  height: 100%;
+}
 
 .test{
   position: fixed;
@@ -55,30 +58,25 @@ ion-chip[class$=selected] ion-icon{
   display: inline;
 }
 
+ion-content{
+  height: 50%;
+}
 
 span[app-pick] {
   display: inline-block;
   color: inherit;
   position: relative;
   text-decoration: none;
-  transition: transform .3s; /* Animation */
+  transition: transform .5s;
 }
-
-
-
-// span[app-pick]:hover::after {
-//   background-color: rgba(76, 122, 241, 0.75);
-// }
 
 span[app-pick]:active{
   background-color: rgba(76, 122, 241, 0.30);
-  transform: scale(1.5);
+  transform: scale(2.5);
 }
 
 span[app-pick]:hover{
   cursor: pointer;
-
-
 }
 
 [contenteditable] {
@@ -89,10 +87,11 @@ span[app-pick]:hover{
 .ql-container{
   font-family: Georgia,Helvetica, Arial, sans-serif;
   font-size: 16px;
-  height: 100%;
   margin: 0px;
   position: relative;
+  border: none !important;
 }
+
 
 .reader p{
   margin-bottom: 1em;
@@ -103,7 +102,7 @@ span[app-pick]:hover{
 }
 
 form{
-  height: 100vh;
+  min-height: 100%;
 }
 
 ion-input[name=title]{
@@ -111,5 +110,8 @@ ion-input[name=title]{
 }
 
 div[quill-editor-toolbar]{
-  bottom: 0;
+  position: sticky;
+  top: 0;
+  background-color:var(--ion-background-color);
+  z-index: 100;
 }

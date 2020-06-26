@@ -57,9 +57,11 @@ ion-chip[class$=selected] ion-icon{
 
 
 span[app-pick] {
+  display: inline-block;
   color: inherit;
   position: relative;
   text-decoration: none;
+  transition: transform .3s; /* Animation */
 }
 
 
@@ -70,7 +72,15 @@ span[app-pick] {
 
 span[app-pick]:active{
   background-color: rgba(76, 122, 241, 0.30);
+  transform: scale(1.5);
 }
+
+span[app-pick]:hover{
+  cursor: pointer;
+
+
+}
+
 [contenteditable] {
   -webkit-user-select: text;
   user-select: text;

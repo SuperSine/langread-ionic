@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  appVersion: require('../../package.json').version,
   pageSize:'10',
   avatarUrl:'https://auth-api.langreed.com/api/v1/user/avatar',
   authEndpoint:'https://api.langreed.com/api/graphql/auth',

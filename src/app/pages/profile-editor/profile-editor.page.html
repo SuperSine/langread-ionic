@@ -58,11 +58,16 @@
           <ion-toggle color="primary" formControlName="darkMode"></ion-toggle>
         </ion-item>
 
+        <ion-item routerLink="/app-about">
+          <ion-label>{{'about.title' | translate}}</ion-label>
+        </ion-item>
         
-      </ion-card>      
+      </ion-card>
+
       <ion-button expand="block" [disabled]="!profileForm.valid || !youCanClick" (click)="save($event)">
         {{'profile-editor.save' | translate}}
       </ion-button>
+
     </ion-list>
 
 

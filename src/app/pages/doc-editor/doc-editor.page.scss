@@ -7,7 +7,7 @@
 
 ion-content[name=edit]{
   overflow: hidden !important;
-  height: 100%;
+  // height: 100vh;
 }
 
 .test{
@@ -58,20 +58,16 @@ ion-chip[class$=selected] ion-icon{
   display: inline;
 }
 
-ion-content{
-  height: 50%;
-}
-
 span[app-pick] {
   display: inline-block;
   color: inherit;
   position: relative;
   text-decoration: none;
-  transition: transform .5s;
+  transition: transform .1s;
 }
 
 span[app-pick]:active{
-  background-color: rgba(76, 122, 241, 0.30);
+  // background-color: rgba(76, 122, 241, 0.30);
   transform: scale(2.5);
 }
 
@@ -90,20 +86,32 @@ span[app-pick]:hover{
   margin: 0px;
   position: relative;
   border: none !important;
+  overflow: hidden;
+  // height: 100vh;
 }
+
+.ql-blank{
+  height: 100vh;
+}
+
 
 
 .reader p{
   margin-bottom: 1em;
 }
 
-.ql-editor p{
-  margin-bottom: 1em;
+.ql-editor{
+  // min-height: 100%;
+
+  p{
+    margin-bottom: 1em;
+  }
 }
 
-form{
-  min-height: 100%;
-}
+// form{
+//   min-height: 100%;
+//   overflow: hidden;
+// }
 
 ion-input[name=title]{
   --padding-start: 10px;

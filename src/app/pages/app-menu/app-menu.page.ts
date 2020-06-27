@@ -64,6 +64,7 @@ export class AppMenuPage implements OnInit {
     });
 
     this.user = await this.authService.getUserObj();
+
   }
 
   ngOnDestroy(){
@@ -75,4 +76,5 @@ export class AppMenuPage implements OnInit {
 
   public transSub:Subscription;
   public selectedPath:string;
+  public appVersion:string;
 }

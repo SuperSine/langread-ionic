@@ -25,6 +25,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { BasicAuthInterceptor } from './helpers/HttpAuthInterceptor';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { CheckUpdateService } from './services/check-update.service';
 
 
 export function createTranslateLoader(http:HttpClient){
@@ -65,6 +66,7 @@ export function createTranslateLoader(http:HttpClient){
     AuthService,
     GlobalService,
     ColorService,
+    CheckUpdateService,
     CheckEmailValidator,
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
   ],

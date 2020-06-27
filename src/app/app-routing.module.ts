@@ -83,6 +83,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/profile-editor/profile-editor.module').then( m => m.ProfileEditorPageModule),
     canActivate:[AuthGuard]
   },
+  {
+    path: 'app-about',
+    loadChildren: () => import('./pages/app-about/app-about.module').then( m => m.AppAboutPageModule)
+  },
   //this route need to put to bottom of the list
   {
     path: '',

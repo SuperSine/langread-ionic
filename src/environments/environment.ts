@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  appVersion: require('../../package.json').version + '-dev',
   pageSize:'10',
   avatarUrl:'http://localhost:81/api/v1/user/avatar',
   // authEndpoint:'https://localhost/api/graphql',

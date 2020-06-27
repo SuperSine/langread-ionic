@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title>{{'about.title' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>{{'about.version'}}</ion-label>
+      <ion-text>{{appVersion}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>{{'about.updateApp' | translate}}</ion-label>
+      <ion-button>Check</ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

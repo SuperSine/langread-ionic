@@ -17,6 +17,7 @@ import { GlobalService } from './services/global.service';
 import { TranslateService } from '@ngx-translate/core';
 import {distinctUntilChanged} from 'rxjs/operators'
 import { Router } from '@angular/router';
+import { CheckUpdateService } from './services/check-update.service';
 
 
 
@@ -36,7 +37,8 @@ export class AppComponent {
     private fontService:FontService,
     private globalService:GlobalService,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private checkUpdate: CheckUpdateService
   ) {
     //app needs to check user has logged in or not
     this.authService.getUserObj(true).then(async (user)=>{
@@ -69,7 +71,7 @@ export class AppComponent {
 
     })
 
-
+    
   }
 
   initializeApp() {

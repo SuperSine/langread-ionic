@@ -51,6 +51,8 @@ export class ProfileEditorPage implements OnInit {
       darkMode: this.localSetting.darkMode
     });
 
+    this.appVersion = environment.appVersion;
+
   }
 
   save(event){
@@ -88,5 +90,6 @@ export class ProfileEditorPage implements OnInit {
   public displayLanguages:any[] = environment.displayLanguages;
   public targetLanguages:any[] = environment.targetLanguages;
   public localSetting:LocalSetting;
+  public appVersion:string;
 
 }

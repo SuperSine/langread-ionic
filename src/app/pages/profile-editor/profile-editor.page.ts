@@ -29,6 +29,7 @@ export class ProfileEditorPage implements OnInit {
       lastName: ['', Validators.compose([Validators.minLength(3)])],
       userName: ['', Validators.compose([Validators.minLength(3)])],
       displayLanguage:['', Validators.compose([Validators.required])],
+      sourceLanguage:['', Validators.compose([Validators.required])],
       targetLanguage:['', Validators.compose([Validators.required])],
       darkMode:[false]
     });
@@ -43,16 +44,25 @@ export class ProfileEditorPage implements OnInit {
     this.localSetting = await this.globalService.getSetting();
 
     this.profileForm.patchValue({
-      firstName:this.user.firstName,
-      lastName:this.user.lastName,
-      userName:this.user.userName,
-      displayLanguage:this.user.displayLanguage.toLowerCase(),
-      targetLanguage:this.user.targetLanguage.toLowerCase(),
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      userName: this.user.userName,
+      displayLanguage: this.user.displayLanguage.toLowerCase(),
+      sourceLanguage: this.user.sourceLanguage.toLowerCase(),
+      targetLanguage: this.user.targetLanguage.toLowerCase(),
       darkMode: this.localSetting.darkMode
     });
 
     this.appVersion = environment.appVersion;
 
+  }
+
+  get sourceLanguages(){
+    return this._sourceLanguages.filter((e)=>e.code != this.profileForm.value.targetLanguage);
+  }
+
+  get targetLanguages(){
+    return this._targetLanguages.filter((e)=> e.code != this.profileForm.value.sourceLanguage);
   }
 
   save(event){
@@ -63,7 +73,7 @@ export class ProfileEditorPage implements OnInit {
     this.authService.updateUser(this.profileForm.value).pipe(
       catchError(err => { this.globalService.throwError(err.graphQLErrors); return of(true);}),
       tap((result:any)=>{
-        console.log('tap result',result);
+
         if(!(typeof result == 'boolean')){
           let data = result.data.user.update;
           this.authService.saveUserObj(data);
@@ -88,7 +98,8 @@ export class ProfileEditorPage implements OnInit {
   public user:UserType;
 
   public displayLanguages:any[] = environment.displayLanguages;
-  public targetLanguages:any[] = environment.targetLanguages;
+  public _sourceLanguages:any[] = environment.sourceLanguages;
+  public _targetLanguages:any[] = environment.targetLanguages;
   public localSetting:LocalSetting;
   public appVersion:string;
 

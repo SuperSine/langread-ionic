@@ -29,6 +29,7 @@
     <ion-list lines="full">
 
       <section lines="none">
+        <ion-icon style="font-size:4em" name="language-outline"></ion-icon>
         <ion-label>
           <h2>{{ langs?.displayDesc }}</h2>
         </ion-label>
@@ -41,18 +42,27 @@
           </ion-select>
         </ion-item>
 
+
+        <ion-item>
+          <ion-label position="floating">{{langs?.sourceLabel}}</ion-label>
+          <ion-select [(ngModel)]="data.sourceLanguage"  name="sourceLanguage" ok-text="Okay">
+            <ion-select-option *ngFor="let item of sourceLanguages" [value]="item.code">{{item.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
         
-      <section lines="none">
-        <ion-label>
-          <h2>{{ langs?.targetDesc }}</h2>
-        </ion-label>
-      </section>
+
       <ion-item>
         <ion-label position="floating">{{langs?.targetLabel}}</ion-label>
         <ion-select [(ngModel)]="data.targetLanguage"  name="targetLanguage" ok-text="Okay">
           <ion-select-option *ngFor="let item of targetLanguages" [value]="item.code">{{item.name}}</ion-select-option>
         </ion-select>
       </ion-item>
+
+      <section>
+        <ion-button expand="block" color="primary" (click)="updateLang($event)" [disabled]="!youCanSaveLang">{{langs?.saveLang}}</ion-button>
+      </section>
+
     </ion-list>
   
 </ion-slide>

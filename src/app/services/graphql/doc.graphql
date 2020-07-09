@@ -163,24 +163,11 @@ mutation deleteDocument($docId:String!){
   }
 }
 
-query getProfile($appId:String!, $appSecret:String!){
-  auth{
-    profile(appId:$appId,appSecret:$appSecret){
-      firstName
-      lastName
-      email
-      phoneNumber
-      userName
-      emailConfirmed
-      displayLanguage
-      targetLanguage
-    }
-  }
-}
 
-query getWordProfile($word:String!,$lang:String!){
+
+query getWordProfile($word:String!,$fromLang:String!, $toLang:String!){
   wti{
-    profile(word:$word,sourceLang:$lang){
+    profile(word:$word,fromLang:$fromLang, toLang:$toLang){
       word
       score
       wordInfo{
@@ -202,6 +189,18 @@ query getWordProfile($word:String!,$lang:String!){
             example
           }
           partOfSpeech
+        }
+      }
+      translationResult{
+        displaySource,
+        translations{
+          displayTarget,
+          posTag
+          confidence,
+          backTranslations{
+            normalizedText,
+            displayTarget
+          }
         }
       }
     }

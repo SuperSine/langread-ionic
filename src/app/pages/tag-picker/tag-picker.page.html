@@ -10,19 +10,68 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar [(ngModel)]='searchTagName' showCancelButton="focus" (ionChange)='onSearch($event)'></ion-searchbar>
-  <ion-list-header>{{'tag-picker.pickHeader' | translate:translateParams}}</ion-list-header>
-  <ion-list>
-    <ion-row *ngFor="let item of bigTags | tagsFilter: info" >
+  <ion-segment  value="Picker" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="Picker">
+      <ion-label>{{'tag-picker.pickerLabel' | translate}}</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Word">
+      <ion-label>{{'tag-picker.wordLabel' | translate}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-      <ion-item *ngIf="!item.hide" style="width: 100%;">
+  <ng-container *ngIf="currentSegment == 'Picker'">
 
+    <ion-searchbar [(ngModel)]='searchTagName' showCancelButton="focus" (ionChange)='onSearch($event)'></ion-searchbar>
+    <ion-list-header>{{'tag-picker.pickHeader' | translate:translateParams}}</ion-list-header>
+    <ion-list>
+      <ion-row *ngFor="let item of bigTags | tagsFilter: info" >
+        
+        <ion-item *ngIf="!item.hide" style="width: 100%;">
+          
           <ion-avatar slot="start">
             <div [style.background]='item.tagColor' style="width:100%;height: 100%;"></div>
           </ion-avatar>
           <ion-label>{{item.tagName}}</ion-label>
           <ion-checkbox slot="end" [(ngModel)]='item.selected' (click)='onItemSelected($event)'></ion-checkbox>
-      </ion-item>
-    </ion-row>
-  </ion-list>
+        </ion-item>
+      </ion-row>
+    </ion-list>
+  </ng-container>
+
+  <ng-container *ngIf="currentSegment == 'Word'">
+    <ion-spinner name="dots" [hidden]="wordProfile != null"></ion-spinner>
+
+    <ng-container *ngIf="wordProfile.word">
+
+      <ion-list name="word">
+        <ion-list-header>{{wordProfile.word}}</ion-list-header>
+      </ion-list>
+      <ion-list>
+        <ion-item>
+
+          <ng-container *ngIf="wordProfile.translationResult">
+
+            <word-sound [word]="wordProfile.word" [lang]="targetLanguage"></word-sound>
+            
+          </ng-container>
+          
+          <word-temp slot="end" [score]="wordProfile.score"></word-temp>
+
+        </ion-item>
+
+      </ion-list>
+    
+    
+    
+      <ng-container *ngIf="wordProfile.translationResult">
+        <word-dictionary [translationResult]="wordProfile.translationResult"></word-dictionary>
+      </ng-container>
+    
+      <ng-container *ngIf="wordTrends">
+        <word-trend [word]="word" [wordTrends]="wordTrends"></word-trend>
+      </ng-container>
+
+  
+    </ng-container>
+  </ng-container>
 </ion-content>

@@ -19,6 +19,7 @@ export class WordTagInfoComponent implements OnInit {
   @Output()
   tagClick:EventEmitter<Tag> = new EventEmitter();
 
+  @Input()
   showClose:boolean = false;
 
   constructor() { }

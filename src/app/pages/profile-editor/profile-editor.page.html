@@ -32,6 +32,7 @@
       </ion-card>
 
       <ion-card>
+
         <ion-list-header>
           {{'profile-editor.languageCard' | translate}}
         </ion-list-header>
@@ -41,7 +42,14 @@
             <ion-select-option *ngFor="let item of displayLanguages" [value]="item.code">{{item.name}}</ion-select-option>
           </ion-select>
         </ion-item>
-        
+
+        <ion-item>
+          <ion-label position="stacked">{{'profile-editor.sourceLabel' | translate}}</ion-label>
+          <ion-select formControlName="sourceLanguage" [okText]="'general.selectOk' | translate" [cancelText]="'general.selectCancel' | translate" >
+            <ion-select-option *ngFor="let item of sourceLanguages" [value]="item.code">{{item.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
         <ion-item>
           <ion-label position="stacked">{{'profile-editor.targetLabel' | translate}}</ion-label>
           <ion-select formControlName="targetLanguage" [okText]="'general.selectOk' | translate" [cancelText]="'general.selectCancel' | translate" >

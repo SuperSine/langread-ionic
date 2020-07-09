@@ -93,19 +93,7 @@ fieldset{
 //******** bottom  ***********//
 
 
-.from-bottom-modal {
-  ion-backdrop{
-    z-index: 15;
-    
-  }
-  .modal-wrapper {
-    height: 80%;
-    
-    top: 20%;
-    position: absolute;
-    z-index: 20;
-  }
-}
+
 
 
 
@@ -119,9 +107,37 @@ fieldset{
   box-shadow: 0 4px 16px rgba(0,0,0,0) !important;
 }
 
-
+@media(max-width:1300px){
+  .from-bottom-modal {
+    ion-backdrop{
+      z-index: 15;
+      
+    }
+    .modal-wrapper {
+      height: 80%;
+      
+      top: 20%;
+      position: absolute;
+      z-index: 20;
+    }
+  }
+}
 
 @media (min-width:1301px){
+  .from-bottom-modal {
+    ion-backdrop{
+      z-index: 15;
+      
+    }
+    .modal-wrapper {
+      height: 60%;
+      
+      top: 20%;
+      position: absolute;
+      z-index: 20;
+    }
+  }
+
   // ion-menu-button{
   //   display: none;
   // }

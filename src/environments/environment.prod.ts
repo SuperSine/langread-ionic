@@ -21,6 +21,36 @@ export const environment = {
       name:"Español"
     }
   ],
+  sourceLanguages:[
+    {
+      code:"en-us",
+      name:"English"
+    },
+    {
+      code:"es-es",
+      name:"Español"
+    },
+    {
+      code:"it-it",
+      name:"Italiano"
+    },
+    {
+      code:"de-de",
+      name:"Deutsch"
+    },
+    {
+      code:"zh-cn",
+      name:"大陆简体"
+    },
+    {
+      code:"zh-tw",
+      name:"臺灣正體"
+    },
+    {
+      code:"zh-hk",
+      name:"香港繁體"
+    },
+  ],
   targetLanguages:[
 
     {
@@ -38,6 +68,10 @@ export const environment = {
     {
       code:"de-de",
       name:"Deutsch"
+    },
+    {
+      code:"fr-fr",
+      name:"Français"
     }
 
   ]

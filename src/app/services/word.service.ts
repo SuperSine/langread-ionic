@@ -59,12 +59,13 @@ export class WordService {
     });
   }
 
-  async profile(word:string,lang:string):Promise<any>{
+  async profile(word:string,fromLang:string, toLang:string):Promise<any>{
     var profile = await this.Apollo.query({
       query:GetWordProfileDocument,
       variables:{
         word,
-        lang
+        fromLang,
+        toLang
       }
     }).toPromise<any>()
 

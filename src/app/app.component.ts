@@ -58,7 +58,7 @@ export class AppComponent {
       if(!isAuthenticated){
         this.router.navigateByUrl('/login');
       }
-    })
+    });
 
 
     this.authService.isEmailConfirmed.pipe(distinctUntilChanged()).subscribe((confirmed) => {
@@ -69,7 +69,17 @@ export class AppComponent {
           this.router.navigateByUrl('/auth-confirm');
       }
 
-    })
+    });
+
+    this.authService.hasLanguagePair.pipe(distinctUntilChanged()).subscribe((confirmed) => {
+      if(!confirmed){
+        console.log('you should update language preference!!!');
+
+        if(this.router.url != '/auth-confirm')
+          this.router.navigateByUrl('/auth-confirm');
+      }
+
+    });
 
     
   }

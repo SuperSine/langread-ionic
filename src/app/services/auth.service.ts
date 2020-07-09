@@ -89,6 +89,7 @@ export class AuthService {
 
   private _isAuthenticated = new BehaviorSubject(true);
   private _isEmailConfirmed = new BehaviorSubject(true);
+  private _hasLanguagePair = new BehaviorSubject(true);
   // private _isApolloCreated = new BehaviorSubject(false);
 
    constructor(private apollo: Apollo, private register:RegisterGQL) {
@@ -105,8 +106,22 @@ export class AuthService {
     return this.apollo.use("auth");
   }
 
-  setEmailConfirmed(confirmed:boolean){
-    this._isEmailConfirmed.next(confirmed);
+  checkAvailability(){
+    if(!this.userObj.emailConfirmed)
+      this._isEmailConfirmed.next(false);
+    else if(!this.userObj.sourceLanguage || !this.userObj.targetLanguage){
+      this._hasLanguagePair.next(false);
+    }
+  }
+
+  checkEmailStatus(){
+    this._isEmailConfirmed.next(this.userObj.emailConfirmed);
+  }
+
+  checkLanguagePair(has:boolean){
+    
+
+    this._hasLanguagePair.next(has);
   }
 
   setUserId(id:string, secret:string){
@@ -136,6 +151,10 @@ export class AuthService {
   // get isApolloCreated(){
   //   return this._isApolloCreated.asObservable();
   // }
+
+  get hasLanguagePair(){
+    return this._hasLanguagePair.asObservable();
+  }
 
   get isEmailConfirmed(){
     return this._isEmailConfirmed.asObservable();
@@ -167,6 +186,7 @@ export class AuthService {
           
           userObj.displayLanguage = profile.displayLanguage;
           userObj.targetLanguage = profile.targetLanguage;
+          userObj.sourceLanguage = profile.sourceLanguage;
           userObj.email = profile.email;
           userObj.emailConfirmed = profile.emailConfirmed;
           userObj.firstName = profile.firstName;
@@ -216,19 +236,19 @@ export class AuthService {
   }
 
   updateUser(user:UpdateUserViewModelType){
+    debugger;
     return this.getApollo.mutate({
       mutation:UpdateUserDocument,
       variables:{
         appId:this.userObj.appId,
         appSecret:this.userObj.appSecret,
         user:{
-          userName : user.userName,
-          firstName : user.firstName,
-          lastName : user.lastName,
-          phoneNumber : user.phoneNumber,
-          displayLanguage : user.displayLanguage,
-          targetLanguage : user.targetLanguage
-
+          userName:user.userName,
+          firstName:user.firstName,
+          lastName:user.lastName,
+          displayLanguage:user.displayLanguage,
+          sourceLanguage:user.sourceLanguage,
+          targetLanguage:user.targetLanguage,
         }
       }
     })
@@ -357,7 +377,6 @@ export class AuthService {
 
     promise.then((result) => {
       var data = result.data as any;
-
       this.saveUserObj(data.auth.auth);
 
     })

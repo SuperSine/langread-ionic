@@ -154,7 +154,6 @@ export class WordTimelinePage implements OnInit {
   }
 
   async segmentChanged(event){
-    console.log(event);
     this.currentSegment = event.detail.value;
 
     if(this.currentSegment == "Topmost"){

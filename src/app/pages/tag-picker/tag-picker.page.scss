@@ -1,0 +1,12 @@
+ion-spinner[name=dots]{
+  transform: scale(3);
+  width: 100%;
+}
+
+ion-list[name=word] ion-list-header{
+  font-size: 2.5rem;
+  font-weight: 900;
+  display: block;
+  overflow: overlay;
+  overflow: auto;
+}

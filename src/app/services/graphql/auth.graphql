@@ -3,9 +3,15 @@ query login($email:String!, $password:String!){
     auth(email:$email, password:$password){
       appId,
       appSecret,
-      firstName,
-      lastName,
-      email,
+      firstName
+      lastName
+      email
+      phoneNumber
+      userName
+      emailConfirmed
+      displayLanguage
+      targetLanguage
+      sourceLanguage
       token
     }
   }
@@ -98,6 +104,23 @@ mutation updateUser($appId:String,$appSecret:String,$user:UpdateUserViewModelTyp
       token
       displayLanguage
       targetLanguage
+      sourceLanguage
+    }
+  }
+}
+
+query getProfile($appId:String!, $appSecret:String!){
+  auth{
+    profile(appId:$appId,appSecret:$appSecret){
+      firstName
+      lastName
+      email
+      phoneNumber
+      userName
+      emailConfirmed
+      displayLanguage
+      targetLanguage
+      sourceLanguage
     }
   }
 }

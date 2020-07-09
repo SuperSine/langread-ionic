@@ -8,19 +8,17 @@ export class TagsFilterPipe implements PipeTransform {
 
   transform(array: Array<any>, currentTags: any[]): Array<any> {
     if(!array || array === undefined || array.length === 0) return null;
-    
     array.forEach((tag)=>{
       tag.selected = false;
     })
 
     if(currentTags == null || currentTags.length == 0)return array;
 
-
+    if(array.length == 1 && currentTags.length == 1){
+      array[0].selected = array[0].tagName == currentTags[0].tag.tagName ? true : false;
+    }
 
     array.sort((a:any, b:any) => {
-      // a.selected = false;
-      // b.selected = false;
-
       if(currentTags.find(({tag})=>{
           if(tag.tagName == a.tagName)
             a.selected = true;

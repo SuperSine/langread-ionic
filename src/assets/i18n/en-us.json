@@ -31,12 +31,15 @@
     "confirmEmail":"Please enter 6 digits code to confirm your email",
     "send":"Send",
     "reSend":"Resend",
-    "displayDesc":"Here are some description of the Display Langauge",
+    "displayDesc":"Please set your language perference",
     "targetDesc":"Here are some description of the Target Langauge",
+    "sourceDesc":"Here are some description of the Source Langauge",
     "displayLabel":"Display Language",
     "targetLabel":"Target Language",
+    "sourceLabel":"Source Language",
     "incorrectCode":"Verify code incorrect!",
-    "confirm":"Confirm"
+    "confirm":"Next",
+    "saveLang":"Confirm"
   },
   "auth-email":{
     "title":"Change Email",
@@ -115,7 +118,8 @@
     "userName": "User Name",
     "languageCard": "Language",
     "displayLabel":"Display",
-    "targetLabel":"Dictionary",
+    "targetLabel":"Target Language",
+    "sourceLabel":"Source Language",
     "darkMode":"Dark Mode",
     "save":"Save"
   },
@@ -145,7 +149,9 @@
   },
   "tag-picker":{
     "title":"Tag Picker",
-    "pickHeader":"Pick Tags for '{{word}}'"
+    "pickHeader":"Pick Tags for '{{word}}'",
+    "pickerLabel":"Tag",
+    "wordLabel":"Info"
   },
   "word-info":{
     "tagHeader":"Tags",

@@ -22,14 +22,8 @@
 <ion-content>
 
   <ion-fab vertical="top" horizontal="start" slot="fixed" >
-    <!-- <ion-icon name="arrow-back-outline" color="dark" class="ion-activatable" (click)="goBack($event)"></ion-icon> -->
     <ion-back-button defaultHref=""></ion-back-button>
   </ion-fab>
-  <!-- <ion-fab vertical="top" horizontal="start" slot="fixed">
-    <ion-buttons>
-      <ion-back-button text="" icon="arrow-back-outline" color="dark"></ion-back-button>
-    </ion-buttons>
-  </ion-fab> -->
 
 
 
@@ -42,20 +36,14 @@
     <ion-list>
       <ion-item>
 
-        <ng-container *ngIf="wordProfile.entryResults">
+        <ng-container *ngIf="wordProfile.translationResult">
 
-          <ion-button size="small" (click)="playAudio($event)">
-            <ion-icon [name]="isPlaying ? 'pause-circle-outline' :'play-circle-outline'"></ion-icon>
-          </ion-button>
-          <span class="phoneticSpelling">{{pronunciation}}</span>
+          <word-sound [word]="wordProfile.word" [lang]="userObj.targetLanguage"></word-sound>
+          <!-- <span class="phoneticSpelling">{{pronunciation}}</span> -->
           
         </ng-container>
         
-        <div class="celsius" slot="end">
-
-          <ion-icon name="thermometer-outline" style="font-size: x-large;" [style.color]='wordColor'></ion-icon>
-          <span aria-label="°Celsius" style="font-size:13px;">{{formattedScore}}</span>
-        </div>
+        <word-temp slot="end" [score]="wordProfile.score"></word-temp>
 
       </ion-item>
 
@@ -68,68 +56,14 @@
       </ion-card>
     </ion-list>
 
-    <ion-list>
-      <ion-list-header>{{lang?.trendHeader}}</ion-list-header>
-      <ion-card>
-        <ion-card-content>
-          <canvas #lineChart></canvas>
-        </ion-card-content>
-      </ion-card>
-    </ion-list>
 
-    <ng-container *ngIf="wordProfile.entryResults">
 
-      <ion-list>
-        <ion-list-header>{{lang?.translateHeader}}</ion-list-header>
-        
-        <!-- <ion-card *ngFor="let resultEntries of wordProfile.dictResult.results">
-          <ng-container *ngFor="let lexicalEntry of resultEntries.lexicalEntries">
-            <ion-card-header>
-              <ion-card-subtitle>{{lexicalEntry.lexicalCategory}}</ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content *ngFor="let senseEntry of lexicalEntry.entries">
-            <ol class="eQJLDd" >
-              <li *ngFor="let sense of senseEntry.senses">
-                <div style="display: block;">
-                  <div style="margin-left: 20px;">
-                    <div class="XpoqFe">
-                      <div style="display:inline"><span>{{sense.definitions[0]}}</span></div>
-                      <div class="vmod">
-                        <div class="vk_gy" *ngFor="let example of sense.examples">"{{example}}"</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ol>
-          </ion-card-content>
-        </ng-container>
-      </ion-card> -->
+  <ng-container *ngIf="wordProfile.translationResult">
+     <word-dictionary [translationResult]="wordProfile.translationResult"></word-dictionary>
+  </ng-container>
 
-      <ion-card *ngFor="let entryResult of wordProfile.entryResults">
-        <ng-container *ngFor="let meaning of entryResult.meanings">
-          <ion-card-header>
-            <ion-card-subtitle>{{meaning.partOfSpeech}}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-          <ol class="eQJLDd" >
-            <li *ngFor="let definition of meaning.definitions">
-              <div style="display: block;">
-                <div style="margin-left: 20px;">
-                  <div class="XpoqFe">
-                    <div style="display:inline"><span>{{definition.description}}</span></div>
-                    <div class="vmod">
-                      <div class="vk_gy">"{{definition.example}}"</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ol>
-        </ion-card-content>
-        </ng-container>
-      </ion-card>
-    </ion-list>
+  <ng-container *ngIf="wordTrends">
+    <word-trend [word]="word" [wordTrends]="wordTrends"></word-trend>
   </ng-container>
 
 
@@ -195,4 +129,5 @@
       </ion-card>
     </ion-list>
   </div>
+
 </ion-content>

@@ -71,7 +71,7 @@ export class GraphQLModule {
                 this.authService.logout();
   
             }else if(networkError['status'] === 403){
-              this.authService.setEmailConfirmed(false);
+              this.authService.checkAvailability();
             }else if(networkError['status'] === 0){
               this.globalService.throwError([{message:offline}]);
             }

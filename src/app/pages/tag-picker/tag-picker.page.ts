@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ColorService } from 'src/app/services/color.service';
+import { WordService } from 'src/app/services/word.service';
+import { ValueByMonthType, WordProfileType } from 'src/app/graphql-components';
 
 @Component({
   selector: 'app-tag-picker',
@@ -10,9 +12,11 @@ import { ColorService } from 'src/app/services/color.service';
 export class TagPickerPage implements OnInit {
 
 
-  constructor(private modalCtrl: ModalController,private colorService: ColorService) { }
+  constructor(private modalCtrl: ModalController,
+              private colorService: ColorService,
+              private wordProfileService: WordService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     console.log(this.word, this.info, this.bigTags);
     this.isChanged = false;
     // this.count = this.info[0].count;
@@ -20,6 +24,8 @@ export class TagPickerPage implements OnInit {
     this.translateParams = {
       word:this.word
     }
+
+
   }
 
   close(event){
@@ -47,6 +53,20 @@ export class TagPickerPage implements OnInit {
     })
   }
 
+  async segmentChanged(event){
+    this.currentSegment = event.detail.value;
+
+    if(this.currentSegment == "Word"){
+      this.wordProfileService.profile(this.word, this.targetLanguage, this.sourceLanguage).then((result)=>{
+        this.wordProfile  = result.wti.profile;
+        this.wordTrends = result.timeline.wordByMonth.data;
+        console.log(this.wordProfile, this.wordTrends);
+  
+      });
+  
+    }
+  }
+
   public bigTags:any[];
   public smallTags:any[];
   public word:string;
@@ -56,4 +76,12 @@ export class TagPickerPage implements OnInit {
   public isChanged:boolean;
 
   public translateParams:any;
+
+  public targetLanguage:string;
+  public sourceLanguage:string;
+
+  public wordTrends:ValueByMonthType[];
+  public wordProfile: WordProfileType = null;
+
+  public currentSegment:string='Picker';
 }

@@ -12,19 +12,19 @@ export type Scalars = {
   Date: any;
   DateTime: any;
   Long: any;
-  BigInt: any;
-  Byte: any;
   DateTimeOffset: any;
-  Decimal: any;
-  Guid: any;
-  Milliseconds: any;
-  SByte: any;
   Seconds: any;
-  Short: any;
-  UInt: any;
-  ULong: any;
+  Milliseconds: any;
+  Decimal: any;
   Uri: any;
+  Guid: any;
+  Short: any;
   UShort: any;
+  UInt: any;
+  BigInt: any;
+  ULong: any;
+  Byte: any;
+  SByte: any;
 };
 
 
@@ -77,6 +77,14 @@ export type AuthSendverifyArgs = {
 
 export type AuthUsernameArgs = {
   username: Scalars['String'];
+};
+
+export type BackTranslationType = {
+   __typename?: 'BackTranslationType';
+  displayTarget: Scalars['String'];
+  frequencyCount: Scalars['Int'];
+  normalizedText: Scalars['String'];
+  numExamples: Scalars['Int'];
 };
 
 
@@ -258,6 +266,7 @@ export type ProfileType = {
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
   phoneNumber?: Maybe<Scalars['String']>;
+  sourceLanguage?: Maybe<Scalars['String']>;
   targetLanguage?: Maybe<Scalars['String']>;
   userName: Scalars['String'];
 };
@@ -417,6 +426,23 @@ export enum TokenPurpose {
   UserLogin = 'USER_LOGIN'
 }
 
+export type TranslationResultType = {
+   __typename?: 'TranslationResultType';
+  displaySource: Scalars['String'];
+  normalizedSource: Scalars['String'];
+  translations?: Maybe<Array<Maybe<TranslationType>>>;
+};
+
+export type TranslationType = {
+   __typename?: 'TranslationType';
+  backTranslations?: Maybe<Array<Maybe<BackTranslationType>>>;
+  confidence: Scalars['Float'];
+  displayTarget: Scalars['String'];
+  normalizedTarget: Scalars['String'];
+  posTag: Scalars['String'];
+  prefixWord: Scalars['String'];
+};
+
 
 
 export type UpdateUserViewModelType = {
@@ -426,6 +452,7 @@ export type UpdateUserViewModelType = {
   phoneNumber?: Maybe<Scalars['String']>;
   displayLanguage?: Maybe<Scalars['String']>;
   targetLanguage?: Maybe<Scalars['String']>;
+  sourceLanguage?: Maybe<Scalars['String']>;
 };
 
 
@@ -462,6 +489,8 @@ export type UserRegisterArgs = {
   firstname?: Maybe<Scalars['String']>;
   lastname?: Maybe<Scalars['String']>;
   displayLanguage?: Maybe<Scalars['String']>;
+  sourceLanguage?: Maybe<Scalars['String']>;
+  targetLanguage?: Maybe<Scalars['String']>;
 };
 
 
@@ -488,6 +517,7 @@ export type UserType = {
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
   phoneNumber?: Maybe<Scalars['String']>;
+  sourceLanguage: Scalars['String'];
   targetLanguage: Scalars['String'];
   token?: Maybe<Scalars['String']>;
   userName: Scalars['String'];
@@ -511,6 +541,7 @@ export type WordProfileType = {
   dictResult?: Maybe<SearchResultType>;
   entryResults?: Maybe<Array<Maybe<EntryResultType>>>;
   score: Scalars['Float'];
+  translationResult?: Maybe<TranslationResultType>;
   word: Scalars['String'];
   wordInfo?: Maybe<Array<Maybe<InfoCleanType>>>;
 };
@@ -542,7 +573,8 @@ export type WordTagInfoDictArgs = {
 
 export type WordTagInfoProfileArgs = {
   word?: Maybe<Scalars['String']>;
-  sourceLang?: Maybe<Scalars['String']>;
+  fromLang?: Maybe<Scalars['String']>;
+  toLang?: Maybe<Scalars['String']>;
 };
 
 
@@ -594,7 +626,7 @@ export type LoginQuery = (
     { __typename?: 'Auth' }
     & { auth?: Maybe<(
       { __typename?: 'UserType' }
-      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'email' | 'token'>
+      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'email' | 'phoneNumber' | 'userName' | 'emailConfirmed' | 'displayLanguage' | 'targetLanguage' | 'sourceLanguage' | 'token'>
     )> }
   )> }
 );
@@ -749,7 +781,24 @@ export type UpdateUserMutation = (
     { __typename?: 'User' }
     & { update?: Maybe<(
       { __typename?: 'UserType' }
-      & Pick<UserType, 'firstName' | 'lastName' | 'email' | 'userName' | 'appId' | 'appSecret' | 'token' | 'displayLanguage' | 'targetLanguage'>
+      & Pick<UserType, 'firstName' | 'lastName' | 'email' | 'userName' | 'appId' | 'appSecret' | 'token' | 'displayLanguage' | 'targetLanguage' | 'sourceLanguage'>
+    )> }
+  )> }
+);
+
+export type GetProfileQueryVariables = {
+  appId: Scalars['String'];
+  appSecret: Scalars['String'];
+};
+
+
+export type GetProfileQuery = (
+  { __typename?: 'Query' }
+  & { auth?: Maybe<(
+    { __typename?: 'Auth' }
+    & { profile?: Maybe<(
+      { __typename?: 'ProfileType' }
+      & Pick<ProfileType, 'firstName' | 'lastName' | 'email' | 'phoneNumber' | 'userName' | 'emailConfirmed' | 'displayLanguage' | 'targetLanguage' | 'sourceLanguage'>
     )> }
   )> }
 );
@@ -947,26 +996,10 @@ export type DeleteDocumentMutation = (
   )> }
 );
 
-export type GetProfileQueryVariables = {
-  appId: Scalars['String'];
-  appSecret: Scalars['String'];
-};
-
-
-export type GetProfileQuery = (
-  { __typename?: 'Query' }
-  & { auth?: Maybe<(
-    { __typename?: 'Auth' }
-    & { profile?: Maybe<(
-      { __typename?: 'ProfileType' }
-      & Pick<ProfileType, 'firstName' | 'lastName' | 'email' | 'phoneNumber' | 'userName' | 'emailConfirmed' | 'displayLanguage' | 'targetLanguage'>
-    )> }
-  )> }
-);
-
 export type GetWordProfileQueryVariables = {
   word: Scalars['String'];
-  lang: Scalars['String'];
+  fromLang: Scalars['String'];
+  toLang: Scalars['String'];
 };
 
 
@@ -995,7 +1028,18 @@ export type GetWordProfileQuery = (
             & Pick<DefinitionType, 'description' | 'example'>
           )>>> }
         )>>> }
-      )>>> }
+      )>>>, translationResult?: Maybe<(
+        { __typename?: 'TranslationResultType' }
+        & Pick<TranslationResultType, 'displaySource'>
+        & { translations?: Maybe<Array<Maybe<(
+          { __typename?: 'TranslationType' }
+          & Pick<TranslationType, 'displayTarget' | 'posTag' | 'confidence'>
+          & { backTranslations?: Maybe<Array<Maybe<(
+            { __typename?: 'BackTranslationType' }
+            & Pick<BackTranslationType, 'normalizedText' | 'displayTarget'>
+          )>>> }
+        )>>> }
+      )> }
     )> }
   )>, timeline?: Maybe<(
     { __typename?: 'Timeline' }
@@ -1045,6 +1089,12 @@ export const LoginDocument = gql`
       firstName
       lastName
       email
+      phoneNumber
+      userName
+      emailConfirmed
+      displayLanguage
+      targetLanguage
+      sourceLanguage
       token
     }
   }
@@ -1227,6 +1277,7 @@ export const UpdateUserDocument = gql`
       token
       displayLanguage
       targetLanguage
+      sourceLanguage
     }
   }
 }
@@ -1237,6 +1288,31 @@ export const UpdateUserDocument = gql`
   })
   export class UpdateUserGQL extends Apollo.Mutation<UpdateUserMutation, UpdateUserMutationVariables> {
     document = UpdateUserDocument;
+    
+  }
+export const GetProfileDocument = gql`
+    query getProfile($appId: String!, $appSecret: String!) {
+  auth {
+    profile(appId: $appId, appSecret: $appSecret) {
+      firstName
+      lastName
+      email
+      phoneNumber
+      userName
+      emailConfirmed
+      displayLanguage
+      targetLanguage
+      sourceLanguage
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetProfileGQL extends Apollo.Query<GetProfileQuery, GetProfileQueryVariables> {
+    document = GetProfileDocument;
     
   }
 export const GetDocumentDocument = gql`
@@ -1460,34 +1536,10 @@ export const DeleteDocumentDocument = gql`
     document = DeleteDocumentDocument;
     
   }
-export const GetProfileDocument = gql`
-    query getProfile($appId: String!, $appSecret: String!) {
-  auth {
-    profile(appId: $appId, appSecret: $appSecret) {
-      firstName
-      lastName
-      email
-      phoneNumber
-      userName
-      emailConfirmed
-      displayLanguage
-      targetLanguage
-    }
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class GetProfileGQL extends Apollo.Query<GetProfileQuery, GetProfileQueryVariables> {
-    document = GetProfileDocument;
-    
-  }
 export const GetWordProfileDocument = gql`
-    query getWordProfile($word: String!, $lang: String!) {
+    query getWordProfile($word: String!, $fromLang: String!, $toLang: String!) {
   wti {
-    profile(word: $word, sourceLang: $lang) {
+    profile(word: $word, fromLang: $fromLang, toLang: $toLang) {
       word
       score
       wordInfo {
@@ -1509,6 +1561,18 @@ export const GetWordProfileDocument = gql`
             example
           }
           partOfSpeech
+        }
+      }
+      translationResult {
+        displaySource
+        translations {
+          displayTarget
+          posTag
+          confidence
+          backTranslations {
+            normalizedText
+            displayTarget
+          }
         }
       }
     }

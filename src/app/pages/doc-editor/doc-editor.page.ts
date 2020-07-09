@@ -17,6 +17,8 @@ import { Subject, Observable } from 'rxjs';
 import {CanDeactivateComponent} from '../../guards/quit-doc-editor.guard'
 import { TranslateService } from '@ngx-translate/core';
 import { ApolloQueryResult } from 'apollo-client';
+import { UserType } from 'src/app/graphql-components';
+import { AuthService } from 'src/app/services/auth.service';
 
 export enum DocMode{
   Read,
@@ -43,7 +45,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
              private docService:DocService, 
              private colorService:ColorService,
              private translate:TranslateService,
-             private popoverCtrl:PopoverController
+             private popoverCtrl:PopoverController,
+             private authService:AuthService
              ) {
     this.docId = activatedRoute.snapshot.paramMap.get('docId');
 
@@ -323,7 +326,9 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
         word,
         info,
         bigTags,
-        smallTags
+        smallTags,
+        targetLanguage: this.userObj.targetLanguage,
+        sourceLanguage: this.userObj.sourceLanguage
       },
       cssClass: 'from-bottom-modal'
     });
@@ -405,6 +410,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
   async ngOnInit() {
     this.lang = await this.translate.get("doc-editor").toPromise();
+
+    this.userObj = await this.authService.getUserObj();
     
     this.doc.title = this.lang.untitled;
 
@@ -448,6 +455,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
     }
   }
+
+  public userObj:UserType;
 
   public displayContent:string = "";
 

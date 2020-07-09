@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "prebuild":"npm --no-git-tag-version version patch",
+    "prebuild": "npm --no-git-tag-version version patch",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -45,6 +45,7 @@
     "apollo-link-retry": "^2.2.16",
     "chart.js": "^2.9.3",
     "core-js": "^2.5.4",
+    "detect-indent": "^6.0.0",
     "fingerprintjs2": "^2.1.0",
     "graphql": "^14.5.0",
     "graphql-tag": "^2.10.0",

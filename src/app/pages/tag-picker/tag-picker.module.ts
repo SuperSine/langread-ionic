@@ -9,6 +9,7 @@ import { TagPickerPageRoutingModule } from './tag-picker-routing.module';
 import { TagPickerPage } from './tag-picker.page';
 import { TagsFilterPipe } from 'src/app/pipes/tags-filter.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     TagPickerPageRoutingModule,
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    LangreadComponentsModule
   ],
   declarations: [TagPickerPage,TagsFilterPipe]
 })

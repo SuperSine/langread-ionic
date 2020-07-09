@@ -113,9 +113,10 @@
     "firstName": "名字",
     "lastName": "姓氏",
     "userName": "用户名",
-    "languageCard": "语言",
+    "languageCard": "显示语言",
     "displayLabel": "显示",
     "targetLabel": "字典",
+    "sourceLabel":"原语言",
     "darkMode": "暗黑模式",
     "save": "保存"
   },
@@ -145,7 +146,9 @@
   },
   "tag-picker": {
     "title": "标签选择器",
-    "pickHeader": "选择'{{word}}'的标签"
+    "pickHeader": "选择'{{word}}'的标签",
+    "pickerLabel":"标签",
+    "wordLabel":"信息"
   },
   "word-info": {
     "tagHeader": "标签",

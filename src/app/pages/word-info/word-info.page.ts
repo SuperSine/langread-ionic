@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { WordService } from 'src/app/services/word.service';
 import { GlobalService } from 'src/app/services/global.service';
-import { WordProfileType, TimelineValueByMonthType, ValueByMonthType } from 'src/app/graphql-components';
+import { WordProfileType, TimelineValueByMonthType, ValueByMonthType, TranslationType, UserType } from 'src/app/graphql-components';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ModalController } from '@ionic/angular';
 import { Chart } from 'chart.js';
@@ -25,8 +25,7 @@ export class WordInfoPage implements OnInit {
               private activatedRoute:ActivatedRoute,
               private translate:TranslateService,
               private authService:AuthService) { 
-    this.word = activatedRoute.snapshot.paramMap.get('word');
-    
+    this.word = this.activatedRoute.snapshot.paramMap.get('word');
 
   }
 
@@ -56,83 +55,26 @@ export class WordInfoPage implements OnInit {
     });
   }
 
-  interpolateColor(color1, color2, factor) {
-    if (arguments.length < 3) { 
-        factor = 0.5; 
-    }
-    var result = color1.slice();
-    for (var i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-    }
-    return result;
-  };
-
-  interpolateColors(color1, color2, steps) {
-    var stepFactor = 1 / (steps - 1),
-        interpolatedColorArray = [];
-
-    color1 = color1.match(/\d+/g).map(Number);
-    color2 = color2.match(/\d+/g).map(Number);
-
-    for(var i = 0; i < steps; i++) {
-        interpolatedColorArray.push(this.interpolateColor(color1, color2, stepFactor * i));
-    }
-
-    return interpolatedColorArray;
-  }
-
-  getWordColor(score:number){
-    var colorArray = [];
-
-    colorArray = colorArray.concat(this.interpolateColors("rgb(253,255,0)", "rgb(255,171,0)", 5));
-    colorArray = colorArray.concat(this.interpolateColors("rgb(255,150,0)", "rgb(255,50,0)", 5));
-    colorArray = colorArray.concat(this.interpolateColors("rgb(255,0,48)", "rgb(125,0,0)", 5));
-
-    var index = Math.floor(score * colorArray.length - 1);
-    var color = colorArray[index];
-
-    return this.rgbToHex(color);
-  }
-
-  rgbToHex(rgb) {
-    return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
-  }
-
   goBack(event){
     this.navCtrl.back();
   }
 
   get formattedScore(){
-    return (this.wordProfile.score * 100).toFixed(2);
+    return (this.wordProfile.score * 100).toFixed(1);
   }
 
   get pronunciation(){
     return this.wordProfile.entryResults[0].phonetic;
   }
 
-  async playAudio(pron){
-    if(this.isPlaying)return;
-
-    var audio = new Audio(this.soundUrl);
-    this.isPlaying = true;
-    
-    audio.onended= ()=>{
-      this.isPlaying = false;
-
-    }
-
-    audio.load();
-    
-    await audio.play();
-
-  }
 
   async ngOnInit() {
+    
 
 
     const result = await this.translate.get(this.langKeys,{word:this.word}).toPromise();
 
-    const userObj = await this.authService.getUserObj();
+    this.userObj = await this.authService.getUserObj();
 
     Object.keys(result).forEach((key,i)=>{
       var newKey = key.split('.')[1];
@@ -142,31 +84,16 @@ export class WordInfoPage implements OnInit {
 
 
     try{
-      this.wordProfileService.profile(this.word, userObj.targetLanguage).then((result)=>{
+
+      this.wordProfileService.profile(this.word, this.userObj.targetLanguage, this.userObj.sourceLanguage).then((result)=>{
         this.wordProfile  = result.wti.profile;
         this.wordTrends = result.timeline.wordByMonth.data;
-  
-        this.wordColor = this.getWordColor(this.wordProfile.score);
-
-        this.soundUrl = `${environment.wordSoundUrl}/${this.word}?lang=${userObj.targetLanguage}`;
-        
-        // use setTimeout to avoid null nativeElement access
-        // https://stackoverflow.com/questions/39256703/angular-2-viewchild-returns-undefined
-        setTimeout(()=>{
-          this.displayBarChart(this.wordTrends.map((item)=>{
-            return `${item.yearMonth.year}-${item.yearMonth.month}`;
-          }), this.wordTrends.map((item)=>{
-            return item.total;
-          }));
-
-        },0);
 
       });
       
 
 
       console.log(this.wordProfile);
-      // this.wordProfile = result
 
     }catch(ex){
       console.log(ex);
@@ -183,76 +110,13 @@ export class WordInfoPage implements OnInit {
 
   }
 
-  async displayBarChart(labels:any[],data:any[]){
 
-    let element = this.lineChart.nativeElement;
-    element.height = 200;
-
-    this.chart = new Chart(this.lineChart.nativeElement,{
-      type:'line',
-      data:{
-        labels: labels,
-        datasets: [{
-          label: this.lang.chartTrends,
-          data: data,
-          backgroundColor: 'rgb(38, 194, 129)',
-          borderColor: 'rgb(38, 194, 129)',
-          borderWidth: 1,
-          fill:false,
-        }],
-      },
-      options: {
-				responsive: true,
-				title: {
-					display: true,
-					text: this.lang.chartTrends
-				},
-				tooltips: {
-					mode: 'index',
-					intersect: false,
-				},
-				hover: {
-					mode: 'nearest',
-					intersect: true
-				},
-				scales: {
-					xAxes: [{
-            gridLines: { zeroLineColor: "#131c2b" },
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: this.lang.chartMonth
-						}
-					}],
-					yAxes: [{
-            gridLines: { zeroLineColor: "#131c2b" },
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: this.lang.chartCount
-            },
-            ticks: {
-              stepSize: 50
-            }
-					}]
-				}
-			}
-    })
-  }
-
+  public userObj:UserType;
   public wordTrends:ValueByMonthType[];
   public wordProfile: WordProfileType;
-  public wordColor:string;
-  public isPlaying:boolean=false;
-
-  @ViewChild('lineChart', {static:false}) 
-  public lineChart:ElementRef;
-
-  public chart:any;
 
   public word:string;
 
-  public soundUrl:string;
 
   private langKeys:string[] = [
     'word-info.tagHeader',

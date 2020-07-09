@@ -1,0 +1,25 @@
+<ion-list>
+  <ion-list-header>{{lang?.translateHeader}}</ion-list-header>
+  
+  <ion-card *ngFor="let item of translations | keyvalue">
+    <ion-card-header>
+      <ion-card-subtitle>{{item.key}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ol class="eQJLDd" >
+        <li *ngFor="let translation of item.value">
+          <div style="display: block;">
+            <div style="margin-left: 20px;">
+              <div class="XpoqFe">
+                <div style="display:inline"><span>{{translation.displayTarget}}</span></div>
+                <!-- <div class="vmod">
+                  <div class="vk_gy">"{{definition.example}}"</div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </li>
+      </ol>
+  </ion-card-content>
+  </ion-card>
+</ion-list>

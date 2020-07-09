@@ -1,3 +1,49 @@
+# The `Date` scalar type
+scalar Date
+
+# The `DateTime` scalar type
+scalar DateTime
+
+# The `DateTimeOffset` scalar type
+scalar DateTimeOffset
+
+# The `Seconds` scalar type
+scalar Seconds
+
+# The `Milliseconds` scalar type
+scalar Milliseconds
+
+scalar Decimal
+
+scalar Uri
+
+scalar Guid
+
+scalar Short
+
+scalar UShort
+
+scalar UInt
+
+scalar Long
+
+scalar BigInt
+
+scalar ULong
+
+scalar Byte
+
+scalar SByte
+
+type Query {
+  auth: Auth
+  token: Token
+}
+
+type Token {
+  get(appId: String = null, appSecret: String = null): String
+}
+
 type Auth {
   auth(email: String!, password: String!): UserType
   email(email: String!): Boolean
@@ -8,38 +54,6 @@ type Auth {
   username(username: String!): Boolean
 }
 
-scalar BigInt
-
-scalar Byte
-
-# The `Date` scalar type
-# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
-scalar Date
-
-# The `DateTime` scalar type
-# timestamps to be formatted in accordance with the
-# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
-scalar DateTime
-
-# The `DateTimeOffset` scalar type
-# `DateTimeOffset` expects timestamps to be formatted in accordance with the
-# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
-scalar DateTimeOffset
-
-scalar Decimal
-
-scalar Guid
-
-scalar Long
-
-# The `Milliseconds` scalar type
-scalar Milliseconds
-
-type Mutation {
-  secret: Secret
-  user: User
-}
-
 type ProfileType {
   displayLanguage: String
   email: String!
@@ -47,50 +61,34 @@ type ProfileType {
   firstName: String
   lastName: String
   phoneNumber: String
+  sourceLanguage: String
   targetLanguage: String
   userName: String!
 }
 
-type Query {
-  auth: Auth
-  token: Token
+type UserType {
+  appId: String!
+  appSecret: String!
+  displayLanguage: String!
+  email: String!
+  emailConfirmed: Boolean!
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  sourceLanguage: String!
+  targetLanguage: String!
+  token: String
+  userName: String!
 }
 
-scalar SByte
-
-# The `Seconds` scalar type
-scalar Seconds
+type Mutation {
+  secret: Secret
+  user: User
+}
 
 type Secret {
   update(email: String!, password: String!): UserType
 }
-
-scalar Short
-
-type Token {
-  get(appId: String = null, appSecret: String = null): String
-}
-
-enum TokenPurpose {
-  EMAIL
-  PHONE_NUMBER
-  USER_LOGIN
-}
-
-scalar UInt
-
-scalar ULong
-
-input UpdateUserViewModelType {
-  userName: String = null
-  firstName: String = null
-  lastName: String = null
-  phoneNumber: String = null
-  displayLanguage: String = null
-  targetLanguage: String = null
-}
-
-scalar Uri
 
 type User {
   email(
@@ -112,6 +110,8 @@ type User {
     firstname: String = null
     lastname: String = null
     displayLanguage: String = null
+    sourceLanguage: String = null
+    targetLanguage: String = null
   ): UserType
   update(
     appId: String = null
@@ -121,19 +121,19 @@ type User {
   verify(email: String!, code: String!, purpose: TokenPurpose = null): UserType
 }
 
-type UserType {
-  appId: String!
-  appSecret: String!
-  displayLanguage: String!
-  email: String!
-  emailConfirmed: Boolean!
-  firstName: String
-  lastName: String
-  phoneNumber: String
-  targetLanguage: String!
-  token: String
-  userName: String!
+input UpdateUserViewModelType {
+  userName: String = null
+  firstName: String = null
+  lastName: String = null
+  phoneNumber: String = null
+  displayLanguage: String = null
+  targetLanguage: String = null
+  sourceLanguage: String = null
 }
 
-scalar UShort
+enum TokenPurpose {
+  EMAIL
+  PHONE_NUMBER
+  USER_LOGIN
+}
 

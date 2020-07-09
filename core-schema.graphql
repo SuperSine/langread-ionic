@@ -1,60 +1,45 @@
-scalar BigInt
-
-scalar Byte
-
 # The `Date` scalar type
-# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
 scalar Date
 
 # The `DateTime` scalar type
-# timestamps to be formatted in accordance with the
-# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
 scalar DateTime
 
 # The `DateTimeOffset` scalar type
-# `DateTimeOffset` expects timestamps to be formatted in accordance with the
-# [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
 scalar DateTimeOffset
+
+# The `Seconds` scalar type
+scalar Seconds
+
+# The `Milliseconds` scalar type
+scalar Milliseconds
 
 scalar Decimal
 
-type DefinitionType {
-  description: String!
-  example: String
-  synonyms: [String]
-}
+scalar Uri
 
-type DictResultType {
-  id: String!
-  language: String!
-  lexicalEntries: [LexicalEntryType]
-  type: String!
-  word: String!
-}
+scalar Guid
 
-type Doc {
-  add(
-    document: DocumentInputType!
-    wordTagLiteStr: String = null
-  ): WordTagDocumentCleanType
-  delete(docId: String = null): Int
-  save(
-    document: DocumentInputType!
-    wordTagLiteStr: String = null
-  ): WordTagDocumentCleanType
-  update(
-    docId: String = null
-    document: DocumentInputType!
-    wordTagLiteStr: String = null
-  ): WordTagDocumentCleanType
-}
+scalar Short
 
-input DocumentInputType {
-  title: String!
-  content: String!
-  id: String = null
-  docId: String = null
-  url: String = null
+scalar UShort
+
+scalar UInt
+
+scalar Long
+
+scalar BigInt
+
+scalar ULong
+
+scalar Byte
+
+scalar SByte
+
+type Query {
+  document: DocumentQueryType
+  tag: TagQuery
+  timeline: Timeline
+  wti: WordTagInfo
 }
 
 type DocumentQueryType {
@@ -84,111 +69,26 @@ type DocumentQueryType {
   stats: WordTagStaticsType
 }
 
-type DocumentType {
-  content: String!
-  createDate: DateTime
-  docId: String!
-  id: String!
-  status: Int!
-  title: String!
-  updateDate: DateTime
-  url: String
-  wordsCount: Int!
-}
-
-type EntryResultType {
-  meanings: [MeaningType]
-  origin: String
-  phonetic: String
-  word: String!
-}
-
-type EntryType {
-  homographNumber: String!
-  senses: [SenseType]
-}
-
-scalar Guid
-
-type InfoCleanType {
-  count: Int!
-  tag: TagType
-}
-
 type InfoDocumentsCleanType {
   documents: [DocumentType]
   wordTagInfo: WordTagInfoCleanType
 }
 
-type LexicalEntryType {
-  entries: [EntryType]
-  language: String!
-  lexicalCategory: String!
-  pronunciations: [PronunciationType]
-  text: String!
+type WordTagInfoCleanType {
+  createDate: Date!
+  tags: [TagType]
+  updateDate: Date!
+  wti: [WordInfoCleanType]
 }
 
-scalar Long
-
-type MeaningType {
-  definitions: [DefinitionType]
-  partOfSpeech: String!
+type WordInfoCleanType {
+  word: String!
+  wordInfos: [InfoCleanType]
 }
 
-# The `Milliseconds` scalar type
-scalar Milliseconds
-
-type Mutation {
-  doc: Doc
-  tag: TagMutation
-  wti: WordTagInfoMutation
-}
-
-type PronunciationType {
-  audioFile: String
-  dialects: [String]
-  phoneticNotation: String
-  phoneticSpelling: String
-}
-
-type Query {
-  document: DocumentQueryType
-  tag: TagQuery
-  timeline: Timeline
-  wti: WordTagInfo
-}
-
-scalar SByte
-
-type SearchResultType {
-  results: [DictResultType]
-}
-
-# The `Seconds` scalar type
-scalar Seconds
-
-type SenseType {
-  definitions: [String]!
-  domains: [String]!
-  examples: [String]!
-}
-
-scalar Short
-
-input TagInput {
-  tagName: String!
-  tagFont: String!
-  tagColor: String!
-}
-
-type TagMutation {
-  add(tag: TagInput!): TagType
-  delete(tagName: String!): Int
-  update(tagName: String!, tag: TagInput!): Int
-}
-
-type TagQuery {
-  all: [TagType]
+type InfoCleanType {
+  count: Int!
+  tag: TagType
 }
 
 type TagType {
@@ -202,6 +102,135 @@ type TagType {
   tagFont: String!
   # name of tag
   tagName: String!
+}
+
+type DocumentType {
+  content: String!
+  createDate: DateTime
+  docId: String!
+  id: String!
+  status: Int!
+  title: String!
+  updateDate: DateTime
+  url: String
+  wordsCount: Int!
+}
+
+type WordTagDocumentCleanType {
+  bigWordTagInfo: WordTagInfoCleanType
+  createTime: DateTime
+  document: DocumentType
+  smallWordTagInfo: WordTagInfoCleanType
+  status: Int!
+  updateTime: DateTime
+}
+
+type WordTagStaticsType {
+  documentCount: Long!
+  tagCount: Int!
+  tagWordCount: Int!
+}
+
+type TagQuery {
+  all: [TagType]
+}
+
+type WordTagInfo {
+  dict(word: String = null, lang: String = "en-us"): SearchResultType
+  get: WordTagInfoCleanType
+  profile(
+    word: String = null
+    fromLang: String = null
+    toLang: String = null
+  ): WordProfileType
+  topMost(top: String = "500"): [WordProfileType]
+}
+
+type SearchResultType {
+  results: [DictResultType]
+}
+
+type DictResultType {
+  id: String!
+  language: String!
+  lexicalEntries: [LexicalEntryType]
+  type: String!
+  word: String!
+}
+
+type LexicalEntryType {
+  entries: [EntryType]
+  language: String!
+  lexicalCategory: String!
+  pronunciations: [PronunciationType]
+  text: String!
+}
+
+type EntryType {
+  homographNumber: String!
+  senses: [SenseType]
+}
+
+type SenseType {
+  definitions: [String]!
+  domains: [String]!
+  examples: [String]!
+}
+
+type PronunciationType {
+  audioFile: String
+  dialects: [String]
+  phoneticNotation: String
+  phoneticSpelling: String
+}
+
+type WordProfileType {
+  dictResult: SearchResultType
+  entryResults: [EntryResultType]
+  score: Float!
+  translationResult: TranslationResultType
+  word: String!
+  wordInfo: [InfoCleanType]
+}
+
+type EntryResultType {
+  meanings: [MeaningType]
+  origin: String
+  phonetic: String
+  word: String!
+}
+
+type MeaningType {
+  definitions: [DefinitionType]
+  partOfSpeech: String!
+}
+
+type DefinitionType {
+  description: String!
+  example: String
+  synonyms: [String]
+}
+
+type TranslationResultType {
+  displaySource: String!
+  normalizedSource: String!
+  translations: [TranslationType]
+}
+
+type TranslationType {
+  backTranslations: [BackTranslationType]
+  confidence: Float!
+  displayTarget: String!
+  normalizedTarget: String!
+  posTag: String!
+  prefixWord: String!
+}
+
+type BackTranslationType {
+  displayTarget: String!
+  frequencyCount: Int!
+  normalizedText: String!
+  numExamples: Int!
 }
 
 type Timeline {
@@ -234,67 +263,60 @@ type TimelineValueByMonthType {
   pageSize: Int!
 }
 
-scalar UInt
-
-scalar ULong
-
-scalar Uri
-
-scalar UShort
-
 type ValueByMonthType {
   total: Int!
   yearMonth: YearMonthType
 }
 
-type WordInfoCleanType {
-  word: String!
-  wordInfos: [InfoCleanType]
+type YearMonthType {
+  month: Int!
+  year: Int!
 }
 
-type WordProfileType {
-  dictResult: SearchResultType
-  entryResults: [EntryResultType]
-  score: Float!
-  word: String!
-  wordInfo: [InfoCleanType]
+type Mutation {
+  doc: Doc
+  tag: TagMutation
+  wti: WordTagInfoMutation
 }
 
-type WordTagDocumentCleanType {
-  bigWordTagInfo: WordTagInfoCleanType
-  createTime: DateTime
-  document: DocumentType
-  smallWordTagInfo: WordTagInfoCleanType
-  status: Int!
-  updateTime: DateTime
+type TagMutation {
+  add(tag: TagInput!): TagType
+  delete(tagName: String!): Int
+  update(tagName: String!, tag: TagInput!): Int
 }
 
-type WordTagInfo {
-  dict(word: String = null, lang: String = "en-us"): SearchResultType
-  get: WordTagInfoCleanType
-  profile(word: String = null, sourceLang: String = null): WordProfileType
-  topMost(top: String = "500"): [WordProfileType]
+input TagInput {
+  tagName: String!
+  tagFont: String!
+  tagColor: String!
 }
 
-type WordTagInfoCleanType {
-  createDate: Date!
-  tags: [TagType]
-  updateDate: Date!
-  wti: [WordInfoCleanType]
+type Doc {
+  add(
+    document: DocumentInputType!
+    wordTagLiteStr: String = null
+  ): WordTagDocumentCleanType
+  delete(docId: String = null): Int
+  save(
+    document: DocumentInputType!
+    wordTagLiteStr: String = null
+  ): WordTagDocumentCleanType
+  update(
+    docId: String = null
+    document: DocumentInputType!
+    wordTagLiteStr: String = null
+  ): WordTagDocumentCleanType
+}
+
+input DocumentInputType {
+  title: String!
+  content: String!
+  id: String = null
+  docId: String = null
+  url: String = null
 }
 
 type WordTagInfoMutation {
   remove(word: String!, tagName: String!): Boolean
-}
-
-type WordTagStaticsType {
-  documentCount: Long!
-  tagCount: Int!
-  tagWordCount: Int!
-}
-
-type YearMonthType {
-  month: Int!
-  year: Int!
 }
 

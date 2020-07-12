@@ -1,19 +1,22 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start"></ion-back-button>
-    <ion-title>{{'about.title' | translate}}</ion-title>
+    <ion-title>{{'app-about.title' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-label>{{'about.version'}}</ion-label>
+      <ion-label>{{'app-about.version' | translate}}</ion-label>
       <ion-text>{{appVersion}}</ion-text>
     </ion-item>
     <ion-item>
-      <ion-label>{{'about.updateApp' | translate}}</ion-label>
-      <ion-button>Check</ion-button>
+      <ion-label>{{'app-about.updateApp' | translate}}</ion-label>
+      <ion-button (click)="checkForUpdate($event)" [hidden]="checkWaiting">
+        {{'app-about.update' | translate}}
+      </ion-button>
+      <ion-spinner slot="end" size="small" [hidden]='!checkWaiting'></ion-spinner>
     </ion-item>
   </ion-list>
 </ion-content>

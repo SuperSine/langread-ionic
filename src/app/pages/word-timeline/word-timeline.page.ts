@@ -7,6 +7,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import { Router } from '@angular/router';
 import { WordProfileType } from 'src/app/graphql-components';
 import { FontService } from 'src/app/services/font.service';
+import { GlobalService } from 'src/app/services/global.service';
 // import * as WordCloud from 'wordcloud';
 const WordCloud = require('wordcloud');
 
@@ -21,7 +22,8 @@ export class WordTimelinePage implements OnInit {
   
 
   constructor(private router:Router, private renderer: Renderer2, private timelineService:TimelineService, private toastCtrl:ToastController, private wordProfileService:WordService,
-              private fontService:FontService) { 
+              private fontService:FontService,
+              private globalService:GlobalService) { 
     this.timelineItems = {words:[]};
 
     this.rangeChanged.pipe(
@@ -164,6 +166,10 @@ export class WordTimelinePage implements OnInit {
   onRangeChange(event){
     console.log(event);
     this.rangeChanged.next(event.detail.value);
+  }
+
+  timeSince(time:string){
+    return this.globalService.timeSince(new Date(parseInt(time)));
   }
 
   @ViewChild(IonInfiniteScroll, {static:false}) 

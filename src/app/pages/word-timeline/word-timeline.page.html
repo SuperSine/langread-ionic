@@ -56,16 +56,20 @@
       </ng-container>
       <ion-row *ngFor="let word of timelineItems?.words" class="ion-activatable">
         
-        <ion-item style="width: 100%;" [routerLink]="['/word-info',{word:word}]"> 
+        <ion-item style="width: 100%;" [routerLink]="['/word-info',{word:word[0]}]"> 
           <ng-container >
             <ion-label>
-              <h1>{{ word  }}</h1>
+              <h1>{{ word[0]  }}</h1>
+              
               <div>
-                <word-tag-info *ngFor="let tag of getTags(word)" [tag]="tag.tag"></word-tag-info>
-              </div>   
+                <word-tag-info *ngFor="let tag of getTags(word[0])" [tag]="tag.tag"></word-tag-info>
+              </div>
             </ion-label>
-         
+
+              {{timeSince((word[1]))}}
+
           </ng-container>
+
           <ion-ripple-effect></ion-ripple-effect>
         </ion-item>
         

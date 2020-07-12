@@ -2,10 +2,10 @@ export const environment = {
   production: true,
   appVersion: require('../../package.json').version,
   pageSize:'10',
-  avatarUrl:'https://auth-api.langreed.com/api/v1/user/avatar',
-  authEndpoint:'https://api.langreed.com/api/graphql/auth',
-  coreEndpoint:'https://api.langreed.com/api/graphql/core',
-  wordSoundUrl:'http://core-api.langreed.com/api/v1/dictionary/sound',
+  avatarUrl:'https://api.langreed.com/api/auth/v1/user/avatar',
+  authEndpoint:'https://api.langreed.com/api/auth/v1/graphql/post',
+  coreEndpoint:'https://api.langreed.com/api/core/v1/graphql/post',
+  wordSoundUrl:'https://api.langreed.com/api/core/v1/dictionary/sound',
   buildInLanguages:['en-us','zh-cn'],
   displayLanguages:[
     {

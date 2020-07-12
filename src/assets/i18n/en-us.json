@@ -4,7 +4,13 @@
     "selectCancel":"Nah",
     "offline":"Your network is offline",
     "emptyContent":"You have nothing here, it's empty.",
-    "search":"Search"
+    "search":"Search",
+    "years":"years",
+    "months":"months",
+    "days":"days",
+    "hours":"hours",
+    "minutes":"minutes",
+    "seconds":"seconds"
   },
   "appMenu":{
     "docs" : "Docs",
@@ -167,5 +173,11 @@
     "title":"Timeline",
     "timelineLabel":"Timeline",
     "topmostLabel":"Topmost"
+  },
+  "app-about":{
+    "title":"About",
+    "version":"Version",
+    "updateApp":"Check Update",
+    "update":"Update"
   }
 }

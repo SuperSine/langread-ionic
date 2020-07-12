@@ -7,8 +7,6 @@ import { SwUpdate } from '@angular/service-worker';
 export class CheckUpdateService {
 
   constructor(private updates: SwUpdate) {
-    this.updates.checkForUpdate();
-
     updates.available.subscribe(event => {
       console.log('current version is', event.current);
       console.log('available version is', event.available);
@@ -17,6 +15,15 @@ export class CheckUpdateService {
       console.log('old version was', event.previous);
       console.log('new version is', event.current);
     });
+
+
+  }
+
+  checkForUpdate(){
+    this.updates.activateUpdate().then(() => {
+      document.location.href = "/";
+      document.location.reload();
+  });
   }
 
   

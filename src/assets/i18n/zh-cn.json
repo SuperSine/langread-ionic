@@ -4,7 +4,13 @@
     "selectCancel":"Nah",
     "offline":"您的网络离线了",
     "emptyContent":"什么东西都没有",
-    "search":"搜索"
+    "search":"搜索",
+    "years":"年",
+    "months":"月",
+    "days":"天",
+    "hours":"小时",
+    "minutes":"分钟",
+    "seconds":"秒"
   },
   "appMenu": {
     "docs": "文档",
@@ -164,5 +170,11 @@
     "title": "单词时间轴",
     "timelineLabel": "单词时间轴",
     "topmostLabel": "最高记录"
+  },
+  "app-about":{
+    "title":"关于",
+    "version":"版本",
+    "updateApp":"检查更新",
+    "update":"更新"
   }
 }

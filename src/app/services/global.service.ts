@@ -27,10 +27,17 @@ export interface LocalSetting  {
 export class GlobalService {
   private toastSubject = new Subject<ToastOptions>();
 
-  constructor( 
-               private translate:TranslateService,
+  constructor( private translate:TranslateService,
                private http: HttpClient, 
-               private toastCtrl:ToastController) { }
+               private toastCtrl:ToastController) {
+    setTimeout(()=>{
+      this.translate.get("general").toPromise().then((value) => {
+        this.lang = value;
+      });
+    },0);
+
+                
+  }
 
   subscribeToast(){
     this.toastSubject.subscribe(async (options)=>{
@@ -82,6 +89,35 @@ export class GlobalService {
     return DateTime.fromISO(date).setLocale(this.translate.currentLang).toLocal().toFormat(format);
   }
 
+  timeSince(date:Date){
+    var millis = DateTime.fromJSDate(date).toLocal().toMillis();
+
+    var seconds = Math.floor((new Date().getTime() - millis) / 1000);
+  
+    var interval = Math.floor(seconds / 31536000);
+  
+    if (interval > 1) {
+      return `${interval} ${this.lang.years}`;
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+      return `${interval} ${this.lang.months}`;
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+      return `${interval} ${this.lang.days}`;
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+      return `${interval} ${this.lang.hours}`;
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+      return `${interval} ${this.lang.minutes}`;
+    }
+    return `${Math.floor(seconds)} ${this.lang.seconds}`;
+  }
+
 
 
 
@@ -107,5 +143,7 @@ export class GlobalService {
 
     return info.uuid;
   }
+
+  private lang:any;
 
 }

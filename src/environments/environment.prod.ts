@@ -5,6 +5,7 @@ export const environment = {
   avatarUrl:'https://api.langreed.com/api/auth/v1/user/avatar',
   authEndpoint:'https://api.langreed.com/api/auth/v1/graphql/post',
   coreEndpoint:'https://api.langreed.com/api/core/v1/graphql/post',
+  socialEndpoint:'https://api.langreed.com/api/social/v1/graphql/post',
   wordSoundUrl:'https://api.langreed.com/api/core/v1/dictionary/sound',
   buildInLanguages:['en-us','zh-cn'],
   displayLanguages:[

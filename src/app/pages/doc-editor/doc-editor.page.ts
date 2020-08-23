@@ -9,8 +9,9 @@ import { ColorService } from 'src/app/services/color.service';
 import { element } from 'protractor';
 import { ModalController, LoadingController, ActionSheetController, AlertController, ToastController, PopoverController } from '@ionic/angular';
 import { TagPickerPage } from '../tag-picker/tag-picker.page';
+import { DocEditorSaveComponent } from './doc-editor-save/doc-editor-save.component';
 import { GlobalService } from 'src/app/services/global.service';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, NgModel } from '@angular/forms';
 import { DocInfoPage } from '../doc-info/doc-info.page';
 import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { Subject, Observable } from 'rxjs';
@@ -301,6 +302,16 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       this.colorService.addMarkColor(tag);
     });
 
+  }
+
+  openDocSave(event){
+    this.modalCtrl.create({
+      component:DocEditorSaveComponent,
+      componentProps:{},
+      cssClass:"save-modal"
+    }).then((modal => {
+      modal.present();
+    }))
   }
 
   openDocInfo(event){

@@ -11,6 +11,7 @@ export const environment = {
   // coreEndpoint:'http://localhost:5003/api/graphql',
   authEndpoint:'http://localhost:81/api/auth/v1/graphql/post',
   coreEndpoint:'http://localhost:5003/api/core/v1/graphql/post',
+  socialEndpoint:'http://localhost:5101/api/social/v1/graphql/post',
   wordSoundUrl:'http://localhost:5003/api/core/v1/dictionary/sound',
   // avatarUrl:'https://auth-api.langreed.com/api/v1/user/avatar',
   // authEndpoint:'https://api.langreed.com/api/graphql/auth',

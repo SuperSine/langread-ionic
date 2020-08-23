@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>social-profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-item lines="none" class="profile-info">
+      <ion-avatar slot="start">
+        <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjflksdjf893245">
+      </ion-avatar>
+      <ion-label>
+          <h1>Sine Zhang</h1>
+
+    
+        </ion-label>
+        <ion-button>Follow</ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+                  <p>I am son of earth.</p>
+      </ion-label>
+
+    </ion-item>
+    <ion-item name="number-info">
+      <ion-grid>
+        <ion-row>
+  
+          <ion-col size="3">
+            <ion-label>12</ion-label>
+            <p name="number-label"><ion-icon name="bookmarks-outline"></ion-icon> Read</p>
+          </ion-col>
+  
+          <ion-col size="3">   
+            <span>32</span>
+            <p name="number-label"><ion-icon name="bookmarks-outline"></ion-icon> Tags</p>
+          </ion-col>
+  
+          <ion-col size="3">   
+            <span>1209</span>
+            <p name="number-label"><ion-icon name="bookmarks-outline"></ion-icon> Words</p>
+          </ion-col>
+
+          <ion-col size="3">   
+            <span>12</span>
+            <p name="number-label"><ion-icon name="bookmarks-outline"></ion-icon> Followers</p>
+          </ion-col>
+
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+<ion-item class="margin-bottom-10" lines="none">
+    <h4 class="margin-top-3 main-header4">Groups</h4>
+</ion-item>
+
+
+<ion-item class="group-list">
+<div class="horizontal-scroll slide-left">
+  <ion-card class="agent-icon" >
+    <ion-thumbnail class="group-avatar">
+      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
+    </ion-thumbnail>
+    <div class="group-title"><ion-label>English</ion-label></div>
+  </ion-card>
+
+  <ion-card class="agent-icon" >
+    <ion-thumbnail class="group-avatar">
+      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
+    </ion-thumbnail>
+    <div class="group-title"><ion-label>English</ion-label></div>
+  </ion-card>
+
+  <ion-card class="agent-icon" >
+    <ion-thumbnail class="group-avatar">
+      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
+    </ion-thumbnail>
+    <div class="group-title"><ion-label>English</ion-label></div>
+  </ion-card>
+  <ion-card class="agent-icon" >
+    <ion-thumbnail class="group-avatar">
+      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
+    </ion-thumbnail>
+    <div class="group-title"><ion-label>English is most easy</ion-label></div>
+  </ion-card>
+  <ion-card class="agent-icon" >
+    <ion-thumbnail class="group-avatar">
+      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
+    </ion-thumbnail>
+    <div class="group-title"><ion-label>English</ion-label></div>
+  </ion-card>
+  <ion-card class="agent-icon" >
+    <ion-thumbnail class="group-avatar">
+      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
+    </ion-thumbnail>
+    <div class="group-title"><ion-label>English</ion-label></div>
+  </ion-card>
+  <ion-card class="agent-icon" >
+    <ion-thumbnail class="group-avatar">
+      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
+    </ion-thumbnail>
+    <div class="group-title"><ion-label>English</ion-label></div>
+  </ion-card>
+</div>
+
+
+  
+</ion-item>
+
+<ion-segment value="posts">
+  <ion-segment-button value="posts">
+    <ion-label>Posts</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="topmost">
+    <ion-label>Topmost</ion-label>
+  </ion-segment-button>    
+  <ion-segment-button value="followers">
+    <ion-label>Followers</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="following">
+    <ion-label>Following</ion-label>
+  </ion-segment-button>
+
+</ion-segment>
+
+<ion-list>
+  <post-card></post-card>
+  <post-card></post-card>
+  <post-card></post-card>
+</ion-list>
+</ion-content>

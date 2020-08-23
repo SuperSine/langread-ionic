@@ -1,0 +1,14 @@
+.viewerBar{
+  position: sticky;
+  bottom: 10px;
+  background-color:var(--ion-background-color);
+  z-index: 100;
+}
+
+.commentCard{
+  box-shadow: none;
+}
+
+ion-list[name=comment-list]{
+  height: 100%;
+}

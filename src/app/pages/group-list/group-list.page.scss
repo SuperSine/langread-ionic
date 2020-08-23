@@ -1,0 +1,22 @@
+ion-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.line-clamp{
+  white-space: normal !important;
+  line-height: 1.5em;
+  height: 3em;       /* height is 2x line-height, so two lines will display */
+  overflow: hidden;  /* prevents extra lines from being visible */
+
+  text-overflow: ellipsis;
+}
+
+.group-info{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 6em;
+}

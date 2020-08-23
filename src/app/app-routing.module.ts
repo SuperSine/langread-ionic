@@ -87,6 +87,30 @@ const routes: Routes = [
     path: 'app-about',
     loadChildren: () => import('./pages/app-about/app-about.module').then( m => m.AppAboutPageModule)
   },
+  {
+    path: 'msg-reply',
+    loadChildren: () => import('./pages/msg-reply/msg-reply.module').then( m => m.MsgReplyPageModule)
+  },
+  {
+    path: 'group-editor',
+    loadChildren: () => import('./pages/group-editor/group-editor.module').then( m => m.GroupEditorPageModule)
+  },
+  {
+    path: 'group-list',
+    loadChildren: () => import('./pages/group-list/group-list.module').then( m => m.GroupListPageModule)
+  },
+  {
+    path: 'group-profile',
+    loadChildren: () => import('./pages/group-profile/group-profile.module').then( m => m.GroupProfilePageModule)
+  },
+  {
+    path: 'social-profile',
+    loadChildren: () => import('./pages/social-profile/social-profile.module').then( m => m.SocialProfilePageModule)
+  },
+  {
+    path: 'social-feed',
+    loadChildren: () => import('./pages/social-feed/social-feed.module').then( m => m.SocialFeedPageModule)
+  },  
   //this route need to put to bottom of the list
   {
     path: '',

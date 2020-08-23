@@ -1,7 +1,8 @@
 {
   "name": "langread-ionic",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular",
   "proxies": [

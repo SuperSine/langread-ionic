@@ -16,5 +16,11 @@
         "font_style":"normal",
         "font_weight":400,
         "src":"url('../assets/fonts/baloopaaji/BalooPaaji-Regular.ttf')"
-    }
+    },
+    {
+        "font_family":"UncialAntiqua-Regular",
+        "font_style":"normal",
+        "font_weight":400,
+        "src":"url('../assets/fonts/uncialantiqua/UncialAntiqua-Regular.ttf')"
+    }    
 ]

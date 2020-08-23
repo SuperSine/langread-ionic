@@ -1,0 +1,58 @@
+<ion-header no-border [scrollHide]="headerScrollConfig" [scrollContent]="pageContent">
+  <ion-toolbar>
+      <ion-buttons slot="start">
+
+        <ion-back-button defaultHref=""></ion-back-button>
+
+      </ion-buttons>
+    <ion-title slot="start">Group List</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar></ion-searchbar>
+</ion-toolbar>
+</ion-header>
+
+<ion-content #pageContent>
+  <ion-list>
+    <ion-item [routerLink]="['/grou-list']">
+      <ion-thumbnail slot="start">
+        <ion-img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn"></ion-img>
+      </ion-thumbnail>
+      <ion-label>
+          <h3>English makes the world united</h3>
+          <p class="line-clamp">This is group people can read english related content in easy fashion.This is group people can read english related content in easy fashionThis is group people can read english related content in easy fashionThis is group people can read english related content in easy fashion</p>
+          <div class="group-info">
+              <ion-label>
+                <ion-icon name="documents-outline"></ion-icon>
+                <span>12</span>
+              </ion-label>
+              <ion-label>
+                <ion-icon name="people-outline"></ion-icon>
+                <span>13</span>
+              </ion-label>
+            </div>
+        </ion-label>
+      <ion-badge>English</ion-badge>
+    </ion-item>
+    <ion-item [routerLink]="['/grou-list']">
+      <ion-thumbnail slot="start">
+        <ion-img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn"></ion-img>
+      </ion-thumbnail>
+      <ion-label>
+          <h3>English makes the world united</h3>
+          <p class="line-clamp">This is group people can read english related content in easy fashion.This is group people can read english related content in easy fashionThis is group people can read english related content in easy fashionThis is group people can read english related content in easy fashion</p>
+          <div class="group-info">
+              <ion-label>
+                <ion-icon name="documents-outline"></ion-icon>
+                12
+              </ion-label>
+              <ion-label>
+                <ion-icon name="people-outline"></ion-icon>
+                12
+              </ion-label>
+            </div>
+        </ion-label>
+      <ion-badge>English</ion-badge>
+    </ion-item>
+  </ion-list>
+</ion-content>

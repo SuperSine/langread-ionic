@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DocEditorPageRoutingModule } from './doc-editor-routing.module';
 
 import { DocEditorPage } from './doc-editor.page';
+import { DocEditorSaveComponent } from './doc-editor-save/doc-editor-save.component';
 import { QuillModule } from 'ngx-quill';
 import { PickDirective } from 'src/app/directives/pick.directive';
 import { TagPickerPageModule } from '../tag-picker/tag-picker.module';
@@ -32,6 +33,7 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule.forChild()
   ],
-  declarations: [UniqueTagsPipe, DocEditorPage, PickDirective ]
+  declarations: [UniqueTagsPipe, DocEditorPage, PickDirective,DocEditorSaveComponent ],
+  entryComponents:[DocEditorSaveComponent]
 })
 export class DocEditorPageModule {}

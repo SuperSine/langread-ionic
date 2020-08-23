@@ -28,6 +28,7 @@ import { environment } from '../environments/environment';
 import { CheckUpdateService } from './services/check-update.service';
 
 
+
 export function createTranslateLoader(http:HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/','.json');
 }
@@ -56,7 +57,8 @@ export function createTranslateLoader(http:HttpClient){
       }
     }),
     GraphQLModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    
   ],
   providers: [
     StatusBar,
@@ -68,7 +70,7 @@ export function createTranslateLoader(http:HttpClient){
     ColorService,
     CheckUpdateService,
     CheckEmailValidator,
-    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

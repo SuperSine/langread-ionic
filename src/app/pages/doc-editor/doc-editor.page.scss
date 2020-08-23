@@ -124,3 +124,24 @@ div[quill-editor-toolbar]{
   background-color:var(--ion-background-color);
   z-index: 100;
 }
+
+.viewerBar{
+  position: sticky;
+  bottom: 10px;
+  background-color:var(--ion-background-color);
+  z-index: 100;
+}
+
+.save-modal{
+  ion-backdrop{
+    z-index: 15;
+    
+  }
+  .modal-wrapper {
+    height: 20%;
+    
+    top: 80%;
+    position: absolute;
+    z-index: 20;
+  }
+}

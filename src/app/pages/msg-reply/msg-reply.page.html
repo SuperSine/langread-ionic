@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>msg-reply</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<ion-list name="comment-list">
+
+<ion-card class="commentCard">
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <img src="http://localhost:81/api/auth/v1/user/avatar?text=12312lk3jlksdfjl">
+      </ion-avatar>
+      <ion-label>
+        <h3>Sine Zhang</h3>
+      </ion-label>
+      <ion-label class="ion-text-right"><p>3 mins ago</p></ion-label>
+    </ion-item >
+
+  
+<ion-card-content>
+  <p>
+123123
+  </p>
+</ion-card-content>
+
+<ion-item>
+
+  <ion-button fill="clear" size="small" >
+    <ion-icon name="heart-outline"></ion-icon>
+    12
+  </ion-button>
+
+
+
+  <ion-button fill="clear" slot="end">Reply</ion-button>
+
+</ion-item>
+
+</ion-card>
+
+<ion-card class="commentCard">
+  <ion-item lines="none">
+    <ion-avatar slot="start">
+      <img src="http://localhost:81/api/auth/v1/user/avatar?text=12312lk3jlksdfjl">
+    </ion-avatar>
+    <ion-label>
+      <h3>Sine Zhang</h3>
+    </ion-label>
+    <ion-label class="ion-text-right"><p>3 mins ago</p></ion-label>
+  </ion-item >
+
+
+<ion-card-content>
+<p>
+123123
+</p>
+</ion-card-content>
+
+<ion-item>
+
+  <ion-button fill="clear" size="small" >
+    <ion-icon name="heart-outline"></ion-icon>
+    12
+  </ion-button>
+
+
+
+  <ion-button fill="clear" slot="end">Reply</ion-button>
+
+</ion-item>
+
+</ion-card>
+
+
+
+
+
+
+</ion-list>
+
+
+<ion-card class="viewerBar">
+  <ion-item>
+    <ion-label position="stacked">Reply to</ion-label>
+    <ion-textarea></ion-textarea>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-button slot="end">Reply</ion-button>
+  </ion-item>
+</ion-card>
+</ion-content>

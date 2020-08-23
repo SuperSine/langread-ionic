@@ -22,6 +22,14 @@
     <ion-label>{{'doc-info.words' | translate}}</ion-label>
     <ion-badge slot="end">{{doc.wordsCount}}</ion-badge>
   </ion-item>
+  <ion-item>
+    <ion-label>{{'doc-info.likes' | translate}}</ion-label>
+    <ion-badge slot="end">22</ion-badge>
+  </ion-item>
+  <ion-item>
+    <ion-label>{{'doc-info.comments' | translate}}</ion-label>
+    <ion-badge slot="end">32</ion-badge>
+  </ion-item>  
   <ion-list-header>{{'doc-info.tags' | translate}}</ion-list-header>
   <p>
     <word-tag-info *ngFor="let item of tagInfo | keyvalue" [tag]='getTag(item.key)' [displayValue]='item.value' (onTouch)="onTouch($event)"></word-tag-info>

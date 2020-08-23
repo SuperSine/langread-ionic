@@ -1,0 +1,41 @@
+.profile-header{
+  position: relative;
+  height: 240px;
+  // background: url(img/1.jpg) no-repeat;
+  background-size: cover;
+}
+
+.profile{
+  position: relative;
+}
+
+.profile-info{
+  display: flex;
+  justify-content: space-between;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.profile-description{
+  flex:3;
+}
+
+.profile-follow{
+  display: flex;
+  // justify-content:right;
+  // align-items: center;
+  flex-direction: column;
+}
+
+.profile-numbers{
+  display: flex;
+  align-items: center;
+}
+
+ion-icon{
+  font-size:1.5em;
+}

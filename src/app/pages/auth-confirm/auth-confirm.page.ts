@@ -105,6 +105,8 @@ export class AuthConfirmPage implements OnInit {
     ).subscribe((result) => {
       console.log(result);
 
+      this.youCanClick = result;
+
       if(!(typeof result == 'boolean')){
         let data = result.data.user.verify;
         this.authService.saveUserObj(data);
@@ -113,7 +115,7 @@ export class AuthConfirmPage implements OnInit {
         this.slides.slideNext();
         this.slides.lockSwipes(true);
       }else{
-        this.youCanClick = result;
+
         if(result)
           this.globalService.throwError([{message:this.langs.incorrectCode}]);
       }
@@ -144,7 +146,7 @@ export class AuthConfirmPage implements OnInit {
     });
   }
 
-  public counter:number;
+  public counter:number = 0;
   public verifycode:string="";
   public youCanClick:boolean = true;
   public displayLanguages:any[];

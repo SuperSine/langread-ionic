@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Group Editor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="editorForm">
+    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+      <ion-item>
+        <ion-label position="stacked">Group Name</ion-label>
+        <ion-input required formControlName="groupName"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Group Description</ion-label>
+        <ion-textarea formControlName="groupDescription"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Group Language</ion-label>
+        <ion-select required formControlName="groupLanguage">
+          <ion-select-option *ngFor="let item of langList">{{item.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Group Type</ion-label>
+        <ion-select required formControlName="groupType">
+          <ion-select-option>Public</ion-select-option>
+          <ion-select-option>Private</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Group Picture</ion-label>
+        <ion-row>
+          <ion-input type="file" accept="image/*" (change)="changeListener($event)">
+          </ion-input>
+          <ion-avatar *ngIf="croppedImage"><img [src]="croppedImage"/></ion-avatar>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+  </form>
+  
+  <ion-button expand="block">
+    Save
+  </ion-button>
+</ion-content>

@@ -1,0 +1,28 @@
+ion-col{
+  margin: 0 auto;
+}
+
+.main-h-card{
+  display: inline-block;
+  vertical-align: top; /* here */
+  border-radius: 9px  !important;
+}
+
+.agent-icon  {
+  display: inline-block;
+  margin: auto 5px auto 5px !important;
+  border-radius: 9px  !important;
+  padding:1em;
+}
+
+.group-list{
+  margin-bottom: 20px;
+}
+
+p[name=number-label]{
+  font-size: 0.8em;
+}
+
+ion-item[name=number-info] ion-col{
+  margin: 0 auto;
+}

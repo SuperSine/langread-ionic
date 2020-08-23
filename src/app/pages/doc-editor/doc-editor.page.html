@@ -4,6 +4,9 @@
       <ion-back-button defaultHref=""></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="primary">
+      <ion-button color="dark">
+        <ion-icon name="save"></ion-icon>
+      </ion-button>      
       <ion-button color="dark" (click)="onModeChange($event)">
         <ion-icon [name]="mode == DocMode.Read ? 'book' : 'create'"></ion-icon>
       </ion-button>
@@ -13,7 +16,7 @@
       <ion-button color="dark" (click)="openDocInfo($event)">
         <ion-icon name="information-circle"></ion-icon>
       </ion-button>
-      <ion-button color="dark" (click)="openActSheet($event)">
+      <ion-button color="dark" (click)="openDocSave($event)">
         <ion-icon name="ellipsis-vertical"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -69,7 +72,8 @@
 
 <ion-content name="read" scrollEvents="true" (ionScroll)="onScroll($event)" [hidden]="mode == DocMode.Read ? true : false" 
             [ngClass]="showTags ? 'bookMarkToggled':''">
-    <div class="test horizontal-scroll">
+    
+  <div class="test horizontal-scroll">
       <ion-chip *ngFor="let tag of tags | uniqueTags" [class.selected]='selectedValue === tag.tagName' (click)='onChooseTagClick(tag);selectedValue=tag.tagName;'>
         <ion-avatar>
           <div [style.background-color]="tag.tagColor" style="width: 100%; height: 100%;"></div>
@@ -80,7 +84,44 @@
 
   </div>
 
-  <quill-view-html class="reader" #innerHtml [content]="displayContent" theme="snow" (click)="onReaderClick($event)"></quill-view-html>
+  <ion-card>
+    <ion-list>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjflksdjf893245">
+        </ion-avatar>
+        <ion-label>
+            <h3>Sine Zhang</h3>
+            <p>Posted at 08-16-2020</p>
+ 
+          </ion-label>
+          <ion-button>Follow</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card>
 
+  <quill-view-html class="reader" #innerHtml [content]="displayContent" theme="snow" (click)="onReaderClick($event)"></quill-view-html>
+  <ion-card class="viewerBar">
+    <ion-row>
+      <ion-col>
+        <ion-button fill="clear" size="small">
+          <ion-icon name="heart-outline"></ion-icon>
+          12
+        </ion-button>
+        <ion-button fill="clear" size="small">
+          <ion-icon name="copy-outline"></ion-icon>
+            12
+        </ion-button>
+
+      </ion-col>
+
+      <ion-col class="ion-text-right"> 
+        <ion-button fill="clear" size="small">
+          <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+          13
+      </ion-button>
+    </ion-col>
+    </ion-row>
+  </ion-card>
 
 </ion-content>

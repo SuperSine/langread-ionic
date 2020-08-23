@@ -1,0 +1,27 @@
+<ion-content class="saveBody">
+<div class="fuck">
+  <ion-item>
+    <ion-label>Post to group</ion-label>
+    <ion-checkbox [(ngModel)]="isToGroup"></ion-checkbox>
+  </ion-item>
+  <ion-item [hidden]="!isToGroup">
+    <ion-label>Choose group</ion-label>
+    <ion-select>
+      <ion-select-option value="brown">Brown</ion-select-option>
+      <ion-select-option value="blonde">Blonde</ion-select-option>
+      <ion-select-option value="black">Black</ion-select-option>
+      <ion-select-option value="red">Red</ion-select-option>
+    </ion-select>
+  </ion-item>
+</div>
+
+  <ion-row class="buttonPanel">
+    <ion-col size="6">
+      <ion-button expand="block" color="secondary">Cancel</ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button expand="block" color="primary">Save</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>
+

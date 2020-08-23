@@ -176,5 +176,8 @@
     "version":"版本",
     "updateApp":"检查更新",
     "update":"更新"
+  },
+  "image-cropper":{
+    "title":"图片裁剪"
   }
 }

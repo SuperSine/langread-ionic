@@ -13,6 +13,7 @@ export const environment = {
   coreEndpoint:'http://localhost:5003/api/core/v1/graphql/post',
   socialEndpoint:'http://localhost:5101/api/social/v1/graphql/post',
   wordSoundUrl:'http://localhost:5003/api/core/v1/dictionary/sound',
+  uploadAvatarUrl:'http://localhost:5002/api/auth/v1/user/upload',
   // avatarUrl:'https://auth-api.langreed.com/api/v1/user/avatar',
   // authEndpoint:'https://api.langreed.com/api/graphql/auth',
   // coreEndpoint:'https://api.langreed.com/api/graphql/core',

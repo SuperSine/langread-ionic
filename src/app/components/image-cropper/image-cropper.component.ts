@@ -25,8 +25,6 @@ export class ImageCropperComponent implements OnInit {
     this.modalCtrl.dismiss(this.croppedImage);
   }
 
-
-
   public imageData:any;
   public croppedImage:any;
 }

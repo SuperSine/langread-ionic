@@ -26,6 +26,7 @@ import { BasicAuthInterceptor } from './helpers/HttpAuthInterceptor';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CheckUpdateService } from './services/check-update.service';
+import { Globals } from './globals';
 
 
 
@@ -70,7 +71,8 @@ export function createTranslateLoader(http:HttpClient){
     ColorService,
     CheckUpdateService,
     CheckEmailValidator,
-    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
+    Globals
   ],
   bootstrap: [AppComponent]
 })

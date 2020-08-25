@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -7,6 +7,8 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ModalController } from '@ionic/angular';
 import { ImageCropperComponent } from 'src/app/components/image-cropper/image-cropper.component';
 import { environment  } from 'src/environments/environment';
+import { AvatarService } from 'src/app/services/avatar.service';
+import { Globals } from 'src/app/globals';
 
 @Component({
   selector: 'app-group-editor',
@@ -19,13 +21,20 @@ export class GroupEditorPage implements OnInit {
               private crop:Crop, 
               private file:File,
               private camera:Camera,
-              private modalCtrl:ModalController) {
+              private modalCtrl:ModalController,
+              private cd:ChangeDetectorRef,
+              private avatarServer:AvatarService,
+              private globals:Globals) {
 
     this.editorForm = formBuilder.group({
       groupName: ['', Validators.compose([Validators.required])],
       groupDescription: ['', Validators.compose([Validators.required])],
       groupType: ['', Validators.compose([Validators.required])],
       groupLanguage: ['', Validators.compose([Validators.required])],
+    });
+
+    this.picForm = formBuilder.group({
+
     });
 
     this.langList = environment.targetLanguages;
@@ -35,29 +44,39 @@ export class GroupEditorPage implements OnInit {
     this.editorForm.updateValueAndValidity();
   }
 
+  save() {
+    const b64 = this.croppedImage.split(';')[1].split(',')[1];
+    const blob = this.globals.b64ToBlob(b64, 'image/jpeg');
+    const file = this.globals.blobToFile(blob, '123.jpeg');
+    this.avatarServer.upload('123', file);
+  }
+
   async changeListener($event) {
-    console.log($event)
     this.file = $event.target.files[0];
-    console.log(this.file);
 
     var reader = new FileReader();
-    reader.readAsDataURL($event.target.files[0]); 
-    reader.onload = (_event) => { 
-      this.imageData = reader.result; 
+    
+    reader.onload = async (_event) => { 
+      this.imageData = reader.result;
+
+      console.log('you have ', this.imageData);
+      const modal = await this.modalCtrl.create({
+        component: ImageCropperComponent,
+        componentProps:{
+          imageData:this.imageData
+        }
+      });
+
+      modal.onDidDismiss().then(({data}) => {
+        this.croppedImage = data;
+      });
+  
+      await modal.present();
     }
 
-    const modal = await this.modalCtrl.create({
-      component: ImageCropperComponent,
-      componentProps:{
-        imageData:this.imageData
-      }
-    });
+    reader.readAsDataURL($event.target.files[0]);
 
-    modal.onDidDismiss().then(({data}) => {
-      this.croppedImage = data;
-    });
 
-    await modal.present();
   }
 
   selectImage(imageData) {
@@ -119,10 +138,11 @@ export class GroupEditorPage implements OnInit {
   }
 
   public editorForm: FormGroup;
+  public picForm: FormGroup;
 
   public isLoading:boolean;
   public croppedImagepath:string;
-  public croppedImage:any;
+  public croppedImage:string;
   public imageData:any;
   public langList:any[];
 

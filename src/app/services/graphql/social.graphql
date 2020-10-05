@@ -1,0 +1,64 @@
+mutation createGroup($group:GroupInputType){
+  group{
+    create(data:$group){
+      description
+      id
+    }
+  }
+}
+
+mutation updateGroup($group:GroupInputType!){
+  group{
+    update(data:$group)
+  }
+}
+
+query checkAvailable($name:String){
+  group{
+    checkAvailable(name:$name)
+  }
+}
+
+query userGroupList($pageIndex:String,$pageSize:String,$userId:String,$keywords:String){
+  group{
+    userGroupList(pageIndex:$pageIndex,pageSize:$pageSize, userId:$userId, keywords:$keywords){
+      id
+      name
+      readCount
+      memberCount
+      creator
+      description
+      isAdmin
+      isFollowed
+      languages
+    }    
+  }
+}
+
+query allGroupList($pageIndex:String,$pageSize:String,$keywords:String){
+  group{
+    allGroupList(pageIndex:$pageIndex,pageSize:$pageSize,keywords:$keywords){
+      id
+      name
+      readCount
+      memberCount
+      creator
+      description
+      isAdmin
+      isFollowed
+      languages
+    }
+  }
+}
+
+mutation deleteGroup($id:String!){
+  group{
+    delete(id:$id)
+  }
+}
+
+mutation followGroup($id:String){
+  group{
+    follow(groupId:$id)
+  }
+}

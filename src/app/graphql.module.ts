@@ -105,9 +105,16 @@ export class GraphQLModule {
         link: from([retryLink, headerMiddleware, renewTokenLink, http]),
         cache: new InMemoryCache(),
       };
+
+      const socialLink = httpLink.create({uri: environment.socialEndpoint});
+      let socialOption = {
+        link: from([retryLink, headerMiddleware, renewTokenLink, socialLink]),
+        cache: new InMemoryCache(),
+      }
   
       apollo.create(optionA,'auth');
       apollo.create(optionB,'core');
+      apollo.create(socialOption, 'social');
 
 
   }

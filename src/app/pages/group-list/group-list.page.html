@@ -6,53 +6,55 @@
 
       </ion-buttons>
     <ion-title slot="start">Group List</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showAddGroup()" *ngIf="currentSegment == 'followed'">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar></ion-searchbar>
-</ion-toolbar>
+    <ion-searchbar (ngModel)="keywords"  showCancelButton="focus" debounce="500" (ionChange)='onSearch($event)'></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content #pageContent>
+
+  <ion-segment value="discover" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="discover">
+      <ion-label>Discover</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="followed">
+      <ion-label>Followed</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-refresher slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list>
-    <ion-item [routerLink]="['/grou-list']">
+    <ion-item *ngFor="let item of groupItems | async"  [routerLink]="['/group-list']">
       <ion-thumbnail slot="start">
-        <ion-img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn"></ion-img>
+        <ion-img [src]="['http://localhost:81/api/auth/v1/user/avatar?text=',item.id]"></ion-img>
       </ion-thumbnail>
       <ion-label>
-          <h3>English makes the world united</h3>
-          <p class="line-clamp">This is group people can read english related content in easy fashion.This is group people can read english related content in easy fashionThis is group people can read english related content in easy fashionThis is group people can read english related content in easy fashion</p>
+          <h3>{{item.name}}</h3>
+          <p class="line-clamp">{{item.description}}</p>
           <div class="group-info">
               <ion-label>
                 <ion-icon name="documents-outline"></ion-icon>
-                <span>12</span>
+                <span>{{item.readCount}}</span>
               </ion-label>
               <ion-label>
                 <ion-icon name="people-outline"></ion-icon>
-                <span>13</span>
+                <span>{{item.memberCount}}</span>
               </ion-label>
             </div>
         </ion-label>
-      <ion-badge>English</ion-badge>
+      <ion-badge>{{getLanguage(item.languages)}}</ion-badge>
     </ion-item>
-    <ion-item [routerLink]="['/grou-list']">
-      <ion-thumbnail slot="start">
-        <ion-img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn"></ion-img>
-      </ion-thumbnail>
-      <ion-label>
-          <h3>English makes the world united</h3>
-          <p class="line-clamp">This is group people can read english related content in easy fashion.This is group people can read english related content in easy fashionThis is group people can read english related content in easy fashionThis is group people can read english related content in easy fashion</p>
-          <div class="group-info">
-              <ion-label>
-                <ion-icon name="documents-outline"></ion-icon>
-                12
-              </ion-label>
-              <ion-label>
-                <ion-icon name="people-outline"></ion-icon>
-                12
-              </ion-label>
-            </div>
-        </ion-label>
-      <ion-badge>English</ion-badge>
-    </ion-item>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </ion-list>
+
 </ion-content>

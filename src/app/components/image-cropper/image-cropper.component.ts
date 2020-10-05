@@ -18,7 +18,6 @@ export class ImageCropperComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.imageData);
   }
 
   close(){

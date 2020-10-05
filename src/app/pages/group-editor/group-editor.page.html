@@ -1,31 +1,47 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Group Editor</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="medium" (click)="close()">
+        <ion-icon slot="icon-only" name="arrow-down"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <form [formGroup]="editorForm">
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
+      <ion-input formControlName="id" hidden></ion-input>
       <ion-item>
         <ion-label position="stacked">Group Name</ion-label>
-        <ion-input required formControlName="groupName"></ion-input>
+        <ion-input required formControlName="name">
+        </ion-input>
+
+      </ion-item>
+      <ion-item lines="none" *ngIf="isNameAvailable && !groupService.checkPending">
+        <ion-icon name="checkmark-done-outline" color="green" class="ion-float-right"></ion-icon>
+        <ion-text color="green">The group name is available</ion-text>
+      </ion-item>
+      <ion-item lines="none" *ngIf="!isNameAvailable && !groupService.checkPending">
+        <ion-icon name="close-outline" color="danger" class="ion-float-right"></ion-icon>
+        <ion-text color="danger">The group name is unavailable</ion-text>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Group Description</ion-label>
-        <ion-textarea formControlName="groupDescription"></ion-textarea>
+        <ion-textarea formControlName="description"></ion-textarea>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Group Language</ion-label>
-        <ion-select required formControlName="groupLanguage">
-          <ion-select-option *ngFor="let item of langList">{{item.name}}</ion-select-option>
+        <ion-select required formControlName="languages">
+          <ion-select-option *ngFor="let item of langList" [value]="item.code">{{item.name}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Group Type</ion-label>
-        <ion-select required formControlName="groupType">
-          <ion-select-option>Public</ion-select-option>
-          <ion-select-option>Private</ion-select-option>
+        <ion-select required formControlName="groupTypeId">
+          <ion-select-option value="1">Public</ion-select-option>
+          <ion-select-option value="0">Private</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
@@ -39,7 +55,7 @@
     </ion-list>
   </form>
   
-  <ion-button expand="block" (click)="save()">
+  <ion-button name="save" expand="block" (click)="save()" [disabled]="!editorForm.valid">
     Save
   </ion-button>
 </ion-content>

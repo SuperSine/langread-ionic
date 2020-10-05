@@ -8,14 +8,19 @@ import { GroupListPageRoutingModule } from './group-list-routing.module';
 
 import { GroupListPage } from './group-list.page';
 import { HideHeaderDirective } from 'src/app/directives/hide-header.directive';
+import { TagEditorPageModule } from '../tag-editor/tag-editor.module';
+import { GroupEditorPage } from '../group-editor/group-editor.page';
+import { GroupEditorPageModule } from '../group-editor/group-editor.module';
+import { SelectPipe } from 'src/app/pipes/select.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    GroupListPageRoutingModule
+    GroupListPageRoutingModule,
+    GroupEditorPageModule,
   ],
-  declarations: [GroupListPage, HideHeaderDirective]
+  declarations: [SelectPipe, GroupListPage, HideHeaderDirective]
 })
 export class GroupListPageModule {}

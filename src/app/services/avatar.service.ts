@@ -15,14 +15,13 @@ export class AvatarService {
 
   }
 
-  public upload(id:string, file:File){
+  async upload(id:string, file:File){
     const formdata: FormData = new FormData();
 
     formdata.append('id', id);
     formdata.append('file', file, file.name);
 
-    this.httpClient.post(environment.uploadAvatarUrl, formdata).subscribe((data) => {
-      console.log(data);
-    })
+    return await this.httpClient.post(environment.uploadAvatarUrl, formdata)
+                                .toPromise();
   }
 }

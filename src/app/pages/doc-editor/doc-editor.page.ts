@@ -186,7 +186,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
     await loading.present();
 
-    this.docService.save(this.doc, this.TaggedWordInfo, ).subscribe(async ({data})=>{
+    this.docService.save(this.doc, this.TaggedWordInfo).subscribe(async ({data})=>{
       let alert = await this.toastCtrl.create({
         message: this.lang.successMsg,
         duration:2000,

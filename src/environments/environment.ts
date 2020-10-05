@@ -10,7 +10,7 @@ export const environment = {
   // authEndpoint:'https://localhost/api/graphql',
   // coreEndpoint:'http://localhost:5003/api/graphql',
   authEndpoint:'http://localhost:81/api/auth/v1/graphql/post',
-  coreEndpoint:'http://localhost:5003/api/core/v1/graphql/post',
+  coreEndpoint:'http://localhost:83/api/core/v1/graphql/post',
   socialEndpoint:'http://localhost:5101/api/social/v1/graphql/post',
   wordSoundUrl:'http://localhost:5003/api/core/v1/dictionary/sound',
   uploadAvatarUrl:'http://localhost:5002/api/auth/v1/user/upload',

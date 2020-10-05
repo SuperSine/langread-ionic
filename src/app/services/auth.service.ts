@@ -236,7 +236,6 @@ export class AuthService {
   }
 
   updateUser(user:UpdateUserViewModelType){
-    debugger;
     return this.getApollo.mutate({
       mutation:UpdateUserDocument,
       variables:{

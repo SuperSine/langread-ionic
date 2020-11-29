@@ -1,9 +1,9 @@
 import { Injectable, ɵɵstylePropInterpolateV } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import {GroupInputType, CreateGroupDocument, UpdateGroupDocument, CheckAvailableDocument,UserGroupListDocument, AllGroupListDocument, DeleteGroupDocument, FollowGroupDocument, GroupType} from '../graphql-components';
+import {GetGroupDetailDocument,GetGroupFollowersDocument,GroupInputType, CreateGroupDocument, UpdateGroupDocument, CheckAvailableDocument,UserGroupListDocument, AllGroupListDocument, DeleteGroupDocument, FollowGroupDocument, GroupType, GetFollowersDocument, UserViewType} from '../graphql-components';
 import { FormControl } from '@angular/forms';
 import { Subject, Observable} from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, first, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +38,18 @@ export class GroupService {
 
   get getApollo(){
     return this.apollo.use("social");
+  }
+
+  getGroup(groupId:string){
+    return this.getApollo.query({
+      query:GetGroupDetailDocument,
+      variables:{
+        groupId
+      }
+    }).pipe(
+      map(({data:{group:{detail}}}:any) => detail as GroupType),
+      first()
+    );
   }
 
   saveGroup(group:GroupInputType){
@@ -79,7 +91,7 @@ export class GroupService {
 
   getUserGroups(pageIndex:number,pageSize:number,keywords:string='*',userId:string=''){
     const obserable = new Observable<GroupType[]>(sub => {
-      this.getApollo.watchQuery<GroupType[]>({
+      this.getApollo.query<GroupType[]>({
         query: UserGroupListDocument,
         variables:{
           pageIndex,
@@ -87,7 +99,7 @@ export class GroupService {
           userId,
           keywords
         }
-      }).refetch().then(({data:{group:{userGroupList}}}:any)=>{
+      }).toPromise().then(({data:{group:{userGroupList}}}:any)=>{
         sub.next(userGroupList);
         sub.complete();
       });
@@ -155,6 +167,20 @@ export class GroupService {
         id
       }
     });
+  }
+
+  getFollowers = (groupId:string, index:number, size:number) => {
+    return this.getApollo.watchQuery<UserViewType[]>({
+      query: GetGroupFollowersDocument,
+      variables:{
+        groupId,
+        index,
+        size
+      }
+    }).valueChanges.pipe(
+      map(({data:{group:{followers}}}:any)=> followers as UserViewType[]),
+      first()
+    )
   }
 
   private groupSub:Subject<FormControl>;

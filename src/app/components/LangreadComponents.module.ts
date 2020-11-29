@@ -12,9 +12,15 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageCropperComponent } from './image-cropper/image-cropper.component';
 import { PostCardComponent } from './post-card/post-card.component';
 import { UserCardComponent } from './user-card/user-card.component';
+import { PostCardsComponent } from './post-cards/post-cards.component';
+import { RouterModule } from '@angular/router';
+import { UserCardsComponent } from './user-cards/user-cards.component';
+import { AvatarUrlDirective } from '../directives/avatar-url.directive';
+import { TopMostComponent } from './top-most/top-most.component';
 
 @NgModule({
   declarations: [
+    AvatarUrlDirective,
     NoContentComponent, 
     WordTagInfoComponent, 
     WordDictionaryComponent,
@@ -23,9 +29,13 @@ import { UserCardComponent } from './user-card/user-card.component';
     WordSoundComponent,
     ImageCropperComponent,
     PostCardComponent,
-    UserCardComponent
+    UserCardComponent,
+    PostCardsComponent,
+    UserCardsComponent,
+    TopMostComponent
   ],
   exports: [
+    AvatarUrlDirective,
     NoContentComponent, 
     WordTagInfoComponent, 
     WordDictionaryComponent,
@@ -34,13 +44,18 @@ import { UserCardComponent } from './user-card/user-card.component';
     WordSoundComponent,
     ImageCropperComponent,
     PostCardComponent,
-    UserCardComponent
+    UserCardComponent,
+    RouterModule,
+    PostCardsComponent,
+    UserCardsComponent,
+    TopMostComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
     TranslateModule,
-    ImageCropperModule
+    ImageCropperModule,
+    RouterModule
   ],
   entryComponents:[ImageCropperComponent]
 })

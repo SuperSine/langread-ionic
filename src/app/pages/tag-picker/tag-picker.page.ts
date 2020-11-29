@@ -57,6 +57,7 @@ export class TagPickerPage implements OnInit {
     this.currentSegment = event.detail.value;
 
     if(this.currentSegment == "Word"){
+      debugger;
       this.wordProfileService.profile(this.word, this.targetLanguage, this.sourceLanguage).then((result)=>{
         this.wordProfile  = result.wti.profile;
         this.wordTrends = result.timeline.wordByMonth.data;

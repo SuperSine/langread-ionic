@@ -84,15 +84,15 @@
 
   </div>
 
-  <ion-card>
+  <ion-card *ngIf="!wordTagDocument.isCreator">
     <ion-list>
       <ion-item lines="none">
         <ion-avatar slot="start">
-          <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjflksdjf893245">
+          <img src="http://localhost:81/api/auth/v1/user/avatar/aflksadjflksdjf893245">
         </ion-avatar>
         <ion-label>
-            <h3>Sine Zhang</h3>
-            <p>Posted at 08-16-2020</p>
+            <h3>{{(moment | async)?.userName}}</h3>
+            <p>Posted at {{(moment | async)?.createTime}}</p>
  
           </ion-label>
           <ion-button>Follow</ion-button>
@@ -101,16 +101,16 @@
   </ion-card>
 
   <quill-view-html class="reader" #innerHtml [content]="displayContent" theme="snow" (click)="onReaderClick($event)"></quill-view-html>
-  <ion-card class="viewerBar">
+  <ion-card *ngIf="!wordTagDocument.isCreator" class="viewerBar">
     <ion-row>
       <ion-col>
-        <ion-button fill="clear" size="small">
+        <ion-button fill="clear" size="small" (click)="like((moment))">
           <ion-icon name="heart-outline"></ion-icon>
-          12
+          {{(moment | async)?.upvoteCount}}
         </ion-button>
-        <ion-button fill="clear" size="small">
+        <ion-button fill="clear" size="small" (click)="openDocFork($event)">
           <ion-icon name="copy-outline"></ion-icon>
-            12
+          {{(moment | async)?.forkCount}}
         </ion-button>
 
       </ion-col>

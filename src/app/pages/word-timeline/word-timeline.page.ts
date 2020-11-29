@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { WordProfileType } from 'src/app/graphql-components';
 import { FontService } from 'src/app/services/font.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { AuthService } from 'src/app/services/auth.service';
 // import * as WordCloud from 'wordcloud';
 const WordCloud = require('wordcloud');
 
@@ -23,15 +24,16 @@ export class WordTimelinePage implements OnInit {
 
   constructor(private router:Router, private renderer: Renderer2, private timelineService:TimelineService, private toastCtrl:ToastController, private wordProfileService:WordService,
               private fontService:FontService,
-              private globalService:GlobalService) { 
+              private globalService:GlobalService,
+              public  authService:AuthService) { 
     this.timelineItems = {words:[]};
 
-    this.rangeChanged.pipe(
-                          debounceTime(300),
-                          distinctUntilChanged()
-                      ).subscribe((value) => {
-                        this.loadTopmost(value);
-                      });
+    // this.rangeChanged.pipe(
+    //                       debounceTime(300),
+    //                       distinctUntilChanged()
+    //                   ).subscribe((value) => {
+    //                     this.loadTopmost(value, authService.UserId);
+    //                   });
 
   }
 
@@ -99,47 +101,47 @@ export class WordTimelinePage implements OnInit {
     });
   }
 
-  async loadTopmost(top:number){
-    const factor = top / 1000;
+  // async loadTopmost(top:number, userId:string){
+  //   const factor = top / 1000;
 
-    this.topList = null;
+  //   this.topList = null;
 
-    this.wordProfileService.topMost(top).then((data)=>{
-      this.topList = data;
+  //   this.wordProfileService.topMost(top, userId).then((data)=>{
+  //     this.topList = data;
 
-      const childElements = this.htmlCanvas.nativeElement.children;
+  //     const childElements = this.htmlCanvas.nativeElement.children;
 
-      for (let child of childElements) {
-        this.renderer.removeChild(this.htmlCanvas.nativeElement, child);
-      }
-      var style = getComputedStyle(document.body);
+  //     for (let child of childElements) {
+  //       this.renderer.removeChild(this.htmlCanvas.nativeElement, child);
+  //     }
+  //     var style = getComputedStyle(document.body);
 
-      setTimeout(()=>{
-        WordCloud(this.htmlCanvas.nativeElement, { 
-          list: this.topList.map((value)=>[value.word,(70 - 30*factor)*value.score]),
-          classes:(word, weight, fontSize, distance, theta)=>{
-            var wordProfile = this.topList.find((item) => item.word == word);
-            var tagFont = wordProfile.wordInfo[0].tag.tagFont;
+  //     setTimeout(()=>{
+  //       WordCloud(this.htmlCanvas.nativeElement, { 
+  //         list: this.topList.map((value)=>[value.word,(70 - 30*factor)*value.score]),
+  //         classes:(word, weight, fontSize, distance, theta)=>{
+  //           var wordProfile = this.topList.find((item) => item.word == word);
+  //           var tagFont = wordProfile.wordInfo[0].tag.tagFont;
 
-            return this.fontService.prefix.replace(".","") + tagFont;
+  //           return this.fontService.prefix.replace(".","") + tagFont;
 
-          },
-          color:(word, weight, fontSize, distance, theta)=>{
-            var wordProfile = this.topList.find((item) => item.word == word);
-            var tagColor = wordProfile.wordInfo[0].tag.tagColor;
+  //         },
+  //         color:(word, weight, fontSize, distance, theta)=>{
+  //           var wordProfile = this.topList.find((item) => item.word == word);
+  //           var tagColor = wordProfile.wordInfo[0].tag.tagColor;
 
-            return tagColor;
+  //           return tagColor;
 
-          },
-          backgroundColor:style.getPropertyValue('--ion-background-color')
-        } 
-        );
-      }, 10); 
+  //         },
+  //         backgroundColor:style.getPropertyValue('--ion-background-color')
+  //       } 
+  //       );
+  //     }, 10); 
 
-    })
+  //   })
 
 
-  }
+  // }
 
   onCanvasClick(event){
 
@@ -159,7 +161,7 @@ export class WordTimelinePage implements OnInit {
     this.currentSegment = event.detail.value;
 
     if(this.currentSegment == "Topmost"){
-      this.loadTopmost(100);
+      // this.loadTopmost(100, this.authService.UserId);
     }
   }
 

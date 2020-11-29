@@ -135,8 +135,8 @@ export class AuthService {
   //   this._isApolloCreated.next(true);
   // }
 
-  get getUserId(){
-    return this.userId;
+  get UserId(){
+    return this.userObj.appId;
   }
 
   async CurrentUser() {

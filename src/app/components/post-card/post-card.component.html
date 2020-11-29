@@ -1,12 +1,15 @@
 <ion-card>
   <ion-item lines="none">
     <ion-avatar slot="start">
-        <img src="http://localhost:81/api/auth/v1/user/avatar?text=sdfxcvksjdfjweior">
+        <img [appAvatarId]='moment.creator'>
     </ion-avatar>
     <ion-label>
-      <h3>Sine Zhang</h3>
-      <p>November 5, 1955</p>
+      <h3>{{moment.userName}}</h3>
+      <p>{{moment.createTime}}</p>
     </ion-label>
+    <ion-button *ngIf="moment.creator == userId"  fill="clear" size="small" class="ion-text-right" (click)="openActSheet(moment.id)">
+      <ion-icon name="chevron-down-outline"></ion-icon>
+    </ion-button>
   </ion-item>
   <!-- <ion-slides pager>
       <ng-container *ngFor="let images of  feed.images | slice:1">
@@ -15,33 +18,36 @@
       </ng-container>
   </ion-slides> -->
 
-<ion-card-content>
+<ion-card-content class="ion-activatable">
 <ion-card-title>
-  <h2 class="main_header4">Your Document Title Here</h2>
+  <h2 class="main_header4">{{moment.title}}</h2>
 </ion-card-title>
-<p>
-  Segments display a group of related buttons, sometimes known as segmented controls, in a horizontal row. They can be displayed inside of a toolbar or the main content.
-</p>
+<a [routerLink]="['/doc-editor', {docId:moment.readId}]" routerDirection="forward">
+  <p>
+    <ion-ripple-effect></ion-ripple-effect>
+    {{moment.content}}
+  </p>
+</a>
 </ion-card-content>
 
 <ion-row>
   <ion-col>
-    <ion-button fill="clear" size="small">
+    <ion-button fill="clear" size="small" (click)="like($event)">
       <ion-icon name="heart-outline"></ion-icon>
-      12
+      {{moment.upvoteCount}}
     </ion-button>
     <ion-button fill="clear" size="small">
       <ion-icon name="copy-outline"></ion-icon>
-        12
+      {{moment.forkCount}}
     </ion-button>
 
   </ion-col>
 
   <ion-col class="ion-text-right"> 
     <ion-button fill="clear" size="small">
-      <ion-icon name="chatbox-ellipses-outline"></ion-icon>
-      13
+      {{getLanguage(moment.language)}}
     </ion-button>
+    
   </ion-col>
 </ion-row>
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { GetStatsDocument,GiveItToMeDocument, GetDocumentDocument, GetDocumentsDocument, SaveDocumentDocument, DeleteDocumentDocument } from '../graphql-components';
+import { GetStatsDocument,GiveItToMeDocument, GetDocumentDocument, GetDocumentsDocument, SaveDocumentDocument, DeleteDocumentDocument, ForkDoucmentDocument } from '../graphql-components';
 import {environment} from 'src/environments/environment';
 import { last } from 'rxjs/operators';
 
@@ -32,7 +32,7 @@ export class DocService {
     return this.apollo.use("core");
   }
 
-  list(limit:string, lastId:string="", keywords:string=""){
+  list(limit:number, lastId:string="", keywords:string=""){
     return this.getApollo.watchQuery({
       query:GetDocumentsDocument,
       variables:{
@@ -110,6 +110,17 @@ export class DocService {
   stats(){
     return this.getApollo.watchQuery({
       query:GetStatsDocument
+    });
+  }
+
+  fork(docId:string, groupId:string, wordTagInfo:any){
+    return this.getApollo.mutate({
+      mutation:ForkDoucmentDocument,
+      variables:{
+        docId,
+        groupId,
+        wordTagInfo:JSON.stringify(wordTagInfo)
+      }
     });
   }
 }

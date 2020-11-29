@@ -1,0 +1,9 @@
+<ion-list>
+  <ion-spinner name="dots" [hidden]="(moments | async) != null"></ion-spinner>
+  <post-card *ngFor="let item of moments | async" [moment]="item" [hidden]="item.status == 3"></post-card>
+  <ion-infinite-scroll  threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-list>
+<app-no-content *ngIf="(moments | async)?.length == 0"></app-no-content>

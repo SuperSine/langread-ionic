@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { UserViewType } from 'src/app/graphql-components'
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'user-card',
@@ -10,5 +12,12 @@ export class UserCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {}
+
+  get avatarUrl(){
+    return `${environment.avatarUrl}/${this.user.id}`;
+  }
+
+  @Input()
+  public user:UserViewType
 
 }

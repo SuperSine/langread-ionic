@@ -42,36 +42,44 @@ type Query {
 }
 
 type MomentQuery {
+  getByDocId(id: String = null): MomentType
   listByFollowing(
-    pageIndex: Int = null
-    pageSize: Int = null
+    pageIndex: String = null
+    pageSize: String = null
     id: String = null
   ): [MomentType]
   listByGroup(
     id: String = null
-    type: Type = null
-    pageIndex: Int = null
-    pageSize: Int = null
+    type: MomentGroupType = null
+    pageIndex: String = null
+    pageSize: String = null
+  ): [MomentType]
+  listByLang(
+    pageIndex: String = null
+    pageSize: String = null
+    langCode: String = null
   ): [MomentType]
 }
 
 type MomentType {
   content: String!
-  createTime: Date!
+  createTime: DateTime
   creator: String!
+  forkCount: Int
   groupId: String!
   id: String!
   language: String!
   momentGroupTypeId: Int
-  parent: String!
-  root: String!
+  parent: String
+  readId: String!
+  root: String
   status: Int!
-  title: String!
+  title: String
   upvoteCount: Int!
-  userVoted: String!
+  userName: String
 }
 
-enum Type {
+enum MomentGroupType {
   ALL
   PROFILE
   GROUP
@@ -86,6 +94,11 @@ type GroupQuery {
   ): [GroupType]
   checkAvailable(name: String = null): Boolean
   detail(id: String = null): GroupType
+  followers(
+    groupId: String = null
+    index: String = null
+    size: String = null
+  ): [UserViewType]
   top(top: Int = null, userId: String = null): [GroupType]
   topByFollowers(top: Int = null): [GroupType]
   userGroupList(
@@ -97,43 +110,26 @@ type GroupQuery {
 }
 
 type GroupType {
-  createTime: Date!
-  creator: String!
-  creatorUserName: String!
-  description: String!
-  groupTypeId: Int!
+  createTime: Date
+  creator: String
+  creatorUserName: String
+  description: String
+  groupTypeId: Int
   id: String!
-  isAdmin: Boolean!
-  isFollowed: Boolean!
-  languages: String!
-  lastUpdatedBy: String!
-  memberCount: Int!
+  isAdmin: Boolean
+  isDefault: Boolean
+  isFollowed: Boolean
+  languages: String
+  lastUpdatedBy: String
+  memberCount: Int
   name: String!
-  photoUrl: String!
-  readCount: Int!
-  updateTime: Date!
-}
-
-type ProfileQuery {
-  followers(
-    pageIndex: Int = null
-    pageSize: Int = null
-    userId: String = null
-  ): [UserViewType]
-  followings(
-    pageIndex: Int = null
-    pageSize: Int = null
-    userId: String = null
-  ): [UserViewType]
-  friends(
-    pageIndex: Int = null
-    pageSize: Int = null
-    userId: String = null
-  ): [UserViewType]
-  people(pageIndex: Int = null, pageSize: Int = null): [UserViewType]
+  photoUrl: String
+  readCount: Int
+  updateTime: Date
 }
 
 type UserViewType {
+  description: String
   followerCount: Int!
   followingCount: Int!
   id: String!
@@ -141,6 +137,26 @@ type UserViewType {
   isFollowing: Boolean!
   name: String!
   photoUrl: String!
+}
+
+type ProfileQuery {
+  followers(
+    pageIndex: String = null
+    pageSize: String = null
+    userId: String = null
+  ): [UserViewType]
+  followings(
+    pageIndex: String = null
+    pageSize: String = null
+    userId: String = null
+  ): [UserViewType]
+  friends(
+    pageIndex: String = null
+    pageSize: String = null
+    userId: String = null
+  ): [UserViewType]
+  people(pageIndex: String = null, pageSize: String = null): [UserViewType]
+  profile(userId: String = null): UserViewType
 }
 
 type Mutation {
@@ -152,7 +168,7 @@ type Mutation {
 type MomentMutation {
   delete(id: String = null): MomentType
   post(data: MomentInputType!): MomentType
-  vote(id: String = null, value: Int = null): MomentType
+  vote(id: String = null, value: String = null): MomentType
 }
 
 input MomentInputType {

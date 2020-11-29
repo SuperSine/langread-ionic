@@ -113,6 +113,7 @@ export type Doc = {
    __typename?: 'Doc';
   add?: Maybe<WordTagDocumentCleanType>;
   delete?: Maybe<Scalars['Int']>;
+  fork?: Maybe<WordTagDocumentCleanType>;
   save?: Maybe<WordTagDocumentCleanType>;
   update?: Maybe<WordTagDocumentCleanType>;
 };
@@ -126,6 +127,13 @@ export type DocAddArgs = {
 
 export type DocDeleteArgs = {
   docId?: Maybe<Scalars['String']>;
+};
+
+
+export type DocForkArgs = {
+  docId: Scalars['String'];
+  groupId?: Maybe<Scalars['String']>;
+  wordTagLiteStr?: Maybe<Scalars['String']>;
 };
 
 
@@ -147,6 +155,7 @@ export type DocumentInputType = {
   id?: Maybe<Scalars['String']>;
   docId?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+  groupId?: Maybe<Scalars['String']>;
 };
 
 export type DocumentQueryType = {
@@ -197,7 +206,10 @@ export type DocumentType = {
   content: Scalars['String'];
   createDate?: Maybe<Scalars['DateTime']>;
   docId: Scalars['String'];
+  forkId?: Maybe<Scalars['String']>;
+  groupId?: Maybe<Scalars['String']>;
   id: Scalars['String'];
+  language?: Maybe<Scalars['String']>;
   status: Scalars['Int'];
   title: Scalars['String'];
   updateDate?: Maybe<Scalars['DateTime']>;
@@ -261,6 +273,7 @@ export type GroupQuery = {
   allGroupList?: Maybe<Array<Maybe<GroupType>>>;
   checkAvailable?: Maybe<Scalars['Boolean']>;
   detail?: Maybe<GroupType>;
+  followers?: Maybe<Array<Maybe<UserViewType>>>;
   top?: Maybe<Array<Maybe<GroupType>>>;
   topByFollowers?: Maybe<Array<Maybe<GroupType>>>;
   userGroupList?: Maybe<Array<Maybe<GroupType>>>;
@@ -284,6 +297,13 @@ export type GroupQueryDetailArgs = {
 };
 
 
+export type GroupQueryFollowersArgs = {
+  groupId?: Maybe<Scalars['String']>;
+  index?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['String']>;
+};
+
+
 export type GroupQueryTopArgs = {
   top?: Maybe<Scalars['Int']>;
   userId?: Maybe<Scalars['String']>;
@@ -304,21 +324,22 @@ export type GroupQueryUserGroupListArgs = {
 
 export type GroupType = {
    __typename?: 'GroupType';
-  createTime: Scalars['Date'];
-  creator: Scalars['String'];
-  creatorUserName: Scalars['String'];
-  description: Scalars['String'];
-  groupTypeId: Scalars['Int'];
+  createTime?: Maybe<Scalars['Date']>;
+  creator?: Maybe<Scalars['String']>;
+  creatorUserName?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  groupTypeId?: Maybe<Scalars['Int']>;
   id: Scalars['String'];
-  isAdmin: Scalars['Boolean'];
-  isFollowed: Scalars['Boolean'];
-  languages: Scalars['String'];
-  lastUpdatedBy: Scalars['String'];
-  memberCount: Scalars['Int'];
+  isAdmin?: Maybe<Scalars['Boolean']>;
+  isDefault?: Maybe<Scalars['Boolean']>;
+  isFollowed?: Maybe<Scalars['Boolean']>;
+  languages?: Maybe<Scalars['String']>;
+  lastUpdatedBy?: Maybe<Scalars['String']>;
+  memberCount?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
-  photoUrl: Scalars['String'];
-  readCount: Scalars['Int'];
-  updateTime: Scalars['Date'];
+  photoUrl?: Maybe<Scalars['String']>;
+  readCount?: Maybe<Scalars['Int']>;
+  updateTime?: Maybe<Scalars['Date']>;
 };
 
 
@@ -351,6 +372,13 @@ export type MeaningType = {
 };
 
 
+export enum MomentGroupType {
+  All = 'ALL',
+  Profile = 'PROFILE',
+  Group = 'GROUP',
+  Page = 'PAGE'
+}
+
 export type MomentInputType = {
   parent: Scalars['String'];
   root: Scalars['String'];
@@ -381,45 +409,61 @@ export type MomentMutationPostArgs = {
 
 export type MomentMutationVoteArgs = {
   id?: Maybe<Scalars['String']>;
-  value?: Maybe<Scalars['Int']>;
+  value?: Maybe<Scalars['String']>;
 };
 
 export type MomentQuery = {
    __typename?: 'MomentQuery';
+  getByDocId?: Maybe<MomentType>;
   listByFollowing?: Maybe<Array<Maybe<MomentType>>>;
   listByGroup?: Maybe<Array<Maybe<MomentType>>>;
+  listByLang?: Maybe<Array<Maybe<MomentType>>>;
+};
+
+
+export type MomentQueryGetByDocIdArgs = {
+  id?: Maybe<Scalars['String']>;
 };
 
 
 export type MomentQueryListByFollowingArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
+  pageIndex?: Maybe<Scalars['String']>;
+  pageSize?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
 };
 
 
 export type MomentQueryListByGroupArgs = {
   id?: Maybe<Scalars['String']>;
-  type?: Maybe<Type>;
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
+  type?: Maybe<MomentGroupType>;
+  pageIndex?: Maybe<Scalars['String']>;
+  pageSize?: Maybe<Scalars['String']>;
+};
+
+
+export type MomentQueryListByLangArgs = {
+  pageIndex?: Maybe<Scalars['String']>;
+  pageSize?: Maybe<Scalars['String']>;
+  langCode?: Maybe<Scalars['String']>;
 };
 
 export type MomentType = {
    __typename?: 'MomentType';
   content: Scalars['String'];
-  createTime: Scalars['Date'];
+  createTime?: Maybe<Scalars['DateTime']>;
   creator: Scalars['String'];
+  forkCount?: Maybe<Scalars['Int']>;
   groupId: Scalars['String'];
   id: Scalars['String'];
   language: Scalars['String'];
   momentGroupTypeId?: Maybe<Scalars['Int']>;
-  parent: Scalars['String'];
-  root: Scalars['String'];
+  parent?: Maybe<Scalars['String']>;
+  readId: Scalars['String'];
+  root?: Maybe<Scalars['String']>;
   status: Scalars['Int'];
-  title: Scalars['String'];
+  title?: Maybe<Scalars['String']>;
   upvoteCount: Scalars['Int'];
-  userVoted: Scalars['String'];
+  userName?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -450,33 +494,39 @@ export type ProfileQuery = {
   followings?: Maybe<Array<Maybe<UserViewType>>>;
   friends?: Maybe<Array<Maybe<UserViewType>>>;
   people?: Maybe<Array<Maybe<UserViewType>>>;
+  profile?: Maybe<UserViewType>;
 };
 
 
 export type ProfileQueryFollowersArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
+  pageIndex?: Maybe<Scalars['String']>;
+  pageSize?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
 };
 
 
 export type ProfileQueryFollowingsArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
+  pageIndex?: Maybe<Scalars['String']>;
+  pageSize?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
 };
 
 
 export type ProfileQueryFriendsArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
+  pageIndex?: Maybe<Scalars['String']>;
+  pageSize?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
 };
 
 
 export type ProfileQueryPeopleArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
+  pageIndex?: Maybe<Scalars['String']>;
+  pageSize?: Maybe<Scalars['String']>;
+};
+
+
+export type ProfileQueryProfileArgs = {
+  userId?: Maybe<Scalars['String']>;
 };
 
 export type ProfileType = {
@@ -621,7 +671,7 @@ export type TimelineItemsType = {
   nextId?: Maybe<Scalars['String']>;
   pageIndex: Scalars['Int'];
   pageSize: Scalars['Int'];
-  words?: Maybe<Array<Maybe<Scalars['String']>>>;
+  words?: Maybe<Array<Maybe<Array<Maybe<Scalars['String']>>>>>;
   wordTagInfo?: Maybe<WordTagInfoCleanType>;
 };
 
@@ -666,13 +716,6 @@ export type TranslationType = {
   posTag: Scalars['String'];
   prefixWord: Scalars['String'];
 };
-
-export enum Type {
-  All = 'ALL',
-  Profile = 'PROFILE',
-  Group = 'GROUP',
-  Page = 'PAGE'
-}
 
 
 
@@ -756,6 +799,7 @@ export type UserType = {
 
 export type UserViewType = {
    __typename?: 'UserViewType';
+  description?: Maybe<Scalars['String']>;
   followerCount: Scalars['Int'];
   followingCount: Scalars['Int'];
   id: Scalars['String'];
@@ -793,9 +837,11 @@ export type WordTagDocumentCleanType = {
   bigWordTagInfo?: Maybe<WordTagInfoCleanType>;
   createTime?: Maybe<Scalars['DateTime']>;
   document?: Maybe<DocumentType>;
+  isCreator: Scalars['Boolean'];
   smallWordTagInfo?: Maybe<WordTagInfoCleanType>;
   status: Scalars['Int'];
   updateTime?: Maybe<Scalars['DateTime']>;
+  userId: Scalars['String'];
 };
 
 export type WordTagInfo = {
@@ -822,6 +868,7 @@ export type WordTagInfoProfileArgs = {
 
 export type WordTagInfoTopMostArgs = {
   top?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
 };
 
 export type WordTagInfoCleanType = {
@@ -1117,7 +1164,7 @@ export type GiveItToMeQuery = (
     { __typename?: 'DocumentQueryType' }
     & { giveItToMe?: Maybe<(
       { __typename?: 'WordTagDocumentCleanType' }
-      & Pick<WordTagDocumentCleanType, 'createTime' | 'updateTime' | 'status'>
+      & Pick<WordTagDocumentCleanType, 'isCreator' | 'userId' | 'createTime' | 'updateTime' | 'status'>
       & { document?: Maybe<(
         { __typename?: 'DocumentType' }
         & Pick<DocumentType, 'docId' | 'id' | 'content' | 'createDate' | 'updateDate' | 'title' | 'url' | 'wordsCount'>
@@ -1301,6 +1348,7 @@ export type GetWordProfileQuery = (
 
 export type GetTopmostQueryVariables = {
   top?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
 };
 
 
@@ -1319,6 +1367,27 @@ export type GetTopmostQuery = (
         )> }
       )>>> }
     )>>> }
+  )> }
+);
+
+export type ForkDoucmentMutationVariables = {
+  docId: Scalars['String'];
+  groupId?: Maybe<Scalars['String']>;
+  wordTagLiteStr?: Maybe<Scalars['String']>;
+};
+
+
+export type ForkDoucmentMutation = (
+  { __typename?: 'Mutation' }
+  & { doc?: Maybe<(
+    { __typename?: 'Doc' }
+    & { fork?: Maybe<(
+      { __typename?: 'WordTagDocumentCleanType' }
+      & { document?: Maybe<(
+        { __typename?: 'DocumentType' }
+        & Pick<DocumentType, 'docId' | 'forkId'>
+      )> }
+    )> }
   )> }
 );
 
@@ -1378,7 +1447,7 @@ export type UserGroupListQuery = (
     { __typename?: 'GroupQuery' }
     & { userGroupList?: Maybe<Array<Maybe<(
       { __typename?: 'GroupType' }
-      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages'>
+      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages' | 'isDefault'>
     )>>> }
   )> }
 );
@@ -1396,7 +1465,7 @@ export type AllGroupListQuery = (
     { __typename?: 'GroupQuery' }
     & { allGroupList?: Maybe<Array<Maybe<(
       { __typename?: 'GroupType' }
-      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages'>
+      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages' | 'isDefault'>
     )>>> }
   )> }
 );
@@ -1424,6 +1493,209 @@ export type FollowGroupMutation = (
   & { group?: Maybe<(
     { __typename?: 'GroupMutation' }
     & Pick<GroupMutation, 'follow'>
+  )> }
+);
+
+export type ListMomentByFollowingQueryVariables = {
+  pageIndex: Scalars['String'];
+  pageSize: Scalars['String'];
+  userId?: Maybe<Scalars['String']>;
+};
+
+
+export type ListMomentByFollowingQuery = (
+  { __typename?: 'Query' }
+  & { moment?: Maybe<(
+    { __typename?: 'MomentQuery' }
+    & { listByFollowing?: Maybe<Array<Maybe<(
+      { __typename?: 'MomentType' }
+      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator' | 'readId'>
+    )>>> }
+  )> }
+);
+
+export type ListMomentByLangQueryVariables = {
+  pageIndex: Scalars['String'];
+  pageSize: Scalars['String'];
+  langCode?: Maybe<Scalars['String']>;
+};
+
+
+export type ListMomentByLangQuery = (
+  { __typename?: 'Query' }
+  & { moment?: Maybe<(
+    { __typename?: 'MomentQuery' }
+    & { listByLang?: Maybe<Array<Maybe<(
+      { __typename?: 'MomentType' }
+      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator' | 'readId'>
+    )>>> }
+  )> }
+);
+
+export type ListMomentByGroupQueryVariables = {
+  groupId: Scalars['String'];
+  typeId: MomentGroupType;
+  pageIndex: Scalars['String'];
+  pageSize: Scalars['String'];
+};
+
+
+export type ListMomentByGroupQuery = (
+  { __typename?: 'Query' }
+  & { moment?: Maybe<(
+    { __typename?: 'MomentQuery' }
+    & { listByGroup?: Maybe<Array<Maybe<(
+      { __typename?: 'MomentType' }
+      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator' | 'readId'>
+    )>>> }
+  )> }
+);
+
+export type LikeMomentMutationVariables = {
+  id: Scalars['String'];
+  value: Scalars['String'];
+};
+
+
+export type LikeMomentMutation = (
+  { __typename?: 'Mutation' }
+  & { moment?: Maybe<(
+    { __typename?: 'MomentMutation' }
+    & { vote?: Maybe<(
+      { __typename?: 'MomentType' }
+      & Pick<MomentType, 'upvoteCount'>
+    )> }
+  )> }
+);
+
+export type DeleteMomentMutationVariables = {
+  id: Scalars['String'];
+};
+
+
+export type DeleteMomentMutation = (
+  { __typename?: 'Mutation' }
+  & { moment?: Maybe<(
+    { __typename?: 'MomentMutation' }
+    & { delete?: Maybe<(
+      { __typename?: 'MomentType' }
+      & Pick<MomentType, 'status' | 'id'>
+    )> }
+  )> }
+);
+
+export type GetMomentByDocIdQueryVariables = {
+  id: Scalars['String'];
+};
+
+
+export type GetMomentByDocIdQuery = (
+  { __typename?: 'Query' }
+  & { moment?: Maybe<(
+    { __typename?: 'MomentQuery' }
+    & { getByDocId?: Maybe<(
+      { __typename?: 'MomentType' }
+      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator'>
+    )> }
+  )> }
+);
+
+export type GetFollowersQueryVariables = {
+  index: Scalars['String'];
+  size: Scalars['String'];
+  userId?: Maybe<Scalars['String']>;
+};
+
+
+export type GetFollowersQuery = (
+  { __typename?: 'Query' }
+  & { profile?: Maybe<(
+    { __typename?: 'ProfileQuery' }
+    & { followers?: Maybe<Array<Maybe<(
+      { __typename?: 'UserViewType' }
+      & Pick<UserViewType, 'id' | 'name' | 'description' | 'followerCount' | 'followingCount'>
+    )>>> }
+  )> }
+);
+
+export type GetFollowingsQueryVariables = {
+  index: Scalars['String'];
+  size: Scalars['String'];
+  userId?: Maybe<Scalars['String']>;
+};
+
+
+export type GetFollowingsQuery = (
+  { __typename?: 'Query' }
+  & { profile?: Maybe<(
+    { __typename?: 'ProfileQuery' }
+    & { followings?: Maybe<Array<Maybe<(
+      { __typename?: 'UserViewType' }
+      & Pick<UserViewType, 'id' | 'name' | 'description' | 'followerCount' | 'followingCount'>
+    )>>> }
+  )> }
+);
+
+export type GetUserProfileQueryVariables = {
+  userId: Scalars['String'];
+};
+
+
+export type GetUserProfileQuery = (
+  { __typename?: 'Query' }
+  & { profile?: Maybe<(
+    { __typename?: 'ProfileQuery' }
+    & { profile?: Maybe<(
+      { __typename?: 'UserViewType' }
+      & Pick<UserViewType, 'id' | 'name' | 'description' | 'followerCount' | 'followingCount' | 'isFollower' | 'isFollowing'>
+    )> }
+  )> }
+);
+
+export type FollowProfileMutationVariables = {
+  userId: Scalars['String'];
+};
+
+
+export type FollowProfileMutation = (
+  { __typename?: 'Mutation' }
+  & { profile?: Maybe<(
+    { __typename?: 'ProfileMutation' }
+    & Pick<ProfileMutation, 'follow'>
+  )> }
+);
+
+export type GetGroupFollowersQueryVariables = {
+  groupId: Scalars['String'];
+  index: Scalars['String'];
+  size: Scalars['String'];
+};
+
+
+export type GetGroupFollowersQuery = (
+  { __typename?: 'Query' }
+  & { group?: Maybe<(
+    { __typename?: 'GroupQuery' }
+    & { followers?: Maybe<Array<Maybe<(
+      { __typename?: 'UserViewType' }
+      & Pick<UserViewType, 'id' | 'name' | 'description' | 'followerCount' | 'followingCount'>
+    )>>> }
+  )> }
+);
+
+export type GetGroupDetailQueryVariables = {
+  groupId: Scalars['String'];
+};
+
+
+export type GetGroupDetailQuery = (
+  { __typename?: 'Query' }
+  & { group?: Maybe<(
+    { __typename?: 'GroupQuery' }
+    & { detail?: Maybe<(
+      { __typename?: 'GroupType' }
+      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages'>
+    )> }
   )> }
 );
 
@@ -1738,6 +2010,8 @@ export const GiveItToMeDocument = gql`
     query giveItToMe($content: String!) {
   document {
     giveItToMe(content: $content) {
+      isCreator
+      userId
       document {
         docId
         id
@@ -1946,9 +2220,9 @@ export const GetWordProfileDocument = gql`
     
   }
 export const GetTopmostDocument = gql`
-    query getTopmost($top: String) {
+    query getTopmost($top: String, $userId: String) {
   wti {
-    topMost(top: $top) {
+    topMost(top: $top, userId: $userId) {
       word
       score
       wordInfo {
@@ -1968,6 +2242,26 @@ export const GetTopmostDocument = gql`
   })
   export class GetTopmostGQL extends Apollo.Query<GetTopmostQuery, GetTopmostQueryVariables> {
     document = GetTopmostDocument;
+    
+  }
+export const ForkDoucmentDocument = gql`
+    mutation forkDoucment($docId: String!, $groupId: String, $wordTagLiteStr: String) {
+  doc {
+    fork(docId: $docId, groupId: $groupId, wordTagLiteStr: $wordTagLiteStr) {
+      document {
+        docId
+        forkId
+      }
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ForkDoucmentGQL extends Apollo.Mutation<ForkDoucmentMutation, ForkDoucmentMutationVariables> {
+    document = ForkDoucmentDocument;
     
   }
 export const CreateGroupDocument = gql`
@@ -2031,6 +2325,7 @@ export const UserGroupListDocument = gql`
       isAdmin
       isFollowed
       languages
+      isDefault
     }
   }
 }
@@ -2056,6 +2351,7 @@ export const AllGroupListDocument = gql`
       isAdmin
       isFollowed
       languages
+      isDefault
     }
   }
 }
@@ -2096,5 +2392,277 @@ export const FollowGroupDocument = gql`
   })
   export class FollowGroupGQL extends Apollo.Mutation<FollowGroupMutation, FollowGroupMutationVariables> {
     document = FollowGroupDocument;
+    
+  }
+export const ListMomentByFollowingDocument = gql`
+    query listMomentByFollowing($pageIndex: String!, $pageSize: String!, $userId: String) {
+  moment {
+    listByFollowing(pageIndex: $pageIndex, pageSize: $pageSize, id: $userId) {
+      groupId
+      id
+      title
+      content
+      createTime
+      language
+      status
+      userName
+      upvoteCount
+      forkCount
+      creator
+      readId
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ListMomentByFollowingGQL extends Apollo.Query<ListMomentByFollowingQuery, ListMomentByFollowingQueryVariables> {
+    document = ListMomentByFollowingDocument;
+    
+  }
+export const ListMomentByLangDocument = gql`
+    query listMomentByLang($pageIndex: String!, $pageSize: String!, $langCode: String) {
+  moment {
+    listByLang(pageIndex: $pageIndex, pageSize: $pageSize, langCode: $langCode) {
+      groupId
+      id
+      title
+      content
+      createTime
+      language
+      status
+      userName
+      upvoteCount
+      forkCount
+      creator
+      readId
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ListMomentByLangGQL extends Apollo.Query<ListMomentByLangQuery, ListMomentByLangQueryVariables> {
+    document = ListMomentByLangDocument;
+    
+  }
+export const ListMomentByGroupDocument = gql`
+    query listMomentByGroup($groupId: String!, $typeId: MomentGroupType!, $pageIndex: String!, $pageSize: String!) {
+  moment {
+    listByGroup(id: $groupId, type: $typeId, pageIndex: $pageIndex, pageSize: $pageSize) {
+      groupId
+      id
+      title
+      content
+      createTime
+      language
+      status
+      userName
+      upvoteCount
+      forkCount
+      creator
+      readId
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ListMomentByGroupGQL extends Apollo.Query<ListMomentByGroupQuery, ListMomentByGroupQueryVariables> {
+    document = ListMomentByGroupDocument;
+    
+  }
+export const LikeMomentDocument = gql`
+    mutation likeMoment($id: String!, $value: String!) {
+  moment {
+    vote(id: $id, value: $value) {
+      upvoteCount
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class LikeMomentGQL extends Apollo.Mutation<LikeMomentMutation, LikeMomentMutationVariables> {
+    document = LikeMomentDocument;
+    
+  }
+export const DeleteMomentDocument = gql`
+    mutation deleteMoment($id: String!) {
+  moment {
+    delete(id: $id) {
+      status
+      id
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteMomentGQL extends Apollo.Mutation<DeleteMomentMutation, DeleteMomentMutationVariables> {
+    document = DeleteMomentDocument;
+    
+  }
+export const GetMomentByDocIdDocument = gql`
+    query getMomentByDocId($id: String!) {
+  moment {
+    getByDocId(id: $id) {
+      groupId
+      id
+      title
+      content
+      createTime
+      language
+      status
+      userName
+      upvoteCount
+      forkCount
+      creator
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetMomentByDocIdGQL extends Apollo.Query<GetMomentByDocIdQuery, GetMomentByDocIdQueryVariables> {
+    document = GetMomentByDocIdDocument;
+    
+  }
+export const GetFollowersDocument = gql`
+    query getFollowers($index: String!, $size: String!, $userId: String) {
+  profile {
+    followers(pageIndex: $index, pageSize: $size, userId: $userId) {
+      id
+      name
+      description
+      followerCount
+      followingCount
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetFollowersGQL extends Apollo.Query<GetFollowersQuery, GetFollowersQueryVariables> {
+    document = GetFollowersDocument;
+    
+  }
+export const GetFollowingsDocument = gql`
+    query getFollowings($index: String!, $size: String!, $userId: String) {
+  profile {
+    followings(pageIndex: $index, pageSize: $size, userId: $userId) {
+      id
+      name
+      description
+      followerCount
+      followingCount
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetFollowingsGQL extends Apollo.Query<GetFollowingsQuery, GetFollowingsQueryVariables> {
+    document = GetFollowingsDocument;
+    
+  }
+export const GetUserProfileDocument = gql`
+    query getUserProfile($userId: String!) {
+  profile {
+    profile(userId: $userId) {
+      id
+      name
+      description
+      followerCount
+      followingCount
+      isFollower
+      isFollowing
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetUserProfileGQL extends Apollo.Query<GetUserProfileQuery, GetUserProfileQueryVariables> {
+    document = GetUserProfileDocument;
+    
+  }
+export const FollowProfileDocument = gql`
+    mutation followProfile($userId: String!) {
+  profile {
+    follow(profileId: $userId)
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FollowProfileGQL extends Apollo.Mutation<FollowProfileMutation, FollowProfileMutationVariables> {
+    document = FollowProfileDocument;
+    
+  }
+export const GetGroupFollowersDocument = gql`
+    query getGroupFollowers($groupId: String!, $index: String!, $size: String!) {
+  group {
+    followers(groupId: $groupId, index: $index, size: $size) {
+      id
+      name
+      description
+      followerCount
+      followingCount
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetGroupFollowersGQL extends Apollo.Query<GetGroupFollowersQuery, GetGroupFollowersQueryVariables> {
+    document = GetGroupFollowersDocument;
+    
+  }
+export const GetGroupDetailDocument = gql`
+    query getGroupDetail($groupId: String!) {
+  group {
+    detail(id: $groupId) {
+      id
+      name
+      readCount
+      memberCount
+      creator
+      description
+      isAdmin
+      isFollowed
+      languages
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetGroupDetailGQL extends Apollo.Query<GetGroupDetailQuery, GetGroupDetailQueryVariables> {
+    document = GetGroupDetailDocument;
     
   }

@@ -2,3 +2,13 @@ ion-card{
   margin: 0px 0px 15px 0px !important;
   width: 100% !important;
 }
+
+a {
+  text-decoration: none; 
+  color:inherit;
+}
+
+ion-spinner[name=dots]{
+  transform: scale(3);
+  width: 100%;
+}

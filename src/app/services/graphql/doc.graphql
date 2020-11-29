@@ -55,6 +55,8 @@ query getDocuments($pageSize:String!, $lastId:String, $keywords:String){
 query giveItToMe($content:String!){
   document{
     giveItToMe(content:$content){
+      isCreator
+      userId
 			document{
         docId,
         id,
@@ -218,17 +220,28 @@ query getWordProfile($word:String!,$fromLang:String!, $toLang:String!){
   }  
 }
 
-query getTopmost($top:String){
-  wti{
-    topMost(top:$top){
+query getTopmost($top: String, $userId:String) {
+  wti {
+    topMost(top: $top, userId:$userId) {
       word
-      score,
-      wordInfo{
-        tag{
+      score
+      wordInfo {
+        tag {
           tagFont
           tagName
           tagColor
         }
+      }
+    }
+  }
+}
+
+mutation forkDoucment($docId:String!, $groupId:String, $wordTagLiteStr:String){
+  doc{
+    fork(docId:$docId, groupId:$groupId, wordTagLiteStr:$wordTagLiteStr){
+      document{
+        docId
+        forkId
       }
     }
   }

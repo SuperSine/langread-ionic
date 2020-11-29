@@ -4,14 +4,15 @@
     <ion-label>Post to group</ion-label>
     <ion-checkbox [(ngModel)]="isToGroup"></ion-checkbox>
   </ion-item>
-  <ion-item [hidden]="!isToGroup">
+  <ion-item [disabled]="!isToGroup">
     <ion-label>Choose group</ion-label>
-    <ion-select>
-      <ion-select-option value="brown">Brown</ion-select-option>
-      <ion-select-option value="blonde">Blonde</ion-select-option>
-      <ion-select-option value="black">Black</ion-select-option>
-      <ion-select-option value="red">Red</ion-select-option>
+    <ion-select [value]="defaultGroup?.id" [placeholder]="defaultGroup?.name">
+      <ion-select-option *ngFor="let group of userGroupList | async" [value]="group.id" >{{group.name}}</ion-select-option>
     </ion-select>
+  </ion-item>
+  <ion-item [hidden]="!isFork">
+    <ion-label>Copy Tags</ion-label>
+    <ion-checkbox checked="true" [(ngModel)]="copyTags"></ion-checkbox>
   </ion-item>
 </div>
 
@@ -20,7 +21,7 @@
       <ion-button expand="block" color="secondary">Cancel</ion-button>
     </ion-col>
     <ion-col size="6">
-      <ion-button expand="block" color="primary">Save</ion-button>
+      <ion-button expand="block" color="primary" (click)='onClick()'>{{isFork ? 'Fork' : 'Save'}}</ion-button>
     </ion-col>
   </ion-row>
 </ion-content>

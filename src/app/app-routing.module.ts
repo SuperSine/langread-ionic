@@ -101,15 +101,32 @@ const routes: Routes = [
   },
   {
     path: 'group-profile',
-    loadChildren: () => import('./pages/group-profile/group-profile.module').then( m => m.GroupProfilePageModule)
+    children:[
+      {
+        path:'**',
+        loadChildren: () => import('./pages/group-profile/group-profile.module').then( m => m.GroupProfilePageModule)
+      }
+    ]
+    
   },
   {
     path: 'social-profile',
-    loadChildren: () => import('./pages/social-profile/social-profile.module').then( m => m.SocialProfilePageModule)
+    children:[
+      {
+        path:'**',
+        loadChildren: () => import('./pages/social-profile/social-profile.module').then( m => m.SocialProfilePageModule)
+      }
+    ]
+    
   },
   {
     path: 'social-feed',
-    loadChildren: () => import('./pages/social-feed/social-feed.module').then( m => m.SocialFeedPageModule)
+    children:[
+      {
+        path:'**',
+        loadChildren: () => import('./pages/social-feed/social-feed.module').then( m => m.SocialFeedPageModule)
+      }
+    ]
   },  
   //this route need to put to bottom of the list
   {

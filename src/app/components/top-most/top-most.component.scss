@@ -1,0 +1,19 @@
+#canvasContainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
+
+.canvas {
+  // display: block;
+  // position: relative;
+  overflow: hidden;
+
+  // 
+}
+
+ion-spinner[name=dots]{
+  transform: scale(3);
+  width: 100%;
+}

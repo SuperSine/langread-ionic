@@ -31,6 +31,7 @@ query userGroupList($pageIndex:String,$pageSize:String,$userId:String,$keywords:
       isAdmin
       isFollowed
       languages
+      isDefault
     }    
   }
 }
@@ -47,6 +48,7 @@ query allGroupList($pageIndex:String,$pageSize:String,$keywords:String){
       isAdmin
       isFollowed
       languages
+      isDefault
     }
   }
 }
@@ -60,5 +62,169 @@ mutation deleteGroup($id:String!){
 mutation followGroup($id:String){
   group{
     follow(groupId:$id)
+  }
+}
+
+query listMomentByFollowing($pageIndex:String!, $pageSize:String!, $userId:String){
+  moment{
+    listByFollowing(pageIndex:$pageIndex, pageSize:$pageSize, id:$userId){
+      groupId
+      id
+      title
+      content
+      createTime
+      language
+      status
+      userName
+      upvoteCount
+      forkCount
+      creator
+      readId
+    }
+  }
+}
+
+query listMomentByLang($pageIndex:String!, $pageSize:String!, $langCode:String){
+  moment{
+    listByLang(pageIndex:$pageIndex, pageSize:$pageSize, langCode:$langCode){
+      groupId
+      id
+      title
+      content
+      createTime
+      language
+      status
+      userName
+      upvoteCount
+      forkCount
+      creator
+      readId
+    }
+  }
+}
+
+query listMomentByGroup($groupId:String!,$typeId:MomentGroupType!, $pageIndex:String!, $pageSize:String!){
+  moment{
+    listByGroup(id:$groupId, type:$typeId, pageIndex:$pageIndex, pageSize:$pageSize){
+      groupId
+      id
+      title
+      content
+      createTime
+      language
+      status
+      userName
+      upvoteCount
+      forkCount
+      creator
+      readId
+    }
+  }
+}
+
+mutation likeMoment($id:String!, $value:String!){
+  moment{
+    vote(id:$id, value:$value){
+      upvoteCount
+    }
+  }
+}
+
+mutation deleteMoment($id:String!){
+  moment{
+    delete(id:$id){
+      status
+      id
+    }
+  }
+}
+
+query getMomentByDocId($id:String!){
+  moment{
+    getByDocId(id:$id){
+      groupId
+      id
+      title
+      content
+      createTime
+      language
+      status
+      userName
+      upvoteCount
+      forkCount
+      creator
+    }
+  }
+}
+
+query getFollowers($index:String!, $size:String!, $userId:String){
+  profile{
+    followers(pageIndex:$index, pageSize:$size, userId:$userId){
+      id
+      name
+      description
+      followerCount
+      followingCount
+    }
+  }
+}
+
+query getFollowings($index:String!, $size:String!, $userId:String){
+  profile{
+    followings(pageIndex:$index, pageSize:$size, userId:$userId){
+      id
+      name
+      description
+      followerCount
+      followingCount
+    }
+  }
+}
+
+query getUserProfile($userId:String!){
+  profile{
+    profile(userId:$userId){
+      id
+      name
+      description
+      followerCount
+      followingCount
+      isFollower
+      isFollowing
+    }
+  }
+}
+
+mutation followProfile($userId:String!){
+  profile{
+    follow(profileId:$userId)
+  }
+}
+
+query getGroupFollowers($groupId:String!, $index:String!, $size:String!){
+  group{
+    followers(groupId:$groupId, index:$index, size:$size){
+      id
+      name
+      description
+      followerCount
+      followingCount
+    }
+  }
+}
+
+query getGroupDetail($groupId:String!){
+  group{
+    detail(id:$groupId){
+      id
+      name
+      readCount
+      memberCount
+      creator
+      description
+      isAdmin
+      isFollowed
+      languages
+    }
   }
 }

@@ -81,11 +81,12 @@ export class WordService {
     return profile.data;
   }
 
-  async topMost(top:number=500):Promise<WordProfileType[]>{
+  async topMost(top:number=500, userId:string=""):Promise<WordProfileType[]>{
     var {data:{wti:{topMost}}} = await this.Apollo.query({
       query:GetTopmostDocument,
       variables:{
-        top
+        top,
+        userId
       }
     }).toPromise<any>();
 

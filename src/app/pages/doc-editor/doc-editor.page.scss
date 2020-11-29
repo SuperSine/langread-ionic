@@ -132,15 +132,29 @@ div[quill-editor-toolbar]{
   z-index: 100;
 }
 
+.fork-modal{
+  ion-backdrop{
+    z-index: 15;
+    
+  }
+  .modal-wrapper {
+    height: 30%;
+    
+    top: 70%;
+    position: absolute;
+    z-index: 20;
+  }
+}
+
 .save-modal{
   ion-backdrop{
     z-index: 15;
     
   }
   .modal-wrapper {
-    height: 20%;
+    height: 25%;
     
-    top: 80%;
+    top: 75%;
     position: absolute;
     z-index: 20;
   }

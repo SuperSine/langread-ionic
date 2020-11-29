@@ -27,6 +27,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CheckUpdateService } from './services/check-update.service';
 import { Globals } from './globals';
+import { AvatarUrlDirective } from './directives/avatar-url.directive';
 
 
 

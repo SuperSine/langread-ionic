@@ -1,0 +1,8 @@
+<ion-list>
+  <user-card *ngFor="let user of users | async" [user]="user"></user-card>
+  <ion-infinite-scroll  threshold="100px" (ionInfinite)="loadData()">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-list>
+<app-no-content *ngIf="(users | async)?.length == 0"></app-no-content>

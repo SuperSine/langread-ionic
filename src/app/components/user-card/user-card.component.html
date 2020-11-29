@@ -1,12 +1,12 @@
 
 <ion-item>
   <ion-avatar slot="start">
-    <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjflksdjf893245">
+    <img [src]="avatarUrl">
   </ion-avatar>
   <ion-label>
-      <h3>Sine Zhang</h3>
-      <p>I am son of earth.</p>
+      <h3>{{user.name}}</h3>
+      <p>{{user.description}}</p>
 
     </ion-label>
-    <ion-button>Follow</ion-button>
+    <!-- <ion-button>Follow</ion-button> -->
 </ion-item>

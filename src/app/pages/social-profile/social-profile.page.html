@@ -6,44 +6,48 @@
 
 <ion-content>
 
+  <ng-container *ngIf="userSocial | async as userSocialResult">
     <ion-item lines="none" class="profile-info">
       <ion-avatar slot="start">
-        <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjflksdjf893245">
-      </ion-avatar>
-      <ion-label>
-          <h1>Sine Zhang</h1>
+          <img [appAvatarId]="userSocialResult.id">
 
-    
+        </ion-avatar>
+        <ion-label>
+          <h1>{{userSocialResult.name}}</h1>
+          
+          
         </ion-label>
-        <ion-button>Follow</ion-button>
-    </ion-item>
-    <ion-item>
-
-      <p>I am a son of Earth and Starry Heaven. I am thirsty. Please give me something to drink from the fountain of Memory.</p>
-
-
-    </ion-item>
+        <ion-button (click)="follow($event)">{{userSocialResult.isFollowing ? 'Following' : 'Follow'}}</ion-button>
+      </ion-item>
+      <ion-item>
+        
+        <p>{{userSocialResult.description}}</p>
+        
+        
+      </ion-item>
+    </ng-container>
+    
     <ion-item name="number-info">
       <ion-grid>
         <ion-row>
   
           <ion-col size="3">
-            <ion-label>12</ion-label>
+            <ion-label>{{(stats | async)?.documentCount}}</ion-label>
             <p name="number-label"><ion-icon name="bookmarks-outline"></ion-icon> Read</p>
           </ion-col>
   
           <ion-col size="3">   
-            <span>32</span>
+            <span>{{(stats | async)?.tagCount}}</span>
             <p name="number-label"><ion-icon name="bookmarks-outline"></ion-icon> Tags</p>
           </ion-col>
   
           <ion-col size="3">   
-            <span>1209</span>
+            <span>{{(stats | async)?.tagWordCount}}</span>
             <p name="number-label"><ion-icon name="bookmarks-outline"></ion-icon> Words</p>
           </ion-col>
 
           <ion-col size="3">   
-            <span>12</span>
+            <span>{{(userSocial | async)?.followerCount}}</span>
             <p name="number-label"><ion-icon name="bookmarks-outline"></ion-icon> Followers</p>
           </ion-col>
 
@@ -58,49 +62,11 @@
 
 <ion-item class="group-list">
 <div class="horizontal-scroll slide-left">
-  <ion-card class="agent-icon" >
-    <ion-thumbnail class="group-avatar">
-      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
-    </ion-thumbnail>
-    <div class="group-title"><ion-label>English</ion-label></div>
-  </ion-card>
-
-  <ion-card class="agent-icon" >
-    <ion-thumbnail class="group-avatar">
-      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
-    </ion-thumbnail>
-    <div class="group-title"><ion-label>English</ion-label></div>
-  </ion-card>
-
-  <ion-card class="agent-icon" >
-    <ion-thumbnail class="group-avatar">
-      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
-    </ion-thumbnail>
-    <div class="group-title"><ion-label>English</ion-label></div>
-  </ion-card>
-  <ion-card class="agent-icon" >
-    <ion-thumbnail class="group-avatar">
-      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
-    </ion-thumbnail>
-    <div class="group-title"><ion-label>English is most easy</ion-label></div>
-  </ion-card>
-  <ion-card class="agent-icon" >
-    <ion-thumbnail class="group-avatar">
-      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
-    </ion-thumbnail>
-    <div class="group-title"><ion-label>English</ion-label></div>
-  </ion-card>
-  <ion-card class="agent-icon" >
-    <ion-thumbnail class="group-avatar">
-      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
-    </ion-thumbnail>
-    <div class="group-title"><ion-label>English</ion-label></div>
-  </ion-card>
-  <ion-card class="agent-icon" >
-    <ion-thumbnail class="group-avatar">
-      <img src="http://localhost:81/api/auth/v1/user/avatar?text=aflksadjfkhklhjkjhkn">
-    </ion-thumbnail>
-    <div class="group-title"><ion-label>English</ion-label></div>
+  <ion-card *ngFor="let group of groupTypes$ | async" class="agent-icon">
+      <ion-thumbnail class="group-avatar">
+        <img [appAvatarId]="group.id">
+      </ion-thumbnail>
+      <div class="group-title"><ion-label>{{group.name}}</ion-label></div>
   </ion-card>
 </div>
 
@@ -108,7 +74,7 @@
   
 </ion-item>
 
-<ion-segment value="posts">
+<ion-segment value="posts" (ionChange)="segmentChanged($event)">
   <ion-segment-button value="posts">
     <ion-label>Posts</ion-label>
   </ion-segment-button>
@@ -118,15 +84,25 @@
   <ion-segment-button value="followers">
     <ion-label>Followers</ion-label>
   </ion-segment-button>
-  <ion-segment-button value="following">
+  <ion-segment-button value="followings">
     <ion-label>Following</ion-label>
   </ion-segment-button>
 
 </ion-segment>
 
-<ion-list>
-  <post-card></post-card>
-  <post-card></post-card>
-  <post-card></post-card>
+<ion-list *ngIf="currentSegment == 'posts' ? true : false">
+  <post-cards [type]="momentGroupType" [id]="userId"></post-cards>
+</ion-list>
+
+<ion-list *ngIf="currentSegment == 'topmost' ? true : false">
+  <top-most [userId]="userId"></top-most>
+</ion-list>
+
+<ion-list *ngIf="currentSegment == 'followers' ? true : false">
+  <user-cards [load]="loadFollowers"></user-cards>
+</ion-list>
+
+<ion-list *ngIf="currentSegment == 'followings' ? true : false">
+  <user-cards [load]="loadFollowings"></user-cards>
 </ion-list>
 </ion-content>

@@ -33,6 +33,9 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     TranslateModule.forChild()
   ],
+  exports:[
+    DocEditorSaveComponent
+  ],
   declarations: [UniqueTagsPipe, DocEditorPage, PickDirective,DocEditorSaveComponent ],
   entryComponents:[DocEditorSaveComponent]
 })

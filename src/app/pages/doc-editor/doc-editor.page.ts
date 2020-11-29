@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, ElementRef,EventEmitter } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { ActivatedRoute } from '@angular/router';
 import { DocService,Doc } from 'src/app/services/doc.service';
@@ -18,8 +18,10 @@ import { Subject, Observable } from 'rxjs';
 import {CanDeactivateComponent} from '../../guards/quit-doc-editor.guard'
 import { TranslateService } from '@ngx-translate/core';
 import { ApolloQueryResult } from 'apollo-client';
-import { UserType } from 'src/app/graphql-components';
+import { UserType,DocumentType, WordTagDocumentCleanType, GroupType, MomentType } from 'src/app/graphql-components';
 import { AuthService } from 'src/app/services/auth.service';
+import { GroupService } from 'src/app/services/group.service';
+import { MomentService } from 'src/app/services/moment.service';
 
 export enum DocMode{
   Read,
@@ -47,29 +49,49 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
              private colorService:ColorService,
              private translate:TranslateService,
              private popoverCtrl:PopoverController,
-             private authService:AuthService
+             private authService:AuthService,
+             private groupService:GroupService,
+             private momentService:MomentService
              ) {
     this.docId = activatedRoute.snapshot.paramMap.get('docId');
 
     this.wti = {};
     this.stemmedWti = {};
 
-    this.doc = {url:""} as Doc;
+    this.wordTagDocument = {isCreator:true, status:0, userId:''};
+    this.doc = {content:'',docId:'',id:'',status:0,title:'',wordsCount:0};
+    
     this.isGoingBack = false;
 
     this.form = this.fb.group({
       html: new FormControl(this.doc.content)
     });
-
-
-    
-    
   }
 
   goBack(e){
 
   }
 
+  async like(event){
+    const moment = await this.moment.toPromise();
+
+    this.momentService.like(moment.id).toPromise().then(({data:{moment:{vote}}}:any) => {
+      console.log(vote);
+      let value = 0;
+      if(vote.upvoteCount == 1){
+        value = 1;
+      }else if(moment.upvoteCount > 0){
+        value = -1;
+      }else
+        value = 0;
+
+      moment.upvoteCount += value;
+    })
+  }
+
+  async fork(){
+
+  }
 
 
   canDeactivate():Promise<boolean> | boolean{
@@ -109,9 +131,9 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
   get tags():any[]{
-    if(!this.doc.wordTagInfo)return;
+    if(!this.wordTagDocument.smallWordTagInfo)return;
 
-    return this.doc.wordTagInfo.tags;
+    return this.wordTagDocument.smallWordTagInfo.tags;
   }
 
   /**
@@ -179,12 +201,14 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     }
   }
 
-  async saveDoc(){
+  async saveDoc(groupId:string=''){
     const loading = await this.loadingCtrl.create({
       message: this.lang.waitMsg
     });
 
     await loading.present();
+
+    this.doc.groupId = groupId;
 
     this.docService.save(this.doc, this.TaggedWordInfo).subscribe(async ({data})=>{
       let alert = await this.toastCtrl.create({
@@ -198,9 +222,23 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     },async (err)=>{
       loading.dismiss();
     })
-    
-    
-    
+  }
+
+  async forkDoc(docId:string, groupId:string='', wordTagInfo:any={}){
+    this.doc.groupId = groupId;
+
+    this.docService.fork(docId, groupId, wordTagInfo).subscribe(async ({data})=>{
+      let alert = await this.toastCtrl.create({
+        message: this.lang.successMsg,
+        duration:2000,
+        color:"green"
+      });
+      alert.present();
+
+
+    },async (err)=>{
+
+    })
   }
 
   async getDoc(data:string='', taggedWord:any=null){
@@ -216,6 +254,8 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     if(!data)data = this.docId;
 
     this.docService.get(data).toPromise().then(async ({data:{document:{giveItToMe} }}:any) => {
+      this.wordTagDocument = giveItToMe;
+      console.log('the wordtagdocument is', this.wordTagDocument);
       var doc  = {...giveItToMe.document};
 
 
@@ -239,7 +279,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
       await loading.dismiss();
 
-      this.doc.wordTagInfo = giveItToMe.smallWordTagInfo;
+      // this.doc.wordTagInfo = giveItToMe.smallWordTagInfo;
       
       // this.tags = giveItToMe.smallWordTagInfo.tags;
       
@@ -255,7 +295,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       if(giveItToMe.bigWordTagInfo)
         this.allTags = giveItToMe.bigWordTagInfo.tags;
 
-      this.doc.wordTagInfo.tags.forEach((tag)=>{
+      this.wordTagDocument.smallWordTagInfo.tags.forEach((tag)=>{
         if(!tag.tagColor)return;
         this.markWordByTag(tag);
       });
@@ -264,7 +304,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
       this.updateWordTagInfo(null);
 
-
+      this.moment = this.momentService.getByDocId(this.doc.docId);
       
       this.form.valueChanges.subscribe((value)=>{
         this.isDocChanged = true;
@@ -307,15 +347,30 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   openDocSave(event){
     this.modalCtrl.create({
       component:DocEditorSaveComponent,
-      componentProps:{},
+      componentProps:{
+        userGroupList:this.userGroupList,
+        onSave:this.docSaveEventEmiter
+      },
       cssClass:"save-modal"
     }).then((modal => {
       modal.present();
     }))
   }
 
-  openDocInfo(event){
+  openDocFork(event){
+    this.modalCtrl.create({
+      component:DocEditorSaveComponent,
+      componentProps:{
+        userGroupList:this.userGroupList,
+        onFork:this.docForkEventEmiter
+      },
+      cssClass:"fork-modal"
+    }).then((modal => {
+      modal.present();
+    }))
+  }
 
+  openDocInfo(event){
     this.modalCtrl.create({
       component: DocInfoPage,
       componentProps: {
@@ -325,7 +380,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       },
       cssClass: 'from-bottom-modal'
     }).then(modal => {
-
       modal.present();
     });
   }
@@ -435,6 +489,30 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
       this.mode = DocMode.Edit;
     }
 
+    this.userGroupList = this.groupService.getUserGroups(0, 100);
+
+    this.docSaveEventEmiter = new EventEmitter();
+    this.docSaveEventEmiter.subscribe(groupId => {
+      console.log(groupId);
+
+      this.saveDoc(groupId);
+
+    })
+
+    this.docForkEventEmiter = new EventEmitter();
+    this.docForkEventEmiter.subscribe(({groupId, copyTags}) => {
+      console.log(groupId, copyTags);
+
+      var wordTagInfo = this.TaggedWordInfo;
+
+      if(copyTags)
+        this.forkDoc(this.doc.docId, groupId, wordTagInfo);
+      else
+        this.forkDoc(this.doc.docId, groupId);
+
+    })
+
+
   }
 
   get DocMode(){
@@ -483,9 +561,14 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   public nonCharRegEx:RegExp = /--{1,}|[^A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]/g;
   public getWordRegEx1:RegExp = /[\w\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff]*/g;
   public wordTagInfo:any;
-  public doc: Doc;
+  public doc: DocumentType;
+  public wordTagDocument: WordTagDocumentCleanType;
   public isDocChanged:boolean;
   public isGoingBack:boolean;
+  public userGroupList:Observable<GroupType[]>;
+  public docSaveEventEmiter:EventEmitter<string>;
+  public docForkEventEmiter:EventEmitter<string>;
+  public moment:Observable<MomentType>;
   // public tags: any[];
 
   public form: FormGroup;

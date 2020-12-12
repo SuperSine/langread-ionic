@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { MsgReplyPageRoutingModule } from './msg-reply-routing.module';
 
 import { MsgReplyPage } from './msg-reply.page';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MsgReplyPageRoutingModule
+    MsgReplyPageRoutingModule,
+    LangreadComponentsModule
   ],
   declarations: [MsgReplyPage]
 })

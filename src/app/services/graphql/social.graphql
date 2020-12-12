@@ -228,3 +228,31 @@ query getGroupDetail($groupId:String!){
     }
   }
 }
+
+query listByComment($id:String!,$pageSize:String!,$pageIndex:String!){
+  moment{
+    listByComment(id:$id, pageSize:$pageSize,pageIndex:$pageIndex){
+      id
+      creator
+      createTime
+      content
+      parent
+      root
+      userName
+      createdByCurrentUser
+      upvoteCount
+      hasVoted
+    }
+  }
+}
+
+mutation postComment($comment:CommentInputType!){
+  moment{
+    comment(data:$comment){
+      creator
+      createTime
+      id
+      content
+    }
+  }
+}

@@ -89,7 +89,12 @@ const routes: Routes = [
   },
   {
     path: 'msg-reply',
-    loadChildren: () => import('./pages/msg-reply/msg-reply.module').then( m => m.MsgReplyPageModule)
+    children:[
+      {
+        path:'**',
+        loadChildren: () => import('./pages/msg-reply/msg-reply.module').then( m => m.MsgReplyPageModule)
+      }
+    ]
   },
   {
     path: 'group-editor',

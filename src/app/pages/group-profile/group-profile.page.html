@@ -21,7 +21,7 @@
       </ion-col>
       <ion-col class="profile-follow">
         <img id="profile1-image" class="pop-in" src=""/>
-        <ion-button (click)="follow()">{{(groupInfo | async)?.isFollowed ? "Following" : "Follow"}}</ion-button>
+        <ion-button (click)="follow($event)">{{(groupInfo | async)?.isFollowed ? "Following" : "Follow"}}</ion-button>
       </ion-col>  
     </ion-item>
     <ion-item>

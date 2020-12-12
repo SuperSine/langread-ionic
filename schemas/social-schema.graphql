@@ -43,6 +43,11 @@ type Query {
 
 type MomentQuery {
   getByDocId(id: String = null): MomentType
+  listByComment(
+    id: String = null
+    pageIndex: String = null
+    pageSize: String = null
+  ): [CommentType]
   listByFollowing(
     pageIndex: String = null
     pageSize: String = null
@@ -66,16 +71,16 @@ type MomentType {
   createTime: DateTime
   creator: String!
   forkCount: Int
-  groupId: String!
+  groupId: String
   id: String!
-  language: String!
+  language: String
   momentGroupTypeId: Int
   parent: String
-  readId: String!
+  readId: String
   root: String
   status: Int!
   title: String
-  upvoteCount: Int!
+  upvoteCount: Int
   userName: String
 }
 
@@ -84,6 +89,21 @@ enum MomentGroupType {
   PROFILE
   GROUP
   PAGE
+  COMMENT
+}
+
+type CommentType {
+  content: String!
+  createdByCurrentUser: Boolean!
+  createTime: DateTime
+  creator: String!
+  hasVoted: Boolean!
+  id: String!
+  parent: String
+  root: String
+  status: Int!
+  upvoteCount: Int
+  userName: String
 }
 
 type GroupQuery {
@@ -166,19 +186,26 @@ type Mutation {
 }
 
 type MomentMutation {
+  comment(data: CommentInputType!): CommentType
   delete(id: String = null): MomentType
   post(data: MomentInputType!): MomentType
   vote(id: String = null, value: String = null): MomentType
 }
 
 input MomentInputType {
-  parent: String!
-  root: String!
-  title: String!
+  parent: String = null
+  root: String = null
+  title: String = null
   content: String!
-  language: String!
-  groupId: String!
+  language: String = null
+  groupId: String = null
   momentGroupTypeId: Int = null
+}
+
+input CommentInputType {
+  content: String!
+  parent: String = null
+  readId: String!
 }
 
 type GroupMutation {

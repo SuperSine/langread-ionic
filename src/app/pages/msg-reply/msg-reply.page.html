@@ -1,94 +1,73 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>msg-reply</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button  defaultHref="" (click)="goBack()"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
 
+  <ion-card class="viewerBar">
+  <ion-item>
+    <ion-label position="stacked">Add a comment</ion-label>
+    <ion-textarea [(ngModel)]="content"></ion-textarea>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-button slot="end" [disabled]="youCanClick || !content" (click)="postComment()">Reply</ion-button>
+  </ion-item>
+</ion-card>
+
 <ion-list name="comment-list">
 
-<ion-card class="commentCard">
+  <ion-spinner name="dots" [hidden]="comments != null"></ion-spinner>
+
+  <ion-card *ngFor="let comment of comments | async" class="commentCard">
     <ion-item lines="none">
       <ion-avatar slot="start">
-        <img src="http://localhost:81/api/auth/v1/user/avatar?text=12312lk3jlksdfjl">
+        <img [appAvatarId]="comment.creator">
       </ion-avatar>
       <ion-label>
-        <h3>Sine Zhang</h3>
+        <h3>{{comment.userName}}</h3>
       </ion-label>
-      <ion-label class="ion-text-right"><p>3 mins ago</p></ion-label>
-    </ion-item >
-
-  
-<ion-card-content>
-  <p>
-123123
-  </p>
-</ion-card-content>
-
-<ion-item>
-
-  <ion-button fill="clear" size="small" >
-    <ion-icon name="heart-outline"></ion-icon>
-    12
-  </ion-button>
+      <ion-label class="ion-text-right"><p>{{timeSince(comment.createTime)}}</p></ion-label>
+      <ion-button color="light" slot="end" [hidden]="!comment.createdByCurrentUser" (click)="presentActionSheet(comment)">
+        <ion-icon name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-item>
 
 
+    <ion-card-content>
+      <p>
+      {{comment.content}}
+      </p>
+    </ion-card-content>
 
-  <ion-button fill="clear" slot="end">Reply</ion-button>
-
-</ion-item>
-
-</ion-card>
-
-<ion-card class="commentCard">
-  <ion-item lines="none">
-    <ion-avatar slot="start">
-      <img src="http://localhost:81/api/auth/v1/user/avatar?text=12312lk3jlksdfjl">
-    </ion-avatar>
-    <ion-label>
-      <h3>Sine Zhang</h3>
-    </ion-label>
-    <ion-label class="ion-text-right"><p>3 mins ago</p></ion-label>
-  </ion-item >
-
-
-<ion-card-content>
-<p>
-123123
-</p>
-</ion-card-content>
-
-<ion-item>
-
-  <ion-button fill="clear" size="small" >
-    <ion-icon name="heart-outline"></ion-icon>
-    12
-  </ion-button>
+    <ion-item>
+      <ion-button fill="clear" size="small" (click)="like(comment)">
+        <ion-icon [name]="comment.hasVoted ? 'heart': 'heart-outline'"></ion-icon>
+        {{comment.upvoteCount}}
+      </ion-button>
 
 
 
-  <ion-button fill="clear" slot="end">Reply</ion-button>
+      <ion-button fill="clear" slot="end">Reply</ion-button>
 
-</ion-item>
+    </ion-item>
 
-</ion-card>
+  </ion-card>
 
 
-
+  <ion-infinite-scroll  threshold="100px" (ionInfinite)="loadMore()">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 
 
 </ion-list>
+<app-no-content *ngIf="(comments | async)?.length == 0"></app-no-content>
 
-
-<ion-card class="viewerBar">
-  <ion-item>
-    <ion-label position="stacked">Reply to</ion-label>
-    <ion-textarea></ion-textarea>
-  </ion-item>
-  <ion-item lines="none">
-    <ion-button slot="end">Reply</ion-button>
-  </ion-item>
-</ion-card>
 </ion-content>

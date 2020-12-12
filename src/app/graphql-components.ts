@@ -89,6 +89,27 @@ export type BackTranslationType = {
 
 
 
+export type CommentInputType = {
+  content: Scalars['String'];
+  parent?: Maybe<Scalars['String']>;
+  readId: Scalars['String'];
+};
+
+export type CommentType = {
+   __typename?: 'CommentType';
+  content: Scalars['String'];
+  createdByCurrentUser: Scalars['Boolean'];
+  createTime?: Maybe<Scalars['DateTime']>;
+  creator: Scalars['String'];
+  hasVoted: Scalars['Boolean'];
+  id: Scalars['String'];
+  parent?: Maybe<Scalars['String']>;
+  root?: Maybe<Scalars['String']>;
+  status: Scalars['Int'];
+  upvoteCount?: Maybe<Scalars['Int']>;
+  userName?: Maybe<Scalars['String']>;
+};
+
 
 
 
@@ -376,24 +397,31 @@ export enum MomentGroupType {
   All = 'ALL',
   Profile = 'PROFILE',
   Group = 'GROUP',
-  Page = 'PAGE'
+  Page = 'PAGE',
+  Comment = 'COMMENT'
 }
 
 export type MomentInputType = {
-  parent: Scalars['String'];
-  root: Scalars['String'];
-  title: Scalars['String'];
+  parent?: Maybe<Scalars['String']>;
+  root?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   content: Scalars['String'];
-  language: Scalars['String'];
-  groupId: Scalars['String'];
+  language?: Maybe<Scalars['String']>;
+  groupId?: Maybe<Scalars['String']>;
   momentGroupTypeId?: Maybe<Scalars['Int']>;
 };
 
 export type MomentMutation = {
    __typename?: 'MomentMutation';
+  comment?: Maybe<CommentType>;
   delete?: Maybe<MomentType>;
   post?: Maybe<MomentType>;
   vote?: Maybe<MomentType>;
+};
+
+
+export type MomentMutationCommentArgs = {
+  data: CommentInputType;
 };
 
 
@@ -415,6 +443,7 @@ export type MomentMutationVoteArgs = {
 export type MomentQuery = {
    __typename?: 'MomentQuery';
   getByDocId?: Maybe<MomentType>;
+  listByComment?: Maybe<Array<Maybe<CommentType>>>;
   listByFollowing?: Maybe<Array<Maybe<MomentType>>>;
   listByGroup?: Maybe<Array<Maybe<MomentType>>>;
   listByLang?: Maybe<Array<Maybe<MomentType>>>;
@@ -423,6 +452,13 @@ export type MomentQuery = {
 
 export type MomentQueryGetByDocIdArgs = {
   id?: Maybe<Scalars['String']>;
+};
+
+
+export type MomentQueryListByCommentArgs = {
+  id?: Maybe<Scalars['String']>;
+  pageIndex?: Maybe<Scalars['String']>;
+  pageSize?: Maybe<Scalars['String']>;
 };
 
 
@@ -453,16 +489,16 @@ export type MomentType = {
   createTime?: Maybe<Scalars['DateTime']>;
   creator: Scalars['String'];
   forkCount?: Maybe<Scalars['Int']>;
-  groupId: Scalars['String'];
+  groupId?: Maybe<Scalars['String']>;
   id: Scalars['String'];
-  language: Scalars['String'];
+  language?: Maybe<Scalars['String']>;
   momentGroupTypeId?: Maybe<Scalars['Int']>;
   parent?: Maybe<Scalars['String']>;
-  readId: Scalars['String'];
+  readId?: Maybe<Scalars['String']>;
   root?: Maybe<Scalars['String']>;
   status: Scalars['Int'];
   title?: Maybe<Scalars['String']>;
-  upvoteCount: Scalars['Int'];
+  upvoteCount?: Maybe<Scalars['Int']>;
   userName?: Maybe<Scalars['String']>;
 };
 
@@ -1699,6 +1735,40 @@ export type GetGroupDetailQuery = (
   )> }
 );
 
+export type ListByCommentQueryVariables = {
+  id: Scalars['String'];
+  pageSize: Scalars['String'];
+  pageIndex: Scalars['String'];
+};
+
+
+export type ListByCommentQuery = (
+  { __typename?: 'Query' }
+  & { moment?: Maybe<(
+    { __typename?: 'MomentQuery' }
+    & { listByComment?: Maybe<Array<Maybe<(
+      { __typename?: 'CommentType' }
+      & Pick<CommentType, 'id' | 'creator' | 'createTime' | 'content' | 'parent' | 'root' | 'userName' | 'createdByCurrentUser' | 'upvoteCount' | 'hasVoted'>
+    )>>> }
+  )> }
+);
+
+export type PostCommentMutationVariables = {
+  comment: CommentInputType;
+};
+
+
+export type PostCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { moment?: Maybe<(
+    { __typename?: 'MomentMutation' }
+    & { comment?: Maybe<(
+      { __typename?: 'CommentType' }
+      & Pick<CommentType, 'creator' | 'createTime' | 'id' | 'content'>
+    )> }
+  )> }
+);
+
 export const LoginDocument = gql`
     query login($email: String!, $password: String!) {
   auth {
@@ -2664,5 +2734,51 @@ export const GetGroupDetailDocument = gql`
   })
   export class GetGroupDetailGQL extends Apollo.Query<GetGroupDetailQuery, GetGroupDetailQueryVariables> {
     document = GetGroupDetailDocument;
+    
+  }
+export const ListByCommentDocument = gql`
+    query listByComment($id: String!, $pageSize: String!, $pageIndex: String!) {
+  moment {
+    listByComment(id: $id, pageSize: $pageSize, pageIndex: $pageIndex) {
+      id
+      creator
+      createTime
+      content
+      parent
+      root
+      userName
+      createdByCurrentUser
+      upvoteCount
+      hasVoted
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class ListByCommentGQL extends Apollo.Query<ListByCommentQuery, ListByCommentQueryVariables> {
+    document = ListByCommentDocument;
+    
+  }
+export const PostCommentDocument = gql`
+    mutation postComment($comment: CommentInputType!) {
+  moment {
+    comment(data: $comment) {
+      creator
+      createTime
+      id
+      content
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class PostCommentGQL extends Apollo.Mutation<PostCommentMutation, PostCommentMutationVariables> {
+    document = PostCommentDocument;
     
   }

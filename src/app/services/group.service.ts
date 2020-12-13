@@ -89,7 +89,7 @@ export class GroupService {
       // );
   }
 
-  getUserGroups(pageIndex:number,pageSize:number,keywords:string='*',userId:string=''){
+  getUserGroups(pageIndex:number,pageSize:number,keywords:string='*',userId:string='',includeDefault:boolean=true){
     const obserable = new Observable<GroupType[]>(sub => {
       this.getApollo.query<GroupType[]>({
         query: UserGroupListDocument,
@@ -97,7 +97,8 @@ export class GroupService {
           pageIndex,
           pageSize,
           userId,
-          keywords
+          keywords,
+          includeDefault
         }
       }).toPromise().then(({data:{group:{userGroupList}}}:any)=>{
         sub.next(userGroupList);

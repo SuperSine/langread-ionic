@@ -12,6 +12,7 @@ import { TagEditorPageModule } from '../tag-editor/tag-editor.module';
 import { GroupEditorPage } from '../group-editor/group-editor.page';
 import { GroupEditorPageModule } from '../group-editor/group-editor.module';
 import { SelectPipe } from 'src/app/pipes/select.pipe';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { SelectPipe } from 'src/app/pipes/select.pipe';
     IonicModule,
     GroupListPageRoutingModule,
     GroupEditorPageModule,
+    LangreadComponentsModule
   ],
   declarations: [SelectPipe, GroupListPage, HideHeaderDirective]
 })

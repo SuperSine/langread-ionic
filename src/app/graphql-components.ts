@@ -341,6 +341,7 @@ export type GroupQueryUserGroupListArgs = {
   pageIndex?: Maybe<Scalars['String']>;
   pageSize?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
+  includeDefault?: Maybe<Scalars['String']>;
 };
 
 export type GroupType = {
@@ -1474,6 +1475,7 @@ export type UserGroupListQueryVariables = {
   pageSize?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['String']>;
   keywords?: Maybe<Scalars['String']>;
+  includeDefault?: Maybe<Scalars['String']>;
 };
 
 
@@ -2383,9 +2385,9 @@ export const CheckAvailableDocument = gql`
     
   }
 export const UserGroupListDocument = gql`
-    query userGroupList($pageIndex: String, $pageSize: String, $userId: String, $keywords: String) {
+    query userGroupList($pageIndex: String, $pageSize: String, $userId: String, $keywords: String, $includeDefault: String) {
   group {
-    userGroupList(pageIndex: $pageIndex, pageSize: $pageSize, userId: $userId, keywords: $keywords) {
+    userGroupList(pageIndex: $pageIndex, pageSize: $pageSize, userId: $userId, keywords: $keywords, includeDefault: $includeDefault) {
       id
       name
       readCount

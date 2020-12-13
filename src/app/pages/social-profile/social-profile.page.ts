@@ -39,7 +39,7 @@ export class SocialProfilePage implements OnInit {
 
     this.userSocial = this.socialService.profile(this.userId);
 
-    this.groupTypes$ = this.groupService.getUserGroups(0,100,"*",this.userId);
+    this.groupTypes$ = this.groupService.getUserGroups(0,100,"*",this.userId, false);
 
     this.stats = this.docService.stats().valueChanges.pipe(
       map(({data:{document:{stats}}}:any)=> stats as WordTagStaticsType),

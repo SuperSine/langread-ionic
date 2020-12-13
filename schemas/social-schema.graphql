@@ -126,6 +126,7 @@ type GroupQuery {
     pageIndex: String = null
     pageSize: String = null
     userId: String = null
+    includeDefault: String = null
   ): [GroupType]
 }
 

@@ -19,11 +19,11 @@
     "document-title": "Document",
     "tags-title":"Tags",
     "timeline-title":"Timeline",
-    "profile-title":"Profile",
+    "profile-title":"Setting",
     "logout":"Logout"
   },
   "app-profile":{
-    "profile-title":"Profile",
+    "profile-title":"Setting",
     "logout":"LOGOUT",
     "title-info":"Info",
     "title-account":"Account",

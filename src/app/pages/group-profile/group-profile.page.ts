@@ -17,12 +17,7 @@ export class GroupProfilePage implements OnInit {
   constructor(private router:Router, private groupService:GroupService) { }
 
   async ngOnInit() {
-    console.log(this.groupId);
-
     this.groupInfo = this.groupService.getGroup(this.groupId);
-
-
-
   }
 
   ngAfterViewInit(){

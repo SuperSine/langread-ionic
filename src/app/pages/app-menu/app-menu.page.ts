@@ -31,7 +31,7 @@ export class AppMenuPage implements OnInit {
     },
     {
       title:'profile-title',
-      url:'/menu/app-profile',
+      url:'/menu/setting',
       icon:'person-outline'
     },    
   ];

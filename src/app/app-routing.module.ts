@@ -74,7 +74,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/auth-totp/auth-totp.module').then( m => m.AuthTotpPageModule)
   },
   {
-    path: 'app-profile',
+    path: 'setting',
     loadChildren: () => import('./pages/app-profile/app-profile.module').then( m => m.AppProfilePageModule),
     canActivate:[AuthGuard]
   },

@@ -30,7 +30,7 @@ export class GroupListPage implements OnInit {
     if(this.currentSegment == 'discover'){
       return this.groupService.getAllGroups(index, this.size, keywords);
     }else if(this.currentSegment == 'followed'){
-      return this.groupService.getUserGroups(index, this.size, keywords);
+      return this.groupService.getUserGroups(index, this.size, keywords,"", false);
     }
   }
 

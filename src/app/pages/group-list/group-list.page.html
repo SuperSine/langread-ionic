@@ -33,7 +33,7 @@
   <ion-list>
     <ion-item *ngFor="let item of groupItems | async"  [routerLink]="['/group-list']">
       <ion-thumbnail slot="start">
-        <ion-img [src]="['http://localhost:81/api/auth/v1/user/avatar?text=',item.id]"></ion-img>
+        <ion-img [appAvatarId]="item.id"></ion-img>
       </ion-thumbnail>
       <ion-label>
           <h3>{{item.name}}</h3>

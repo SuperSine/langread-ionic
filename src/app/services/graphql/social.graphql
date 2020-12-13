@@ -19,9 +19,9 @@ query checkAvailable($name:String){
   }
 }
 
-query userGroupList($pageIndex:String,$pageSize:String,$userId:String,$keywords:String){
+query userGroupList($pageIndex:String,$pageSize:String,$userId:String,$keywords:String,$includeDefault:String){
   group{
-    userGroupList(pageIndex:$pageIndex,pageSize:$pageSize, userId:$userId, keywords:$keywords){
+    userGroupList(pageIndex:$pageIndex,pageSize:$pageSize, userId:$userId, keywords:$keywords, includeDefault:$includeDefault){
       id
       name
       readCount

@@ -62,11 +62,13 @@
 
 <ion-item class="group-list">
 <div class="horizontal-scroll slide-left">
-  <ion-card *ngFor="let group of groupTypes$ | async" class="agent-icon">
+  <ion-card *ngFor="let group of groupTypes$ | async" class="agent-icon" [routerLink]="'/group-profile/'+group.id">
+    <div class="card-container">
       <ion-thumbnail class="group-avatar">
         <img [appAvatarId]="group.id">
       </ion-thumbnail>
       <div class="group-title"><ion-label>{{group.name}}</ion-label></div>
+    </div>
   </ion-card>
 </div>
 

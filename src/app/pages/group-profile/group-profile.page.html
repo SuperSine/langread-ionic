@@ -9,43 +9,47 @@
 
 <ion-content fullscreen no-padding>
 
-  <div class="profile-header"></div>
-  <div class="profile">
-    <ion-item class="profile-info" padding>
-      <ion-col class="profile-description">
+  <!-- <div class="profile-header"></div> -->
+  <ng-container *ngIf="groupInfo | async as groupResult">
 
-        <h3 id="profile1-name">{{(groupInfo | async)?.name}}</h3>
-        <ion-label class="profile1-description">{{(groupInfo | async)?.createTime}}</ion-label>
-        <!--<p>{{(profile2 | async)?.company}} &bull; {{(profile2 | async)?.position}}</p> -->
-        <p class="profile1-description">{{(groupInfo | async)?.description}}</p>
-      </ion-col>
-      <ion-col class="profile-follow">
-        <img id="profile1-image" class="pop-in" src=""/>
-        <ion-button (click)="follow($event)">{{(groupInfo | async)?.isFollowed ? "Following" : "Follow"}}</ion-button>
-      </ion-col>  
-    </ion-item>
-    <ion-item>
-      <ion-grid>
-        <ion-row>
-  
-          <ion-col size="4">
-            <ion-label class="profile-numbers">
-              <ion-icon name="documents-outline"></ion-icon> 
-              <span>{{(groupInfo | async)?.readCount}}</span>
-            </ion-label>
-          </ion-col>
-  
-          <ion-col size="4">   
-            <ion-label class="profile-numbers">
-              <ion-icon name="people-outline"></ion-icon>
-              <span>{{(groupInfo | async)?.memberCount}}</span>
-            </ion-label>
-          </ion-col>
-  
-        </ion-row>
-      </ion-grid>
-    </ion-item>
-  </div>
+    <div class="profile">
+      <ion-item class="profile-info" padding>
+        <ion-col class="profile-description">
+          
+          <h3 id="profile1-name">{{groupResult.name}}</h3>
+          <ion-label class="profile1-description">{{groupResult.createTime}}</ion-label>
+          <!--<p>{{(profile2 | async)?.company}} &bull; {{(profile2 | async)?.position}}</p> -->
+          <p class="profile1-description">{{groupResult.description}}</p>
+        </ion-col>
+        <ion-col class="profile-follow">
+          <img class="pop-in" [appAvatarId]="groupResult.id"/>
+          <ion-button *ngIf="!groupResult.isAdmin" (click)="follow($event)">{{groupResult.isFollowed ? "Following" : "Follow"}}</ion-button>
+          <ion-button *ngIf="groupResult.isAdmin">Edit</ion-button>
+        </ion-col>  
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            
+            <ion-col size="4">
+              <ion-label class="profile-numbers">
+                <ion-icon name="documents-outline"></ion-icon> 
+                <span>{{groupResult.readCount}}</span>
+              </ion-label>
+            </ion-col>
+            
+            <ion-col size="4">   
+              <ion-label class="profile-numbers">
+                <ion-icon name="people-outline"></ion-icon>
+                <span>{{groupResult.memberCount}}</span>
+              </ion-label>
+            </ion-col>
+            
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </div>
+  </ng-container>
   <ion-segment value="posts" (ionChange)="segmentChanged($event)">
     <ion-segment-button value="posts">
       <ion-label>Posts</ion-label>

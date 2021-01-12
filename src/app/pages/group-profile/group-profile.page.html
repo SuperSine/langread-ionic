@@ -24,7 +24,7 @@
         <ion-col class="profile-follow">
           <img class="pop-in" [appAvatarId]="groupResult.id"/>
           <ion-button *ngIf="!groupResult.isAdmin" (click)="follow($event)">{{groupResult.isFollowed ? "Following" : "Follow"}}</ion-button>
-          <ion-button *ngIf="groupResult.isAdmin">Edit</ion-button>
+          <ion-button *ngIf="groupResult.isAdmin" (click)="showGroupEditor(groupResult.id)">Edit</ion-button>
         </ion-col>  
       </ion-item>
       <ion-item>
@@ -58,10 +58,10 @@
       <ion-label>Followers</ion-label>
     </ion-segment-button>
   </ion-segment>
-  <ion-list [style.display]="currentSegment == 'posts' ? 'inline':'none'">
+  <ion-list [hidden]="!(currentSegment == 'posts' ? true : false)">
     <post-cards [type]="momentGroupType" [id]="groupId"></post-cards>
   </ion-list>
-  <ion-list *ngIf="currentSegment == 'followers' ? true : false">
-    <user-cards [load]="loadUsers"></user-cards>
+  <ion-list [hidden]="!(currentSegment == 'followers' ? true : false)">
+    <user-cards [load]="loadUsers" [loadMore]="loadMoreUsers"></user-cards>
   </ion-list>
 </ion-content>

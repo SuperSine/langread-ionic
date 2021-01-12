@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
+import { QueryRef } from 'apollo-angular';
 import { env } from 'process';
 import { Observable,of } from 'rxjs';
 import { UserViewType } from 'src/app/graphql-components';
@@ -10,31 +11,28 @@ import { environment } from 'src/environments/environment';
   templateUrl: './user-cards.component.html',
   styleUrls: ['./user-cards.component.scss'],
 })
-export class UserCardsComponent implements OnInit {
+export class UserCardsComponent implements AfterViewInit{
 
   @Input()
   load:(index:number, size:number) => Observable<UserViewType[]>;
+
+  @Input()
+  loadMore:() => any;
 
   @ViewChild(IonInfiniteScroll, {static:false})
   private infiniteScroll:IonInfiniteScroll;
 
   constructor() { }
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
     await this.loadData();
   }
 
   async loadData(){
-    if(this.users != null){
-      var oldValues = await this.users.toPromise();
-      var newValues = await this.load(++this.index, this.size).toPromise();
-
-      if(newValues.length > 0)
-        this.users = of(oldValues.concat(newValues));
-    }else
+    if(this.users == null){
       this.users = this.load(this.index, this.size);
-
-    console.log(await this.users.toPromise());
+    }else
+      await this.loadMore();
 
     this.infiniteScroll.complete();
   }

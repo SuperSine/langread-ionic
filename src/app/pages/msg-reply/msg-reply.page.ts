@@ -74,7 +74,7 @@ export class MsgReplyPage implements OnInit {
   }
 
   async loadMore(){   
-    this.commentService.fetchMore(this.id);
+    await this.commentService.fetchMore(this.id);
 
     this.infiniteScroll.complete();
   }

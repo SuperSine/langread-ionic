@@ -22,28 +22,50 @@ export class PostCardsComponent implements OnInit {
   //   this.loadData();
   // }
 
+  // fetch(index:number, size:number):Observable<MomentType[]>{
+  //   var moments = null;
+  //   if(this.type == MomentGroupType.Group || this.type == MomentGroupType.Profile){
+  //     moments = this.momentService.getMomentsByGroup(this.id, this.type, index, size);
+  //   }else{
+  //     moments = this.momentService.getMomentsByLang(index, 
+  //                                                        size, 
+  //                                                        this.authService.UserId, 
+  //                                                        this.authService.userObj.targetLanguage);
+  //   }
+
+  //   return moments;
+
+  // }
+
   fetch(index:number, size:number):Observable<MomentType[]>{
     var moments = null;
     if(this.type == MomentGroupType.Group || this.type == MomentGroupType.Profile){
-      moments = this.momentService.getMomentsByGroup(this.id, this.type, index, size);
+      moments = this.momentService.fetchByGroup(this.id, this.type, index, size);
     }else{
-      moments = this.momentService.getMomentsByLang(index, 
-                                                         size, 
-                                                         this.authService.UserId, 
-                                                         this.authService.userObj.targetLanguage);
+      moments = this.momentService.fetchByLang(index, 
+                                              size, 
+                                              this.authService.UserId, 
+                                              this.authService.userObj.targetLanguage);
     }
 
     return moments;
 
   }
 
+  fetchMore(index:number, size:number){
+    if(this.type == MomentGroupType.Group || this.type == MomentGroupType.Profile){
+      this.momentService.fetchMoreByGroup(this.id, this.type, index, size);
+    }else{
+      this.momentService.fetchMoreByLang(index, 
+                                         size, 
+                                         this.authService.UserId, 
+                                         this.authService.userObj.targetLanguage);
+    }
+  }
+
   async loadData(){
     if(this.moments != null){
-      var oldValues = await this.moments.toPromise();
-      var newValues = await this.fetch(++this.index, environment.pageSize).toPromise();
-  
-      if(newValues.length > 0)
-        this.moments = of(oldValues.concat(newValues));
+      await this.fetchMore(this.index, environment.pageSize);
     }else
       this.moments = this.fetch(this.index, environment.pageSize);
 

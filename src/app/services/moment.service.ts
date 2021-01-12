@@ -10,14 +10,113 @@ import {environment} from 'src/environments/environment';
 export class MomentService {
 
   constructor(private apollo:Apollo) {
+    this.queryByFollowingRef = this.getApollo.watchQuery<any>({
+      query:ListMomentByFollowingDocument
+    });
 
+    this.queryByLangRef = this.getApollo.watchQuery<any>({
+      query:ListMomentByLangDocument
+    });
+
+    this.queryByGroupRef = this.getApollo.watchQuery<any>({
+      query:ListMomentByGroupDocument
+    });    
   }
 
   get getApollo(){
     return this.apollo.use("social");
   }
 
+  fetchByFollowing(pageIndex:number, pageSize:number, userId:string=""){
+    this.queryByFollowingRef.setVariables({
+      pageIndex,
+      pageSize,
+      userId
+    });
 
+    return this.queryByFollowingRef.valueChanges.pipe(
+      map(({data:{moment:{listByFollowing}}}:any)=> listByFollowing as MomentType[])
+    );
+  }
+
+  fetchMoreByFollowing(pageIndex:number, pageSize:number, userId:string=""){
+    this.queryByFollowingRef.fetchMore({
+      variables:{
+        pageIndex,
+        pageSize,
+        userId
+      },
+      updateQuery:(prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) { return prev; }
+
+        prev.moment.listByFollowing = [...prev.moment.listByFollowing, ...fetchMoreResult.moment.listByFollowing];
+
+        return prev;
+      }
+    });
+  }
+
+  fetchByLang(pageIndex:number, pageSize:number, userId:string="", langCode:string=""){
+    this.queryByLangRef.setVariables({
+      pageSize,
+      pageIndex,
+      userId,
+      langCode
+    });
+
+    return this.queryByLangRef.valueChanges.pipe(
+      map(({data:{moment:{listByLang}}}:any)=> listByLang as MomentType[])
+    );
+  }
+
+  fetchMoreByLang(pageIndex:number, pageSize:number, userId:string="", langCode:string=""){
+    this.queryByLangRef.fetchMore({
+      variables:{
+        pageSize,
+        pageIndex,
+        userId,
+        langCode
+      },
+      updateQuery:(prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) { return prev; }
+
+        prev.moment.listByLang = [...prev.moment.listByLang, ...fetchMoreResult.moment.listByLang];
+
+        return prev;
+      }
+    });
+  }
+
+  fetchByGroup(groupId:string, typeId:MomentGroupType, pageIndex:number, pageSize:number){
+    this.queryByGroupRef.setVariables({
+      groupId,
+      typeId,
+      pageIndex,
+      pageSize
+    });
+
+    return this.queryByGroupRef.valueChanges.pipe(
+      map(({data:{moment:{listByGroup}}}:any)=> listByGroup as MomentType[])
+    );
+  }
+
+  fetchMoreByGroup(groupId:string, typeId:MomentGroupType, pageIndex:number, pageSize:number){
+    this.queryByGroupRef.fetchMore({
+      variables:{
+        groupId,
+        typeId,
+        pageSize,
+        pageIndex
+      },
+      updateQuery:(prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) { return prev; }
+
+        prev.moment.listByGroup = [...prev.moment.listByGroup, ...fetchMoreResult.moment.listByGroup];
+
+        return prev;
+      }
+    });
+  }
 
   getMomentsByFollowing(pageIndex:number, pageSize:number, userId:string=""){
     return this.getApollo.watchQuery<MomentType[]>({
@@ -120,4 +219,7 @@ export class MomentService {
     )
   }
 
+  private queryByFollowingRef:QueryRef<any>;
+  private queryByLangRef:QueryRef<any>;
+  private queryByGroupRef:QueryRef<any>;
 }

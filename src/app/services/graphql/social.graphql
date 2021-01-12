@@ -1,15 +1,32 @@
 mutation createGroup($group:GroupInputType){
   group{
     create(data:$group){
-      description
       id
+      name
+      readCount
+      memberCount
+      creator
+      description
+      isAdmin
+      isFollowed
+      languages
     }
   }
 }
 
 mutation updateGroup($group:GroupInputType!){
   group{
-    update(data:$group)
+    update(data:$group){
+      id
+      name
+      readCount
+      memberCount
+      creator
+      description
+      isAdmin
+      isFollowed
+      languages
+    }
   }
 }
 

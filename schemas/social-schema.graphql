@@ -213,7 +213,7 @@ type GroupMutation {
   create(data: GroupInputType = null): GroupType
   delete(id: String = null): Int
   follow(groupId: String = null): Int
-  update(data: GroupInputType!): Int
+  update(data: GroupInputType!): GroupType
 }
 
 input GroupInputType {

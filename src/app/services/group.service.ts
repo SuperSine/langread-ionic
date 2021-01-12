@@ -1,5 +1,5 @@
 import { Injectable, ɵɵstylePropInterpolateV } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+import { Apollo, QueryRef } from 'apollo-angular';
 import {GetGroupDetailDocument,GetGroupFollowersDocument,GroupInputType, CreateGroupDocument, UpdateGroupDocument, CheckAvailableDocument,UserGroupListDocument, AllGroupListDocument, DeleteGroupDocument, FollowGroupDocument, GroupType, GetFollowersDocument, UserViewType} from '../graphql-components';
 import { FormControl } from '@angular/forms';
 import { Subject, Observable} from 'rxjs';
@@ -33,6 +33,10 @@ export class GroupService {
 
       this.checkPending = false;
 
+    });
+
+    this.queryFollowersRef = this.getApollo.watchQuery<any>({
+      query: GetGroupFollowersDocument
     });
   }
 
@@ -184,7 +188,38 @@ export class GroupService {
     )
   }
 
+  fetchFollowers = (groupId:string, index:number, size:number) => {
+    this.queryFollowersRef.setVariables({
+      groupId,
+      index,
+      size
+    });
+
+    return this.queryFollowersRef.valueChanges.pipe(
+      map(({data:{group:{followers}}}:any)=> followers as UserViewType[])
+    );
+  }
+
+  fetchMoreFollowers = (groupId:string, index:number, size:number) =>{
+    this.queryFollowersRef.fetchMore({
+      variables:{
+        groupId,
+        index,
+        size
+      },
+      updateQuery:(prev, {fetchMoreResult}) => {
+        if (!fetchMoreResult) { return prev; }
+
+        prev.group.followers = [...prev.group.followers, 
+                                ...fetchMoreResult.group.followers];
+        return prev;
+      }
+    });
+  }
+
   private groupSub:Subject<FormControl>;
+
+  private queryFollowersRef: QueryRef<any>;
 
   public checkPending:boolean;
 }

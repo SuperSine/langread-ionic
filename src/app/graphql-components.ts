@@ -266,7 +266,7 @@ export type GroupMutation = {
   create?: Maybe<GroupType>;
   delete?: Maybe<Scalars['Int']>;
   follow?: Maybe<Scalars['Int']>;
-  update?: Maybe<Scalars['Int']>;
+  update?: Maybe<GroupType>;
 };
 
 
@@ -1439,7 +1439,7 @@ export type CreateGroupMutation = (
     { __typename?: 'GroupMutation' }
     & { create?: Maybe<(
       { __typename?: 'GroupType' }
-      & Pick<GroupType, 'description' | 'id'>
+      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages'>
     )> }
   )> }
 );
@@ -1453,7 +1453,10 @@ export type UpdateGroupMutation = (
   { __typename?: 'Mutation' }
   & { group?: Maybe<(
     { __typename?: 'GroupMutation' }
-    & Pick<GroupMutation, 'update'>
+    & { update?: Maybe<(
+      { __typename?: 'GroupType' }
+      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages'>
+    )> }
   )> }
 );
 
@@ -2340,8 +2343,15 @@ export const CreateGroupDocument = gql`
     mutation createGroup($group: GroupInputType) {
   group {
     create(data: $group) {
-      description
       id
+      name
+      readCount
+      memberCount
+      creator
+      description
+      isAdmin
+      isFollowed
+      languages
     }
   }
 }
@@ -2357,7 +2367,17 @@ export const CreateGroupDocument = gql`
 export const UpdateGroupDocument = gql`
     mutation updateGroup($group: GroupInputType!) {
   group {
-    update(data: $group)
+    update(data: $group) {
+      id
+      name
+      readCount
+      memberCount
+      creator
+      description
+      isAdmin
+      isFollowed
+      languages
+    }
   }
 }
     `;

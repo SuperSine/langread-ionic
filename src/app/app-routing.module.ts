@@ -98,7 +98,12 @@ const routes: Routes = [
   },
   {
     path: 'group-editor',
-    loadChildren: () => import('./pages/group-editor/group-editor.module').then( m => m.GroupEditorPageModule)
+    children:[
+      {
+        path:'**',
+        loadChildren: () => import('./pages/group-editor/group-editor.module').then( m => m.GroupEditorPageModule)
+      }
+    ]
   },
   {
     path: 'group-list',

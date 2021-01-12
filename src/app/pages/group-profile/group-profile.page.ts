@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { Observable, of } from 'rxjs';
 import { PostCardsComponent } from 'src/app/components/post-cards/post-cards.component';
 import { GroupType, MomentGroupType, MomentType } from 'src/app/graphql-components';
 import { GroupService } from 'src/app/services/group.service';
+import { environment } from 'src/environments/environment';
+import { GroupEditorPage } from '../group-editor/group-editor.page';
 
 @Component({
   selector: 'app-group-profile',
@@ -14,10 +17,11 @@ export class GroupProfilePage implements OnInit {
 
 
 
-  constructor(private router:Router, private groupService:GroupService) { }
+  constructor(private router:Router, private groupService:GroupService,
+              private modalCtrl:ModalController) { }
 
   async ngOnInit() {
-    this.groupInfo = this.groupService.getGroup(this.groupId);
+    this.loadData();
   }
 
   ngAfterViewInit(){
@@ -31,8 +35,6 @@ export class GroupProfilePage implements OnInit {
   get groupId(){
     const reg = /group-profile\/(.+)/g;
     const values = reg.exec(this.router.url);
-
-    console.log(this.router);
 
     return values != null ? values[1] : "";
   }
@@ -50,10 +52,36 @@ export class GroupProfilePage implements OnInit {
   //   return this.groupService.getFollowers(this.groupId, index, size)
   // }
 
-  loadUsers = (index:number, size:number) => {
-    return this.groupService.getFollowers(this.groupId, index, size);
+  loadData = () =>{
+    this.groupInfo = this.groupService.getGroup(this.groupId);
   }
 
+  loadUsers = (index:number, size:number) => {
+    return this.groupService.fetchFollowers(this.groupId, this.pageIndex, environment.pageSize);
+  }
+
+  loadMoreUsers = (index:number, size:number) => {
+    this.pageIndex++;
+
+    this.groupService.fetchMoreFollowers(this.groupId, this.pageIndex, environment.pageSize);
+  }
+
+  async showGroupEditor(id:string){
+    const modal = await this.modalCtrl.create({
+      component:GroupEditorPage,
+      componentProps:{
+        id
+      }
+    });
+
+    modal.onDidDismiss().then(({data}) => {
+      console.log(data);
+      this.groupInfo = of(data);
+    });
+
+    modal.present();
+
+  }
 
   @ViewChild(PostCardsComponent, {static:false})
   public postCards: PostCardsComponent;
@@ -61,5 +89,7 @@ export class GroupProfilePage implements OnInit {
   public currentSegment:string = "posts";
   public groupInfo:Observable<GroupType>;
   public momentGroupType:MomentGroupType = MomentGroupType.Group;
+
+  private pageIndex:number = 0;
 
 }

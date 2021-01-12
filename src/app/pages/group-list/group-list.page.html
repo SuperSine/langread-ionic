@@ -31,7 +31,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-list>
-    <ion-item *ngFor="let item of groupItems | async"  [routerLink]="['/group-list']">
+    <ion-item *ngFor="let item of groupItems | async"  [routerLink]="['/group-profile', item.id]">
       <ion-thumbnail slot="start">
         <ion-img [appAvatarId]="item.id"></ion-img>
       </ion-thumbnail>

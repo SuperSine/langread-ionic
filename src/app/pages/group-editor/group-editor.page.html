@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="editorForm">
+  <form [formGroup]="editorForm" *ngIf="currentGroup | async as groupResult; else loading">
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
       <ion-input formControlName="id" hidden></ion-input>
       <ion-item>
@@ -19,7 +19,7 @@
         </ion-input>
 
       </ion-item>
-      <ion-item lines="none" *ngIf="isNameAvailable && !groupService.checkPending">
+      <ion-item lines="none" *ngIf="isNameAvailable && !groupService.checkPending && !groupResult.id">
         <ion-icon name="checkmark-done-outline" color="green" class="ion-float-right"></ion-icon>
         <ion-text color="green">The group name is available</ion-text>
       </ion-item>
@@ -54,6 +54,10 @@
       </ion-item>
     </ion-list>
   </form>
+
+  <ng-template #loading>
+    Loading Group...
+  </ng-template>
   
   <ion-button name="save" expand="block" (click)="save()" [disabled]="!editorForm.valid">
     Save

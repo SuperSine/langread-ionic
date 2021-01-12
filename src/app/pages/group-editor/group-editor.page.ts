@@ -4,13 +4,16 @@ import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Camera,CameraOptions  } from '@ionic-native/camera/ngx';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { ImageCropperComponent } from 'src/app/components/image-cropper/image-cropper.component';
 import { environment  } from 'src/environments/environment';
 import { AvatarService } from 'src/app/services/avatar.service';
 import { Globals } from 'src/app/globals';
 import { GroupService } from 'src/app/services/group.service';
-import {GroupInputType} from 'src/app/graphql-components';
+import {GroupInputType, GroupType} from 'src/app/graphql-components';
+import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-group-editor',
@@ -24,11 +27,13 @@ export class GroupEditorPage implements OnInit {
               private modalCtrl:ModalController,
               private avatarServer:AvatarService,
               private globals:Globals,
-              public groupService:GroupService) {
+              public groupService:GroupService,
+              private router:Router,
+              private navParms:NavParams) {
 
     this.editorForm = formBuilder.group({
       id: [''],
-      name: ['', Validators.compose([Validators.required, this.groupService.checkGroupName.bind(this.groupService)])],
+      name: ['', Validators.compose([Validators.required, this.groupId ? null : this.groupService.checkGroupName.bind(this.groupService)])],
       description: ['', Validators.compose([Validators.required])],
       groupTypeId: ['1', Validators.compose([Validators.required])],
       languages: ['', Validators.compose([Validators.required])],
@@ -37,24 +42,46 @@ export class GroupEditorPage implements OnInit {
     this.langList = environment.targetLanguages;
   }
 
+  get groupId(){
+
+    var groupId = this.navParms.get('id');
+
+    if(groupId)
+      return groupId;
+    else{
+      const reg = /group-editor\/(.+)/g;
+      const values = reg.exec(this.router.url);
+  
+      return values != null ? values[1] : "";
+    }
+  }
+
   ngOnInit() {
     this.editorForm.updateValueAndValidity();
 
+    if(this.groupId)
+      this.currentGroup = this.groupService.getGroup(this.groupId)
+                                           .pipe(tap(group => {
+                                              this.editorForm.patchValue(group);
+                                          }));
+    else
+      this.currentGroup = of({} as GroupType);
   }
 
   save(){
     const data = this.editorForm.getRawValue();
-    this.groupService.saveGroup(data).subscribe(async ({data:{group:{create}}}:any) => {
+    this.groupService.saveGroup(data).subscribe(async ({data:{group}}:any) => {
+      const data = group.create ? group.create : group.update;
       if(this.croppedImage){
-        await this.saveFile(create.id);
+        await this.saveFile(data.id);
       }
 
-      this.close();
+      this.close(data);
     })
   }
 
-  close(){
-    this.modalCtrl.dismiss();
+  close(data:any=null){
+    this.modalCtrl.dismiss(data);
   }
 
   async saveFile(filename:string) {
@@ -161,5 +188,7 @@ export class GroupEditorPage implements OnInit {
   public croppedImage:string;
   public imageData:any;
   public langList:any[];
+
+  public currentGroup:Observable<GroupType>;
 
 }

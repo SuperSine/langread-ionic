@@ -13,6 +13,9 @@ import { environment } from 'src/environments/environment';
 })
 export class UserCardsComponent implements AfterViewInit{
 
+  @Output()
+  remove: EventEmitter<UserViewType> = new EventEmitter<UserViewType>();
+
   @Input()
   load:(index:number, size:number) => Observable<UserViewType[]>;
 
@@ -26,6 +29,7 @@ export class UserCardsComponent implements AfterViewInit{
 
   async ngAfterViewInit() {
     await this.loadData();
+    this.showRemove = this.remove.observers.length > 0;
   }
 
   async loadData(){
@@ -37,8 +41,14 @@ export class UserCardsComponent implements AfterViewInit{
     this.infiniteScroll.complete();
   }
 
+  onRemove(user:UserViewType){
+    this.remove.emit(user);
+  }
+
   public users:Observable<UserViewType[]>;
+  public showRemove:boolean;
 
   private index:number = 0;
   private size:number = environment.pageSize;
+  
 }

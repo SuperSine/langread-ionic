@@ -61,7 +61,11 @@
   <ion-list [hidden]="!(currentSegment == 'posts' ? true : false)">
     <post-cards [type]="momentGroupType" [id]="groupId"></post-cards>
   </ion-list>
-  <ion-list [hidden]="!(currentSegment == 'followers' ? true : false)">
-    <user-cards [load]="loadUsers" [loadMore]="loadMoreUsers"></user-cards>
-  </ion-list>
+  <ng-container *ngIf="groupInfo | async as groupResult">
+    <ion-list [hidden]="!(currentSegment == 'followers' ? true : false)">
+      <user-cards *ngIf="groupResult.isAdmin"  [load]="loadUsers" [loadMore]="loadMoreUsers" (remove)="onRemove($event)"></user-cards>
+      <user-cards *ngIf="!groupResult.isAdmin"  [load]="loadUsers" [loadMore]="loadMoreUsers"></user-cards>
+    </ion-list>
+  </ng-container>
+
 </ion-content>

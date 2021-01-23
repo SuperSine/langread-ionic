@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { Observable, of } from 'rxjs';
 import { PostCardsComponent } from 'src/app/components/post-cards/post-cards.component';
 import { GroupType, MomentGroupType, MomentType } from 'src/app/graphql-components';
+import { AuthService } from 'src/app/services/auth.service';
 import { GroupService } from 'src/app/services/group.service';
 import { environment } from 'src/environments/environment';
 import { GroupEditorPage } from '../group-editor/group-editor.page';
@@ -17,8 +18,10 @@ export class GroupProfilePage implements OnInit {
 
 
 
-  constructor(private router:Router, private groupService:GroupService,
-              private modalCtrl:ModalController) { }
+  constructor(private router:Router, 
+              private groupService:GroupService,
+              private modalCtrl:ModalController,
+              private authService:AuthService) { }
 
   async ngOnInit() {
     this.loadData();
@@ -38,6 +41,7 @@ export class GroupProfilePage implements OnInit {
 
     return values != null ? values[1] : "";
   }
+
   async follow(event){
     this.groupService.followGroup(this.groupId).subscribe(async ({data:{group:{follow}}}:any)=>{
 
@@ -51,6 +55,12 @@ export class GroupProfilePage implements OnInit {
   // async loadUsers(index:number, size:number){
   //   return this.groupService.getFollowers(this.groupId, index, size)
   // }
+
+  onRemove(follower){
+    this.groupService.unFollowGroup(this.groupId,follower.id).toPromise().then(({data:{group:{unfollow}}}:any)=>{
+      follower.id = "";
+    });
+  }
 
   loadData = () =>{
     this.groupInfo = this.groupService.getGroup(this.groupId);
@@ -91,5 +101,6 @@ export class GroupProfilePage implements OnInit {
   public momentGroupType:MomentGroupType = MomentGroupType.Group;
 
   private pageIndex:number = 0;
+  
 
 }

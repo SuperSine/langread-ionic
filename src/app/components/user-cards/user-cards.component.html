@@ -1,5 +1,7 @@
 <ion-list>
-  <user-card *ngFor="let user of users | async" [user]="user"></user-card>
+  <user-card *ngFor="let user of users | async" [user]="user" [hidden]="user.id == ''">
+    <ion-button (click)="onRemove(user)" [hidden]="!showRemove">Remove</ion-button>
+  </user-card>
   <ion-infinite-scroll  threshold="100px" (ionInfinite)="loadData()">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>

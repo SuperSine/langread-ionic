@@ -1,6 +1,6 @@
 import { Injectable, ɵɵstylePropInterpolateV } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
-import {GetGroupDetailDocument,GetGroupFollowersDocument,GroupInputType, CreateGroupDocument, UpdateGroupDocument, CheckAvailableDocument,UserGroupListDocument, AllGroupListDocument, DeleteGroupDocument, FollowGroupDocument, GroupType, GetFollowersDocument, UserViewType} from '../graphql-components';
+import {GetGroupDetailDocument,GetGroupFollowersDocument,GroupInputType, CreateGroupDocument, UpdateGroupDocument, CheckAvailableDocument,UserGroupListDocument, AllGroupListDocument, DeleteGroupDocument, FollowGroupDocument, GroupType, GetFollowersDocument, UserViewType, UnFollowProfileDocument, UnFollowGroupDocument} from '../graphql-components';
 import { FormControl } from '@angular/forms';
 import { Subject, Observable} from 'rxjs';
 import { debounceTime, distinctUntilChanged, first, map } from 'rxjs/operators';
@@ -174,6 +174,16 @@ export class GroupService {
     });
   }
 
+  unFollowGroup(groupId:string, followerId:string){
+    return this.getApollo.mutate({
+      mutation:UnFollowGroupDocument,
+      variables:{
+        groupId,
+        followerId
+      }
+    })
+  }
+
   getFollowers = (groupId:string, index:number, size:number) => {
     return this.getApollo.watchQuery<UserViewType[]>({
       query: GetGroupFollowersDocument,
@@ -210,7 +220,7 @@ export class GroupService {
       updateQuery:(prev, {fetchMoreResult}) => {
         if (!fetchMoreResult) { return prev; }
 
-        prev.group.followers = [...prev.group.followers, 
+        prev.group.followers = [...prev.group.followers,
                                 ...fetchMoreResult.group.followers];
         return prev;
       }

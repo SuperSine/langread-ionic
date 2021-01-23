@@ -82,6 +82,12 @@ mutation followGroup($id:String){
   }
 }
 
+mutation unFollowGroup($groupId:String!, $followerId:String!){
+  group{
+    unfollow(groupId:$groupId, followerId:$followerId)
+  }
+}
+
 query listMomentByFollowing($pageIndex:String!, $pageSize:String!, $userId:String){
   moment{
     listByFollowing(pageIndex:$pageIndex, pageSize:$pageSize, id:$userId){
@@ -215,6 +221,12 @@ query getUserProfile($userId:String!){
 mutation followProfile($userId:String!){
   profile{
     follow(profileId:$userId)
+  }
+}
+
+mutation unFollowProfile($userId:String!){
+  profile{
+    unfollow(followerUserId:$userId)
   }
 }
 

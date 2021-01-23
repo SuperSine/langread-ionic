@@ -101,10 +101,10 @@
 </ion-list>
 
 <ion-list *ngIf="currentSegment == 'followers' ? true : false">
-  <user-cards [load]="loadFollowers"></user-cards>
+  <user-cards [load]="loadFollowers" [loadMore]="loadMoreFollowers" (remove)="onFollowerRemove($event)"></user-cards>
 </ion-list>
 
 <ion-list *ngIf="currentSegment == 'followings' ? true : false">
-  <user-cards [load]="loadFollowings"></user-cards>
+  <user-cards [load]="loadFollowings" [loadMore]="loadMoreFollowings"  (remove)="onFollowingRemove($event)"></user-cards>
 </ion-list>
 </ion-content>

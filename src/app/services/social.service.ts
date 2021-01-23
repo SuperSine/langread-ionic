@@ -1,14 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+import { Apollo, QueryRef } from 'apollo-angular';
 import { first, map } from 'rxjs/operators';
-import { FollowProfileDocument, GetFollowersDocument, GetFollowingsDocument, GetProfileDocument, GetUserProfileDocument, UserViewType } from '../graphql-components';
+import { FollowProfileDocument, GetFollowersDocument, GetFollowingsDocument, GetProfileDocument, GetUserProfileDocument, UnFollowProfileDocument, UserViewType } from '../graphql-components';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocialService {
 
-  constructor(private apollo:Apollo) { }
+  constructor(private apollo:Apollo) { 
+    this.queryFollowerRef = this.client.watchQuery<any>({
+      query: GetFollowersDocument
+    });
+
+    this.queryFollowingRef = this.client.watchQuery<any>({
+      query: GetFollowingsDocument
+    });
+
+  }
 
   get client(){
     return this.apollo.use("social");
@@ -23,6 +32,15 @@ export class SocialService {
     })
   }
 
+  unfollow(userId:string){
+    return this.client.mutate({
+      mutation: UnFollowProfileDocument,
+      variables:{
+        userId
+      }
+    });
+  }
+
   profile(userId:string){
     return this.client.query<UserViewType>({
       query:GetUserProfileDocument,
@@ -35,33 +53,67 @@ export class SocialService {
     );
   }
 
-  followers(userId:string, index:number, size:number){
-    return this.client.watchQuery<UserViewType[]>({
-      query: GetFollowersDocument,
+  fetchFollowers(userId:string, index:number, size:number){
+    this.queryFollowerRef.setVariables({
+      userId,
+      index,
+      size
+    });
+
+    return this.queryFollowerRef.valueChanges.pipe(
+      map(({data:{profile:{followers}}}:any)=> followers as UserViewType[])
+    );
+  }
+
+  fetchMoreFollowers(userId:string, index:number, size:number){
+    this.queryFollowerRef.fetchMore({
       variables:{
         userId,
         index,
         size
+      },
+      updateQuery:(prev, {fetchMoreResult}) => {
+        if(!fetchMoreResult) { return prev; }
+
+        prev.profile.followers = [ ...prev.profile.followers,
+                                   ...fetchMoreResult.profile.followers];
+
+        return prev;
       }
-    }).valueChanges.pipe(
-      map(({data:{profile:{followers}}}:any)=> followers as UserViewType[]),
-      first()
+    });
+  }
+
+  fetchFollowings(userId:string, index:number, size:number){
+    this.queryFollowingRef.setVariables({
+      userId,
+      index,
+      size
+    });
+
+    return this.queryFollowingRef.valueChanges.pipe(
+      map(({data:{profile:{followings}}}:any)=> followings as UserViewType[]),
     );
   }
 
-  followings(userId:string, index:number, size:number){
-    return this.client.watchQuery<UserViewType>({
-      query:GetFollowingsDocument,
-      variables:{ 
+  fetchMoreFollowings(userId:string, index:number, size:number){
+    this.queryFollowingRef.fetchMore({
+      variables:{
         userId,
         index,
         size
+      },
+      updateQuery:(prev, {fetchMoreResult}) => {
+        if(!fetchMoreResult) { return prev; }
+
+        prev.profile.followings = [ ...prev.profile.followings,
+                                   ...fetchMoreResult.profile.followings];
+
+        return prev;
       }
-    }).valueChanges.pipe(
-      map(({data:{profile:{followings}}}:any)=> followings as UserViewType[]),
-      first()
-    );;
+    });
   }
 
+  private queryFollowerRef: QueryRef<any>;
+  private queryFollowingRef: QueryRef<any>;
 
 }

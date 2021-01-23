@@ -266,6 +266,7 @@ export type GroupMutation = {
   create?: Maybe<GroupType>;
   delete?: Maybe<Scalars['Int']>;
   follow?: Maybe<Scalars['Int']>;
+  unfollow?: Maybe<Scalars['Int']>;
   update?: Maybe<GroupType>;
 };
 
@@ -282,6 +283,12 @@ export type GroupMutationDeleteArgs = {
 
 export type GroupMutationFollowArgs = {
   groupId?: Maybe<Scalars['String']>;
+};
+
+
+export type GroupMutationUnfollowArgs = {
+  groupId?: Maybe<Scalars['String']>;
+  followerId?: Maybe<Scalars['String']>;
 };
 
 
@@ -518,11 +525,17 @@ export type Mutation = {
 export type ProfileMutation = {
    __typename?: 'ProfileMutation';
   follow?: Maybe<Scalars['Int']>;
+  unfollow?: Maybe<Scalars['Int']>;
 };
 
 
 export type ProfileMutationFollowArgs = {
   profileId?: Maybe<Scalars['String']>;
+};
+
+
+export type ProfileMutationUnfollowArgs = {
+  followerUserId?: Maybe<Scalars['String']>;
 };
 
 export type ProfileQuery = {
@@ -1537,6 +1550,20 @@ export type FollowGroupMutation = (
   )> }
 );
 
+export type UnFollowGroupMutationVariables = {
+  groupId: Scalars['String'];
+  followerId: Scalars['String'];
+};
+
+
+export type UnFollowGroupMutation = (
+  { __typename?: 'Mutation' }
+  & { group?: Maybe<(
+    { __typename?: 'GroupMutation' }
+    & Pick<GroupMutation, 'unfollow'>
+  )> }
+);
+
 export type ListMomentByFollowingQueryVariables = {
   pageIndex: Scalars['String'];
   pageSize: Scalars['String'];
@@ -1703,6 +1730,19 @@ export type FollowProfileMutation = (
   & { profile?: Maybe<(
     { __typename?: 'ProfileMutation' }
     & Pick<ProfileMutation, 'follow'>
+  )> }
+);
+
+export type UnFollowProfileMutationVariables = {
+  userId: Scalars['String'];
+};
+
+
+export type UnFollowProfileMutation = (
+  { __typename?: 'Mutation' }
+  & { profile?: Maybe<(
+    { __typename?: 'ProfileMutation' }
+    & Pick<ProfileMutation, 'unfollow'>
   )> }
 );
 
@@ -2486,6 +2526,21 @@ export const FollowGroupDocument = gql`
     document = FollowGroupDocument;
     
   }
+export const UnFollowGroupDocument = gql`
+    mutation unFollowGroup($groupId: String!, $followerId: String!) {
+  group {
+    unfollow(groupId: $groupId, followerId: $followerId)
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UnFollowGroupGQL extends Apollo.Mutation<UnFollowGroupMutation, UnFollowGroupMutationVariables> {
+    document = UnFollowGroupDocument;
+    
+  }
 export const ListMomentByFollowingDocument = gql`
     query listMomentByFollowing($pageIndex: String!, $pageSize: String!, $userId: String) {
   moment {
@@ -2710,6 +2765,21 @@ export const FollowProfileDocument = gql`
   })
   export class FollowProfileGQL extends Apollo.Mutation<FollowProfileMutation, FollowProfileMutationVariables> {
     document = FollowProfileDocument;
+    
+  }
+export const UnFollowProfileDocument = gql`
+    mutation unFollowProfile($userId: String!) {
+  profile {
+    unfollow(followerUserId: $userId)
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UnFollowProfileGQL extends Apollo.Mutation<UnFollowProfileMutation, UnFollowProfileMutationVariables> {
+    document = UnFollowProfileDocument;
     
   }
 export const GetGroupFollowersDocument = gql`

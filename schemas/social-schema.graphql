@@ -213,6 +213,7 @@ type GroupMutation {
   create(data: GroupInputType = null): GroupType
   delete(id: String = null): Int
   follow(groupId: String = null): Int
+  unfollow(groupId: String = null, followerId: String = null): Int
   update(data: GroupInputType!): GroupType
 }
 
@@ -227,4 +228,5 @@ input GroupInputType {
 
 type ProfileMutation {
   follow(profileId: String = null): Int
+  unfollow(followerUserId: String = null): Int
 }

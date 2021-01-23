@@ -69,11 +69,35 @@ export class SocialProfilePage implements OnInit {
   }
 
   loadFollowers = (index:number, size:number) => {
-    return this.socialService.followers(this.userId, index, size);
+    return this.socialService.fetchFollowers(this.userId, this.followerPageIndex, size);
   }
 
   loadFollowings = (index:number, size:number) => {
-    return this.socialService.followings(this.userId, index, size);
+    return this.socialService.fetchFollowings(this.userId, this.followingPageIndex, size);
+  }
+
+  loadMoreFollowers = (index:number, size:number) => {
+    this.followerPageIndex++;
+
+    this.socialService.fetchMoreFollowers(this.userId, this.followerPageIndex, size);
+  }
+
+  loadMoreFollowings = (index:number, size:number) => {
+    this.followingPageIndex++;
+
+    this.socialService.fetchMoreFollowings(this.userId, this.followingPageIndex, size);
+  }
+
+  onFollowerRemove(user:UserViewType){
+    this.socialService.unfollow(user.id).toPromise().then((result)=>{
+      user.id = "";
+    })
+  }
+
+  onFollowingRemove(user:UserViewType){
+    this.socialService.follow(user.id).toPromise().then((result) => {
+      user.id = "";
+    });
   }
 
   @ViewChild(PostCardsComponent, {static:false})
@@ -90,5 +114,8 @@ export class SocialProfilePage implements OnInit {
   public groupTypes$:Observable<GroupType[]>;
   public stats:Observable<WordTagStaticsType>;
   public momentGroupType:MomentGroupType = MomentGroupType.Group;
+
+  private followerPageIndex:number = 0;
+  private followingPageIndex:number = 0;
 
 }

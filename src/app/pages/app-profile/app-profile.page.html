@@ -7,9 +7,9 @@
 
 <ion-content>
   <ion-card class="info-card">
-    <ion-item style="padding:0px !important;">
+    <ion-item style="padding:0px !important;" *ngIf="user | async as result">
         <ion-avatar slot="start">
-          <img [src]="authService.avatarUrl">
+          <img [appAvatarId]="result.appId">
         </ion-avatar>
         <ion-label>
             <h3>{{( user | async)?.firstName}}</h3>

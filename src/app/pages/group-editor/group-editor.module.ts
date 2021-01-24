@@ -7,15 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { GroupEditorPageRoutingModule } from './group-editor-routing.module';
 
 import { GroupEditorPage } from './group-editor.page';
-import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { Camera } from '@ionic-native/camera/ngx';
-import { ImageCropperModule } from 'ngx-image-cropper';
 import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
-import { ImageCropperComponent } from 'src/app/components/image-cropper/image-cropper.component';
-
-
-
 
 
 @NgModule({
@@ -25,13 +18,10 @@ import { ImageCropperComponent } from 'src/app/components/image-cropper/image-cr
     IonicModule,
     GroupEditorPageRoutingModule,
     ReactiveFormsModule,
-    ImageCropperModule,
     LangreadComponentsModule
   ],
   providers:[
-    Crop,
-    File,
-    Camera
+    File
   ],
   declarations: [GroupEditorPage]
 })

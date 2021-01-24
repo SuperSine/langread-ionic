@@ -8,6 +8,10 @@ import { ProfileEditorPageRoutingModule } from './profile-editor-routing.module'
 
 import { ProfileEditorPage } from './profile-editor.page';
 import { TranslateModule } from '@ngx-translate/core';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
+import { File } from '@ionic-native/file/ngx';
+import { ImageCropperModule } from 'ngx-image-cropper';
+
 
 @NgModule({
   imports: [
@@ -16,7 +20,12 @@ import { TranslateModule } from '@ngx-translate/core';
     IonicModule,
     ProfileEditorPageRoutingModule,
     ReactiveFormsModule,
-    TranslateModule.forChild()
+    ImageCropperModule,
+    LangreadComponentsModule,
+    TranslateModule.forChild(),
+  ],
+  providers:[
+    File
   ],
   declarations: [ProfileEditorPage]
 })

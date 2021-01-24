@@ -15,8 +15,8 @@
  
     <ion-content>
       <div class="menu-header">
-        <img class="user-avatar round" [src]="authService.avatarUrl"/>
-        <p class="name">{{ user?.userName ? user?.userName : user?.email  }}</p>
+        <img class="user-avatar round" [appAvatarId]="(user | async).appId"/>
+        <p class="name">{{ (user | async)?.userName ? (user | async)?.userName : (user | async)?.email  }}</p>
         <ion-grid >
           <ion-row class="profile1-numbers">
     

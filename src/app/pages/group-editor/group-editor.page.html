@@ -47,9 +47,12 @@
       <ion-item>
         <ion-label position="stacked">Group Picture</ion-label>
         <ion-row>
-          <ion-input type="file" accept="image/*" (change)="changeListener($event)">
-          </ion-input>
-          <ion-avatar *ngIf="croppedImage"><img [src]="croppedImage"/></ion-avatar>
+          <div class="upload-wrapper">
+            <ion-icon name="add-circle-outline" class="ion-float-right"></ion-icon>
+            <ion-input type="file" accept="image/*" (change)="readFile($event)">
+            </ion-input>
+            <ion-avatar *ngIf="croppedImage"><img [src]="croppedImage"/></ion-avatar>
+          </div>
         </ion-row>
       </ion-item>
     </ion-list>

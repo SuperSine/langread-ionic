@@ -14,6 +14,15 @@
         <ion-list-header>
           {{'profile-editor.profileCard' | translate}}
         </ion-list-header>
+        <ion-item *ngIf="user | async as result">
+          <ion-label position="stacked">Avatar</ion-label>
+          <div class="upload-wrapper">
+            <ion-input type="file" accept="image/*" (change)="readFile($event)">
+            </ion-input>
+            <ion-avatar *ngIf="!croppedImage"><img [appAvatarId]="result.appId"/></ion-avatar>
+            <ion-avatar *ngIf="croppedImage"><img [src]="croppedImage"/></ion-avatar>
+          </div>
+        </ion-item>
         <ion-item>
           <ion-label position="stacked">{{'profile-editor.firstName' | translate}}</ion-label>
           <ion-input type="text" formControlName="firstName"  [placeholder]="'profile-editor.firstName' | translate"></ion-input>

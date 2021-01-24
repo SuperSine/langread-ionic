@@ -8,3 +8,17 @@ ion-button[name=save]{
 ion-row{
   width: 100%;
 }
+
+ion-input[type=file]{
+  position: absolute;
+  bottom: 0;
+  opacity: 0;
+}
+
+ion-icon[name=add-circle-outline]{
+  font-size: 2em;
+}
+
+.upload-wrapper{
+  width: 100%;
+}

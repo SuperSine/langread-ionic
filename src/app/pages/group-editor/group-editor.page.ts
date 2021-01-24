@@ -91,18 +91,18 @@ export class GroupEditorPage implements OnInit {
     await this.avatarServer.upload(filename, file);
   }
 
-  async changeListener($event) {
+  async readFile($event) {
     this.file = $event.target.files[0];
 
     var reader = new FileReader();
     
     reader.onload = async (_event) => { 
-      this.imageData = reader.result;
+      var imageData = reader.result;
 
       const modal = await this.modalCtrl.create({
         component: ImageCropperComponent,
         componentProps:{
-          imageData:this.imageData
+          imageData
         }
       });
 
@@ -117,64 +117,6 @@ export class GroupEditorPage implements OnInit {
 
   }
 
-  // selectImage(imageData) {
-  //   this.pickImage(this.camera.PictureSourceType.PHOTOLIBRARY, imageData);
-  // }
-
-  // cropImage(fileUrl) {
-  //   this.crop.crop(fileUrl, { quality: 50 })
-  //     .then(
-  //       newPath => {
-  //         this.showCroppedImage(newPath.split('?')[0])
-  //       },
-  //       error => {
-  //         alert('Error cropping image' + error);
-  //       }
-  //     );
-  // }
-
-  // showCroppedImage(ImagePath) {
-  //   this.isLoading = true;
-  //   var copyPath = ImagePath;
-  //   var splitPath = copyPath.split('/');
-  //   var imageName = splitPath[splitPath.length - 1];
-  //   var filePath = ImagePath.split(imageName)[0];
-
-  //   this.file.readAsDataURL(filePath, imageName).then(base64 => {
-  //     this.croppedImagepath = base64;
-  //     this.isLoading = false;
-  //   }, error => {
-  //     alert('Error in showing image' + error);
-  //     this.isLoading = false;
-  //   });
-  // }
-
-  // imageCropped(event:ImageCroppedEvent){
-  //   this.croppedImage = event.base64;
-  // }
-
-  // pickImage(sourceType, imageData) {
-  //   const options: CameraOptions = {
-  //     quality: 100,
-  //     sourceType: sourceType,
-  //     destinationType: this.camera.DestinationType.FILE_URI,
-  //     encodingType: this.camera.EncodingType.JPEG,
-  //     mediaType: this.camera.MediaType.PICTURE
-  //   }
-
-  //   this.cropImage(imageData);
-  //   // this.camera.getPicture(options).then((imageData) => {
-  //   //   // imageData is either a base64 encoded string or a file URI
-  //   //   // If it's base64 (DATA_URL):
-  //   //   // let base64Image = 'data:image/jpeg;base64,' + imageData;
-  //   //   this.cropImage(imageData)
-  //   // }, (err) => {
-  //   //   console.log(err);
-  //   // });
-
-  //   // this.file.readAsDataURL()
-  // }
-
   get isNameAvailable(){
     return this.editorForm.get('name').value && 
             !this.editorForm.get('name').hasError('groupNameNotAvailable');
@@ -184,9 +126,7 @@ export class GroupEditorPage implements OnInit {
   public picForm: FormGroup;
 
   public isLoading:boolean;
-  public croppedImagepath:string;
   public croppedImage:string;
-  public imageData:any;
   public langList:any[];
 
   public currentGroup:Observable<GroupType>;

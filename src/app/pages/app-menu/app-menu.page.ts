@@ -63,7 +63,7 @@ export class AppMenuPage implements OnInit {
       this.stats = result.data.document.stats;
     });
 
-    this.user = await this.authService.getUserObj();
+    this.user = this.authService.watchProfile();
 
   }
 
@@ -72,7 +72,7 @@ export class AppMenuPage implements OnInit {
   }
 
   public stats: WordTagStaticsType
-  public user: UserType
+  public user: Observable<UserType>;
 
   public transSub:Subscription;
   public selectedPath:string;

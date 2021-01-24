@@ -8,6 +8,7 @@ import { AppProfilePageRoutingModule } from './app-profile-routing.module';
 
 import { AppProfilePage } from './app-profile.page';
 import { TranslateModule } from '@ngx-translate/core';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     AppProfilePageRoutingModule,
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    LangreadComponentsModule
   ],
   declarations: [AppProfilePage]
 })

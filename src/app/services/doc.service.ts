@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { GetStatsDocument,GiveItToMeDocument, GetDocumentDocument, GetDocumentsDocument, SaveDocumentDocument, DeleteDocumentDocument, ForkDoucmentDocument } from '../graphql-components';
+import { GetStatsDocument,GiveItToMeDocument, GetDocumentDocument, GetDocumentsDocument, SaveDocumentDocument, DeleteDocumentDocument, ForkDoucmentDocument, DeleteAllCoreDataDocument } from '../graphql-components';
 import {environment} from 'src/environments/environment';
 import { last } from 'rxjs/operators';
 
@@ -121,6 +121,12 @@ export class DocService {
         groupId,
         wordTagInfo:JSON.stringify(wordTagInfo)
       }
+    });
+  }
+
+  deleteAllData(){
+    return this.getApollo.mutate({
+      mutation: DeleteAllCoreDataDocument
     });
   }
 }

@@ -246,3 +246,9 @@ mutation forkDoucment($docId:String!, $groupId:String, $wordTagLiteStr:String){
     }
   }
 }
+
+mutation deleteAllCoreData{
+	doc{
+    deleteAllData
+  }
+}

@@ -31,6 +31,14 @@ const routes: Routes = [
         path: 'setting',
         loadChildren: () => import('../app-profile/app-profile.module').then( m => m.AppProfilePageModule),
         canActivate:[AuthGuard]
+      },
+      {
+        path: 'feeds',
+        loadChildren:() => import('../social-feed/social-feed.module').then(m => m.SocialFeedPageModule)
+      },
+      {
+        path:'groups',
+        loadChildren:() => import('../group-list/group-list.module').then(m => m.GroupListPageModule)
       }
     ]
   },

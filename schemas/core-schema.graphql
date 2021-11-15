@@ -306,6 +306,7 @@ type Doc {
     wordTagLiteStr: String = null
   ): WordTagDocumentCleanType
   delete(docId: String = null): Int
+  deleteAllData: Int
   fork(
     docId: String!
     groupId: String = null

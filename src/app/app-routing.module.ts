@@ -137,17 +137,18 @@ const routes: Routes = [
         loadChildren: () => import('./pages/social-feed/social-feed.module').then( m => m.SocialFeedPageModule)
       }
     ]
-  },  
+  },
+  {
+    path: 'auth-clear',
+    loadChildren: () => import('./pages/auth-clear/auth-clear.module').then( m => m.AuthClearPageModule),
+    canActivate:[AuthGuard]
+  },
   //this route need to put to bottom of the list
   {
     path: '',
     loadChildren: () => import('./pages/app-menu/app-menu.module').then( m => m.AppMenuPageModule),
     canActivate:[AuthGuard]
   }
-
-
-
-
 ];
 
 @NgModule({

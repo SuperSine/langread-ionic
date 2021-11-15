@@ -30,10 +30,20 @@ export class AppMenuPage implements OnInit {
       icon:'pulse-outline'
     },
     {
+      title:'feeds-title',
+      url:'/menu/feeds',
+      icon:'pulse-outline'
+    },
+    {
+      title:'groups-title',
+      url:'/menu/groups',
+      icon:'pulse-outline'
+    },
+    {
       title:'profile-title',
       url:'/menu/setting',
       icon:'person-outline'
-    },    
+    },
   ];
 
   constructor(private translateService:TranslateService, 

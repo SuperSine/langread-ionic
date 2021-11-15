@@ -134,6 +134,7 @@ export type Doc = {
    __typename?: 'Doc';
   add?: Maybe<WordTagDocumentCleanType>;
   delete?: Maybe<Scalars['Int']>;
+  deleteAllData?: Maybe<Scalars['Int']>;
   fork?: Maybe<WordTagDocumentCleanType>;
   save?: Maybe<WordTagDocumentCleanType>;
   update?: Maybe<WordTagDocumentCleanType>;
@@ -524,6 +525,7 @@ export type Mutation = {
 
 export type ProfileMutation = {
    __typename?: 'ProfileMutation';
+  deleteAllData?: Maybe<Scalars['Int']>;
   follow?: Maybe<Scalars['Int']>;
   unfollow?: Maybe<Scalars['Int']>;
 };
@@ -1441,6 +1443,17 @@ export type ForkDoucmentMutation = (
   )> }
 );
 
+export type DeleteAllCoreDataMutationVariables = {};
+
+
+export type DeleteAllCoreDataMutation = (
+  { __typename?: 'Mutation' }
+  & { doc?: Maybe<(
+    { __typename?: 'Doc' }
+    & Pick<Doc, 'deleteAllData'>
+  )> }
+);
+
 export type CreateGroupMutationVariables = {
   group?: Maybe<GroupInputType>;
 };
@@ -1811,6 +1824,17 @@ export type PostCommentMutation = (
       { __typename?: 'CommentType' }
       & Pick<CommentType, 'creator' | 'createTime' | 'id' | 'content'>
     )> }
+  )> }
+);
+
+export type DeleteAllSocialDataMutationVariables = {};
+
+
+export type DeleteAllSocialDataMutation = (
+  { __typename?: 'Mutation' }
+  & { profile?: Maybe<(
+    { __typename?: 'ProfileMutation' }
+    & Pick<ProfileMutation, 'deleteAllData'>
   )> }
 );
 
@@ -2379,6 +2403,21 @@ export const ForkDoucmentDocument = gql`
     document = ForkDoucmentDocument;
     
   }
+export const DeleteAllCoreDataDocument = gql`
+    mutation deleteAllCoreData {
+  doc {
+    deleteAllData
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteAllCoreDataGQL extends Apollo.Mutation<DeleteAllCoreDataMutation, DeleteAllCoreDataMutationVariables> {
+    document = DeleteAllCoreDataDocument;
+    
+  }
 export const CreateGroupDocument = gql`
     mutation createGroup($group: GroupInputType) {
   group {
@@ -2872,5 +2911,20 @@ export const PostCommentDocument = gql`
   })
   export class PostCommentGQL extends Apollo.Mutation<PostCommentMutation, PostCommentMutationVariables> {
     document = PostCommentDocument;
+    
+  }
+export const DeleteAllSocialDataDocument = gql`
+    mutation deleteAllSocialData {
+  profile {
+    deleteAllData
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteAllSocialDataGQL extends Apollo.Mutation<DeleteAllSocialDataMutation, DeleteAllSocialDataMutationVariables> {
+    document = DeleteAllSocialDataDocument;
     
   }

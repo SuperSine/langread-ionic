@@ -394,7 +394,7 @@ export class AuthService {
       }
     }).toPromise<any>().then(async (result)=>{
 
-      this.userObj.token = result.data.token;
+      this.userObj.token = result.data.token.get;
       this.saveUserObj(this.userObj);
       
     },(error)=>{

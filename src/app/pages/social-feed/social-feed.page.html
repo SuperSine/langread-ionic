@@ -1,7 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>social-feed</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button *ngIf="!defaultWord"></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
+  
 </ion-header>
 
 <ion-content>

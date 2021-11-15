@@ -227,6 +227,7 @@ input GroupInputType {
 }
 
 type ProfileMutation {
+  deleteAllData: Int
   follow(profileId: String = null): Int
   unfollow(followerUserId: String = null): Int
 }

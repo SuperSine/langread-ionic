@@ -285,3 +285,9 @@ mutation postComment($comment:CommentInputType!){
     }
   }
 }
+
+mutation deleteAllSocialData{
+  profile{
+    deleteAllData
+  }
+}

@@ -19,6 +19,8 @@
     "document-title": "Document",
     "tags-title":"Tags",
     "timeline-title":"Timeline",
+    "feeds-title":"Feed",
+    "groups-title":"Group",
     "profile-title":"Setting",
     "logout":"Logout"
   },
@@ -31,7 +33,8 @@
     "label-lastname":"Last Name",
     "label-username":"User Name",
     "label-changeemail":"Change Email",
-    "label-changepassword":"Change Password"
+    "label-changepassword":"Change Password",
+    "label-authclear":"Delete Data"
   },
   "auth-confirm":{
     "confirmEmail":"Please enter 6 digits code to confirm your email",
@@ -185,5 +188,15 @@
   },
   "social-group":{
     
+  },
+  "auth-clear":{
+    "title":"Delete Data",
+    "summary":"You can permentaly delete your own data, please make sure you know what you're doing.",
+    "delete-docs":"Delete all document data in CoreApi, including Document, Tag, WordTagInfo.",
+    "delete-socials":"Delete all social data in SocialApi, including Post, Following, Follower, Group, Comment.",
+    "delete-docs-button":"DELETE ALL DOCUMENTS",
+    "delete-socials-button":"DELETE ALL SOCIALS",
+    "docs-title":"Documents",
+    "socials-title":"Socials"
   }
 }

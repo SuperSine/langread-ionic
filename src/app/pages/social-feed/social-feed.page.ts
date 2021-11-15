@@ -38,4 +38,5 @@ export class SocialFeedPage implements OnInit {
   public momentItems:Observable<MomentType[]>;
   public size:number=10;
   public index:number=0;
+  public defaultWord:string;
 }

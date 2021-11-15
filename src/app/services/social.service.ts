@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo, QueryRef } from 'apollo-angular';
 import { first, map } from 'rxjs/operators';
-import { FollowProfileDocument, GetFollowersDocument, GetFollowingsDocument, GetProfileDocument, GetUserProfileDocument, UnFollowProfileDocument, UserViewType } from '../graphql-components';
+import { DeleteAllSocialDataDocument, FollowProfileDocument, GetFollowersDocument, GetFollowingsDocument, GetProfileDocument, GetUserProfileDocument, UnFollowProfileDocument, UserViewType } from '../graphql-components';
 
 @Injectable({
   providedIn: 'root'
@@ -76,7 +76,7 @@ export class SocialService {
         if(!fetchMoreResult) { return prev; }
 
         prev.profile.followers = [ ...prev.profile.followers,
-                                   ...fetchMoreResult.profile.followers];
+          ...fetchMoreResult.profile.followers];
 
         return prev;
       }
@@ -110,6 +110,12 @@ export class SocialService {
 
         return prev;
       }
+    });
+  }
+
+  removeAllData(){
+    return this.client.mutate({
+      mutation: DeleteAllSocialDataDocument
     });
   }
 

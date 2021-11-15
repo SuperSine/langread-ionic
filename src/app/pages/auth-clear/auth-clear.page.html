@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'auth-clear.title' | translate}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <section>
+    <ion-item lines="none">
+      <ion-text>{{'auth-clear.summary' | translate}}</ion-text>
+    </ion-item>
+  </section>
+
+
+  <ion-list lines="none">
+    <section>
+      <ion-row>
+        <header>
+          {{'auth-clear.docs-title' | translate}}
+        </header>
+      </ion-row>
+      <ion-row>
+        <ion-note>{{'auth-clear.delete-docs' | translate}}</ion-note>
+        <ion-button color="danger" size="small" [disabled]="!youCanClick" (click)="deleteDoc($event)">{{'auth-clear.delete-docs-button' | translate}}</ion-button>
+      </ion-row>
+    </section>
+
+
+    <section>
+      <ion-row>
+        <header>
+          {{'auth-clear.socials-title' | translate}}
+        </header>
+      </ion-row>
+      <ion-row>
+        <ion-note>{{'auth-clear.delete-socials' | translate}}</ion-note>
+        <ion-button color="danger" size="small" [disabled]="!youCanClick" (click)="deleteSocial($event)">{{'auth-clear.delete-socials-button' | translate}}</ion-button>
+      </ion-row>
+    </section>
+  </ion-list>
+</ion-content>

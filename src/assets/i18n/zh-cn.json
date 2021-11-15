@@ -19,6 +19,8 @@
     "document-title": "文档",
     "tags-title": "标签",
     "timeline-title": "单词时间轴",
+    "feeds-title":"Feed",
+    "groups-title":"群组",
     "profile-title": "我的",
     "logout": "注销"
   },
@@ -31,7 +33,8 @@
     "label-lastname": "姓氏",
     "label-username": "用户名",
     "label-changeemail": "更改电子邮件",
-    "label-changepassword": "更改密码"
+    "label-changepassword": "更改密码",
+    "label-authclear":"删除数据"
   },
   "auth-confirm": {
     "confirmEmail": "请输入6位数字以确认您的电子邮件",
@@ -179,5 +182,15 @@
   },
   "image-cropper":{
     "title":"图片裁剪"
+  },
+  "auth-clear":{
+    "title":"删除数据",
+    "summary":"您可以永久删除自己的数据，请确保您知道自己在做什么。",
+    "delete-docs":"删除 CoreApi 中的所有文档数据，包括 Document、Tag、WordTagInfo。",
+    "delete-socials":"删除 SocialApi 中的所有社交数据，包括发布、关注、关注者、群组、评论。",
+    "delete-docs-button":"删除所有文档",
+    "delete-socials-button":"删除所有帖子",
+    "docs-title":"文档",
+    "socials-title":"帖子"
   }
 }

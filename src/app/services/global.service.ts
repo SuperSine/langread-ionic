@@ -89,8 +89,15 @@ export class GlobalService {
     return DateTime.fromISO(date).setLocale(this.translate.currentLang).toLocal().toFormat(format);
   }
 
-  timeSince(date:Date){
-    var millis = DateTime.fromJSDate(date).toLocal().toMillis();
+  timeSince(date:any){
+    let millis:number;
+
+    if(typeof date == 'string')
+      millis = DateTime.fromISO(date,{zone:'utc'}).setLocale(this.translate.currentLang).toLocal().toMillis();
+    else if(typeof date == 'number')
+      millis = DateTime.fromMillis(date, {zone:'utc'}).setLocale(this.translate.currentLang).toLocal().toMillis();
+    else
+      millis = DateTime.fromJSDate(date, {zone:'utc'}).setLocale(this.translate.currentLang).toLocal().toMillis();
 
     var seconds = Math.floor((new Date().getTime() - millis) / 1000);
   

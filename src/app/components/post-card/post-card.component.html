@@ -5,7 +5,7 @@
     </ion-avatar>
     <ion-label>
       <h3>{{moment.userName}}</h3>
-      <p>{{moment.createTime}}</p>
+      <p>{{globalService.toLocalDate(moment.createTime)}}</p>
     </ion-label>
     <ion-button *ngIf="moment.creator == userId"  fill="clear" size="small" class="ion-text-right" (click)="openActSheet(moment.id)">
       <ion-icon name="chevron-down-outline"></ion-icon>

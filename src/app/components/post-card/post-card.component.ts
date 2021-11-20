@@ -4,6 +4,7 @@ import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 import { map, take } from 'rxjs/operators';
 import { MomentType, UserType } from 'src/app/graphql-components';
 import { AuthService } from 'src/app/services/auth.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { MomentService } from 'src/app/services/moment.service';
 import { environment } from 'src/environments/environment';
 
@@ -16,6 +17,7 @@ export class PostCardComponent implements OnInit {
 
   constructor(private momentService:MomentService, 
               private authService:AuthService,
+              public globalService:GlobalService,
               private actionSheetCtrl:ActionSheetController) {
     this.userId = authService.userObj.appId
   }

@@ -70,7 +70,7 @@ export class MsgReplyPage implements OnInit {
   }
 
   timeSince(time:string){
-    return this.globalService.timeSince(new Date(time));
+    return this.globalService.timeSince(time);
   }
 
   async loadMore(){   

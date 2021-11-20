@@ -171,7 +171,8 @@ export class WordTimelinePage implements OnInit {
   }
 
   timeSince(time:string){
-    return this.globalService.timeSince(new Date(parseInt(time)));
+    // return this.globalService.timeSince(new Date(parseInt(time)));
+    return this.globalService.timeSince(time);
   }
 
   @ViewChild(IonInfiniteScroll, {static:false}) 

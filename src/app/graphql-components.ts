@@ -494,6 +494,7 @@ export type MomentQueryListByLangArgs = {
 
 export type MomentType = {
    __typename?: 'MomentType';
+  commentCount?: Maybe<Scalars['Int']>;
   content: Scalars['String'];
   createTime?: Maybe<Scalars['DateTime']>;
   creator: Scalars['String'];
@@ -1676,7 +1677,7 @@ export type GetMomentByDocIdQuery = (
     { __typename?: 'MomentQuery' }
     & { getByDocId?: Maybe<(
       { __typename?: 'MomentType' }
-      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator'>
+      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator' | 'commentCount'>
     )> }
   )> }
 );
@@ -2714,6 +2715,7 @@ export const GetMomentByDocIdDocument = gql`
       upvoteCount
       forkCount
       creator
+      commentCount
     }
   }
 }

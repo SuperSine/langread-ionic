@@ -1,7 +1,7 @@
 <ion-header style="z-index: 400;">
   <ion-toolbar [hidden]="isToolbarHidden">
     <ion-buttons slot="start" [hidden]="mode == DocMode.Edit ? false : true">
-      <ion-back-button defaultHref=""></ion-back-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="primary">
       <ion-button color="dark">
@@ -92,7 +92,7 @@
         </ion-avatar>
         <ion-label>
             <h3>{{(moment | async)?.userName}}</h3>
-            <p>Posted at {{(moment | async)?.createTime}}</p>
+            <p>Posted at {{globalService.toLocalDate((moment | async)?.createTime)}}</p>
  
           </ion-label>
           <ion-button>Follow</ion-button>
@@ -118,7 +118,7 @@
       <ion-col class="ion-text-right"> 
         <ion-button fill="clear" size="small" [routerLink]="'/msg-reply/' + docId">
           <ion-icon name="chatbox-ellipses-outline"></ion-icon>
-          13
+          {{(moment | async)?.commentCount}}
       </ion-button>
     </ion-col>
     </ion-row>

@@ -176,6 +176,7 @@ query getMomentByDocId($id:String!){
       upvoteCount
       forkCount
       creator
+      commentCount
     }
   }
 }

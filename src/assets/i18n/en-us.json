@@ -108,7 +108,9 @@
     "created":"Created",
     "updated":"Updated",
     "words":"Words",
-    "tags":"Tags"
+    "tags":"Tags",
+    "likes":"Likes",
+    "comments":"Comments"
   },
   "doc-list":{
     "add":"Add Document!",

@@ -42,7 +42,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
              private actionSheetCtrl: ActionSheetController, 
              private loadingCtrl:LoadingController,  
              private fb:FormBuilder, 
-             private globalService:GlobalService, 
+             public globalService:GlobalService, 
              private modalCtrl:ModalController, 
              private activatedRoute:ActivatedRoute, 
              private docService:DocService, 
@@ -370,13 +370,15 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     }))
   }
 
-  openDocInfo(event){
+  async openDocInfo(event){
+    var moment = await this.moment.toPromise();
     this.modalCtrl.create({
       component: DocInfoPage,
       componentProps: {
         doc:this.doc,
         taggedWordInfo:this.TaggedWordInfo,
-        allTags:this.allTags
+        allTags:this.allTags,
+        moment
       },
       cssClass: 'from-bottom-modal'
     }).then(modal => {

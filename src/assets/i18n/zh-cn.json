@@ -105,7 +105,9 @@
     "created": "创建时间",
     "updated": "更新时间",
     "words": "单词",
-    "tags": "标签"
+    "tags": "标签",
+    "likes":"喜欢",
+    "comments":"评论"
   },
   "doc-list": {
     "add": "添加文档！",

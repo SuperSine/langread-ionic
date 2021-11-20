@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { GlobalService } from 'src/app/services/global.service';
 import { DateTime } from 'luxon';
+import { MomentType } from 'src/app/graphql-components';
 
 
 @Component({
@@ -58,4 +59,5 @@ export class DocInfoPage implements OnInit {
   public taggedWordInfo:any;
   public tagInfo:any;
   public allTags:any[];
+  public moment:MomentType;
 }

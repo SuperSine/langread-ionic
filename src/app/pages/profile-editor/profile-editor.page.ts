@@ -53,7 +53,9 @@ export class ProfileEditorPage implements OnInit {
   async ngOnInit() {
     this.user = this.authService.watchProfile();
 
-    this.user.subscribe((result) => {
+    this.user.subscribe(async (result) => {
+      this.localSetting = await this.globalService.getSetting();
+
       this.profileForm.patchValue({
         id:result.appId,
         firstName: result.firstName,
@@ -61,14 +63,9 @@ export class ProfileEditorPage implements OnInit {
         userName: result.userName,
         displayLanguage: result.displayLanguage.toLowerCase(),
         sourceLanguage: result.sourceLanguage.toLowerCase(),
-        targetLanguage: result.targetLanguage.toLowerCase()
+        targetLanguage: result.targetLanguage.toLowerCase(),
+        darkMode: this.localSetting.darkMode
       });
-    });
-
-    this.localSetting = await this.globalService.getSetting();
-
-    this.profileForm.patchValue({
-      darkMode: this.localSetting.darkMode
     });
 
     this.appVersion = environment.appVersion;
@@ -114,6 +111,8 @@ export class ProfileEditorPage implements OnInit {
   }
 
   async saveFile(filename:string) {
+    if(!this.croppedImage)return;
+
     const b64 = this.croppedImage.split(';')[1].split(',')[1];
     const blob = this.globals.b64ToBlob(b64, 'image/jpeg');
     const file = this.globals.blobToFile(blob, `${filename}.jpeg`);

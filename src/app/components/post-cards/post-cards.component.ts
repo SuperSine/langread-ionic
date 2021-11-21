@@ -69,6 +69,7 @@ export class PostCardsComponent implements OnInit {
     }else
       this.moments = this.fetch(this.index, environment.pageSize);
 
+    this.index++;
 
     this.infiniteScroll.complete();
 

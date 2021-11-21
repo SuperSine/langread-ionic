@@ -188,6 +188,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
   async onReaderClick(event){
+    debugger;
     this.showTags = false;
 
     let element = event.target.tagName == "SPAN" ? event.target : null;
@@ -195,6 +196,9 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     if(!element)return null;
 
     let word = element.textContent && element.textContent.toLowerCase();
+
+    //RegExp is stateful, manually reset the lastIndex to restart everytime.
+    this.nonCharRegEx.lastIndex = 0;
 
     if(word && !this.nonCharRegEx.test(word)){
       this.openTagPicker(word, this.wti[stemmer(word)], this.allTags, this.tags);

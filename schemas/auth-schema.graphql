@@ -1,84 +1,47 @@
-# The `Date` scalar type
-scalar Date
-
-# The `DateTime` scalar type
-scalar DateTime
-
-# The `DateTimeOffset` scalar type
-scalar DateTimeOffset
-
-# The `Seconds` scalar type
-scalar Seconds
-
-# The `Milliseconds` scalar type
-scalar Milliseconds
-
-scalar Decimal
-
-scalar Uri
-
-scalar Guid
-
-scalar Short
-
-scalar UShort
-
-scalar UInt
-
-scalar Long
-
-scalar BigInt
-
-scalar ULong
-
-scalar Byte
-
-scalar SByte
-
 type Query {
-  auth: Auth
   token: Token
+  auth: Auth
 }
 
 type Token {
-  get(appId: String = null, appSecret: String = null): String
+  get(appId: String, appSecret: String): String
 }
 
 type Auth {
+  profile(appId: String!, appSecret: String!): ProfileType
   auth(email: String!, password: String!): UserType
   email(email: String!): Boolean
-  profile(appId: String!, appSecret: String!): ProfileType
-  sendauthcode(email: String!): Boolean
-  sendreset(appId: String = null, appSecret: String = null): Boolean
-  sendverify(appId: String = null, appSecret: String = null): Boolean
   username(username: String!): Boolean
+  sendverify(appId: String, appSecret: String): Boolean
+  sendreset(appId: String, appSecret: String): Boolean
+  sendauthcode(email: String!): Boolean
 }
 
 type ProfileType {
-  displayLanguage: String
-  email: String!
-  emailConfirmed: Boolean!
   firstName: String
   lastName: String
+  email: String!
   phoneNumber: String
-  sourceLanguage: String
-  targetLanguage: String
   userName: String!
+  emailConfirmed: Boolean!
+  displayLanguage: String
+  targetLanguage: String
+  sourceLanguage: String
 }
 
 type UserType {
-  appId: String!
-  appSecret: String!
-  displayLanguage: String!
-  email: String!
-  emailConfirmed: Boolean!
   firstName: String
   lastName: String
+  appId: String!
+  appSecret: String!
+  email: String!
   phoneNumber: String
-  sourceLanguage: String!
-  targetLanguage: String!
-  token: String
   userName: String!
+  emailConfirmed: Boolean!
+  displayLanguage: String!
+  targetLanguage: String!
+  sourceLanguage: String!
+  token: String
 }
 
 type Mutation {
@@ -91,44 +54,40 @@ type Secret {
 }
 
 type User {
-  email(
-    appId: String = null
-    appSecret: String = null
-    email: String = null
-  ): UserType
-  password(
-    appId: String = null
-    appSecret: String = null
-    token: String = null
-    password: String = null
-  ): Boolean
   register(
     email: String!
-    phonenumber: String = null
-    password: String = null
-    username: String = null
-    firstname: String = null
-    lastname: String = null
-    displayLanguage: String = null
-    sourceLanguage: String = null
-    targetLanguage: String = null
+    phonenumber: String
+    password: String
+    username: String
+    firstname: String
+    lastname: String
+    displayLanguage: String
+    sourceLanguage: String
+    targetLanguage: String
   ): UserType
   update(
-    appId: String = null
-    appSecret: String = null
-    user: UpdateUserViewModelType = null
+    appId: String
+    appSecret: String
+    user: UpdateUserViewModelType
   ): UserType
-  verify(email: String!, code: String!, purpose: TokenPurpose = null): UserType
+  email(appId: String, appSecret: String, email: String): UserType
+  password(
+    appId: String
+    appSecret: String
+    token: String
+    password: String
+  ): Boolean
+  verify(email: String!, code: String!, purpose: TokenPurpose): UserType
 }
 
 input UpdateUserViewModelType {
-  userName: String = null
-  firstName: String = null
-  lastName: String = null
-  phoneNumber: String = null
-  displayLanguage: String = null
-  targetLanguage: String = null
-  sourceLanguage: String = null
+  userName: String
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  displayLanguage: String
+  targetLanguage: String
+  sourceLanguage: String
 }
 
 enum TokenPurpose {
@@ -136,4 +95,3 @@ enum TokenPurpose {
   PHONE_NUMBER
   USER_LOGIN
 }
-

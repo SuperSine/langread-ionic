@@ -35,7 +35,7 @@ export class GroupEditorPage implements OnInit {
       id: [''],
       name: ['', Validators.compose([Validators.required, this.groupId ? null : this.groupService.checkGroupName.bind(this.groupService)])],
       description: ['', Validators.compose([Validators.required])],
-      groupTypeId: ['1', Validators.compose([Validators.required])],
+      groupTypeId: [null, Validators.compose([Validators.required])],
       languages: ['', Validators.compose([Validators.required])],
     });
 
@@ -69,7 +69,7 @@ export class GroupEditorPage implements OnInit {
   }
 
   save(){
-    const data = this.editorForm.getRawValue();
+    const data = this.editorForm.getRawValue() as GroupInputType;
     this.groupService.saveGroup(data).subscribe(async ({data:{group}}:any) => {
       const data = group.create ? group.create : group.update;
       if(this.croppedImage){

@@ -1,89 +1,43 @@
-# The `Date` scalar type represents a year, month and day in accordance with the [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
-scalar Date
-
-# The `DateTime` scalar type represents a date and time. `DateTime` expects timestamps to be formatted in accordance with the [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
-scalar DateTime
-
-# The `DateTimeOffset` scalar type represents a date, time and offset from UTC. `DateTimeOffset` expects timestamps to be formatted in accordance with the [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
-scalar DateTimeOffset
-
-# The `Seconds` scalar type represents a period of time represented as the total number of seconds.
-scalar Seconds
-
-# The `Milliseconds` scalar type represents a period of time represented as the total number of milliseconds.
-scalar Milliseconds
-
-scalar Decimal
-
-scalar Uri
-
-scalar Guid
-
-scalar Short
-
-scalar UShort
-
-scalar UInt
-
-scalar Long
-
-scalar BigInt
-
-scalar ULong
-
-scalar Byte
-
-scalar SByte
-
 type Query {
-  group: GroupQuery
   moment: MomentQuery
+  group: GroupQuery
   profile: ProfileQuery
 }
 
 type MomentQuery {
-  getByDocId(id: String = null): MomentType
-  listByComment(
-    id: String = null
-    pageIndex: String = null
-    pageSize: String = null
-  ): [CommentType]
-  listByFollowing(
-    pageIndex: String = null
-    pageSize: String = null
-    id: String = null
-  ): [MomentType]
   listByGroup(
-    id: String = null
-    type: MomentGroupType = null
-    pageIndex: String = null
-    pageSize: String = null
+    id: String
+    type: MomentGroupType
+    pageIndex: Int
+    pageSize: Int
   ): [MomentType]
-  listByLang(
-    pageIndex: String = null
-    pageSize: String = null
-    langCode: String = null
-  ): [MomentType]
+  listByFollowing(pageIndex: Int, pageSize: Int, id: String): [MomentType]
+  listByLang(pageIndex: Int, pageSize: Int, langCode: String): [MomentType]
+  listByComment(id: String, pageIndex: Int, pageSize: Int): [CommentType]
+  getByDocId(id: String): MomentType
 }
 
 type MomentType {
-  commentCount: Int
-  content: String!
-  createTime: DateTime
-  creator: String!
-  forkCount: Int
-  groupId: String
   id: String!
-  language: String
-  momentGroupTypeId: Int
   parent: String
-  readId: String
   root: String
-  status: Int!
   title: String
+  content: String!
+  creator: String!
   upvoteCount: Int
+  forkCount: Int
+  language: String
+  groupId: String
+  status: Int!
+  createTime: DateTime
+  momentGroupTypeId: Int
   userName: String
+  readId: String
+  commentCount: Int
 }
+
+# The `DateTime` scalar type represents a date and time. `DateTime` expects timestamps to be formatted in accordance with the [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+scalar DateTime
 
 enum MomentGroupType {
   ALL
@@ -94,141 +48,121 @@ enum MomentGroupType {
 }
 
 type CommentType {
-  content: String!
-  createdByCurrentUser: Boolean!
-  createTime: DateTime
-  creator: String!
-  hasVoted: Boolean!
   id: String!
   parent: String
   root: String
-  status: Int!
+  content: String!
+  creator: String!
   upvoteCount: Int
+  status: Int!
+  createTime: DateTime
   userName: String
+  createdByCurrentUser: Boolean!
+  hasVoted: Boolean!
 }
 
 type GroupQuery {
-  allGroupList(
-    keywords: String = null
-    pageIndex: String = null
-    pageSize: String = null
-  ): [GroupType]
-  checkAvailable(name: String = null): Boolean
-  detail(id: String = null): GroupType
-  followers(
-    groupId: String = null
-    index: String = null
-    size: String = null
-  ): [UserViewType]
-  top(top: Int = null, userId: String = null): [GroupType]
-  topByFollowers(top: Int = null): [GroupType]
+  detail(id: String): GroupType
   userGroupList(
-    keywords: String = null
-    pageIndex: String = null
-    pageSize: String = null
-    userId: String = null
-    includeDefault: String = null
+    keywords: String
+    pageIndex: Int
+    pageSize: Int
+    userId: String
+    includeDefault: Boolean
   ): [GroupType]
+  allGroupList(keywords: String, pageIndex: Int, pageSize: Int): [GroupType]
+  top(top: Int, userId: String): [GroupType]
+  topByFollowers(top: Int): [GroupType]
+  checkAvailable(name: String): Boolean
+  followers(groupId: String, index: Int, size: Int): [UserViewType]
 }
 
 type GroupType {
-  createTime: Date
-  creator: String
-  creatorUserName: String
-  description: String
-  groupTypeId: Int
   id: String!
-  isAdmin: Boolean
-  isDefault: Boolean
-  isFollowed: Boolean
-  languages: String
-  lastUpdatedBy: String
-  memberCount: Int
   name: String!
   photoUrl: String
+  groupTypeId: Int
+  description: String
+  languages: String
+  creator: String
+  lastUpdatedBy: String
+  memberCount: Int
   readCount: Int
-  updateTime: Date
+  createTime: DateTime
+  updateTime: DateTime
+  isAdmin: Boolean
+  isFollowed: Boolean
+  creatorUserName: String
+  isDefault: Boolean
 }
 
 type UserViewType {
-  description: String
-  followerCount: Int!
-  followingCount: Int!
   id: String!
-  isFollower: Boolean!
-  isFollowing: Boolean!
   name: String!
   photoUrl: String!
+  isFollowing: Boolean!
+  isFollower: Boolean!
+  followerCount: Int!
+  followingCount: Int!
+  description: String
 }
 
 type ProfileQuery {
-  followers(
-    pageIndex: String = null
-    pageSize: String = null
-    userId: String = null
-  ): [UserViewType]
-  followings(
-    pageIndex: String = null
-    pageSize: String = null
-    userId: String = null
-  ): [UserViewType]
-  friends(
-    pageIndex: String = null
-    pageSize: String = null
-    userId: String = null
-  ): [UserViewType]
-  people(pageIndex: String = null, pageSize: String = null): [UserViewType]
-  profile(userId: String = null): UserViewType
+  profile(userId: String): UserViewType
+  followers(pageIndex: Int, pageSize: Int, userId: String): [UserViewType]
+  followings(pageIndex: Int, pageSize: Int, userId: String): [UserViewType]
+  people(pageIndex: Int, pageSize: Int): [UserViewType]
+  friends(pageIndex: Int, pageSize: Int, userId: String): [UserViewType]
 }
 
 type Mutation {
-  group: GroupMutation
   moment: MomentMutation
+  group: GroupMutation
   profile: ProfileMutation
 }
 
 type MomentMutation {
-  comment(data: CommentInputType!): CommentType
-  delete(id: String = null): MomentType
+  delete(id: String): MomentType
   post(data: MomentInputType!): MomentType
-  vote(id: String = null, value: String = null): MomentType
+  comment(data: CommentInputType!): CommentType
+  vote(id: String, value: Int): MomentType
 }
 
 input MomentInputType {
-  parent: String = null
-  root: String = null
-  title: String = null
+  parent: String
+  root: String
+  title: String
   content: String!
-  language: String = null
-  groupId: String = null
-  momentGroupTypeId: Int = null
+  language: String
+  groupId: String
+  momentGroupTypeId: Int
 }
 
 input CommentInputType {
   content: String!
-  parent: String = null
+  parent: String
   readId: String!
 }
 
 type GroupMutation {
-  create(data: GroupInputType = null): GroupType
-  delete(id: String = null): Int
-  follow(groupId: String = null): Int
-  unfollow(groupId: String = null, followerId: String = null): Int
+  unfollow(groupId: String, followerId: String): Int
+  follow(groupId: String): Int
+  create(data: GroupInputType): GroupType
   update(data: GroupInputType!): GroupType
+  delete(id: String): Int
 }
 
 input GroupInputType {
-  id: String = null
-  name: String = null
-  photoUrl: String = null
-  groupTypeId: Int = null
-  description: String = null
-  languages: String = null
+  id: String
+  name: String
+  photoUrl: String
+  groupTypeId: Int
+  description: String
+  languages: String
 }
 
 type ProfileMutation {
+  follow(profileId: String): Int
+  unfollow(followerUserId: String): Int
   deleteAllData: Int
-  follow(profileId: String = null): Int
-  unfollow(followerUserId: String = null): Int
 }

@@ -188,7 +188,6 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   }
 
   async onReaderClick(event){
-    debugger;
     this.showTags = false;
 
     let element = event.target.tagName == "SPAN" ? event.target : null;

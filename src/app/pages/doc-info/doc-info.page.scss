@@ -1,3 +1,9 @@
 ion-label[name=tag-name]{
   padding: 7px;
 }
+
+@media (prefers-color-scheme: dark) {
+  ion-content{
+    background: rgb(196, 0, 0);
+  }
+}

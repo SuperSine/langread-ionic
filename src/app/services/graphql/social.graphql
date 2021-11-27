@@ -36,7 +36,7 @@ query checkAvailable($name:String){
   }
 }
 
-query userGroupList($pageIndex:String,$pageSize:String,$userId:String,$keywords:String,$includeDefault:String){
+query userGroupList($pageIndex:Int,$pageSize:Int,$userId:String,$keywords:String,$includeDefault:Boolean){
   group{
     userGroupList(pageIndex:$pageIndex,pageSize:$pageSize, userId:$userId, keywords:$keywords, includeDefault:$includeDefault){
       id
@@ -53,7 +53,7 @@ query userGroupList($pageIndex:String,$pageSize:String,$userId:String,$keywords:
   }
 }
 
-query allGroupList($pageIndex:String,$pageSize:String,$keywords:String){
+query allGroupList($pageIndex:Int,$pageSize:Int,$keywords:String){
   group{
     allGroupList(pageIndex:$pageIndex,pageSize:$pageSize,keywords:$keywords){
       id
@@ -88,7 +88,7 @@ mutation unFollowGroup($groupId:String!, $followerId:String!){
   }
 }
 
-query listMomentByFollowing($pageIndex:String!, $pageSize:String!, $userId:String){
+query listMomentByFollowing($pageIndex:Int!, $pageSize:Int!, $userId:String){
   moment{
     listByFollowing(pageIndex:$pageIndex, pageSize:$pageSize, id:$userId){
       groupId
@@ -107,7 +107,7 @@ query listMomentByFollowing($pageIndex:String!, $pageSize:String!, $userId:Strin
   }
 }
 
-query listMomentByLang($pageIndex:String!, $pageSize:String!, $langCode:String){
+query listMomentByLang($pageIndex:Int!, $pageSize:Int!, $langCode:String){
   moment{
     listByLang(pageIndex:$pageIndex, pageSize:$pageSize, langCode:$langCode){
       groupId
@@ -126,7 +126,7 @@ query listMomentByLang($pageIndex:String!, $pageSize:String!, $langCode:String){
   }
 }
 
-query listMomentByGroup($groupId:String!,$typeId:MomentGroupType!, $pageIndex:String!, $pageSize:String!){
+query listMomentByGroup($groupId:String!,$typeId:MomentGroupType!, $pageIndex:Int!, $pageSize:Int!){
   moment{
     listByGroup(id:$groupId, type:$typeId, pageIndex:$pageIndex, pageSize:$pageSize){
       groupId
@@ -145,7 +145,7 @@ query listMomentByGroup($groupId:String!,$typeId:MomentGroupType!, $pageIndex:St
   }
 }
 
-mutation likeMoment($id:String!, $value:String!){
+mutation likeMoment($id:String!, $value:Int!){
   moment{
     vote(id:$id, value:$value){
       upvoteCount
@@ -181,7 +181,7 @@ query getMomentByDocId($id:String!){
   }
 }
 
-query getFollowers($index:String!, $size:String!, $userId:String){
+query getFollowers($index:Int!, $size:Int!, $userId:String){
   profile{
     followers(pageIndex:$index, pageSize:$size, userId:$userId){
       id
@@ -193,7 +193,7 @@ query getFollowers($index:String!, $size:String!, $userId:String){
   }
 }
 
-query getFollowings($index:String!, $size:String!, $userId:String){
+query getFollowings($index:Int!, $size:Int!, $userId:String){
   profile{
     followings(pageIndex:$index, pageSize:$size, userId:$userId){
       id
@@ -231,7 +231,7 @@ mutation unFollowProfile($userId:String!){
   }
 }
 
-query getGroupFollowers($groupId:String!, $index:String!, $size:String!){
+query getGroupFollowers($groupId:String!, $index:Int!, $size:Int!){
   group{
     followers(groupId:$groupId, index:$index, size:$size){
       id
@@ -259,7 +259,7 @@ query getGroupDetail($groupId:String!){
   }
 }
 
-query listByComment($id:String!,$pageSize:String!,$pageIndex:String!){
+query listByComment($id:String!,$pageSize:Int!,$pageIndex:Int!){
   moment{
     listByComment(id:$id, pageSize:$pageSize,pageIndex:$pageIndex){
       id

@@ -40,7 +40,7 @@ query getDocument($docId:String!){
   }
 }
 
-query getDocuments($pageSize:String!, $lastId:String, $keywords:String){
+query getDocuments($pageSize:Int!, $lastId:String, $keywords:String){
   document{
     list(limit:$pageSize,lastId:$lastId, keywords:$keywords){
       id,
@@ -220,7 +220,7 @@ query getWordProfile($word:String!,$fromLang:String!, $toLang:String!){
   }  
 }
 
-query getTopmost($top: String, $userId:String) {
+query getTopmost($top: Int, $userId:String) {
   wti {
     topMost(top: $top, userId:$userId) {
       word
@@ -235,6 +235,28 @@ query getTopmost($top: String, $userId:String) {
     }
   }
 }
+
+query getTimeline($index:Int, $size:Int, $lastId:String, $keywords:String){
+    timeline{
+      get(index:$index,size:$size,lastId:$lastId,keywords:$keywords){
+        words,
+        wordTagInfo{
+          wti{
+            word,
+            wordInfos{
+              tag{
+                id
+                tagName,
+                tagColor,
+                tagFont
+              }
+            }
+          }
+        }
+        lastId,
+      }
+    }
+  }
 
 mutation forkDoucment($docId:String!, $groupId:String, $wordTagLiteStr:String){
   doc{

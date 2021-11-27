@@ -13,7 +13,7 @@ type DocumentQueryType {
   ): InfoDocumentsCleanType
   giveItToMe(content: String, wordTagLiteStr: String): WordTagDocumentCleanType
   get(docId: String, includeWti: Boolean = true): WordTagDocumentCleanType
-  list(lastId: String, limit: Int, keywords: String): [DocumentType]
+  list(lastId: String, limit: Int, keywords: String): PaginatedDocumentType
   search(keywords: String, lastId: String, limit: Int = 10): [DocumentType]
   stats: WordTagStaticsType
 }
@@ -84,6 +84,12 @@ type WordTagDocumentCleanType {
   status: Int!
   userId: String!
   isCreator: Boolean!
+}
+
+type PaginatedDocumentType {
+  lastId: String
+  count: Int
+  data: [DocumentType]
 }
 
 type WordTagStaticsType {

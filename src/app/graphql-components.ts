@@ -166,7 +166,7 @@ export type DocumentQueryType = {
   infoDocuments?: Maybe<InfoDocumentsCleanType>;
   giveItToMe?: Maybe<WordTagDocumentCleanType>;
   get?: Maybe<WordTagDocumentCleanType>;
-  list?: Maybe<Array<Maybe<DocumentType>>>;
+  list?: Maybe<PaginatedDocumentType>;
   search?: Maybe<Array<Maybe<DocumentType>>>;
   stats?: Maybe<WordTagStaticsType>;
 };
@@ -501,6 +501,13 @@ export type Mutation = {
   tag?: Maybe<TagMutation>;
   user?: Maybe<User>;
   wti?: Maybe<WordTagInfoMutation>;
+};
+
+export type PaginatedDocumentType = {
+   __typename?: 'PaginatedDocumentType';
+  lastId?: Maybe<Scalars['String']>;
+  count?: Maybe<Scalars['Int']>;
+  data?: Maybe<Array<Maybe<DocumentType>>>;
 };
 
 export type ProfileMutation = {
@@ -1171,10 +1178,14 @@ export type GetDocumentsQuery = (
   { __typename?: 'Query' }
   & { document?: Maybe<(
     { __typename?: 'DocumentQueryType' }
-    & { list?: Maybe<Array<Maybe<(
-      { __typename?: 'DocumentType' }
-      & Pick<DocumentType, 'id' | 'docId' | 'title' | 'content' | 'createDate'>
-    )>>> }
+    & { list?: Maybe<(
+      { __typename?: 'PaginatedDocumentType' }
+      & Pick<PaginatedDocumentType, 'lastId'>
+      & { data?: Maybe<Array<Maybe<(
+        { __typename?: 'DocumentType' }
+        & Pick<DocumentType, 'id' | 'docId' | 'title' | 'content' | 'createDate'>
+      )>>> }
+    )> }
   )> }
 );
 
@@ -2134,11 +2145,14 @@ export const GetDocumentsDocument = gql`
     query getDocuments($pageSize: Int!, $lastId: String, $keywords: String) {
   document {
     list(limit: $pageSize, lastId: $lastId, keywords: $keywords) {
-      id
-      docId
-      title
-      content
-      createDate
+      data {
+        id
+        docId
+        title
+        content
+        createDate
+      }
+      lastId
     }
   }
 }

@@ -112,11 +112,13 @@ export class DocListPage implements OnInit {
   list(pageSize, lastId, keywords=''){
     if(!keywords)lastId='';
     
-    this.docService.list(pageSize, lastId, keywords).valueChanges.subscribe((result) => {
-      
-      this.docList = ((result.data) as any).document.list;
+    this.docService.list(pageSize, lastId, keywords).valueChanges.subscribe((response) => {
+      var result = ((response.data) as any).document.list;
+      this.docList = result.data;
 
-      if(this.docList.length > 0)this.lastId = this.docList.slice(-1)[0].id;
+      if(this.docList.length > 0){
+        this.lastId = result.lastId;
+      }
     });
   }
 
@@ -187,16 +189,13 @@ export class DocListPage implements OnInit {
 
   loadData(event){
 
-    this.docService.list(environment.pageSize, this.lastId).valueChanges.subscribe((result) => {
+    this.docService.list(environment.pageSize, this.lastId).valueChanges.subscribe((response) => {
+      var result = ((response.data) as any).document.list;
+      var newList = result.data;
       
-      var newList = ((result.data) as any).document.list;
-      
-      if(newList.length >= 1){
-
-        
+      if(newList.length >= 1){        
         this.docList = this.docList.concat(newList);
-        this.lastId = newList.slice(-1)[0].id;
-        
+        this.lastId = result.lastId;
       }
       
       this.infiniteScroll.complete();

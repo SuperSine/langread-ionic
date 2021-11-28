@@ -88,7 +88,9 @@
     <ion-list>
       <ion-item lines="none">
         <ion-avatar slot="start">
-          <img src="http://localhost:81/api/auth/v1/user/avatar/aflksadjflksdjf893245">
+          <ng-container *ngIf="moment | async as result">
+            <img [appAvatarId]="result.creator">
+          </ng-container>
         </ion-avatar>
         <ion-label>
             <h3>{{(moment | async)?.userName}}</h3>

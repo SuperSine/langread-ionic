@@ -14,6 +14,8 @@ import { TagPickerPageModule } from '../tag-picker/tag-picker.module';
 import { DocInfoPageModule } from '../doc-info/doc-info.module';
 import { UniqueTagsPipe } from 'src/app/pipes/unique-tags.pipe';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { LangreadComponentsModule } from 'src/app/components/LangreadComponents.module';
+import { AvatarUrlDirective } from 'src/app/directives/avatar-url.directive';
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
       }
     }),
     ReactiveFormsModule,
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    LangreadComponentsModule
   ],
   exports:[
     DocEditorSaveComponent

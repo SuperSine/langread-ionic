@@ -32,7 +32,7 @@ export class SocialFeedPage implements OnInit {
     this.postCards.loadData();
   }
 
-  @ViewChild(PostCardsComponent, {static:false})
+  @ViewChild(PostCardsComponent)
   public postCards: PostCardsComponent;
 
   public momentItems:Observable<MomentType[]>;

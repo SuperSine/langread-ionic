@@ -1,5 +1,6 @@
+import {Apollo, QueryRef} from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import { Apollo, QueryRef } from 'apollo-angular';
+
 import { first, map } from 'rxjs/operators';
 import { DeleteAllSocialDataDocument, FollowProfileDocument, GetFollowersDocument, GetFollowingsDocument, GetProfileDocument, GetUserProfileDocument, UnFollowProfileDocument, UserViewType } from '../graphql-components';
 

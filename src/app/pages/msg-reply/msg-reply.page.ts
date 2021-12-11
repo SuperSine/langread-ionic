@@ -116,7 +116,7 @@ export class MsgReplyPage implements OnInit {
     this.location.back();
   }
 
-  @ViewChild(IonInfiniteScroll, {static:false})
+  @ViewChild(IonInfiniteScroll)
   private infiniteScroll:IonInfiniteScroll;
 
   private _momentId:string;

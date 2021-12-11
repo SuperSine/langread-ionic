@@ -1,16 +1,17 @@
+import {APOLLO_OPTIONS, Apollo} from 'apollo-angular';
+import {HttpClientModule} from '@angular/common/http';
+import {HttpLink} from 'apollo-angular/http';
+import {createHttpLink} from '@apollo/client/link/http';
+import {onError} from '@apollo/client/link/error';
+import {RetryLink} from '@apollo/client/link/retry';
+import {InMemoryCache, ApolloLink, Observable, from, ApolloClient} from '@apollo/client/core';
 import {NgModule} from '@angular/core';
-import {ApolloModule, APOLLO_OPTIONS, Apollo} from 'apollo-angular';
-import {HttpLinkModule, HttpLink} from 'apollo-angular-link-http';
-import { createHttpLink } from "apollo-link-http";
-import {InMemoryCache} from 'apollo-cache-inmemory';
-import { ApolloLink, Observable, from } from 'apollo-link';
-import { RetryLink } from 'apollo-link-retry';
-import { HttpHeaders } from '@angular/common/http';
+import {HttpHeaders} from '@angular/common/http';
 import {Storage} from '@ionic/storage';
 import {T_USER_TOKEN, AuthService} from './services/auth.service';
 import {mergeMap,map,tap} from 'rxjs/operators';
-import ApolloClient from 'apollo-client';
-import {onError} from 'apollo-link-error';
+
+
 import {environment} from '../environments/environment';
 import { GlobalService } from './services/global.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,8 +20,7 @@ export async function createApollo(httpLink: HttpLink,storage:Storage) {
 }
 
 @NgModule({
-  imports:[HttpLinkModule],
-  exports: [ApolloModule, HttpLinkModule],
+  imports:[HttpClientModule]
   // providers: [
   //   {
   //     provide: APOLLO_OPTIONS,
@@ -92,18 +92,33 @@ export class GraphQLModule {
         attempts: {
           max: 10,
           retryIf: (error, _operation) => !!error
-        }
+        },
       });
-  
-      let optionA = {
+      
+
+      let authOption = {
         link: createHttpLink({uri: environment.authEndpoint}),
         cache: new InMemoryCache(),
       };
-  
-      const http = httpLink.create({uri: environment.coreEndpoint});
-      let optionB = {
-        link: from([retryLink, headerMiddleware, renewTokenLink, http]),
-        cache: new InMemoryCache(),
+
+      const coreLink = httpLink.create({uri: environment.coreEndpoint});
+      let coreOption = {
+        link: from([retryLink, headerMiddleware, renewTokenLink, coreLink]),
+        cache: new InMemoryCache(
+          {
+            typePolicies:{
+              PaginatedDocumentType:{
+                fields:{
+                  data:{
+                    merge: (existing = [], incoming:any[]) => {
+                      return [...existing, ...incoming];
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ),
       };
 
       const socialLink = httpLink.create({uri: environment.socialEndpoint});
@@ -112,8 +127,8 @@ export class GraphQLModule {
         cache: new InMemoryCache(),
       }
   
-      apollo.create(optionA,'auth');
-      apollo.create(optionB,'core');
+      apollo.create(authOption, 'auth');
+      apollo.create(coreOption, 'core');
       apollo.create(socialOption, 'social');
 
 

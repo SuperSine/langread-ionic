@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { WordSoundComponent } from './word-sound.component';
@@ -7,7 +7,7 @@ describe('WordSoundComponent', () => {
   let component: WordSoundComponent;
   let fixture: ComponentFixture<WordSoundComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ WordSoundComponent ],
       imports: [IonicModule.forRoot()]

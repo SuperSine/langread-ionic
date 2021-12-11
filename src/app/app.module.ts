@@ -13,7 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import {TagEditorPageModule} from '../app/pages/tag-editor/tag-editor.module';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule,HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular';
 import { AuthService } from './services/auth.service';
 import { PickDirective } from './directives/pick.directive';
 import { GlobalService } from './services/global.service';

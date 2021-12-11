@@ -17,22 +17,30 @@ export class TagPickerPage implements OnInit {
               private wordProfileService: WordService) { }
 
   async ngOnInit() {
-    console.log(this.word, this.info, this.bigTags);
+    console.log(this.word, this.markTags, this.bigTags, this.smallTags);
     this.isChanged = false;
-    // this.count = this.info[0].count;
+    // this.count = this.markTags[0].count;
 
     this.translateParams = {
       word:this.word
     }
 
+    //create a copy of bigTags with 'selected' attribute
+    //to avoid 'RROR TypeError: Cannot add property selected, object is not extensible'
+
+    this.bigTags = this.bigTags.map((item) =>
+      Object.assign({}, item, {selected:false})
+    )
+
 
   }
 
   close(event){
-    this.info.splice(0, this.info.length);
+    this.markTags.splice(0, this.markTags.length);
+    this.smallTags = Object.assign([], this.smallTags);
 
     this.bigTags.filter((value) => value.selected).forEach((tag)=>{
-      this.info.push({tag});
+      this.markTags.push({tag});
       this.smallTags.push(tag);
       if(tag.tagColor)
         this.colorService.addMarkColor(tag);
@@ -71,7 +79,7 @@ export class TagPickerPage implements OnInit {
   public bigTags:any[];
   public smallTags:any[];
   public word:string;
-  public info:any[];
+  public markTags:any[];
   public count:number;
   public searchTagName:any;
   public isChanged:boolean;

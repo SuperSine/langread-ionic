@@ -58,6 +58,7 @@ query getDocuments($pageSize:Int!, $lastId:String, $keywords:String){
 query giveItToMe($content:String!){
   document{
     giveItToMe(content:$content){
+      id
       isCreator
       userId
 			document{

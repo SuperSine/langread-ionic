@@ -97,7 +97,7 @@ export class WordTrendComponent implements OnInit {
   @Input()
   public wordTrends:ValueByMonthType[];
   
-  @ViewChild('lineChart', {static:false}) 
+  @ViewChild('lineChart') 
   public lineChart:ElementRef;
 
 

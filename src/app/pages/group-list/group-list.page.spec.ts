@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { GroupListPage } from './group-list.page';
@@ -7,7 +7,7 @@ describe('GroupListPage', () => {
   let component: GroupListPage;
   let fixture: ComponentFixture<GroupListPage>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GroupListPage ],
       imports: [IonicModule.forRoot()]

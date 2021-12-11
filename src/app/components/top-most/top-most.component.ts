@@ -101,7 +101,7 @@ export class TopMostComponent implements OnInit {
 
   @Input()
   userId:string;
-  @ViewChild("htmlCanvas", {static:false})
+  @ViewChild("htmlCanvas")
   public htmlCanvas: ElementRef;
 
   public topList:WordProfileType[];

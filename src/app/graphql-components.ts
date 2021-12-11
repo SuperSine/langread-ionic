@@ -1,7 +1,11 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -13,23 +17,15 @@ export type Scalars = {
   Long: any;
 };
 
-
-
 export type Auth = {
-   __typename?: 'Auth';
-  profile?: Maybe<ProfileType>;
+  __typename?: 'Auth';
   auth?: Maybe<UserType>;
   email?: Maybe<Scalars['Boolean']>;
-  username?: Maybe<Scalars['Boolean']>;
-  sendverify?: Maybe<Scalars['Boolean']>;
-  sendreset?: Maybe<Scalars['Boolean']>;
+  profile?: Maybe<ProfileType>;
   sendauthcode?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type AuthProfileArgs = {
-  appId: Scalars['String'];
-  appSecret: Scalars['String'];
+  sendreset?: Maybe<Scalars['Boolean']>;
+  sendverify?: Maybe<Scalars['Boolean']>;
+  username?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -44,20 +40,9 @@ export type AuthEmailArgs = {
 };
 
 
-export type AuthUsernameArgs = {
-  username: Scalars['String'];
-};
-
-
-export type AuthSendverifyArgs = {
-  appId?: Maybe<Scalars['String']>;
-  appSecret?: Maybe<Scalars['String']>;
-};
-
-
-export type AuthSendresetArgs = {
-  appId?: Maybe<Scalars['String']>;
-  appSecret?: Maybe<Scalars['String']>;
+export type AuthProfileArgs = {
+  appId: Scalars['String'];
+  appSecret: Scalars['String'];
 };
 
 
@@ -65,207 +50,228 @@ export type AuthSendauthcodeArgs = {
   email: Scalars['String'];
 };
 
+
+export type AuthSendresetArgs = {
+  appId?: InputMaybe<Scalars['String']>;
+  appSecret?: InputMaybe<Scalars['String']>;
+};
+
+
+export type AuthSendverifyArgs = {
+  appId?: InputMaybe<Scalars['String']>;
+  appSecret?: InputMaybe<Scalars['String']>;
+};
+
+
+export type AuthUsernameArgs = {
+  username: Scalars['String'];
+};
+
 export type BackTranslationType = {
-   __typename?: 'BackTranslationType';
-  normalizedText: Scalars['String'];
+  __typename?: 'BackTranslationType';
   displayTarget: Scalars['String'];
-  numExamples: Scalars['Int'];
   frequencyCount: Scalars['Int'];
+  normalizedText: Scalars['String'];
+  numExamples: Scalars['Int'];
 };
 
 export type CommentInputType = {
   content: Scalars['String'];
-  parent?: Maybe<Scalars['String']>;
+  parent?: InputMaybe<Scalars['String']>;
   readId: Scalars['String'];
 };
 
 export type CommentType = {
-   __typename?: 'CommentType';
+  __typename?: 'CommentType';
+  content: Scalars['String'];
+  createTime?: Maybe<Scalars['DateTime']>;
+  createdByCurrentUser: Scalars['Boolean'];
+  creator: Scalars['String'];
+  hasVoted: Scalars['Boolean'];
   id: Scalars['String'];
   parent?: Maybe<Scalars['String']>;
   root?: Maybe<Scalars['String']>;
-  content: Scalars['String'];
-  creator: Scalars['String'];
-  upvoteCount?: Maybe<Scalars['Int']>;
   status: Scalars['Int'];
-  createTime?: Maybe<Scalars['DateTime']>;
+  upvoteCount?: Maybe<Scalars['Int']>;
   userName?: Maybe<Scalars['String']>;
-  createdByCurrentUser: Scalars['Boolean'];
-  hasVoted: Scalars['Boolean'];
 };
 
-
 export type DefinitionType = {
-   __typename?: 'DefinitionType';
+  __typename?: 'DefinitionType';
   description: Scalars['String'];
   example?: Maybe<Scalars['String']>;
   synonyms?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type DictResultType = {
-   __typename?: 'DictResultType';
+  __typename?: 'DictResultType';
   id: Scalars['String'];
   language: Scalars['String'];
+  lexicalEntries?: Maybe<Array<Maybe<LexicalEntryType>>>;
   type: Scalars['String'];
   word: Scalars['String'];
-  lexicalEntries?: Maybe<Array<Maybe<LexicalEntryType>>>;
 };
 
 export type Doc = {
-   __typename?: 'Doc';
-  save?: Maybe<WordTagDocumentCleanType>;
+  __typename?: 'Doc';
   add?: Maybe<WordTagDocumentCleanType>;
-  fork?: Maybe<WordTagDocumentCleanType>;
   delete?: Maybe<Scalars['Int']>;
-  update?: Maybe<WordTagDocumentCleanType>;
   deleteAllData?: Maybe<Scalars['Int']>;
-};
-
-
-export type DocSaveArgs = {
-  document: DocumentInputType;
-  wordTagLiteStr?: Maybe<Scalars['String']>;
+  fork?: Maybe<WordTagDocumentCleanType>;
+  save?: Maybe<WordTagDocumentCleanType>;
+  update?: Maybe<WordTagDocumentCleanType>;
 };
 
 
 export type DocAddArgs = {
   document: DocumentInputType;
-  wordTagLiteStr?: Maybe<Scalars['String']>;
+  wordTagLiteStr?: InputMaybe<Scalars['String']>;
+};
+
+
+export type DocDeleteArgs = {
+  docId?: InputMaybe<Scalars['String']>;
 };
 
 
 export type DocForkArgs = {
   docId: Scalars['String'];
-  groupId?: Maybe<Scalars['String']>;
-  wordTagLiteStr?: Maybe<Scalars['String']>;
+  groupId?: InputMaybe<Scalars['String']>;
+  wordTagLiteStr?: InputMaybe<Scalars['String']>;
 };
 
 
-export type DocDeleteArgs = {
-  docId?: Maybe<Scalars['String']>;
+export type DocSaveArgs = {
+  document: DocumentInputType;
+  wordTagLiteStr?: InputMaybe<Scalars['String']>;
 };
 
 
 export type DocUpdateArgs = {
-  docId?: Maybe<Scalars['String']>;
+  docId?: InputMaybe<Scalars['String']>;
   document: DocumentInputType;
-  wordTagLiteStr?: Maybe<Scalars['String']>;
+  wordTagLiteStr?: InputMaybe<Scalars['String']>;
 };
 
 export type DocumentInputType = {
-  title: Scalars['String'];
   content: Scalars['String'];
-  id?: Maybe<Scalars['String']>;
-  docId?: Maybe<Scalars['String']>;
-  url?: Maybe<Scalars['String']>;
-  groupId?: Maybe<Scalars['String']>;
+  docId?: InputMaybe<Scalars['String']>;
+  groupId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
+  url?: InputMaybe<Scalars['String']>;
 };
 
 export type DocumentQueryType = {
-   __typename?: 'DocumentQueryType';
-  infoDocuments?: Maybe<InfoDocumentsCleanType>;
-  giveItToMe?: Maybe<WordTagDocumentCleanType>;
+  __typename?: 'DocumentQueryType';
   get?: Maybe<WordTagDocumentCleanType>;
+  giveItToMe?: Maybe<WordTagDocumentCleanType>;
+  infoDocuments?: Maybe<InfoDocumentsCleanType>;
   list?: Maybe<PaginatedDocumentType>;
   search?: Maybe<Array<Maybe<DocumentType>>>;
   stats?: Maybe<WordTagStaticsType>;
 };
 
 
-export type DocumentQueryTypeInfoDocumentsArgs = {
-  word?: Maybe<Scalars['String']>;
-  lastId?: Maybe<Scalars['String']>;
-  limit?: Maybe<Scalars['Int']>;
+export type DocumentQueryTypeGetArgs = {
+  docId?: InputMaybe<Scalars['String']>;
+  includeWti?: InputMaybe<Scalars['Boolean']>;
 };
 
 
 export type DocumentQueryTypeGiveItToMeArgs = {
-  content?: Maybe<Scalars['String']>;
-  wordTagLiteStr?: Maybe<Scalars['String']>;
+  content?: InputMaybe<Scalars['String']>;
+  wordTagLiteStr?: InputMaybe<Scalars['String']>;
 };
 
 
-export type DocumentQueryTypeGetArgs = {
-  docId?: Maybe<Scalars['String']>;
-  includeWti?: Maybe<Scalars['Boolean']>;
+export type DocumentQueryTypeInfoDocumentsArgs = {
+  lastId?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  word?: InputMaybe<Scalars['String']>;
 };
 
 
 export type DocumentQueryTypeListArgs = {
-  lastId?: Maybe<Scalars['String']>;
-  limit?: Maybe<Scalars['Int']>;
-  keywords?: Maybe<Scalars['String']>;
+  keywords?: InputMaybe<Scalars['String']>;
+  lastId?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type DocumentQueryTypeSearchArgs = {
-  keywords?: Maybe<Scalars['String']>;
-  lastId?: Maybe<Scalars['String']>;
-  limit?: Maybe<Scalars['Int']>;
+  keywords?: InputMaybe<Scalars['String']>;
+  lastId?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
 };
 
 export type DocumentType = {
-   __typename?: 'DocumentType';
-  id: Scalars['String'];
-  docId: Scalars['String'];
-  title: Scalars['String'];
-  status: Scalars['Int'];
+  __typename?: 'DocumentType';
   content: Scalars['String'];
   createDate?: Maybe<Scalars['DateTime']>;
-  updateDate?: Maybe<Scalars['DateTime']>;
-  wordsCount: Scalars['Int'];
-  url?: Maybe<Scalars['String']>;
-  groupId?: Maybe<Scalars['String']>;
+  docId: Scalars['String'];
   forkId?: Maybe<Scalars['String']>;
+  groupId?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
   language?: Maybe<Scalars['String']>;
+  status: Scalars['Int'];
+  title: Scalars['String'];
+  updateDate?: Maybe<Scalars['DateTime']>;
+  url?: Maybe<Scalars['String']>;
+  wordsCount: Scalars['Int'];
 };
 
 export type EntryResultType = {
-   __typename?: 'EntryResultType';
-  word: Scalars['String'];
-  phonetic?: Maybe<Scalars['String']>;
-  origin?: Maybe<Scalars['String']>;
+  __typename?: 'EntryResultType';
   meanings?: Maybe<Array<Maybe<MeaningType>>>;
+  origin?: Maybe<Scalars['String']>;
+  phonetic?: Maybe<Scalars['String']>;
+  word: Scalars['String'];
 };
 
 export type EntryType = {
-   __typename?: 'EntryType';
+  __typename?: 'EntryType';
   homographNumber: Scalars['String'];
   senses?: Maybe<Array<Maybe<SenseType>>>;
 };
 
 export type GroupInputType = {
-  id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  photoUrl?: Maybe<Scalars['String']>;
-  groupTypeId?: Maybe<Scalars['Int']>;
-  description?: Maybe<Scalars['String']>;
-  languages?: Maybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  groupTypeId?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['String']>;
+  languages?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  photoUrl?: InputMaybe<Scalars['String']>;
 };
 
 export type GroupMutation = {
-   __typename?: 'GroupMutation';
-  unfollow?: Maybe<Scalars['Int']>;
-  follow?: Maybe<Scalars['Int']>;
+  __typename?: 'GroupMutation';
   create?: Maybe<GroupType>;
-  update?: Maybe<GroupType>;
   delete?: Maybe<Scalars['Int']>;
-};
-
-
-export type GroupMutationUnfollowArgs = {
-  groupId?: Maybe<Scalars['String']>;
-  followerId?: Maybe<Scalars['String']>;
-};
-
-
-export type GroupMutationFollowArgs = {
-  groupId?: Maybe<Scalars['String']>;
+  follow?: Maybe<Scalars['Int']>;
+  unfollow?: Maybe<Scalars['Int']>;
+  update?: Maybe<GroupType>;
 };
 
 
 export type GroupMutationCreateArgs = {
-  data?: Maybe<GroupInputType>;
+  data?: InputMaybe<GroupInputType>;
+};
+
+
+export type GroupMutationDeleteArgs = {
+  id?: InputMaybe<Scalars['String']>;
+};
+
+
+export type GroupMutationFollowArgs = {
+  groupId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type GroupMutationUnfollowArgs = {
+  followerId?: InputMaybe<Scalars['String']>;
+  groupId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -273,148 +279,132 @@ export type GroupMutationUpdateArgs = {
   data: GroupInputType;
 };
 
-
-export type GroupMutationDeleteArgs = {
-  id?: Maybe<Scalars['String']>;
-};
-
 export type GroupQuery = {
-   __typename?: 'GroupQuery';
-  detail?: Maybe<GroupType>;
-  userGroupList?: Maybe<Array<Maybe<GroupType>>>;
+  __typename?: 'GroupQuery';
   allGroupList?: Maybe<Array<Maybe<GroupType>>>;
+  checkAvailable?: Maybe<Scalars['Boolean']>;
+  detail?: Maybe<GroupType>;
+  followers?: Maybe<Array<Maybe<UserViewType>>>;
   top?: Maybe<Array<Maybe<GroupType>>>;
   topByFollowers?: Maybe<Array<Maybe<GroupType>>>;
-  checkAvailable?: Maybe<Scalars['Boolean']>;
-  followers?: Maybe<Array<Maybe<UserViewType>>>;
-};
-
-
-export type GroupQueryDetailArgs = {
-  id?: Maybe<Scalars['String']>;
-};
-
-
-export type GroupQueryUserGroupListArgs = {
-  keywords?: Maybe<Scalars['String']>;
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['String']>;
-  includeDefault?: Maybe<Scalars['Boolean']>;
+  userGroupList?: Maybe<Array<Maybe<GroupType>>>;
 };
 
 
 export type GroupQueryAllGroupListArgs = {
-  keywords?: Maybe<Scalars['String']>;
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-};
-
-
-export type GroupQueryTopArgs = {
-  top?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['String']>;
-};
-
-
-export type GroupQueryTopByFollowersArgs = {
-  top?: Maybe<Scalars['Int']>;
+  keywords?: InputMaybe<Scalars['String']>;
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type GroupQueryCheckAvailableArgs = {
-  name?: Maybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type GroupQueryDetailArgs = {
+  id?: InputMaybe<Scalars['String']>;
 };
 
 
 export type GroupQueryFollowersArgs = {
-  groupId?: Maybe<Scalars['String']>;
-  index?: Maybe<Scalars['Int']>;
-  size?: Maybe<Scalars['Int']>;
+  groupId?: InputMaybe<Scalars['String']>;
+  index?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type GroupQueryTopArgs = {
+  top?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type GroupQueryTopByFollowersArgs = {
+  top?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type GroupQueryUserGroupListArgs = {
+  includeDefault?: InputMaybe<Scalars['Boolean']>;
+  keywords?: InputMaybe<Scalars['String']>;
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type GroupType = {
-   __typename?: 'GroupType';
-  id: Scalars['String'];
-  name: Scalars['String'];
-  photoUrl?: Maybe<Scalars['String']>;
-  groupTypeId?: Maybe<Scalars['Int']>;
-  description?: Maybe<Scalars['String']>;
-  languages?: Maybe<Scalars['String']>;
+  __typename?: 'GroupType';
+  createTime?: Maybe<Scalars['DateTime']>;
   creator?: Maybe<Scalars['String']>;
+  creatorUserName?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  groupTypeId?: Maybe<Scalars['Int']>;
+  id: Scalars['String'];
+  isAdmin?: Maybe<Scalars['Boolean']>;
+  isDefault?: Maybe<Scalars['Boolean']>;
+  isFollowed?: Maybe<Scalars['Boolean']>;
+  languages?: Maybe<Scalars['String']>;
   lastUpdatedBy?: Maybe<Scalars['String']>;
   memberCount?: Maybe<Scalars['Int']>;
+  name: Scalars['String'];
+  photoUrl?: Maybe<Scalars['String']>;
   readCount?: Maybe<Scalars['Int']>;
-  createTime?: Maybe<Scalars['DateTime']>;
   updateTime?: Maybe<Scalars['DateTime']>;
-  isAdmin?: Maybe<Scalars['Boolean']>;
-  isFollowed?: Maybe<Scalars['Boolean']>;
-  creatorUserName?: Maybe<Scalars['String']>;
-  isDefault?: Maybe<Scalars['Boolean']>;
 };
 
 export type InfoCleanType = {
-   __typename?: 'InfoCleanType';
-  tag?: Maybe<TagType>;
+  __typename?: 'InfoCleanType';
   count: Scalars['Int'];
+  tag?: Maybe<TagType>;
 };
 
 export type InfoDocumentsCleanType = {
-   __typename?: 'InfoDocumentsCleanType';
-  wordTagInfo?: Maybe<WordTagInfoCleanType>;
+  __typename?: 'InfoDocumentsCleanType';
   documents?: Maybe<Array<Maybe<DocumentType>>>;
+  wordTagInfo?: Maybe<WordTagInfoCleanType>;
 };
 
 export type LexicalEntryType = {
-   __typename?: 'LexicalEntryType';
+  __typename?: 'LexicalEntryType';
   entries?: Maybe<Array<Maybe<EntryType>>>;
   language: Scalars['String'];
   lexicalCategory: Scalars['String'];
-  text: Scalars['String'];
   pronunciations?: Maybe<Array<Maybe<PronunciationType>>>;
+  text: Scalars['String'];
 };
 
-
 export type MeaningType = {
-   __typename?: 'MeaningType';
-  partOfSpeech: Scalars['String'];
+  __typename?: 'MeaningType';
   definitions?: Maybe<Array<Maybe<DefinitionType>>>;
+  partOfSpeech: Scalars['String'];
 };
 
 export enum MomentGroupType {
   All = 'ALL',
-  Profile = 'PROFILE',
+  Comment = 'COMMENT',
   Group = 'GROUP',
   Page = 'PAGE',
-  Comment = 'COMMENT'
+  Profile = 'PROFILE'
 }
 
 export type MomentInputType = {
-  parent?: Maybe<Scalars['String']>;
-  root?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
   content: Scalars['String'];
-  language?: Maybe<Scalars['String']>;
-  groupId?: Maybe<Scalars['String']>;
-  momentGroupTypeId?: Maybe<Scalars['Int']>;
+  groupId?: InputMaybe<Scalars['String']>;
+  language?: InputMaybe<Scalars['String']>;
+  momentGroupTypeId?: InputMaybe<Scalars['Int']>;
+  parent?: InputMaybe<Scalars['String']>;
+  root?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type MomentMutation = {
-   __typename?: 'MomentMutation';
+  __typename?: 'MomentMutation';
+  comment?: Maybe<CommentType>;
   delete?: Maybe<MomentType>;
   post?: Maybe<MomentType>;
-  comment?: Maybe<CommentType>;
   vote?: Maybe<MomentType>;
-};
-
-
-export type MomentMutationDeleteArgs = {
-  id?: Maybe<Scalars['String']>;
-};
-
-
-export type MomentMutationPostArgs = {
-  data: MomentInputType;
 };
 
 
@@ -423,76 +413,86 @@ export type MomentMutationCommentArgs = {
 };
 
 
+export type MomentMutationDeleteArgs = {
+  id?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MomentMutationPostArgs = {
+  data: MomentInputType;
+};
+
+
 export type MomentMutationVoteArgs = {
-  id?: Maybe<Scalars['String']>;
-  value?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['String']>;
+  value?: InputMaybe<Scalars['Int']>;
 };
 
 export type MomentQuery = {
-   __typename?: 'MomentQuery';
-  listByGroup?: Maybe<Array<Maybe<MomentType>>>;
-  listByFollowing?: Maybe<Array<Maybe<MomentType>>>;
-  listByLang?: Maybe<Array<Maybe<MomentType>>>;
-  listByComment?: Maybe<Array<Maybe<CommentType>>>;
+  __typename?: 'MomentQuery';
   getByDocId?: Maybe<MomentType>;
-};
-
-
-export type MomentQueryListByGroupArgs = {
-  id?: Maybe<Scalars['String']>;
-  type?: Maybe<MomentGroupType>;
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-};
-
-
-export type MomentQueryListByFollowingArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-  id?: Maybe<Scalars['String']>;
-};
-
-
-export type MomentQueryListByLangArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-  langCode?: Maybe<Scalars['String']>;
-};
-
-
-export type MomentQueryListByCommentArgs = {
-  id?: Maybe<Scalars['String']>;
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
+  listByComment?: Maybe<Array<Maybe<CommentType>>>;
+  listByFollowing?: Maybe<Array<Maybe<MomentType>>>;
+  listByGroup?: Maybe<Array<Maybe<MomentType>>>;
+  listByLang?: Maybe<Array<Maybe<MomentType>>>;
 };
 
 
 export type MomentQueryGetByDocIdArgs = {
-  id?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MomentQueryListByCommentArgs = {
+  id?: InputMaybe<Scalars['String']>;
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type MomentQueryListByFollowingArgs = {
+  id?: InputMaybe<Scalars['String']>;
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type MomentQueryListByGroupArgs = {
+  id?: InputMaybe<Scalars['String']>;
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<MomentGroupType>;
+};
+
+
+export type MomentQueryListByLangArgs = {
+  langCode?: InputMaybe<Scalars['String']>;
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
 };
 
 export type MomentType = {
-   __typename?: 'MomentType';
-  id: Scalars['String'];
-  parent?: Maybe<Scalars['String']>;
-  root?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  content: Scalars['String'];
-  creator: Scalars['String'];
-  upvoteCount?: Maybe<Scalars['Int']>;
-  forkCount?: Maybe<Scalars['Int']>;
-  language?: Maybe<Scalars['String']>;
-  groupId?: Maybe<Scalars['String']>;
-  status: Scalars['Int'];
-  createTime?: Maybe<Scalars['DateTime']>;
-  momentGroupTypeId?: Maybe<Scalars['Int']>;
-  userName?: Maybe<Scalars['String']>;
-  readId?: Maybe<Scalars['String']>;
+  __typename?: 'MomentType';
   commentCount?: Maybe<Scalars['Int']>;
+  content: Scalars['String'];
+  createTime?: Maybe<Scalars['DateTime']>;
+  creator: Scalars['String'];
+  forkCount?: Maybe<Scalars['Int']>;
+  groupId?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  language?: Maybe<Scalars['String']>;
+  momentGroupTypeId?: Maybe<Scalars['Int']>;
+  parent?: Maybe<Scalars['String']>;
+  readId?: Maybe<Scalars['String']>;
+  root?: Maybe<Scalars['String']>;
+  status: Scalars['Int'];
+  title?: Maybe<Scalars['String']>;
+  upvoteCount?: Maybe<Scalars['Int']>;
+  userName?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
-   __typename?: 'Mutation';
+  __typename?: 'Mutation';
   doc?: Maybe<Doc>;
   group?: Maybe<GroupMutation>;
   moment?: Maybe<MomentMutation>;
@@ -504,85 +504,85 @@ export type Mutation = {
 };
 
 export type PaginatedDocumentType = {
-   __typename?: 'PaginatedDocumentType';
-  lastId?: Maybe<Scalars['String']>;
+  __typename?: 'PaginatedDocumentType';
   count?: Maybe<Scalars['Int']>;
   data?: Maybe<Array<Maybe<DocumentType>>>;
+  lastId?: Maybe<Scalars['String']>;
 };
 
 export type ProfileMutation = {
-   __typename?: 'ProfileMutation';
+  __typename?: 'ProfileMutation';
+  deleteAllData?: Maybe<Scalars['Int']>;
   follow?: Maybe<Scalars['Int']>;
   unfollow?: Maybe<Scalars['Int']>;
-  deleteAllData?: Maybe<Scalars['Int']>;
 };
 
 
 export type ProfileMutationFollowArgs = {
-  profileId?: Maybe<Scalars['String']>;
+  profileId?: InputMaybe<Scalars['String']>;
 };
 
 
 export type ProfileMutationUnfollowArgs = {
-  followerUserId?: Maybe<Scalars['String']>;
+  followerUserId?: InputMaybe<Scalars['String']>;
 };
 
 export type ProfileQuery = {
-   __typename?: 'ProfileQuery';
-  profile?: Maybe<UserViewType>;
+  __typename?: 'ProfileQuery';
   followers?: Maybe<Array<Maybe<UserViewType>>>;
   followings?: Maybe<Array<Maybe<UserViewType>>>;
-  people?: Maybe<Array<Maybe<UserViewType>>>;
   friends?: Maybe<Array<Maybe<UserViewType>>>;
-};
-
-
-export type ProfileQueryProfileArgs = {
-  userId?: Maybe<Scalars['String']>;
+  people?: Maybe<Array<Maybe<UserViewType>>>;
+  profile?: Maybe<UserViewType>;
 };
 
 
 export type ProfileQueryFollowersArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['String']>;
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 
 export type ProfileQueryFollowingsArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['String']>;
-};
-
-
-export type ProfileQueryPeopleArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 
 export type ProfileQueryFriendsArgs = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['String']>;
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProfileQueryPeopleArgs = {
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type ProfileQueryProfileArgs = {
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type ProfileType = {
-   __typename?: 'ProfileType';
+  __typename?: 'ProfileType';
+  displayLanguage?: Maybe<Scalars['String']>;
+  email: Scalars['String'];
+  emailConfirmed: Scalars['Boolean'];
   firstName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
-  email: Scalars['String'];
   phoneNumber?: Maybe<Scalars['String']>;
-  userName: Scalars['String'];
-  emailConfirmed: Scalars['Boolean'];
-  displayLanguage?: Maybe<Scalars['String']>;
-  targetLanguage?: Maybe<Scalars['String']>;
   sourceLanguage?: Maybe<Scalars['String']>;
+  targetLanguage?: Maybe<Scalars['String']>;
+  userName: Scalars['String'];
 };
 
 export type PronunciationType = {
-   __typename?: 'PronunciationType';
+  __typename?: 'PronunciationType';
   audioFile?: Maybe<Scalars['String']>;
   dialects?: Maybe<Array<Maybe<Scalars['String']>>>;
   phoneticNotation?: Maybe<Scalars['String']>;
@@ -590,7 +590,7 @@ export type PronunciationType = {
 };
 
 export type Query = {
-   __typename?: 'Query';
+  __typename?: 'Query';
   auth?: Maybe<Auth>;
   document?: Maybe<DocumentQueryType>;
   group?: Maybe<GroupQuery>;
@@ -603,12 +603,12 @@ export type Query = {
 };
 
 export type SearchResultType = {
-   __typename?: 'SearchResultType';
+  __typename?: 'SearchResultType';
   results?: Maybe<Array<Maybe<DictResultType>>>;
 };
 
 export type Secret = {
-   __typename?: 'Secret';
+  __typename?: 'Secret';
   update?: Maybe<UserType>;
 };
 
@@ -619,20 +619,20 @@ export type SecretUpdateArgs = {
 };
 
 export type SenseType = {
-   __typename?: 'SenseType';
+  __typename?: 'SenseType';
   definitions: Array<Maybe<Scalars['String']>>;
   domains: Array<Maybe<Scalars['String']>>;
   examples: Array<Maybe<Scalars['String']>>;
 };
 
 export type TagInput = {
-  tagName: Scalars['String'];
-  tagFont: Scalars['String'];
   tagColor: Scalars['String'];
+  tagFont: Scalars['String'];
+  tagName: Scalars['String'];
 };
 
 export type TagMutation = {
-   __typename?: 'TagMutation';
+  __typename?: 'TagMutation';
   add?: Maybe<TagType>;
   delete?: Maybe<Scalars['Int']>;
   update?: Maybe<Scalars['Int']>;
@@ -650,84 +650,84 @@ export type TagMutationDeleteArgs = {
 
 
 export type TagMutationUpdateArgs = {
-  tagName: Scalars['String'];
   tag: TagInput;
+  tagName: Scalars['String'];
 };
 
 export type TagQuery = {
-   __typename?: 'TagQuery';
+  __typename?: 'TagQuery';
   all?: Maybe<Array<Maybe<TagType>>>;
 };
 
 export type TagType = {
-   __typename?: 'TagType';
+  __typename?: 'TagType';
+  createDate: Scalars['DateTime'];
   id: Scalars['String'];
-  tagName: Scalars['String'];
   tagColor: Scalars['String'];
   tagFont: Scalars['String'];
-  createDate: Scalars['DateTime'];
+  tagName: Scalars['String'];
 };
 
 export type Timeline = {
-   __typename?: 'Timeline';
+  __typename?: 'Timeline';
   get?: Maybe<TimelineItemsType>;
   search?: Maybe<Array<Maybe<Scalars['String']>>>;
-  wordByMonth?: Maybe<TimelineValueByMonthType>;
   tagByMonth?: Maybe<TimelineValueByMonthType>;
+  wordByMonth?: Maybe<TimelineValueByMonthType>;
 };
 
 
 export type TimelineGetArgs = {
-  lastId?: Maybe<Scalars['String']>;
-  limitDocs?: Maybe<Scalars['Int']>;
-  index?: Maybe<Scalars['Int']>;
-  size?: Maybe<Scalars['Int']>;
-  keywords?: Maybe<Scalars['String']>;
+  index?: InputMaybe<Scalars['Int']>;
+  keywords?: InputMaybe<Scalars['String']>;
+  lastId?: InputMaybe<Scalars['String']>;
+  limitDocs?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
 };
 
 
 export type TimelineSearchArgs = {
-  keyword?: Maybe<Scalars['String']>;
-};
-
-
-export type TimelineWordByMonthArgs = {
-  word?: Maybe<Scalars['String']>;
+  keyword?: InputMaybe<Scalars['String']>;
 };
 
 
 export type TimelineTagByMonthArgs = {
-  tagName?: Maybe<Scalars['String']>;
+  tagName?: InputMaybe<Scalars['String']>;
+};
+
+
+export type TimelineWordByMonthArgs = {
+  word?: InputMaybe<Scalars['String']>;
 };
 
 export type TimelineItemsType = {
-   __typename?: 'TimelineItemsType';
+  __typename?: 'TimelineItemsType';
+  count: Scalars['Int'];
   lastId: Scalars['String'];
   nextId?: Maybe<Scalars['String']>;
   pageIndex: Scalars['Int'];
   pageSize: Scalars['Int'];
-  count: Scalars['Int'];
-  words?: Maybe<Array<Maybe<Array<Maybe<Scalars['String']>>>>>;
   wordTagInfo?: Maybe<WordTagInfoCleanType>;
+  words?: Maybe<Array<Maybe<Array<Maybe<Scalars['String']>>>>>;
 };
 
 export type TimelineValueByMonthType = {
-   __typename?: 'TimelineValueByMonthType';
+  __typename?: 'TimelineValueByMonthType';
   count: Scalars['Int'];
+  data?: Maybe<Array<Maybe<ValueByMonthType>>>;
   pageIndex: Scalars['Int'];
   pageSize: Scalars['Int'];
-  data?: Maybe<Array<Maybe<ValueByMonthType>>>;
 };
 
 export type Token = {
-   __typename?: 'Token';
+  __typename?: 'Token';
   get?: Maybe<Scalars['String']>;
 };
 
 
 export type TokenGetArgs = {
-  appId?: Maybe<Scalars['String']>;
-  appSecret?: Maybe<Scalars['String']>;
+  appId?: InputMaybe<Scalars['String']>;
+  appSecret?: InputMaybe<Scalars['String']>;
 };
 
 export enum TokenPurpose {
@@ -737,1123 +737,588 @@ export enum TokenPurpose {
 }
 
 export type TranslationResultType = {
-   __typename?: 'TranslationResultType';
-  normalizedSource: Scalars['String'];
+  __typename?: 'TranslationResultType';
   displaySource: Scalars['String'];
+  normalizedSource: Scalars['String'];
   translations?: Maybe<Array<Maybe<TranslationType>>>;
 };
 
 export type TranslationType = {
-   __typename?: 'TranslationType';
-  normalizedTarget: Scalars['String'];
-  displayTarget: Scalars['String'];
-  posTag: Scalars['String'];
-  confidence: Scalars['Float'];
-  prefixWord: Scalars['String'];
+  __typename?: 'TranslationType';
   backTranslations?: Maybe<Array<Maybe<BackTranslationType>>>;
+  confidence: Scalars['Float'];
+  displayTarget: Scalars['String'];
+  normalizedTarget: Scalars['String'];
+  posTag: Scalars['String'];
+  prefixWord: Scalars['String'];
 };
 
 export type UpdateUserViewModelType = {
-  userName?: Maybe<Scalars['String']>;
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
-  displayLanguage?: Maybe<Scalars['String']>;
-  targetLanguage?: Maybe<Scalars['String']>;
-  sourceLanguage?: Maybe<Scalars['String']>;
+  displayLanguage?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  phoneNumber?: InputMaybe<Scalars['String']>;
+  sourceLanguage?: InputMaybe<Scalars['String']>;
+  targetLanguage?: InputMaybe<Scalars['String']>;
+  userName?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
-   __typename?: 'User';
-  register?: Maybe<UserType>;
-  update?: Maybe<UserType>;
+  __typename?: 'User';
   email?: Maybe<UserType>;
   password?: Maybe<Scalars['Boolean']>;
+  register?: Maybe<UserType>;
+  update?: Maybe<UserType>;
   verify?: Maybe<UserType>;
 };
 
 
-export type UserRegisterArgs = {
-  email: Scalars['String'];
-  phonenumber?: Maybe<Scalars['String']>;
-  password?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
-  firstname?: Maybe<Scalars['String']>;
-  lastname?: Maybe<Scalars['String']>;
-  displayLanguage?: Maybe<Scalars['String']>;
-  sourceLanguage?: Maybe<Scalars['String']>;
-  targetLanguage?: Maybe<Scalars['String']>;
-};
-
-
-export type UserUpdateArgs = {
-  appId?: Maybe<Scalars['String']>;
-  appSecret?: Maybe<Scalars['String']>;
-  user?: Maybe<UpdateUserViewModelType>;
-};
-
-
 export type UserEmailArgs = {
-  appId?: Maybe<Scalars['String']>;
-  appSecret?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
+  appId?: InputMaybe<Scalars['String']>;
+  appSecret?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
 };
 
 
 export type UserPasswordArgs = {
-  appId?: Maybe<Scalars['String']>;
-  appSecret?: Maybe<Scalars['String']>;
-  token?: Maybe<Scalars['String']>;
-  password?: Maybe<Scalars['String']>;
+  appId?: InputMaybe<Scalars['String']>;
+  appSecret?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+  token?: InputMaybe<Scalars['String']>;
+};
+
+
+export type UserRegisterArgs = {
+  displayLanguage?: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
+  firstname?: InputMaybe<Scalars['String']>;
+  lastname?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+  phonenumber?: InputMaybe<Scalars['String']>;
+  sourceLanguage?: InputMaybe<Scalars['String']>;
+  targetLanguage?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
+};
+
+
+export type UserUpdateArgs = {
+  appId?: InputMaybe<Scalars['String']>;
+  appSecret?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UpdateUserViewModelType>;
 };
 
 
 export type UserVerifyArgs = {
-  email: Scalars['String'];
   code: Scalars['String'];
-  purpose?: Maybe<TokenPurpose>;
+  email: Scalars['String'];
+  purpose?: InputMaybe<TokenPurpose>;
 };
 
 export type UserType = {
-   __typename?: 'UserType';
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
+  __typename?: 'UserType';
   appId: Scalars['String'];
   appSecret: Scalars['String'];
-  email: Scalars['String'];
-  phoneNumber?: Maybe<Scalars['String']>;
-  userName: Scalars['String'];
-  emailConfirmed: Scalars['Boolean'];
   displayLanguage: Scalars['String'];
-  targetLanguage: Scalars['String'];
+  email: Scalars['String'];
+  emailConfirmed: Scalars['Boolean'];
+  firstName?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  phoneNumber?: Maybe<Scalars['String']>;
   sourceLanguage: Scalars['String'];
+  targetLanguage: Scalars['String'];
   token?: Maybe<Scalars['String']>;
+  userName: Scalars['String'];
 };
 
 export type UserViewType = {
-   __typename?: 'UserViewType';
-  id: Scalars['String'];
-  name: Scalars['String'];
-  photoUrl: Scalars['String'];
-  isFollowing: Scalars['Boolean'];
-  isFollower: Scalars['Boolean'];
+  __typename?: 'UserViewType';
+  description?: Maybe<Scalars['String']>;
   followerCount: Scalars['Int'];
   followingCount: Scalars['Int'];
-  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  isFollower: Scalars['Boolean'];
+  isFollowing: Scalars['Boolean'];
+  name: Scalars['String'];
+  photoUrl: Scalars['String'];
 };
 
 export type ValueByMonthType = {
-   __typename?: 'ValueByMonthType';
-  yearMonth?: Maybe<YearMonthType>;
+  __typename?: 'ValueByMonthType';
   total: Scalars['Int'];
+  yearMonth?: Maybe<YearMonthType>;
 };
 
 export type WordInfoCleanType = {
-   __typename?: 'WordInfoCleanType';
+  __typename?: 'WordInfoCleanType';
   word: Scalars['String'];
   wordInfos?: Maybe<Array<Maybe<InfoCleanType>>>;
 };
 
 export type WordProfileType = {
-   __typename?: 'WordProfileType';
-  word: Scalars['String'];
-  score: Scalars['Float'];
+  __typename?: 'WordProfileType';
   dictResult?: Maybe<SearchResultType>;
   entryResults?: Maybe<Array<Maybe<EntryResultType>>>;
-  wordInfo?: Maybe<Array<Maybe<InfoCleanType>>>;
+  score: Scalars['Float'];
   translationResult?: Maybe<TranslationResultType>;
+  word: Scalars['String'];
+  wordInfo?: Maybe<Array<Maybe<InfoCleanType>>>;
 };
 
 export type WordTagDocumentCleanType = {
-   __typename?: 'WordTagDocumentCleanType';
-  smallWordTagInfo?: Maybe<WordTagInfoCleanType>;
+  __typename?: 'WordTagDocumentCleanType';
   bigWordTagInfo?: Maybe<WordTagInfoCleanType>;
-  document?: Maybe<DocumentType>;
   createTime?: Maybe<Scalars['DateTime']>;
-  updateTime?: Maybe<Scalars['DateTime']>;
-  status: Scalars['Int'];
-  userId: Scalars['String'];
+  document?: Maybe<DocumentType>;
+  id?: Maybe<Scalars['String']>;
   isCreator: Scalars['Boolean'];
+  smallWordTagInfo?: Maybe<WordTagInfoCleanType>;
+  status: Scalars['Int'];
+  updateTime?: Maybe<Scalars['DateTime']>;
+  userId: Scalars['String'];
 };
 
 export type WordTagInfo = {
-   __typename?: 'WordTagInfo';
-  get?: Maybe<WordTagInfoCleanType>;
+  __typename?: 'WordTagInfo';
   dict?: Maybe<SearchResultType>;
+  get?: Maybe<WordTagInfoCleanType>;
   profile?: Maybe<WordProfileType>;
   topMost?: Maybe<Array<Maybe<WordProfileType>>>;
 };
 
 
 export type WordTagInfoDictArgs = {
-  word?: Maybe<Scalars['String']>;
-  lang?: Maybe<Scalars['String']>;
+  lang?: InputMaybe<Scalars['String']>;
+  word?: InputMaybe<Scalars['String']>;
 };
 
 
 export type WordTagInfoProfileArgs = {
-  word?: Maybe<Scalars['String']>;
-  fromLang?: Maybe<Scalars['String']>;
-  toLang?: Maybe<Scalars['String']>;
+  fromLang?: InputMaybe<Scalars['String']>;
+  toLang?: InputMaybe<Scalars['String']>;
+  word?: InputMaybe<Scalars['String']>;
 };
 
 
 export type WordTagInfoTopMostArgs = {
-  top?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['String']>;
+  top?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type WordTagInfoCleanType = {
-   __typename?: 'WordTagInfoCleanType';
-  wti?: Maybe<Array<Maybe<WordInfoCleanType>>>;
-  tags?: Maybe<Array<Maybe<TagType>>>;
+  __typename?: 'WordTagInfoCleanType';
   createDate: Scalars['DateTime'];
+  tags?: Maybe<Array<Maybe<TagType>>>;
   updateDate: Scalars['DateTime'];
+  wti?: Maybe<Array<Maybe<WordInfoCleanType>>>;
 };
 
 export type WordTagInfoMutation = {
-   __typename?: 'WordTagInfoMutation';
+  __typename?: 'WordTagInfoMutation';
   remove?: Maybe<Scalars['Boolean']>;
 };
 
 
 export type WordTagInfoMutationRemoveArgs = {
-  word: Scalars['String'];
   tagName: Scalars['String'];
+  word: Scalars['String'];
 };
 
 export type WordTagStaticsType = {
-   __typename?: 'WordTagStaticsType';
+  __typename?: 'WordTagStaticsType';
   documentCount: Scalars['Long'];
-  tagWordCount: Scalars['Int'];
   tagCount: Scalars['Int'];
+  tagWordCount: Scalars['Int'];
 };
 
 export type YearMonthType = {
-   __typename?: 'YearMonthType';
-  year: Scalars['Int'];
+  __typename?: 'YearMonthType';
   month: Scalars['Int'];
+  year: Scalars['Int'];
 };
 
-export type LoginQueryVariables = {
+export type LoginQueryVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
-};
+}>;
 
 
-export type LoginQuery = (
-  { __typename?: 'Query' }
-  & { auth?: Maybe<(
-    { __typename?: 'Auth' }
-    & { auth?: Maybe<(
-      { __typename?: 'UserType' }
-      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'email' | 'phoneNumber' | 'userName' | 'emailConfirmed' | 'displayLanguage' | 'targetLanguage' | 'sourceLanguage' | 'token'>
-    )> }
-  )> }
-);
+export type LoginQuery = { __typename?: 'Query', auth?: { __typename?: 'Auth', auth?: { __typename?: 'UserType', appId: string, appSecret: string, firstName?: string | null | undefined, lastName?: string | null | undefined, email: string, phoneNumber?: string | null | undefined, userName: string, emailConfirmed: boolean, displayLanguage: string, targetLanguage: string, sourceLanguage: string, token?: string | null | undefined } | null | undefined } | null | undefined };
 
-export type RegisterMutationVariables = {
+export type RegisterMutationVariables = Exact<{
   email: Scalars['String'];
   displayLanguage: Scalars['String'];
-};
+}>;
 
 
-export type RegisterMutation = (
-  { __typename?: 'Mutation' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
-    & { register?: Maybe<(
-      { __typename?: 'UserType' }
-      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'email' | 'token' | 'displayLanguage'>
-    )> }
-  )> }
-);
+export type RegisterMutation = { __typename?: 'Mutation', user?: { __typename?: 'User', register?: { __typename?: 'UserType', appId: string, appSecret: string, firstName?: string | null | undefined, lastName?: string | null | undefined, email: string, token?: string | null | undefined, displayLanguage: string } | null | undefined } | null | undefined };
 
-export type TokenQueryVariables = {
+export type TokenQueryVariables = Exact<{
   appId: Scalars['String'];
   appSecret: Scalars['String'];
-};
+}>;
 
 
-export type TokenQuery = (
-  { __typename?: 'Query' }
-  & { token?: Maybe<(
-    { __typename?: 'Token' }
-    & Pick<Token, 'get'>
-  )> }
-);
+export type TokenQuery = { __typename?: 'Query', token?: { __typename?: 'Token', get?: string | null | undefined } | null | undefined };
 
-export type CheckEmailQueryVariables = {
+export type CheckEmailQueryVariables = Exact<{
   email: Scalars['String'];
-};
+}>;
 
 
-export type CheckEmailQuery = (
-  { __typename?: 'Query' }
-  & { auth?: Maybe<(
-    { __typename?: 'Auth' }
-    & Pick<Auth, 'email'>
-  )> }
-);
+export type CheckEmailQuery = { __typename?: 'Query', auth?: { __typename?: 'Auth', email?: boolean | null | undefined } | null | undefined };
 
-export type SendVerifyQueryVariables = {
+export type SendVerifyQueryVariables = Exact<{
   appId: Scalars['String'];
   appSecret: Scalars['String'];
-};
+}>;
 
 
-export type SendVerifyQuery = (
-  { __typename?: 'Query' }
-  & { auth?: Maybe<(
-    { __typename?: 'Auth' }
-    & Pick<Auth, 'sendverify'>
-  )> }
-);
+export type SendVerifyQuery = { __typename?: 'Query', auth?: { __typename?: 'Auth', sendverify?: boolean | null | undefined } | null | undefined };
 
-export type UpdateEmailMutationVariables = {
+export type UpdateEmailMutationVariables = Exact<{
   appId: Scalars['String'];
   appSecret: Scalars['String'];
   email: Scalars['String'];
-};
+}>;
 
 
-export type UpdateEmailMutation = (
-  { __typename?: 'Mutation' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
-    & { email?: Maybe<(
-      { __typename?: 'UserType' }
-      & Pick<UserType, 'appId' | 'appSecret' | 'token' | 'email'>
-    )> }
-  )> }
-);
+export type UpdateEmailMutation = { __typename?: 'Mutation', user?: { __typename?: 'User', email?: { __typename?: 'UserType', appId: string, appSecret: string, token?: string | null | undefined, email: string } | null | undefined } | null | undefined };
 
-export type SendRestQueryVariables = {
+export type SendRestQueryVariables = Exact<{
   appId: Scalars['String'];
   appSecret: Scalars['String'];
-};
+}>;
 
 
-export type SendRestQuery = (
-  { __typename?: 'Query' }
-  & { auth?: Maybe<(
-    { __typename?: 'Auth' }
-    & Pick<Auth, 'sendreset'>
-  )> }
-);
+export type SendRestQuery = { __typename?: 'Query', auth?: { __typename?: 'Auth', sendreset?: boolean | null | undefined } | null | undefined };
 
-export type ChangePasswordMutationVariables = {
+export type ChangePasswordMutationVariables = Exact<{
   appId: Scalars['String'];
   appSecret: Scalars['String'];
   token: Scalars['String'];
   password: Scalars['String'];
-};
+}>;
 
 
-export type ChangePasswordMutation = (
-  { __typename?: 'Mutation' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'password'>
-  )> }
-);
+export type ChangePasswordMutation = { __typename?: 'Mutation', user?: { __typename?: 'User', password?: boolean | null | undefined } | null | undefined };
 
-export type SendTotpQueryVariables = {
+export type SendTotpQueryVariables = Exact<{
   email: Scalars['String'];
-};
+}>;
 
 
-export type SendTotpQuery = (
-  { __typename?: 'Query' }
-  & { auth?: Maybe<(
-    { __typename?: 'Auth' }
-    & Pick<Auth, 'sendauthcode'>
-  )> }
-);
+export type SendTotpQuery = { __typename?: 'Query', auth?: { __typename?: 'Auth', sendauthcode?: boolean | null | undefined } | null | undefined };
 
-export type VerifyCodeMutationVariables = {
+export type VerifyCodeMutationVariables = Exact<{
   email: Scalars['String'];
   code: Scalars['String'];
-  purpose?: Maybe<TokenPurpose>;
-};
+  purpose?: InputMaybe<TokenPurpose>;
+}>;
 
 
-export type VerifyCodeMutation = (
-  { __typename?: 'Mutation' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
-    & { verify?: Maybe<(
-      { __typename?: 'UserType' }
-      & Pick<UserType, 'appId' | 'appSecret' | 'firstName' | 'lastName' | 'userName' | 'email' | 'token'>
-    )> }
-  )> }
-);
+export type VerifyCodeMutation = { __typename?: 'Mutation', user?: { __typename?: 'User', verify?: { __typename?: 'UserType', appId: string, appSecret: string, firstName?: string | null | undefined, lastName?: string | null | undefined, userName: string, email: string, token?: string | null | undefined } | null | undefined } | null | undefined };
 
-export type UpdateUserMutationVariables = {
-  appId?: Maybe<Scalars['String']>;
-  appSecret?: Maybe<Scalars['String']>;
-  user?: Maybe<UpdateUserViewModelType>;
-};
+export type UpdateUserMutationVariables = Exact<{
+  appId?: InputMaybe<Scalars['String']>;
+  appSecret?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<UpdateUserViewModelType>;
+}>;
 
 
-export type UpdateUserMutation = (
-  { __typename?: 'Mutation' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
-    & { update?: Maybe<(
-      { __typename?: 'UserType' }
-      & Pick<UserType, 'firstName' | 'lastName' | 'email' | 'userName' | 'appId' | 'appSecret' | 'token' | 'displayLanguage' | 'targetLanguage' | 'sourceLanguage'>
-    )> }
-  )> }
-);
+export type UpdateUserMutation = { __typename?: 'Mutation', user?: { __typename?: 'User', update?: { __typename?: 'UserType', firstName?: string | null | undefined, lastName?: string | null | undefined, email: string, userName: string, appId: string, appSecret: string, token?: string | null | undefined, displayLanguage: string, targetLanguage: string, sourceLanguage: string } | null | undefined } | null | undefined };
 
-export type GetProfileQueryVariables = {
+export type GetProfileQueryVariables = Exact<{
   appId: Scalars['String'];
   appSecret: Scalars['String'];
-};
+}>;
 
 
-export type GetProfileQuery = (
-  { __typename?: 'Query' }
-  & { auth?: Maybe<(
-    { __typename?: 'Auth' }
-    & { profile?: Maybe<(
-      { __typename?: 'ProfileType' }
-      & Pick<ProfileType, 'firstName' | 'lastName' | 'email' | 'phoneNumber' | 'userName' | 'emailConfirmed' | 'displayLanguage' | 'targetLanguage' | 'sourceLanguage'>
-    )> }
-  )> }
-);
+export type GetProfileQuery = { __typename?: 'Query', auth?: { __typename?: 'Auth', profile?: { __typename?: 'ProfileType', firstName?: string | null | undefined, lastName?: string | null | undefined, email: string, phoneNumber?: string | null | undefined, userName: string, emailConfirmed: boolean, displayLanguage?: string | null | undefined, targetLanguage?: string | null | undefined, sourceLanguage?: string | null | undefined } | null | undefined } | null | undefined };
 
-export type GetDocumentQueryVariables = {
+export type GetDocumentQueryVariables = Exact<{
   docId: Scalars['String'];
-};
+}>;
 
 
-export type GetDocumentQuery = (
-  { __typename?: 'Query' }
-  & { document?: Maybe<(
-    { __typename?: 'DocumentQueryType' }
-    & { get?: Maybe<(
-      { __typename?: 'WordTagDocumentCleanType' }
-      & Pick<WordTagDocumentCleanType, 'createTime' | 'updateTime' | 'status'>
-      & { document?: Maybe<(
-        { __typename?: 'DocumentType' }
-        & Pick<DocumentType, 'docId' | 'id' | 'content' | 'createDate' | 'updateDate' | 'title'>
-      )>, smallWordTagInfo?: Maybe<(
-        { __typename?: 'WordTagInfoCleanType' }
-        & { wti?: Maybe<Array<Maybe<(
-          { __typename?: 'WordInfoCleanType' }
-          & Pick<WordInfoCleanType, 'word'>
-          & { wordInfos?: Maybe<Array<Maybe<(
-            { __typename?: 'InfoCleanType' }
-            & Pick<InfoCleanType, 'count'>
-            & { tag?: Maybe<(
-              { __typename?: 'TagType' }
-              & Pick<TagType, 'id' | 'tagName'>
-            )> }
-          )>>> }
-        )>>>, tags?: Maybe<Array<Maybe<(
-          { __typename?: 'TagType' }
-          & Pick<TagType, 'id' | 'tagName' | 'tagColor'>
-        )>>> }
-      )>, bigWordTagInfo?: Maybe<(
-        { __typename?: 'WordTagInfoCleanType' }
-        & { tags?: Maybe<Array<Maybe<(
-          { __typename?: 'TagType' }
-          & Pick<TagType, 'id' | 'tagName' | 'tagColor'>
-        )>>> }
-      )> }
-    )> }
-  )> }
-);
+export type GetDocumentQuery = { __typename?: 'Query', document?: { __typename?: 'DocumentQueryType', get?: { __typename?: 'WordTagDocumentCleanType', createTime?: any | null | undefined, updateTime?: any | null | undefined, status: number, document?: { __typename?: 'DocumentType', docId: string, id: string, content: string, createDate?: any | null | undefined, updateDate?: any | null | undefined, title: string } | null | undefined, smallWordTagInfo?: { __typename?: 'WordTagInfoCleanType', wti?: Array<{ __typename?: 'WordInfoCleanType', word: string, wordInfos?: Array<{ __typename?: 'InfoCleanType', count: number, tag?: { __typename?: 'TagType', id: string, tagName: string } | null | undefined } | null | undefined> | null | undefined } | null | undefined> | null | undefined, tags?: Array<{ __typename?: 'TagType', id: string, tagName: string, tagColor: string } | null | undefined> | null | undefined } | null | undefined, bigWordTagInfo?: { __typename?: 'WordTagInfoCleanType', tags?: Array<{ __typename?: 'TagType', id: string, tagName: string, tagColor: string } | null | undefined> | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
-export type GetDocumentsQueryVariables = {
+export type GetDocumentsQueryVariables = Exact<{
   pageSize: Scalars['Int'];
-  lastId?: Maybe<Scalars['String']>;
-  keywords?: Maybe<Scalars['String']>;
-};
+  lastId?: InputMaybe<Scalars['String']>;
+  keywords?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type GetDocumentsQuery = (
-  { __typename?: 'Query' }
-  & { document?: Maybe<(
-    { __typename?: 'DocumentQueryType' }
-    & { list?: Maybe<(
-      { __typename?: 'PaginatedDocumentType' }
-      & Pick<PaginatedDocumentType, 'lastId'>
-      & { data?: Maybe<Array<Maybe<(
-        { __typename?: 'DocumentType' }
-        & Pick<DocumentType, 'id' | 'docId' | 'title' | 'content' | 'createDate'>
-      )>>> }
-    )> }
-  )> }
-);
+export type GetDocumentsQuery = { __typename?: 'Query', document?: { __typename?: 'DocumentQueryType', list?: { __typename?: 'PaginatedDocumentType', lastId?: string | null | undefined, data?: Array<{ __typename?: 'DocumentType', id: string, docId: string, title: string, content: string, createDate?: any | null | undefined } | null | undefined> | null | undefined } | null | undefined } | null | undefined };
 
-export type GiveItToMeQueryVariables = {
+export type GiveItToMeQueryVariables = Exact<{
   content: Scalars['String'];
-};
+}>;
 
 
-export type GiveItToMeQuery = (
-  { __typename?: 'Query' }
-  & { document?: Maybe<(
-    { __typename?: 'DocumentQueryType' }
-    & { giveItToMe?: Maybe<(
-      { __typename?: 'WordTagDocumentCleanType' }
-      & Pick<WordTagDocumentCleanType, 'isCreator' | 'userId' | 'createTime' | 'updateTime' | 'status'>
-      & { document?: Maybe<(
-        { __typename?: 'DocumentType' }
-        & Pick<DocumentType, 'docId' | 'id' | 'content' | 'createDate' | 'updateDate' | 'title' | 'url' | 'wordsCount'>
-      )>, smallWordTagInfo?: Maybe<(
-        { __typename?: 'WordTagInfoCleanType' }
-        & { wti?: Maybe<Array<Maybe<(
-          { __typename?: 'WordInfoCleanType' }
-          & Pick<WordInfoCleanType, 'word'>
-          & { wordInfos?: Maybe<Array<Maybe<(
-            { __typename?: 'InfoCleanType' }
-            & Pick<InfoCleanType, 'count'>
-            & { tag?: Maybe<(
-              { __typename?: 'TagType' }
-              & Pick<TagType, 'tagName'>
-            )> }
-          )>>> }
-        )>>>, tags?: Maybe<Array<Maybe<(
-          { __typename?: 'TagType' }
-          & Pick<TagType, 'tagName' | 'tagColor'>
-        )>>> }
-      )>, bigWordTagInfo?: Maybe<(
-        { __typename?: 'WordTagInfoCleanType' }
-        & { tags?: Maybe<Array<Maybe<(
-          { __typename?: 'TagType' }
-          & Pick<TagType, 'tagName' | 'tagColor'>
-        )>>> }
-      )> }
-    )> }
-  )> }
-);
+export type GiveItToMeQuery = { __typename?: 'Query', document?: { __typename?: 'DocumentQueryType', giveItToMe?: { __typename?: 'WordTagDocumentCleanType', id?: string | null | undefined, isCreator: boolean, userId: string, createTime?: any | null | undefined, updateTime?: any | null | undefined, status: number, document?: { __typename?: 'DocumentType', docId: string, id: string, content: string, createDate?: any | null | undefined, updateDate?: any | null | undefined, title: string, url?: string | null | undefined, wordsCount: number } | null | undefined, smallWordTagInfo?: { __typename?: 'WordTagInfoCleanType', wti?: Array<{ __typename?: 'WordInfoCleanType', word: string, wordInfos?: Array<{ __typename?: 'InfoCleanType', count: number, tag?: { __typename?: 'TagType', tagName: string } | null | undefined } | null | undefined> | null | undefined } | null | undefined> | null | undefined, tags?: Array<{ __typename?: 'TagType', tagName: string, tagColor: string } | null | undefined> | null | undefined } | null | undefined, bigWordTagInfo?: { __typename?: 'WordTagInfoCleanType', tags?: Array<{ __typename?: 'TagType', tagName: string, tagColor: string } | null | undefined> | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
-export type GetStatsQueryVariables = {};
+export type GetStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetStatsQuery = (
-  { __typename?: 'Query' }
-  & { document?: Maybe<(
-    { __typename?: 'DocumentQueryType' }
-    & { stats?: Maybe<(
-      { __typename?: 'WordTagStaticsType' }
-      & Pick<WordTagStaticsType, 'documentCount' | 'tagCount' | 'tagWordCount'>
-    )> }
-  )> }
-);
+export type GetStatsQuery = { __typename?: 'Query', document?: { __typename?: 'DocumentQueryType', stats?: { __typename?: 'WordTagStaticsType', documentCount: any, tagCount: number, tagWordCount: number } | null | undefined } | null | undefined };
 
-export type RemoveTagMutationVariables = {
+export type RemoveTagMutationVariables = Exact<{
   word: Scalars['String'];
   tagName: Scalars['String'];
-};
+}>;
 
 
-export type RemoveTagMutation = (
-  { __typename?: 'Mutation' }
-  & { wti?: Maybe<(
-    { __typename?: 'WordTagInfoMutation' }
-    & Pick<WordTagInfoMutation, 'remove'>
-  )> }
-);
+export type RemoveTagMutation = { __typename?: 'Mutation', wti?: { __typename?: 'WordTagInfoMutation', remove?: boolean | null | undefined } | null | undefined };
 
-export type SaveDocumentMutationVariables = {
+export type SaveDocumentMutationVariables = Exact<{
   title: Scalars['String'];
   content: Scalars['String'];
   wordTagLiteStr: Scalars['String'];
-  id?: Maybe<Scalars['String']>;
-  docId?: Maybe<Scalars['String']>;
-  url?: Maybe<Scalars['String']>;
-};
+  id?: InputMaybe<Scalars['String']>;
+  docId?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type SaveDocumentMutation = (
-  { __typename?: 'Mutation' }
-  & { doc?: Maybe<(
-    { __typename?: 'Doc' }
-    & { save?: Maybe<(
-      { __typename?: 'WordTagDocumentCleanType' }
-      & Pick<WordTagDocumentCleanType, 'createTime' | 'updateTime' | 'status'>
-      & { document?: Maybe<(
-        { __typename?: 'DocumentType' }
-        & Pick<DocumentType, 'docId' | 'id' | 'content' | 'createDate' | 'updateDate' | 'title' | 'wordsCount' | 'url'>
-      )>, smallWordTagInfo?: Maybe<(
-        { __typename?: 'WordTagInfoCleanType' }
-        & { wti?: Maybe<Array<Maybe<(
-          { __typename?: 'WordInfoCleanType' }
-          & Pick<WordInfoCleanType, 'word'>
-          & { wordInfos?: Maybe<Array<Maybe<(
-            { __typename?: 'InfoCleanType' }
-            & Pick<InfoCleanType, 'count'>
-            & { tag?: Maybe<(
-              { __typename?: 'TagType' }
-              & Pick<TagType, 'tagName'>
-            )> }
-          )>>> }
-        )>>>, tags?: Maybe<Array<Maybe<(
-          { __typename?: 'TagType' }
-          & Pick<TagType, 'tagName' | 'tagColor'>
-        )>>> }
-      )>, bigWordTagInfo?: Maybe<(
-        { __typename?: 'WordTagInfoCleanType' }
-        & { tags?: Maybe<Array<Maybe<(
-          { __typename?: 'TagType' }
-          & Pick<TagType, 'tagName' | 'tagColor'>
-        )>>> }
-      )> }
-    )> }
-  )> }
-);
+export type SaveDocumentMutation = { __typename?: 'Mutation', doc?: { __typename?: 'Doc', save?: { __typename?: 'WordTagDocumentCleanType', createTime?: any | null | undefined, updateTime?: any | null | undefined, status: number, document?: { __typename?: 'DocumentType', docId: string, id: string, content: string, createDate?: any | null | undefined, updateDate?: any | null | undefined, title: string, wordsCount: number, url?: string | null | undefined } | null | undefined, smallWordTagInfo?: { __typename?: 'WordTagInfoCleanType', wti?: Array<{ __typename?: 'WordInfoCleanType', word: string, wordInfos?: Array<{ __typename?: 'InfoCleanType', count: number, tag?: { __typename?: 'TagType', tagName: string } | null | undefined } | null | undefined> | null | undefined } | null | undefined> | null | undefined, tags?: Array<{ __typename?: 'TagType', tagName: string, tagColor: string } | null | undefined> | null | undefined } | null | undefined, bigWordTagInfo?: { __typename?: 'WordTagInfoCleanType', tags?: Array<{ __typename?: 'TagType', tagName: string, tagColor: string } | null | undefined> | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
-export type DeleteDocumentMutationVariables = {
+export type DeleteDocumentMutationVariables = Exact<{
   docId: Scalars['String'];
-};
+}>;
 
 
-export type DeleteDocumentMutation = (
-  { __typename?: 'Mutation' }
-  & { doc?: Maybe<(
-    { __typename?: 'Doc' }
-    & Pick<Doc, 'delete'>
-  )> }
-);
+export type DeleteDocumentMutation = { __typename?: 'Mutation', doc?: { __typename?: 'Doc', delete?: number | null | undefined } | null | undefined };
 
-export type GetWordProfileQueryVariables = {
+export type GetWordProfileQueryVariables = Exact<{
   word: Scalars['String'];
   fromLang: Scalars['String'];
   toLang: Scalars['String'];
-};
+}>;
 
 
-export type GetWordProfileQuery = (
-  { __typename?: 'Query' }
-  & { wti?: Maybe<(
-    { __typename?: 'WordTagInfo' }
-    & { profile?: Maybe<(
-      { __typename?: 'WordProfileType' }
-      & Pick<WordProfileType, 'word' | 'score'>
-      & { wordInfo?: Maybe<Array<Maybe<(
-        { __typename?: 'InfoCleanType' }
-        & Pick<InfoCleanType, 'count'>
-        & { tag?: Maybe<(
-          { __typename?: 'TagType' }
-          & Pick<TagType, 'tagFont' | 'tagName' | 'tagColor' | 'id'>
-        )> }
-      )>>>, entryResults?: Maybe<Array<Maybe<(
-        { __typename?: 'EntryResultType' }
-        & Pick<EntryResultType, 'origin' | 'word' | 'phonetic'>
-        & { meanings?: Maybe<Array<Maybe<(
-          { __typename?: 'MeaningType' }
-          & Pick<MeaningType, 'partOfSpeech'>
-          & { definitions?: Maybe<Array<Maybe<(
-            { __typename?: 'DefinitionType' }
-            & Pick<DefinitionType, 'description' | 'example'>
-          )>>> }
-        )>>> }
-      )>>>, translationResult?: Maybe<(
-        { __typename?: 'TranslationResultType' }
-        & Pick<TranslationResultType, 'displaySource'>
-        & { translations?: Maybe<Array<Maybe<(
-          { __typename?: 'TranslationType' }
-          & Pick<TranslationType, 'displayTarget' | 'posTag' | 'confidence'>
-          & { backTranslations?: Maybe<Array<Maybe<(
-            { __typename?: 'BackTranslationType' }
-            & Pick<BackTranslationType, 'normalizedText' | 'displayTarget'>
-          )>>> }
-        )>>> }
-      )> }
-    )> }
-  )>, timeline?: Maybe<(
-    { __typename?: 'Timeline' }
-    & { wordByMonth?: Maybe<(
-      { __typename?: 'TimelineValueByMonthType' }
-      & { data?: Maybe<Array<Maybe<(
-        { __typename?: 'ValueByMonthType' }
-        & Pick<ValueByMonthType, 'total'>
-        & { yearMonth?: Maybe<(
-          { __typename?: 'YearMonthType' }
-          & Pick<YearMonthType, 'year' | 'month'>
-        )> }
-      )>>> }
-    )> }
-  )> }
-);
+export type GetWordProfileQuery = { __typename?: 'Query', wti?: { __typename?: 'WordTagInfo', profile?: { __typename?: 'WordProfileType', word: string, score: number, wordInfo?: Array<{ __typename?: 'InfoCleanType', count: number, tag?: { __typename?: 'TagType', tagFont: string, tagName: string, tagColor: string, id: string } | null | undefined } | null | undefined> | null | undefined, entryResults?: Array<{ __typename?: 'EntryResultType', origin?: string | null | undefined, word: string, phonetic?: string | null | undefined, meanings?: Array<{ __typename?: 'MeaningType', partOfSpeech: string, definitions?: Array<{ __typename?: 'DefinitionType', description: string, example?: string | null | undefined } | null | undefined> | null | undefined } | null | undefined> | null | undefined } | null | undefined> | null | undefined, translationResult?: { __typename?: 'TranslationResultType', displaySource: string, translations?: Array<{ __typename?: 'TranslationType', displayTarget: string, posTag: string, confidence: number, backTranslations?: Array<{ __typename?: 'BackTranslationType', normalizedText: string, displayTarget: string } | null | undefined> | null | undefined } | null | undefined> | null | undefined } | null | undefined } | null | undefined } | null | undefined, timeline?: { __typename?: 'Timeline', wordByMonth?: { __typename?: 'TimelineValueByMonthType', data?: Array<{ __typename?: 'ValueByMonthType', total: number, yearMonth?: { __typename?: 'YearMonthType', year: number, month: number } | null | undefined } | null | undefined> | null | undefined } | null | undefined } | null | undefined };
 
-export type GetTopmostQueryVariables = {
-  top?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['String']>;
-};
+export type GetTopmostQueryVariables = Exact<{
+  top?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type GetTopmostQuery = (
-  { __typename?: 'Query' }
-  & { wti?: Maybe<(
-    { __typename?: 'WordTagInfo' }
-    & { topMost?: Maybe<Array<Maybe<(
-      { __typename?: 'WordProfileType' }
-      & Pick<WordProfileType, 'word' | 'score'>
-      & { wordInfo?: Maybe<Array<Maybe<(
-        { __typename?: 'InfoCleanType' }
-        & { tag?: Maybe<(
-          { __typename?: 'TagType' }
-          & Pick<TagType, 'tagFont' | 'tagName' | 'tagColor'>
-        )> }
-      )>>> }
-    )>>> }
-  )> }
-);
+export type GetTopmostQuery = { __typename?: 'Query', wti?: { __typename?: 'WordTagInfo', topMost?: Array<{ __typename?: 'WordProfileType', word: string, score: number, wordInfo?: Array<{ __typename?: 'InfoCleanType', tag?: { __typename?: 'TagType', tagFont: string, tagName: string, tagColor: string } | null | undefined } | null | undefined> | null | undefined } | null | undefined> | null | undefined } | null | undefined };
 
-export type GetTimelineQueryVariables = {
-  index?: Maybe<Scalars['Int']>;
-  size?: Maybe<Scalars['Int']>;
-  lastId?: Maybe<Scalars['String']>;
-  keywords?: Maybe<Scalars['String']>;
-};
+export type GetTimelineQueryVariables = Exact<{
+  index?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  lastId?: InputMaybe<Scalars['String']>;
+  keywords?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type GetTimelineQuery = (
-  { __typename?: 'Query' }
-  & { timeline?: Maybe<(
-    { __typename?: 'Timeline' }
-    & { get?: Maybe<(
-      { __typename?: 'TimelineItemsType' }
-      & Pick<TimelineItemsType, 'words' | 'lastId'>
-      & { wordTagInfo?: Maybe<(
-        { __typename?: 'WordTagInfoCleanType' }
-        & { wti?: Maybe<Array<Maybe<(
-          { __typename?: 'WordInfoCleanType' }
-          & Pick<WordInfoCleanType, 'word'>
-          & { wordInfos?: Maybe<Array<Maybe<(
-            { __typename?: 'InfoCleanType' }
-            & { tag?: Maybe<(
-              { __typename?: 'TagType' }
-              & Pick<TagType, 'id' | 'tagName' | 'tagColor' | 'tagFont'>
-            )> }
-          )>>> }
-        )>>> }
-      )> }
-    )> }
-  )> }
-);
+export type GetTimelineQuery = { __typename?: 'Query', timeline?: { __typename?: 'Timeline', get?: { __typename?: 'TimelineItemsType', words?: Array<Array<string | null | undefined> | null | undefined> | null | undefined, lastId: string, wordTagInfo?: { __typename?: 'WordTagInfoCleanType', wti?: Array<{ __typename?: 'WordInfoCleanType', word: string, wordInfos?: Array<{ __typename?: 'InfoCleanType', tag?: { __typename?: 'TagType', id: string, tagName: string, tagColor: string, tagFont: string } | null | undefined } | null | undefined> | null | undefined } | null | undefined> | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
-export type ForkDoucmentMutationVariables = {
+export type ForkDoucmentMutationVariables = Exact<{
   docId: Scalars['String'];
-  groupId?: Maybe<Scalars['String']>;
-  wordTagLiteStr?: Maybe<Scalars['String']>;
-};
+  groupId?: InputMaybe<Scalars['String']>;
+  wordTagLiteStr?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type ForkDoucmentMutation = (
-  { __typename?: 'Mutation' }
-  & { doc?: Maybe<(
-    { __typename?: 'Doc' }
-    & { fork?: Maybe<(
-      { __typename?: 'WordTagDocumentCleanType' }
-      & { document?: Maybe<(
-        { __typename?: 'DocumentType' }
-        & Pick<DocumentType, 'docId' | 'forkId'>
-      )> }
-    )> }
-  )> }
-);
+export type ForkDoucmentMutation = { __typename?: 'Mutation', doc?: { __typename?: 'Doc', fork?: { __typename?: 'WordTagDocumentCleanType', document?: { __typename?: 'DocumentType', docId: string, forkId?: string | null | undefined } | null | undefined } | null | undefined } | null | undefined };
 
-export type DeleteAllCoreDataMutationVariables = {};
+export type DeleteAllCoreDataMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type DeleteAllCoreDataMutation = (
-  { __typename?: 'Mutation' }
-  & { doc?: Maybe<(
-    { __typename?: 'Doc' }
-    & Pick<Doc, 'deleteAllData'>
-  )> }
-);
+export type DeleteAllCoreDataMutation = { __typename?: 'Mutation', doc?: { __typename?: 'Doc', deleteAllData?: number | null | undefined } | null | undefined };
 
-export type CreateGroupMutationVariables = {
-  group?: Maybe<GroupInputType>;
-};
+export type CreateGroupMutationVariables = Exact<{
+  group?: InputMaybe<GroupInputType>;
+}>;
 
 
-export type CreateGroupMutation = (
-  { __typename?: 'Mutation' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupMutation' }
-    & { create?: Maybe<(
-      { __typename?: 'GroupType' }
-      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages'>
-    )> }
-  )> }
-);
+export type CreateGroupMutation = { __typename?: 'Mutation', group?: { __typename?: 'GroupMutation', create?: { __typename?: 'GroupType', id: string, name: string, readCount?: number | null | undefined, memberCount?: number | null | undefined, creator?: string | null | undefined, description?: string | null | undefined, isAdmin?: boolean | null | undefined, isFollowed?: boolean | null | undefined, languages?: string | null | undefined } | null | undefined } | null | undefined };
 
-export type UpdateGroupMutationVariables = {
+export type UpdateGroupMutationVariables = Exact<{
   group: GroupInputType;
-};
+}>;
 
 
-export type UpdateGroupMutation = (
-  { __typename?: 'Mutation' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupMutation' }
-    & { update?: Maybe<(
-      { __typename?: 'GroupType' }
-      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages'>
-    )> }
-  )> }
-);
+export type UpdateGroupMutation = { __typename?: 'Mutation', group?: { __typename?: 'GroupMutation', update?: { __typename?: 'GroupType', id: string, name: string, readCount?: number | null | undefined, memberCount?: number | null | undefined, creator?: string | null | undefined, description?: string | null | undefined, isAdmin?: boolean | null | undefined, isFollowed?: boolean | null | undefined, languages?: string | null | undefined } | null | undefined } | null | undefined };
 
-export type CheckAvailableQueryVariables = {
-  name?: Maybe<Scalars['String']>;
-};
+export type CheckAvailableQueryVariables = Exact<{
+  name?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type CheckAvailableQuery = (
-  { __typename?: 'Query' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupQuery' }
-    & Pick<GroupQuery, 'checkAvailable'>
-  )> }
-);
+export type CheckAvailableQuery = { __typename?: 'Query', group?: { __typename?: 'GroupQuery', checkAvailable?: boolean | null | undefined } | null | undefined };
 
-export type UserGroupListQueryVariables = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-  userId?: Maybe<Scalars['String']>;
-  keywords?: Maybe<Scalars['String']>;
-  includeDefault?: Maybe<Scalars['Boolean']>;
-};
+export type UserGroupListQueryVariables = Exact<{
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['String']>;
+  keywords?: InputMaybe<Scalars['String']>;
+  includeDefault?: InputMaybe<Scalars['Boolean']>;
+}>;
 
 
-export type UserGroupListQuery = (
-  { __typename?: 'Query' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupQuery' }
-    & { userGroupList?: Maybe<Array<Maybe<(
-      { __typename?: 'GroupType' }
-      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages' | 'isDefault'>
-    )>>> }
-  )> }
-);
+export type UserGroupListQuery = { __typename?: 'Query', group?: { __typename?: 'GroupQuery', userGroupList?: Array<{ __typename?: 'GroupType', id: string, name: string, readCount?: number | null | undefined, memberCount?: number | null | undefined, creator?: string | null | undefined, description?: string | null | undefined, isAdmin?: boolean | null | undefined, isFollowed?: boolean | null | undefined, languages?: string | null | undefined, isDefault?: boolean | null | undefined } | null | undefined> | null | undefined } | null | undefined };
 
-export type AllGroupListQueryVariables = {
-  pageIndex?: Maybe<Scalars['Int']>;
-  pageSize?: Maybe<Scalars['Int']>;
-  keywords?: Maybe<Scalars['String']>;
-};
+export type AllGroupListQueryVariables = Exact<{
+  pageIndex?: InputMaybe<Scalars['Int']>;
+  pageSize?: InputMaybe<Scalars['Int']>;
+  keywords?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type AllGroupListQuery = (
-  { __typename?: 'Query' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupQuery' }
-    & { allGroupList?: Maybe<Array<Maybe<(
-      { __typename?: 'GroupType' }
-      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages' | 'isDefault'>
-    )>>> }
-  )> }
-);
+export type AllGroupListQuery = { __typename?: 'Query', group?: { __typename?: 'GroupQuery', allGroupList?: Array<{ __typename?: 'GroupType', id: string, name: string, readCount?: number | null | undefined, memberCount?: number | null | undefined, creator?: string | null | undefined, description?: string | null | undefined, isAdmin?: boolean | null | undefined, isFollowed?: boolean | null | undefined, languages?: string | null | undefined, isDefault?: boolean | null | undefined } | null | undefined> | null | undefined } | null | undefined };
 
-export type DeleteGroupMutationVariables = {
+export type DeleteGroupMutationVariables = Exact<{
   id: Scalars['String'];
-};
+}>;
 
 
-export type DeleteGroupMutation = (
-  { __typename?: 'Mutation' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupMutation' }
-    & Pick<GroupMutation, 'delete'>
-  )> }
-);
+export type DeleteGroupMutation = { __typename?: 'Mutation', group?: { __typename?: 'GroupMutation', delete?: number | null | undefined } | null | undefined };
 
-export type FollowGroupMutationVariables = {
-  id?: Maybe<Scalars['String']>;
-};
+export type FollowGroupMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type FollowGroupMutation = (
-  { __typename?: 'Mutation' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupMutation' }
-    & Pick<GroupMutation, 'follow'>
-  )> }
-);
+export type FollowGroupMutation = { __typename?: 'Mutation', group?: { __typename?: 'GroupMutation', follow?: number | null | undefined } | null | undefined };
 
-export type UnFollowGroupMutationVariables = {
+export type UnFollowGroupMutationVariables = Exact<{
   groupId: Scalars['String'];
   followerId: Scalars['String'];
-};
+}>;
 
 
-export type UnFollowGroupMutation = (
-  { __typename?: 'Mutation' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupMutation' }
-    & Pick<GroupMutation, 'unfollow'>
-  )> }
-);
+export type UnFollowGroupMutation = { __typename?: 'Mutation', group?: { __typename?: 'GroupMutation', unfollow?: number | null | undefined } | null | undefined };
 
-export type ListMomentByFollowingQueryVariables = {
+export type ListMomentByFollowingQueryVariables = Exact<{
   pageIndex: Scalars['Int'];
   pageSize: Scalars['Int'];
-  userId?: Maybe<Scalars['String']>;
-};
+  userId?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type ListMomentByFollowingQuery = (
-  { __typename?: 'Query' }
-  & { moment?: Maybe<(
-    { __typename?: 'MomentQuery' }
-    & { listByFollowing?: Maybe<Array<Maybe<(
-      { __typename?: 'MomentType' }
-      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator' | 'readId'>
-    )>>> }
-  )> }
-);
+export type ListMomentByFollowingQuery = { __typename?: 'Query', moment?: { __typename?: 'MomentQuery', listByFollowing?: Array<{ __typename?: 'MomentType', groupId?: string | null | undefined, id: string, title?: string | null | undefined, content: string, createTime?: any | null | undefined, language?: string | null | undefined, status: number, userName?: string | null | undefined, upvoteCount?: number | null | undefined, forkCount?: number | null | undefined, creator: string, readId?: string | null | undefined } | null | undefined> | null | undefined } | null | undefined };
 
-export type ListMomentByLangQueryVariables = {
+export type ListMomentByLangQueryVariables = Exact<{
   pageIndex: Scalars['Int'];
   pageSize: Scalars['Int'];
-  langCode?: Maybe<Scalars['String']>;
-};
+  langCode?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type ListMomentByLangQuery = (
-  { __typename?: 'Query' }
-  & { moment?: Maybe<(
-    { __typename?: 'MomentQuery' }
-    & { listByLang?: Maybe<Array<Maybe<(
-      { __typename?: 'MomentType' }
-      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator' | 'readId'>
-    )>>> }
-  )> }
-);
+export type ListMomentByLangQuery = { __typename?: 'Query', moment?: { __typename?: 'MomentQuery', listByLang?: Array<{ __typename?: 'MomentType', groupId?: string | null | undefined, id: string, title?: string | null | undefined, content: string, createTime?: any | null | undefined, language?: string | null | undefined, status: number, userName?: string | null | undefined, upvoteCount?: number | null | undefined, forkCount?: number | null | undefined, creator: string, readId?: string | null | undefined } | null | undefined> | null | undefined } | null | undefined };
 
-export type ListMomentByGroupQueryVariables = {
+export type ListMomentByGroupQueryVariables = Exact<{
   groupId: Scalars['String'];
   typeId: MomentGroupType;
   pageIndex: Scalars['Int'];
   pageSize: Scalars['Int'];
-};
+}>;
 
 
-export type ListMomentByGroupQuery = (
-  { __typename?: 'Query' }
-  & { moment?: Maybe<(
-    { __typename?: 'MomentQuery' }
-    & { listByGroup?: Maybe<Array<Maybe<(
-      { __typename?: 'MomentType' }
-      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator' | 'readId'>
-    )>>> }
-  )> }
-);
+export type ListMomentByGroupQuery = { __typename?: 'Query', moment?: { __typename?: 'MomentQuery', listByGroup?: Array<{ __typename?: 'MomentType', groupId?: string | null | undefined, id: string, title?: string | null | undefined, content: string, createTime?: any | null | undefined, language?: string | null | undefined, status: number, userName?: string | null | undefined, upvoteCount?: number | null | undefined, forkCount?: number | null | undefined, creator: string, readId?: string | null | undefined } | null | undefined> | null | undefined } | null | undefined };
 
-export type LikeMomentMutationVariables = {
+export type LikeMomentMutationVariables = Exact<{
   id: Scalars['String'];
   value: Scalars['Int'];
-};
+}>;
 
 
-export type LikeMomentMutation = (
-  { __typename?: 'Mutation' }
-  & { moment?: Maybe<(
-    { __typename?: 'MomentMutation' }
-    & { vote?: Maybe<(
-      { __typename?: 'MomentType' }
-      & Pick<MomentType, 'upvoteCount'>
-    )> }
-  )> }
-);
+export type LikeMomentMutation = { __typename?: 'Mutation', moment?: { __typename?: 'MomentMutation', vote?: { __typename?: 'MomentType', upvoteCount?: number | null | undefined } | null | undefined } | null | undefined };
 
-export type DeleteMomentMutationVariables = {
+export type DeleteMomentMutationVariables = Exact<{
   id: Scalars['String'];
-};
+}>;
 
 
-export type DeleteMomentMutation = (
-  { __typename?: 'Mutation' }
-  & { moment?: Maybe<(
-    { __typename?: 'MomentMutation' }
-    & { delete?: Maybe<(
-      { __typename?: 'MomentType' }
-      & Pick<MomentType, 'status' | 'id'>
-    )> }
-  )> }
-);
+export type DeleteMomentMutation = { __typename?: 'Mutation', moment?: { __typename?: 'MomentMutation', delete?: { __typename?: 'MomentType', status: number, id: string } | null | undefined } | null | undefined };
 
-export type GetMomentByDocIdQueryVariables = {
+export type GetMomentByDocIdQueryVariables = Exact<{
   id: Scalars['String'];
-};
+}>;
 
 
-export type GetMomentByDocIdQuery = (
-  { __typename?: 'Query' }
-  & { moment?: Maybe<(
-    { __typename?: 'MomentQuery' }
-    & { getByDocId?: Maybe<(
-      { __typename?: 'MomentType' }
-      & Pick<MomentType, 'groupId' | 'id' | 'title' | 'content' | 'createTime' | 'language' | 'status' | 'userName' | 'upvoteCount' | 'forkCount' | 'creator' | 'commentCount'>
-    )> }
-  )> }
-);
+export type GetMomentByDocIdQuery = { __typename?: 'Query', moment?: { __typename?: 'MomentQuery', getByDocId?: { __typename?: 'MomentType', groupId?: string | null | undefined, id: string, title?: string | null | undefined, content: string, createTime?: any | null | undefined, language?: string | null | undefined, status: number, userName?: string | null | undefined, upvoteCount?: number | null | undefined, forkCount?: number | null | undefined, creator: string, commentCount?: number | null | undefined } | null | undefined } | null | undefined };
 
-export type GetFollowersQueryVariables = {
+export type GetFollowersQueryVariables = Exact<{
   index: Scalars['Int'];
   size: Scalars['Int'];
-  userId?: Maybe<Scalars['String']>;
-};
+  userId?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type GetFollowersQuery = (
-  { __typename?: 'Query' }
-  & { profile?: Maybe<(
-    { __typename?: 'ProfileQuery' }
-    & { followers?: Maybe<Array<Maybe<(
-      { __typename?: 'UserViewType' }
-      & Pick<UserViewType, 'id' | 'name' | 'description' | 'followerCount' | 'followingCount'>
-    )>>> }
-  )> }
-);
+export type GetFollowersQuery = { __typename?: 'Query', profile?: { __typename?: 'ProfileQuery', followers?: Array<{ __typename?: 'UserViewType', id: string, name: string, description?: string | null | undefined, followerCount: number, followingCount: number } | null | undefined> | null | undefined } | null | undefined };
 
-export type GetFollowingsQueryVariables = {
+export type GetFollowingsQueryVariables = Exact<{
   index: Scalars['Int'];
   size: Scalars['Int'];
-  userId?: Maybe<Scalars['String']>;
-};
+  userId?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type GetFollowingsQuery = (
-  { __typename?: 'Query' }
-  & { profile?: Maybe<(
-    { __typename?: 'ProfileQuery' }
-    & { followings?: Maybe<Array<Maybe<(
-      { __typename?: 'UserViewType' }
-      & Pick<UserViewType, 'id' | 'name' | 'description' | 'followerCount' | 'followingCount'>
-    )>>> }
-  )> }
-);
+export type GetFollowingsQuery = { __typename?: 'Query', profile?: { __typename?: 'ProfileQuery', followings?: Array<{ __typename?: 'UserViewType', id: string, name: string, description?: string | null | undefined, followerCount: number, followingCount: number } | null | undefined> | null | undefined } | null | undefined };
 
-export type GetUserProfileQueryVariables = {
+export type GetUserProfileQueryVariables = Exact<{
   userId: Scalars['String'];
-};
+}>;
 
 
-export type GetUserProfileQuery = (
-  { __typename?: 'Query' }
-  & { profile?: Maybe<(
-    { __typename?: 'ProfileQuery' }
-    & { profile?: Maybe<(
-      { __typename?: 'UserViewType' }
-      & Pick<UserViewType, 'id' | 'name' | 'description' | 'followerCount' | 'followingCount' | 'isFollower' | 'isFollowing'>
-    )> }
-  )> }
-);
+export type GetUserProfileQuery = { __typename?: 'Query', profile?: { __typename?: 'ProfileQuery', profile?: { __typename?: 'UserViewType', id: string, name: string, description?: string | null | undefined, followerCount: number, followingCount: number, isFollower: boolean, isFollowing: boolean } | null | undefined } | null | undefined };
 
-export type FollowProfileMutationVariables = {
+export type FollowProfileMutationVariables = Exact<{
   userId: Scalars['String'];
-};
+}>;
 
 
-export type FollowProfileMutation = (
-  { __typename?: 'Mutation' }
-  & { profile?: Maybe<(
-    { __typename?: 'ProfileMutation' }
-    & Pick<ProfileMutation, 'follow'>
-  )> }
-);
+export type FollowProfileMutation = { __typename?: 'Mutation', profile?: { __typename?: 'ProfileMutation', follow?: number | null | undefined } | null | undefined };
 
-export type UnFollowProfileMutationVariables = {
+export type UnFollowProfileMutationVariables = Exact<{
   userId: Scalars['String'];
-};
+}>;
 
 
-export type UnFollowProfileMutation = (
-  { __typename?: 'Mutation' }
-  & { profile?: Maybe<(
-    { __typename?: 'ProfileMutation' }
-    & Pick<ProfileMutation, 'unfollow'>
-  )> }
-);
+export type UnFollowProfileMutation = { __typename?: 'Mutation', profile?: { __typename?: 'ProfileMutation', unfollow?: number | null | undefined } | null | undefined };
 
-export type GetGroupFollowersQueryVariables = {
+export type GetGroupFollowersQueryVariables = Exact<{
   groupId: Scalars['String'];
   index: Scalars['Int'];
   size: Scalars['Int'];
-};
+}>;
 
 
-export type GetGroupFollowersQuery = (
-  { __typename?: 'Query' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupQuery' }
-    & { followers?: Maybe<Array<Maybe<(
-      { __typename?: 'UserViewType' }
-      & Pick<UserViewType, 'id' | 'name' | 'description' | 'followerCount' | 'followingCount'>
-    )>>> }
-  )> }
-);
+export type GetGroupFollowersQuery = { __typename?: 'Query', group?: { __typename?: 'GroupQuery', followers?: Array<{ __typename?: 'UserViewType', id: string, name: string, description?: string | null | undefined, followerCount: number, followingCount: number } | null | undefined> | null | undefined } | null | undefined };
 
-export type GetGroupDetailQueryVariables = {
+export type GetGroupDetailQueryVariables = Exact<{
   groupId: Scalars['String'];
-};
+}>;
 
 
-export type GetGroupDetailQuery = (
-  { __typename?: 'Query' }
-  & { group?: Maybe<(
-    { __typename?: 'GroupQuery' }
-    & { detail?: Maybe<(
-      { __typename?: 'GroupType' }
-      & Pick<GroupType, 'id' | 'name' | 'readCount' | 'memberCount' | 'creator' | 'description' | 'isAdmin' | 'isFollowed' | 'languages'>
-    )> }
-  )> }
-);
+export type GetGroupDetailQuery = { __typename?: 'Query', group?: { __typename?: 'GroupQuery', detail?: { __typename?: 'GroupType', id: string, name: string, readCount?: number | null | undefined, memberCount?: number | null | undefined, creator?: string | null | undefined, description?: string | null | undefined, isAdmin?: boolean | null | undefined, isFollowed?: boolean | null | undefined, languages?: string | null | undefined } | null | undefined } | null | undefined };
 
-export type ListByCommentQueryVariables = {
+export type ListByCommentQueryVariables = Exact<{
   id: Scalars['String'];
   pageSize: Scalars['Int'];
   pageIndex: Scalars['Int'];
-};
+}>;
 
 
-export type ListByCommentQuery = (
-  { __typename?: 'Query' }
-  & { moment?: Maybe<(
-    { __typename?: 'MomentQuery' }
-    & { listByComment?: Maybe<Array<Maybe<(
-      { __typename?: 'CommentType' }
-      & Pick<CommentType, 'id' | 'creator' | 'createTime' | 'content' | 'parent' | 'root' | 'userName' | 'createdByCurrentUser' | 'upvoteCount' | 'hasVoted'>
-    )>>> }
-  )> }
-);
+export type ListByCommentQuery = { __typename?: 'Query', moment?: { __typename?: 'MomentQuery', listByComment?: Array<{ __typename?: 'CommentType', id: string, creator: string, createTime?: any | null | undefined, content: string, parent?: string | null | undefined, root?: string | null | undefined, userName?: string | null | undefined, createdByCurrentUser: boolean, upvoteCount?: number | null | undefined, hasVoted: boolean } | null | undefined> | null | undefined } | null | undefined };
 
-export type PostCommentMutationVariables = {
+export type PostCommentMutationVariables = Exact<{
   comment: CommentInputType;
-};
+}>;
 
 
-export type PostCommentMutation = (
-  { __typename?: 'Mutation' }
-  & { moment?: Maybe<(
-    { __typename?: 'MomentMutation' }
-    & { comment?: Maybe<(
-      { __typename?: 'CommentType' }
-      & Pick<CommentType, 'creator' | 'createTime' | 'id' | 'content'>
-    )> }
-  )> }
-);
+export type PostCommentMutation = { __typename?: 'Mutation', moment?: { __typename?: 'MomentMutation', comment?: { __typename?: 'CommentType', creator: string, createTime?: any | null | undefined, id: string, content: string } | null | undefined } | null | undefined };
 
-export type DeleteAllSocialDataMutationVariables = {};
+export type DeleteAllSocialDataMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type DeleteAllSocialDataMutation = (
-  { __typename?: 'Mutation' }
-  & { profile?: Maybe<(
-    { __typename?: 'ProfileMutation' }
-    & Pick<ProfileMutation, 'deleteAllData'>
-  )> }
-);
+export type DeleteAllSocialDataMutation = { __typename?: 'Mutation', profile?: { __typename?: 'ProfileMutation', deleteAllData?: number | null | undefined } | null | undefined };
 
 export const LoginDocument = gql`
     query login($email: String!, $password: String!) {
@@ -1882,6 +1347,9 @@ export const LoginDocument = gql`
   export class LoginGQL extends Apollo.Query<LoginQuery, LoginQueryVariables> {
     document = LoginDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const RegisterDocument = gql`
     mutation register($email: String!, $displayLanguage: String!) {
@@ -1905,6 +1373,9 @@ export const RegisterDocument = gql`
   export class RegisterGQL extends Apollo.Mutation<RegisterMutation, RegisterMutationVariables> {
     document = RegisterDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const TokenDocument = gql`
     query token($appId: String!, $appSecret: String!) {
@@ -1920,6 +1391,9 @@ export const TokenDocument = gql`
   export class TokenGQL extends Apollo.Query<TokenQuery, TokenQueryVariables> {
     document = TokenDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const CheckEmailDocument = gql`
     query checkEmail($email: String!) {
@@ -1935,6 +1409,9 @@ export const CheckEmailDocument = gql`
   export class CheckEmailGQL extends Apollo.Query<CheckEmailQuery, CheckEmailQueryVariables> {
     document = CheckEmailDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SendVerifyDocument = gql`
     query sendVerify($appId: String!, $appSecret: String!) {
@@ -1950,6 +1427,9 @@ export const SendVerifyDocument = gql`
   export class SendVerifyGQL extends Apollo.Query<SendVerifyQuery, SendVerifyQueryVariables> {
     document = SendVerifyDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const UpdateEmailDocument = gql`
     mutation updateEmail($appId: String!, $appSecret: String!, $email: String!) {
@@ -1970,6 +1450,9 @@ export const UpdateEmailDocument = gql`
   export class UpdateEmailGQL extends Apollo.Mutation<UpdateEmailMutation, UpdateEmailMutationVariables> {
     document = UpdateEmailDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SendRestDocument = gql`
     query sendRest($appId: String!, $appSecret: String!) {
@@ -1985,11 +1468,19 @@ export const SendRestDocument = gql`
   export class SendRestGQL extends Apollo.Query<SendRestQuery, SendRestQueryVariables> {
     document = SendRestDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ChangePasswordDocument = gql`
     mutation changePassword($appId: String!, $appSecret: String!, $token: String!, $password: String!) {
   user {
-    password(appId: $appId, appSecret: $appSecret, token: $token, password: $password)
+    password(
+      appId: $appId
+      appSecret: $appSecret
+      token: $token
+      password: $password
+    )
   }
 }
     `;
@@ -2000,6 +1491,9 @@ export const ChangePasswordDocument = gql`
   export class ChangePasswordGQL extends Apollo.Mutation<ChangePasswordMutation, ChangePasswordMutationVariables> {
     document = ChangePasswordDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SendTotpDocument = gql`
     query sendTotp($email: String!) {
@@ -2015,6 +1509,9 @@ export const SendTotpDocument = gql`
   export class SendTotpGQL extends Apollo.Query<SendTotpQuery, SendTotpQueryVariables> {
     document = SendTotpDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const VerifyCodeDocument = gql`
     mutation verifyCode($email: String!, $code: String!, $purpose: TokenPurpose) {
@@ -2038,6 +1535,9 @@ export const VerifyCodeDocument = gql`
   export class VerifyCodeGQL extends Apollo.Mutation<VerifyCodeMutation, VerifyCodeMutationVariables> {
     document = VerifyCodeDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const UpdateUserDocument = gql`
     mutation updateUser($appId: String, $appSecret: String, $user: UpdateUserViewModelType) {
@@ -2064,6 +1564,9 @@ export const UpdateUserDocument = gql`
   export class UpdateUserGQL extends Apollo.Mutation<UpdateUserMutation, UpdateUserMutationVariables> {
     document = UpdateUserDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetProfileDocument = gql`
     query getProfile($appId: String!, $appSecret: String!) {
@@ -2089,6 +1592,9 @@ export const GetProfileDocument = gql`
   export class GetProfileGQL extends Apollo.Query<GetProfileQuery, GetProfileQueryVariables> {
     document = GetProfileDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetDocumentDocument = gql`
     query getDocument($docId: String!) {
@@ -2140,6 +1646,9 @@ export const GetDocumentDocument = gql`
   export class GetDocumentGQL extends Apollo.Query<GetDocumentQuery, GetDocumentQueryVariables> {
     document = GetDocumentDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetDocumentsDocument = gql`
     query getDocuments($pageSize: Int!, $lastId: String, $keywords: String) {
@@ -2164,11 +1673,15 @@ export const GetDocumentsDocument = gql`
   export class GetDocumentsGQL extends Apollo.Query<GetDocumentsQuery, GetDocumentsQueryVariables> {
     document = GetDocumentsDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GiveItToMeDocument = gql`
     query giveItToMe($content: String!) {
   document {
     giveItToMe(content: $content) {
+      id
       isCreator
       userId
       document {
@@ -2216,6 +1729,9 @@ export const GiveItToMeDocument = gql`
   export class GiveItToMeGQL extends Apollo.Query<GiveItToMeQuery, GiveItToMeQueryVariables> {
     document = GiveItToMeDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetStatsDocument = gql`
     query getStats {
@@ -2235,6 +1751,9 @@ export const GetStatsDocument = gql`
   export class GetStatsGQL extends Apollo.Query<GetStatsQuery, GetStatsQueryVariables> {
     document = GetStatsDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const RemoveTagDocument = gql`
     mutation removeTag($word: String!, $tagName: String!) {
@@ -2250,11 +1769,17 @@ export const RemoveTagDocument = gql`
   export class RemoveTagGQL extends Apollo.Mutation<RemoveTagMutation, RemoveTagMutationVariables> {
     document = RemoveTagDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const SaveDocumentDocument = gql`
     mutation saveDocument($title: String!, $content: String!, $wordTagLiteStr: String!, $id: String, $docId: String, $url: String) {
   doc {
-    save(document: {title: $title, content: $content, id: $id, docId: $docId, url: $url}, wordTagLiteStr: $wordTagLiteStr) {
+    save(
+      document: {title: $title, content: $content, id: $id, docId: $docId, url: $url}
+      wordTagLiteStr: $wordTagLiteStr
+    ) {
       document {
         docId
         id
@@ -2300,6 +1825,9 @@ export const SaveDocumentDocument = gql`
   export class SaveDocumentGQL extends Apollo.Mutation<SaveDocumentMutation, SaveDocumentMutationVariables> {
     document = SaveDocumentDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const DeleteDocumentDocument = gql`
     mutation deleteDocument($docId: String!) {
@@ -2315,6 +1843,9 @@ export const DeleteDocumentDocument = gql`
   export class DeleteDocumentGQL extends Apollo.Mutation<DeleteDocumentMutation, DeleteDocumentMutationVariables> {
     document = DeleteDocumentDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetWordProfileDocument = gql`
     query getWordProfile($word: String!, $fromLang: String!, $toLang: String!) {
@@ -2377,6 +1908,9 @@ export const GetWordProfileDocument = gql`
   export class GetWordProfileGQL extends Apollo.Query<GetWordProfileQuery, GetWordProfileQueryVariables> {
     document = GetWordProfileDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetTopmostDocument = gql`
     query getTopmost($top: Int, $userId: String) {
@@ -2402,6 +1936,9 @@ export const GetTopmostDocument = gql`
   export class GetTopmostGQL extends Apollo.Query<GetTopmostQuery, GetTopmostQueryVariables> {
     document = GetTopmostDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetTimelineDocument = gql`
     query getTimeline($index: Int, $size: Int, $lastId: String, $keywords: String) {
@@ -2433,6 +1970,9 @@ export const GetTimelineDocument = gql`
   export class GetTimelineGQL extends Apollo.Query<GetTimelineQuery, GetTimelineQueryVariables> {
     document = GetTimelineDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ForkDoucmentDocument = gql`
     mutation forkDoucment($docId: String!, $groupId: String, $wordTagLiteStr: String) {
@@ -2453,6 +1993,9 @@ export const ForkDoucmentDocument = gql`
   export class ForkDoucmentGQL extends Apollo.Mutation<ForkDoucmentMutation, ForkDoucmentMutationVariables> {
     document = ForkDoucmentDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const DeleteAllCoreDataDocument = gql`
     mutation deleteAllCoreData {
@@ -2468,6 +2011,9 @@ export const DeleteAllCoreDataDocument = gql`
   export class DeleteAllCoreDataGQL extends Apollo.Mutation<DeleteAllCoreDataMutation, DeleteAllCoreDataMutationVariables> {
     document = DeleteAllCoreDataDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const CreateGroupDocument = gql`
     mutation createGroup($group: GroupInputType) {
@@ -2493,6 +2039,9 @@ export const CreateGroupDocument = gql`
   export class CreateGroupGQL extends Apollo.Mutation<CreateGroupMutation, CreateGroupMutationVariables> {
     document = CreateGroupDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const UpdateGroupDocument = gql`
     mutation updateGroup($group: GroupInputType!) {
@@ -2518,6 +2067,9 @@ export const UpdateGroupDocument = gql`
   export class UpdateGroupGQL extends Apollo.Mutation<UpdateGroupMutation, UpdateGroupMutationVariables> {
     document = UpdateGroupDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const CheckAvailableDocument = gql`
     query checkAvailable($name: String) {
@@ -2533,11 +2085,20 @@ export const CheckAvailableDocument = gql`
   export class CheckAvailableGQL extends Apollo.Query<CheckAvailableQuery, CheckAvailableQueryVariables> {
     document = CheckAvailableDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const UserGroupListDocument = gql`
     query userGroupList($pageIndex: Int, $pageSize: Int, $userId: String, $keywords: String, $includeDefault: Boolean) {
   group {
-    userGroupList(pageIndex: $pageIndex, pageSize: $pageSize, userId: $userId, keywords: $keywords, includeDefault: $includeDefault) {
+    userGroupList(
+      pageIndex: $pageIndex
+      pageSize: $pageSize
+      userId: $userId
+      keywords: $keywords
+      includeDefault: $includeDefault
+    ) {
       id
       name
       readCount
@@ -2559,6 +2120,9 @@ export const UserGroupListDocument = gql`
   export class UserGroupListGQL extends Apollo.Query<UserGroupListQuery, UserGroupListQueryVariables> {
     document = UserGroupListDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const AllGroupListDocument = gql`
     query allGroupList($pageIndex: Int, $pageSize: Int, $keywords: String) {
@@ -2585,6 +2149,9 @@ export const AllGroupListDocument = gql`
   export class AllGroupListGQL extends Apollo.Query<AllGroupListQuery, AllGroupListQueryVariables> {
     document = AllGroupListDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const DeleteGroupDocument = gql`
     mutation deleteGroup($id: String!) {
@@ -2600,6 +2167,9 @@ export const DeleteGroupDocument = gql`
   export class DeleteGroupGQL extends Apollo.Mutation<DeleteGroupMutation, DeleteGroupMutationVariables> {
     document = DeleteGroupDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const FollowGroupDocument = gql`
     mutation followGroup($id: String) {
@@ -2615,6 +2185,9 @@ export const FollowGroupDocument = gql`
   export class FollowGroupGQL extends Apollo.Mutation<FollowGroupMutation, FollowGroupMutationVariables> {
     document = FollowGroupDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const UnFollowGroupDocument = gql`
     mutation unFollowGroup($groupId: String!, $followerId: String!) {
@@ -2630,6 +2203,9 @@ export const UnFollowGroupDocument = gql`
   export class UnFollowGroupGQL extends Apollo.Mutation<UnFollowGroupMutation, UnFollowGroupMutationVariables> {
     document = UnFollowGroupDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ListMomentByFollowingDocument = gql`
     query listMomentByFollowing($pageIndex: Int!, $pageSize: Int!, $userId: String) {
@@ -2658,6 +2234,9 @@ export const ListMomentByFollowingDocument = gql`
   export class ListMomentByFollowingGQL extends Apollo.Query<ListMomentByFollowingQuery, ListMomentByFollowingQueryVariables> {
     document = ListMomentByFollowingDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ListMomentByLangDocument = gql`
     query listMomentByLang($pageIndex: Int!, $pageSize: Int!, $langCode: String) {
@@ -2686,11 +2265,19 @@ export const ListMomentByLangDocument = gql`
   export class ListMomentByLangGQL extends Apollo.Query<ListMomentByLangQuery, ListMomentByLangQueryVariables> {
     document = ListMomentByLangDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ListMomentByGroupDocument = gql`
     query listMomentByGroup($groupId: String!, $typeId: MomentGroupType!, $pageIndex: Int!, $pageSize: Int!) {
   moment {
-    listByGroup(id: $groupId, type: $typeId, pageIndex: $pageIndex, pageSize: $pageSize) {
+    listByGroup(
+      id: $groupId
+      type: $typeId
+      pageIndex: $pageIndex
+      pageSize: $pageSize
+    ) {
       groupId
       id
       title
@@ -2714,6 +2301,9 @@ export const ListMomentByGroupDocument = gql`
   export class ListMomentByGroupGQL extends Apollo.Query<ListMomentByGroupQuery, ListMomentByGroupQueryVariables> {
     document = ListMomentByGroupDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const LikeMomentDocument = gql`
     mutation likeMoment($id: String!, $value: Int!) {
@@ -2731,6 +2321,9 @@ export const LikeMomentDocument = gql`
   export class LikeMomentGQL extends Apollo.Mutation<LikeMomentMutation, LikeMomentMutationVariables> {
     document = LikeMomentDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const DeleteMomentDocument = gql`
     mutation deleteMoment($id: String!) {
@@ -2749,6 +2342,9 @@ export const DeleteMomentDocument = gql`
   export class DeleteMomentGQL extends Apollo.Mutation<DeleteMomentMutation, DeleteMomentMutationVariables> {
     document = DeleteMomentDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetMomentByDocIdDocument = gql`
     query getMomentByDocId($id: String!) {
@@ -2777,6 +2373,9 @@ export const GetMomentByDocIdDocument = gql`
   export class GetMomentByDocIdGQL extends Apollo.Query<GetMomentByDocIdQuery, GetMomentByDocIdQueryVariables> {
     document = GetMomentByDocIdDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetFollowersDocument = gql`
     query getFollowers($index: Int!, $size: Int!, $userId: String) {
@@ -2798,6 +2397,9 @@ export const GetFollowersDocument = gql`
   export class GetFollowersGQL extends Apollo.Query<GetFollowersQuery, GetFollowersQueryVariables> {
     document = GetFollowersDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetFollowingsDocument = gql`
     query getFollowings($index: Int!, $size: Int!, $userId: String) {
@@ -2819,6 +2421,9 @@ export const GetFollowingsDocument = gql`
   export class GetFollowingsGQL extends Apollo.Query<GetFollowingsQuery, GetFollowingsQueryVariables> {
     document = GetFollowingsDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetUserProfileDocument = gql`
     query getUserProfile($userId: String!) {
@@ -2842,6 +2447,9 @@ export const GetUserProfileDocument = gql`
   export class GetUserProfileGQL extends Apollo.Query<GetUserProfileQuery, GetUserProfileQueryVariables> {
     document = GetUserProfileDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const FollowProfileDocument = gql`
     mutation followProfile($userId: String!) {
@@ -2857,6 +2465,9 @@ export const FollowProfileDocument = gql`
   export class FollowProfileGQL extends Apollo.Mutation<FollowProfileMutation, FollowProfileMutationVariables> {
     document = FollowProfileDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const UnFollowProfileDocument = gql`
     mutation unFollowProfile($userId: String!) {
@@ -2872,6 +2483,9 @@ export const UnFollowProfileDocument = gql`
   export class UnFollowProfileGQL extends Apollo.Mutation<UnFollowProfileMutation, UnFollowProfileMutationVariables> {
     document = UnFollowProfileDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetGroupFollowersDocument = gql`
     query getGroupFollowers($groupId: String!, $index: Int!, $size: Int!) {
@@ -2893,6 +2507,9 @@ export const GetGroupFollowersDocument = gql`
   export class GetGroupFollowersGQL extends Apollo.Query<GetGroupFollowersQuery, GetGroupFollowersQueryVariables> {
     document = GetGroupFollowersDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const GetGroupDetailDocument = gql`
     query getGroupDetail($groupId: String!) {
@@ -2918,6 +2535,9 @@ export const GetGroupDetailDocument = gql`
   export class GetGroupDetailGQL extends Apollo.Query<GetGroupDetailQuery, GetGroupDetailQueryVariables> {
     document = GetGroupDetailDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const ListByCommentDocument = gql`
     query listByComment($id: String!, $pageSize: Int!, $pageIndex: Int!) {
@@ -2944,6 +2564,9 @@ export const ListByCommentDocument = gql`
   export class ListByCommentGQL extends Apollo.Query<ListByCommentQuery, ListByCommentQueryVariables> {
     document = ListByCommentDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const PostCommentDocument = gql`
     mutation postComment($comment: CommentInputType!) {
@@ -2964,6 +2587,9 @@ export const PostCommentDocument = gql`
   export class PostCommentGQL extends Apollo.Mutation<PostCommentMutation, PostCommentMutationVariables> {
     document = PostCommentDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }
 export const DeleteAllSocialDataDocument = gql`
     mutation deleteAllSocialData {
@@ -2979,4 +2605,7 @@ export const DeleteAllSocialDataDocument = gql`
   export class DeleteAllSocialDataGQL extends Apollo.Mutation<DeleteAllSocialDataMutation, DeleteAllSocialDataMutationVariables> {
     document = DeleteAllSocialDataDocument;
     
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
   }

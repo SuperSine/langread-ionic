@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { NoContentComponent } from './no-content.component';
@@ -7,7 +7,7 @@ describe('NoContentComponent', () => {
   let component: NoContentComponent;
   let fixture: ComponentFixture<NoContentComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NoContentComponent ],
       imports: [IonicModule.forRoot()]

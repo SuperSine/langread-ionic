@@ -50,7 +50,7 @@ export class DocEditorSaveComponent implements OnInit {
     return this.onFork != null && this.onFork.observers.length >= 1;
   }
 
-  @ViewChild(IonSelect, {static:false})
+  @ViewChild(IonSelect)
   public groupSelect:IonSelect;
 
   public isToGroup:boolean;

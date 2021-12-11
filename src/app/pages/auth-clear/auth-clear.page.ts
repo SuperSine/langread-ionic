@@ -1,6 +1,8 @@
+import {FetchResult} from '@apollo/client/core';
+import {resultKeyNameFromField} from '@apollo/client/utilities';
 import { Component, OnInit } from '@angular/core';
-import { FetchResult } from 'apollo-link';
-import { resultKeyNameFromField } from 'apollo-utilities';
+
+
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError, filter, startWith, switchMap, tap } from 'rxjs/operators';
 import { DocService } from 'src/app/services/doc.service';

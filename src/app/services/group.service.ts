@@ -1,5 +1,6 @@
+import {Apollo, QueryRef} from 'apollo-angular';
 import { Injectable, ɵɵstylePropInterpolateV } from '@angular/core';
-import { Apollo, QueryRef } from 'apollo-angular';
+
 import {GetGroupDetailDocument,GetGroupFollowersDocument,GroupInputType, CreateGroupDocument, UpdateGroupDocument, CheckAvailableDocument,UserGroupListDocument, AllGroupListDocument, DeleteGroupDocument, FollowGroupDocument, GroupType, GetFollowersDocument, UserViewType, UnFollowProfileDocument, UnFollowGroupDocument} from '../graphql-components';
 import { FormControl } from '@angular/forms';
 import { Subject, Observable} from 'rxjs';

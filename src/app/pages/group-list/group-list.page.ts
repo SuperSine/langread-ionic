@@ -1,3 +1,4 @@
+import {ApolloQueryResult} from '@apollo/client/core';
 import { Component, OnInit } from '@angular/core';
 import { HideHeaderConfig } from 'src/app/directives/hide-header.directive';
 import { ModalController } from '@ionic/angular';
@@ -5,7 +6,7 @@ import { GroupEditorPage } from '../group-editor/group-editor.page';
 import { GroupService } from 'src/app/services/group.service';
 import { GroupType } from 'src/app/graphql-components';
 import { environment } from 'src/environments/environment';
-import { ApolloQueryResult } from 'apollo-client';
+
 import { merge, Observable, Subscription,of, concat, forkJoin} from 'rxjs';
 import { first, map, scan, switchMap, take} from 'rxjs/operators';
 

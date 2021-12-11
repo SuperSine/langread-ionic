@@ -100,13 +100,13 @@ export class SocialProfilePage implements OnInit {
     });
   }
 
-  @ViewChild(PostCardsComponent, {static:false})
+  @ViewChild(PostCardsComponent)
   public postCards: PostCardsComponent;
 
-  @ViewChild(TopMostComponent, {static:false})
+  @ViewChild(TopMostComponent)
   public topMost: TopMostComponent;
 
-  @ViewChild(IonContent, {static:false})
+  @ViewChild(IonContent)
   public ionContent: IonContent;
 
   public currentSegment:string = "posts";

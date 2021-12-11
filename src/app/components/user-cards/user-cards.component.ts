@@ -1,6 +1,7 @@
+import {QueryRef} from 'apollo-angular';
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { IonInfiniteScroll } from '@ionic/angular';
-import { QueryRef } from 'apollo-angular';
+
 import { env } from 'process';
 import { Observable,of } from 'rxjs';
 import { UserViewType } from 'src/app/graphql-components';
@@ -22,7 +23,7 @@ export class UserCardsComponent implements AfterViewInit{
   @Input()
   loadMore:() => any;
 
-  @ViewChild(IonInfiniteScroll, {static:false})
+  @ViewChild(IonInfiniteScroll)
   private infiniteScroll:IonInfiniteScroll;
 
   constructor() { }

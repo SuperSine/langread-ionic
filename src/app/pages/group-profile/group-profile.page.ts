@@ -93,7 +93,7 @@ export class GroupProfilePage implements OnInit {
 
   }
 
-  @ViewChild(PostCardsComponent, {static:false})
+  @ViewChild(PostCardsComponent)
   public postCards: PostCardsComponent;
 
   public currentSegment:string = "posts";

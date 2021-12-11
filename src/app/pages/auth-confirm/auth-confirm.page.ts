@@ -27,7 +27,7 @@ export class AuthConfirmPage implements OnInit {
     this._targetLanguages = environment.targetLanguages;
   }
   
-  @ViewChild("slides", {static:false})
+  @ViewChild("slides")
   slides: IonSlides;
   
   async ngOnInit() {

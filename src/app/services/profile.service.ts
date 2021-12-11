@@ -1,5 +1,6 @@
+import {Apollo} from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
+
 import {UpdateUserDocument, UserType, UpdateUserViewModelType} from '../graphql-components';
 import { AuthService } from './auth.service';
 

@@ -175,10 +175,10 @@ export class WordTimelinePage implements OnInit {
     return this.globalService.timeSince(time);
   }
 
-  @ViewChild(IonInfiniteScroll, {static:false}) 
+  @ViewChild(IonInfiniteScroll) 
   public infiniteScroll: IonInfiniteScroll;
 
-  @ViewChild("htmlCanvas", {static:false})
+  @ViewChild("htmlCanvas")
   public htmlCanvas: ElementRef;
 
   public lastId:string='';

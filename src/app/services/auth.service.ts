@@ -1,9 +1,11 @@
+import {Observable} from '@apollo/client/core';
+import {Apollo, ApolloBase, gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'apollo-link';
+
 // import {Storage} from '@ionic/storage';
-import { Apollo, ApolloBase } from 'apollo-angular';
-import gql from 'graphql-tag';
+
+
 import {map} from 'rxjs/operators';
 import { UserType, RegisterGQL, CheckEmailDocument, CheckEmailGQL,SendVerifyDocument,UpdateEmailDocument,SendRestDocument,ChangePasswordDocument,LoginDocument, SendTotpDocument, VerifyCodeDocument, TokenPurpose, UpdateUserDocument, UpdateUserViewModelType,GetProfileDocument } from '../graphql-components';
 import { GlobalService } from './global.service';

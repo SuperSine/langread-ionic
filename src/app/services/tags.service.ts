@@ -1,9 +1,11 @@
+import {Apollo, ApolloBase, gql} from 'apollo-angular';
+import {Observable, ApolloQueryResult} from '@apollo/client/core';
 import { Injectable } from '@angular/core';
-import { Apollo, ApolloBase } from 'apollo-angular';
+
 import { AuthService } from './auth.service';
-import gql from 'graphql-tag';
-import { Observable } from 'apollo-link';
-import { ApolloQueryResult } from 'apollo-client';
+
+
+
 
 export interface Tag{
   id?:string,

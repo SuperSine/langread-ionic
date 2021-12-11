@@ -75,7 +75,7 @@ export class PostCardsComponent implements OnInit {
 
   }
 
-  @ViewChild(IonInfiniteScroll, {static:false})
+  @ViewChild(IonInfiniteScroll)
   private infiniteScroll:IonInfiniteScroll;
 
   public moments:Observable<MomentType[]>;

@@ -1,6 +1,7 @@
+import {QueryRef} from 'apollo-angular';
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DocService, Doc } from 'src/app/services/doc.service';
-import { QueryRef } from 'apollo-angular';
+
 import { IonInfiniteScroll, IonFab, IonContent, ActionSheetController, ToastController, PopoverController, AlertController } from '@ionic/angular';
 import { runInThisContext } from 'vm';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -112,7 +113,8 @@ export class DocListPage implements OnInit {
   list(pageSize, lastId, keywords=''){
     if(!keywords)lastId='';
     
-    this.docService.list(pageSize, lastId, keywords).valueChanges.subscribe((response) => {
+    this.docService.list(pageSize, lastId, keywords).toPromise().then((response) => {
+      console.log(response);
       var result = ((response.data) as any).document.list;
       this.docList = result.data;
 
@@ -144,8 +146,8 @@ export class DocListPage implements OnInit {
   }
 
   onRefresh(event){
-    this.docService.list(environment.pageSize).refetch().then(({data:{document:{list}}}:any) => {
-      this.docList = list;
+    this.docService.list(environment.pageSize).toPromise().then(({data:{document:{list:{data}}}}:any) => {
+      this.docList = data;
       event.target.complete();
     }, async (err)=>{
       event.target.complete();
@@ -189,7 +191,8 @@ export class DocListPage implements OnInit {
 
   loadData(event){
 
-    this.docService.list(environment.pageSize, this.lastId).valueChanges.subscribe((response) => {
+    this.docService.list(environment.pageSize, this.lastId).toPromise().then((response) => {
+      console.log(response);
       var result = ((response.data) as any).document.list;
       var newList = result.data;
       
@@ -225,10 +228,10 @@ export class DocListPage implements OnInit {
     await actionSheet.present();
   }
 
-  @ViewChild(IonInfiniteScroll,{static:false}) 
+  @ViewChild(IonInfiniteScroll) 
   public infiniteScroll: IonInfiniteScroll;
 
-  @ViewChild(IonContent, {static:false})
+  @ViewChild(IonContent)
   public ionContent: IonContent;
   
   public urlReg:RegExp = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/gm;

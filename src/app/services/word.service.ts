@@ -1,6 +1,7 @@
+import {Apollo, gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
+import {cloneDeep} from "lodash";
+
 import { TimelineValueByMonthType, RemoveTagDocument, GetWordProfileDocument, GetTopmostDocument, WordProfileType } from '../graphql-components';
 
 const WordByMonthGql = gql`
@@ -60,7 +61,7 @@ export class WordService {
   }
 
   async profile(word:string,fromLang:string, toLang:string):Promise<any>{
-    var profile = await this.Apollo.query({
+    let profile = await this.Apollo.query({
       query:GetWordProfileDocument,
       variables:{
         word,
@@ -69,7 +70,11 @@ export class WordService {
       }
     }).toPromise<any>()
 
-    profile.data.timeline.wordByMonth.data = profile.data.timeline.wordByMonth.data.sort((a,b)=>{
+    //profile is readyonly
+    //check https://github.com/apollographql/apollo-client/issues/5903
+    let result = cloneDeep(profile);
+
+    result.data.timeline.wordByMonth.data = profile.data.timeline.wordByMonth.data.sort((a,b)=>{
       var dateA = new Date(a.yearMonth.year, a.yearMonth.month, 1);
       var dateB = new Date(b.yearMonth.year, b.yearMonth.month, 1);
 
@@ -78,7 +83,7 @@ export class WordService {
       else return 0;
     });
 
-    return profile.data;
+    return result;
   }
 
   async topMost(top:number=500, userId:string=""):Promise<WordProfileType[]>{

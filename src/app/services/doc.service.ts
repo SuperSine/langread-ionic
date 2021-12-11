@@ -1,6 +1,7 @@
+import {Apollo, gql} from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
+
+
 import { GetStatsDocument,GiveItToMeDocument, GetDocumentDocument, GetDocumentsDocument, SaveDocumentDocument, DeleteDocumentDocument, ForkDoucmentDocument, DeleteAllCoreDataDocument } from '../graphql-components';
 import {environment} from 'src/environments/environment';
 import { last } from 'rxjs/operators';
@@ -33,7 +34,7 @@ export class DocService {
   }
 
   list(limit:number, lastId:string="", keywords:string=""){
-    return this.getApollo.watchQuery({
+    return this.getApollo.query({
       query:GetDocumentsDocument,
       variables:{
         pageSize:limit,

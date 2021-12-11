@@ -1,5 +1,6 @@
+import {Apollo, QueryRef} from 'apollo-angular';
 import { Injectable, OnDestroy, OnInit } from '@angular/core';
-import { Apollo, QueryRef } from 'apollo-angular';
+
 import { first, map, tap } from 'rxjs/operators';
 import {DeleteDocumentDocument, DeleteMomentDocument, LikeMomentDocument, ListMomentByFollowingDocument, ListMomentByGroupDocument, ListMomentByLangDocument, MomentGroupType, MomentType, GetMomentByDocIdDocument, CommentInputType, CommentType, PostCommentDocument, ListByCommentDocument} from '../graphql-components';
 import {environment} from 'src/environments/environment';

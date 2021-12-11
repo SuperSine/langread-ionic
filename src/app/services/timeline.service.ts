@@ -1,7 +1,8 @@
+import {gql, Apollo} from 'apollo-angular';
 import { Injectable } from '@angular/core';
-import gql from 'graphql-tag';
+
 import { Tag } from './tags.service';
-import { Apollo } from 'apollo-angular';
+
 import {GetTimelineDocument} from '../graphql-components'
 
 export interface Info{

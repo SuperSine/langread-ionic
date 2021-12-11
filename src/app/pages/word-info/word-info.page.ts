@@ -85,9 +85,9 @@ export class WordInfoPage implements OnInit {
 
     try{
 
-      this.wordProfileService.profile(this.word, this.userObj.targetLanguage, this.userObj.sourceLanguage).then((result)=>{
-        this.wordProfile  = result.wti.profile;
-        this.wordTrends = result.timeline.wordByMonth.data;
+      this.wordProfileService.profile(this.word, this.userObj.targetLanguage, this.userObj.sourceLanguage).then(({data:{wti,timeline}})=>{
+        this.wordProfile  = wti.profile;
+        this.wordTrends = timeline.wordByMonth.data;
 
       });
       

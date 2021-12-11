@@ -1,3 +1,4 @@
+import {ApolloQueryResult} from '@apollo/client/core';
 import { Component, OnInit, ViewChild, ViewEncapsulation, ElementRef,EventEmitter } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { ActivatedRoute } from '@angular/router';
@@ -17,7 +18,7 @@ import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { Subject, Observable } from 'rxjs';
 import {CanDeactivateComponent} from '../../guards/quit-doc-editor.guard'
 import { TranslateService } from '@ngx-translate/core';
-import { ApolloQueryResult } from 'apollo-client';
+
 import { UserType,DocumentType, WordTagDocumentCleanType, GroupType, MomentType } from 'src/app/graphql-components';
 import { AuthService } from 'src/app/services/auth.service';
 import { GroupService } from 'src/app/services/group.service';
@@ -292,7 +293,10 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
 
         if(!(this.wti[word] instanceof Array))this.wti[word] = [];
 
-        this.wti[word] = this.wti[word].concat(element.wordInfos)
+        const onlyUnique = (value, index, self) => self.findIndex((tag) => tag.tagName == value.tagName) == index;
+
+        this.wti[word] = this.wti[word].concat(element.wordInfos);
+        this.wti[word] = this.wti[word].filter(onlyUnique);
       });
       
       if(giveItToMe.bigWordTagInfo)
@@ -389,12 +393,12 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
     });
   }
 
-  async openTagPicker(word, info, bigTags,smallTags){
+  async openTagPicker(word, markTags, bigTags,smallTags){
     const modal = await this.modalCtrl.create({
       component: TagPickerPage,
       componentProps: {
         word,
-        info,
+        markTags,
         bigTags,
         smallTags,
         targetLanguage: this.userObj.targetLanguage,
@@ -572,7 +576,7 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   public isGoingBack:boolean;
   public userGroupList:Observable<GroupType[]>;
   public docSaveEventEmiter:EventEmitter<string>;
-  public docForkEventEmiter:EventEmitter<string>;
+  public docForkEventEmiter:EventEmitter<any>;
   public moment:Observable<MomentType>;
   // public tags: any[];
 
@@ -581,10 +585,10 @@ export class DocEditorPage implements OnInit, CanDeactivateComponent {
   // @ViewChild("innerHtml",{static:true})
   // public innerHtml: ElementRef;
 
-  @ViewChild("innerHtml",{static:false})
+  @ViewChild("innerHtml")
   public innerHtml: QuillViewHTMLComponent;
 
-  @ViewChild("htmlEditor",{static:false})
+  @ViewChild("htmlEditor")
   public htmlEditor: QuillEditorComponent;
 
   public lang:any;

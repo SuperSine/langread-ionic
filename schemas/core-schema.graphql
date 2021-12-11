@@ -84,6 +84,7 @@ type WordTagDocumentCleanType {
   status: Int!
   userId: String!
   isCreator: Boolean!
+  id: String
 }
 
 type PaginatedDocumentType {

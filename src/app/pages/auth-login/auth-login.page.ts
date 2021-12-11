@@ -1,7 +1,8 @@
+import {Apollo} from 'apollo-angular';
 import { Component, OnInit } from '@angular/core';
 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { Apollo } from 'apollo-angular';
+
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';

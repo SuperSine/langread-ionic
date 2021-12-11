@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { TopMostComponent } from './top-most.component';
@@ -7,7 +7,7 @@ describe('TopMostComponent', () => {
   let component: TopMostComponent;
   let fixture: ComponentFixture<TopMostComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TopMostComponent ],
       imports: [IonicModule.forRoot()]

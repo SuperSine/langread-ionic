@@ -1,11 +1,13 @@
+import {Apollo, QueryRef} from 'apollo-angular';
+import {Observable, ApolloQueryResult} from '@apollo/client/core';
 import { Component, OnInit } from '@angular/core';
 import {ModalController, AlertController, ToastController} from '@ionic/angular';
 import {TagEditorPage} from '../tag-editor/tag-editor.page'
-import { Apollo, QueryRef } from 'apollo-angular';
+
 import { TagsService, Tag } from 'src/app/services/tags.service';
-import { Observable } from 'apollo-link';
+
 import { map, take } from 'rxjs/operators';
-import { ApolloQueryResult } from 'apollo-client';
+
 import { Subscription } from 'rxjs';
 import { GlobalService } from 'src/app/services/global.service';
 import { TranslateService } from '@ngx-translate/core';

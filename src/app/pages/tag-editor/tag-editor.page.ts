@@ -178,7 +178,7 @@ export class TagEditorPage implements OnInit {
 
   public chart:any;
 
-  @ViewChild('lineChart', {static:false}) 
+  @ViewChild('lineChart') 
   public lineChart:ElementRef;
 
   public lang:any;

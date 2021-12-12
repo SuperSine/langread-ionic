@@ -55,26 +55,25 @@
           </ion-row>
         </ion-grid>
       </ion-item>
-  
-  <ion-item class="margin-bottom-10" lines="none">
-      <h4 class="margin-top-3 main-header4">Groups</h4>
-  </ion-item>
-  <ion-item class="group-list">
-    <div class="horizontal-scroll slide-left">
-      <ion-card *ngFor="let group of groupTypes$ | async" class="agent-icon" [routerLink]="['/group-profile', group.id]">
-        <div class="card-container">
-          <ion-thumbnail class="group-avatar">
-            <img [appAvatarId]="group.id">
-          </ion-thumbnail>
-          <div class="group-title"><ion-label>{{group.name}}</ion-label></div>
-        </div>
-      </ion-card>
-    </div>
-  </ion-item>
+
 
     </ng-container>
-    
-
+      
+<ion-item class="margin-bottom-10" lines="none">
+    <h4 class="margin-top-3 main-header4">Groups</h4>
+</ion-item>
+<ion-item class="group-list">
+  <div class="horizontal-scroll slide-left">
+    <ion-card *ngFor="let group of groupTypes$ | async" class="agent-icon" [routerLink]="['/group-profile', group.id]">
+      <div class="card-container">
+        <ion-thumbnail class="group-avatar">
+          <img [appAvatarId]="group.id">
+        </ion-thumbnail>
+        <div class="group-title"><ion-label>{{group.name}}</ion-label></div>
+      </div>
+    </ion-card>
+  </div>
+</ion-item>
 
 <ion-segment value="posts" (ionChange)="segmentChanged($event)">
   <ion-segment-button value="posts">

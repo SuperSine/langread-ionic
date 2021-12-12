@@ -20,7 +20,7 @@ ion-content[name=edit]{
   height: auto; 
 }
 
-.horizontal-scroll{
+.tags-horizontal-scroll{
   z-index: -1000;
   transform: translateY(-200%);
   transition: 0.5s;

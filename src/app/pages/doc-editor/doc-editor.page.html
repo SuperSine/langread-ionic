@@ -73,7 +73,7 @@
 <ion-content name="read" scrollEvents="true" (ionScroll)="onScroll($event)" [hidden]="mode == DocMode.Read ? true : false" 
             [ngClass]="showTags ? 'bookMarkToggled':''">
     
-  <div class="test horizontal-scroll">
+  <div class="test tags-horizontal-scroll">
       <ion-chip *ngFor="let tag of tags | uniqueTags" [class.selected]='selectedValue === tag.tagName' (click)='onChooseTagClick(tag);selectedValue=tag.tagName;'>
         <ion-avatar>
           <div [style.background-color]="tag.tagColor" style="width: 100%; height: 100%;"></div>

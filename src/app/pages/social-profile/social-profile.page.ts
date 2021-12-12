@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { firebrick } from 'color-name';
@@ -19,10 +19,16 @@ import { SocialService } from 'src/app/services/social.service';
 })
 export class SocialProfilePage implements OnInit {
 
-  constructor(private router:Router,private socialService:SocialService,private docService:DocService,private groupService:GroupService,private authService:AuthService) { }
+  constructor(private router:Router,
+              private socialService:SocialService,
+              private docService:DocService,
+              private groupService:GroupService,
+              private authService:AuthService) { }
 
   ngOnInit() {
-
+    console.log(this.groupTypes$);
+    console.log(this.userSocial);
+    console.log(this.stats);
   }
 
   async segmentChanged(event){
@@ -31,7 +37,7 @@ export class SocialProfilePage implements OnInit {
 
 
     if(this.currentSegment == 'topmost'){
-      this.ionContent.scrollToBottom(50);
+      // this.ionContent.scrollToBottom(50);
       this.topMost.loadData();
     }
   }
@@ -39,7 +45,7 @@ export class SocialProfilePage implements OnInit {
   async ngAfterViewInit(){
     this.userSocial = this.socialService.profile(this.userId);
 
-    //this.postCards.loadData();
+    this.postCards.loadData();
 
     this.stats = this.docService.stats().valueChanges.pipe(
       map(({data:{document:{stats}}}:any)=> stats as WordTagStaticsType),
@@ -48,7 +54,6 @@ export class SocialProfilePage implements OnInit {
     
     this.groupTypes$ = this.groupService.getUserGroups(0,100,"*",this.userId, false);
     this.groupTypes = await this.groupTypes$.toPromise();
-    console.log(this.groupTypes);
 
   }
 

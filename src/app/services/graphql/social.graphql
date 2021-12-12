@@ -38,6 +38,7 @@ query checkAvailable($name:String){
 
 query userGroupList($pageIndex:Int,$pageSize:Int,$userId:String,$keywords:String,$includeDefault:Boolean){
   group{
+    id
     userGroupList(pageIndex:$pageIndex,pageSize:$pageSize, userId:$userId, keywords:$keywords, includeDefault:$includeDefault){
       id
       name

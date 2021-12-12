@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular';
 import { firebrick } from 'color-name';
-import { Observable, of } from 'rxjs';
-import { first, map, startWith } from 'rxjs/operators';
+import { Observable, of, timer } from 'rxjs';
+import { delay, first, map, startWith, takeUntil } from 'rxjs/operators';
 import { PostCardsComponent } from 'src/app/components/post-cards/post-cards.component';
 import { TopMostComponent } from 'src/app/components/top-most/top-most.component';
 import { GroupType, MomentGroupType, UserViewType, WordTagStaticsType } from 'src/app/graphql-components';
@@ -28,24 +28,27 @@ export class SocialProfilePage implements OnInit {
   async segmentChanged(event){
     this.currentSegment = event.detail.value;
 
+
+
     if(this.currentSegment == 'topmost'){
       this.ionContent.scrollToBottom(50);
       this.topMost.loadData();
     }
   }
 
-  ngAfterViewInit(){
-    this.postCards.loadData();
-
+  async ngAfterViewInit(){
     this.userSocial = this.socialService.profile(this.userId);
 
-    this.groupTypes$ = this.groupService.getUserGroups(0,100,"*",this.userId, false);
+    //this.postCards.loadData();
 
     this.stats = this.docService.stats().valueChanges.pipe(
       map(({data:{document:{stats}}}:any)=> stats as WordTagStaticsType),
       first()
     );
-
+    
+    this.groupTypes$ = this.groupService.getUserGroups(0,100,"*",this.userId, false);
+    this.groupTypes = await this.groupTypes$.toPromise();
+    console.log(this.groupTypes);
 
   }
 
@@ -62,8 +65,6 @@ export class SocialProfilePage implements OnInit {
   get userId(){
     const reg = /social-profile\/(.+)/g;
     const values = reg.exec(this.router.url);
-
-    console.log(this.router);
 
     return values != null ? values[1] : "";
   }
@@ -112,6 +113,7 @@ export class SocialProfilePage implements OnInit {
   public currentSegment:string = "posts";
   public userSocial:Observable<UserViewType>;
   public groupTypes$:Observable<GroupType[]>;
+  public groupTypes:GroupType[];
   public stats:Observable<WordTagStaticsType>;
   public momentGroupType:MomentGroupType = MomentGroupType.Group;
 

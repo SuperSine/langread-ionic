@@ -9,6 +9,7 @@ import {TagEditorPage} from '../tag-editor/tag-editor.page'
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-word-info',
@@ -35,8 +36,8 @@ export class WordInfoPage implements OnInit {
         this.globalService.throwError(result.errors.map(item=>item));
         return;
       }else{
-        var index = this.wordProfile.wordInfo.findIndex((item)=>item.tag.tagName == tag.tagName);
-        this.wordProfile.wordInfo.splice(index,1);
+        // var index = this.wordProfile.wordInfo.findIndex((item)=>item.tag.tagName == tag.tagName);
+        // this.wordProfile.wordInfo.splice(index,1);
 
         this.globalService.tip([this.lang.tagDeleteMsg]);
       }
@@ -59,19 +60,16 @@ export class WordInfoPage implements OnInit {
     this.navCtrl.back();
   }
 
-  get formattedScore(){
-    return (this.wordProfile.score * 100).toFixed(1);
-  }
+  // get formattedScore(){
+  //   return (this.wordProfile.score * 100).toFixed(1);
+  // }
 
-  get pronunciation(){
-    return this.wordProfile.entryResults[0].phonetic;
-  }
+  // get pronunciation(){
+  //   return this.wordProfile.entryResults[0].phonetic;
+  // }
 
 
   async ngOnInit() {
-    
-
-
     const result = await this.translate.get(this.langKeys,{word:this.word}).toPromise();
 
     this.userObj = await this.authService.getUserObj();
@@ -85,15 +83,13 @@ export class WordInfoPage implements OnInit {
 
     try{
 
-      this.wordProfileService.profile(this.word, this.userObj.targetLanguage, this.userObj.sourceLanguage).then(({data:{wti,timeline}})=>{
-        this.wordProfile  = wti.profile;
-        this.wordTrends = timeline.wordByMonth.data;
+      this.wordProfile = this.wordProfileService.profile(this.word, this.userObj.targetLanguage, this.userObj.sourceLanguage);
 
-      });
-      
+      // this.wordProfileService.profile(this.word, this.userObj.targetLanguage, this.userObj.sourceLanguage).then(({data:{wti,timeline}})=>{
+      //   this.wordProfile  = wti.profile;
+      //   this.wordTrends = timeline.wordByMonth.data;
 
-
-      console.log(this.wordProfile);
+      // });
 
     }catch(ex){
       console.log(ex);
@@ -113,7 +109,7 @@ export class WordInfoPage implements OnInit {
 
   public userObj:UserType;
   public wordTrends:ValueByMonthType[];
-  public wordProfile: WordProfileType;
+  public wordProfile: Observable<any>;
 
   public word:string;
 

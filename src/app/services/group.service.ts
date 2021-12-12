@@ -95,36 +95,19 @@ export class GroupService {
   }
 
   getUserGroups(pageIndex:number,pageSize:number,keywords:string='*',userId:string='',includeDefault:boolean=true){
-    const obserable = new Observable<GroupType[]>(sub => {
-      this.getApollo.query<GroupType[]>({
-        query: UserGroupListDocument,
-        variables:{
-          pageIndex,
-          pageSize,
-          userId,
-          keywords,
-          includeDefault
-        }
-      }).toPromise().then(({data:{group:{userGroupList}}}:any)=>{
-        sub.next(userGroupList);
-        sub.complete();
-      });
-    })
-
-    return obserable;
-
-    // return this.getApollo.query<GroupType[]>({
-    //   query: UserGroupListDocument,
-    //   variables:{
-    //     pageIndex,
-    //     pageSize,
-    //     userId,
-    //     keywords
-    //   }
-    // })
-    //   .pipe(
-    //     map(({data:{group:{userGroupList}}}:any)=>{return userGroupList as GroupType[]})
-    //   );
+    return this.getApollo.query<GroupType[]>({
+      query: UserGroupListDocument,
+      variables:{
+        pageIndex,
+        pageSize,
+        userId,
+        keywords,
+        includeDefault
+      }
+    }).pipe(
+      map(({data:{group:{userGroupList}}}:any)=>userGroupList as GroupType[]),
+      first()
+    );
   }
 
   getAllGroups(pageIndex:number,pageSize:number,keywords:string='*'){

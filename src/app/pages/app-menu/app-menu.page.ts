@@ -32,12 +32,12 @@ export class AppMenuPage implements OnInit {
     {
       title:'feeds-title',
       url:'/menu/feeds',
-      icon:'pulse-outline'
+      icon:'earth-outline'
     },
     {
       title:'groups-title',
       url:'/menu/groups',
-      icon:'pulse-outline'
+      icon:'dice-outline'
     },
     {
       title:'profile-title',

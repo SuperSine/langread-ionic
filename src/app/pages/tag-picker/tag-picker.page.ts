@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { ColorService } from 'src/app/services/color.service';
 import { WordService } from 'src/app/services/word.service';
 import { ValueByMonthType, WordProfileType } from 'src/app/graphql-components';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tag-picker',
@@ -63,15 +64,16 @@ export class TagPickerPage implements OnInit {
 
   async segmentChanged(event){
     this.currentSegment = event.detail.value;
+    if(this.currentSegment == "Word" && this.wordProfile == null){
 
-    if(this.currentSegment == "Word"){
-      debugger;
-      this.wordProfileService.profile(this.word, this.targetLanguage, this.sourceLanguage).then((result)=>{
-        this.wordProfile  = result.wti.profile;
-        this.wordTrends = result.timeline.wordByMonth.data;
-        console.log(this.wordProfile, this.wordTrends);
+      this.wordProfile = this.wordProfileService.profile(this.word, this.targetLanguage, this.sourceLanguage);
+
+      // this.wordProfileService.profile(this.word, this.targetLanguage, this.sourceLanguage).then((result)=>{
+      //   this.wordProfile  = result.wti.profile;
+      //   this.wordTrends = result.timeline.wordByMonth.data;
+      //   console.log(this.wordProfile, this.wordTrends);
   
-      });
+      // });
   
     }
   }
@@ -90,7 +92,9 @@ export class TagPickerPage implements OnInit {
   public sourceLanguage:string;
 
   public wordTrends:ValueByMonthType[];
-  public wordProfile: WordProfileType = null;
+  public wordProfile: Observable<any>;
 
   public currentSegment:string='Picker';
+
+  public loading:boolean=true;
 }

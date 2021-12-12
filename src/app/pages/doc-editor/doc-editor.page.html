@@ -89,7 +89,7 @@
       <ion-item lines="none">
         <ion-avatar slot="start">
           <ng-container *ngIf="moment | async as result">
-            <img [appAvatarId]="result.creator">
+            <img [appAvatarId]="result.creator" [routerLink]="['/social-profile',result.creator]">
           </ng-container>
         </ion-avatar>
         <ion-label>

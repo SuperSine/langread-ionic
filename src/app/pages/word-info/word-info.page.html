@@ -28,22 +28,16 @@
 
 
 
-  <ng-container *ngIf="wordProfile">
+  <ng-container *ngIf="(wordProfile | async)?.data as result">
 
     <ion-list name="word">
-      <ion-list-header>{{wordProfile.word}}</ion-list-header>
+      <ion-list-header>{{result.wti.profile.word}}</ion-list-header>
     </ion-list>
     <ion-list>
       <ion-item>
-
-        <ng-container *ngIf="wordProfile.translationResult">
-
-          <word-sound [word]="wordProfile.word" [lang]="userObj.targetLanguage"></word-sound>
+        <word-sound [word]="result.wti.profile.word" [lang]="userObj.targetLanguage"></word-sound>
           <!-- <span class="phoneticSpelling">{{pronunciation}}</span> -->
-          
-        </ng-container>
-        
-        <word-temp slot="end" [score]="wordProfile.score"></word-temp>
+        <word-temp slot="end" [score]="result.wti.profile.score"></word-temp>
 
       </ion-item>
 
@@ -51,16 +45,16 @@
       <ion-list-header>{{lang?.tagHeader}}</ion-list-header>
       <ion-card>
         <ion-card-content>
-          <word-tag-info *ngFor="let item of wordProfile.wordInfo" [tag]="item.tag" [displayValue]="item.count" (tagClick)="openTagEditor(item.tag)"  (close)="tagRemove(item.tag)"></word-tag-info>
+          <word-tag-info *ngFor="let item of result.wti.profile.wordInfo" [tag]="item.tag" [displayValue]="item.count" (tagClick)="openTagEditor(item.tag)"  (close)="tagRemove(item.tag)"></word-tag-info>
         </ion-card-content>
       </ion-card>
     </ion-list>
 
 
 
-  <ng-container *ngIf="wordProfile.translationResult">
-     <word-dictionary [translationResult]="wordProfile.translationResult"></word-dictionary>
-  </ng-container>
+
+  <word-dictionary [translationResult]="result.wti.profile.translationResult"></word-dictionary>
+
 
   <ng-container *ngIf="wordTrends">
     <word-trend [word]="word" [wordTrends]="wordTrends"></word-trend>
@@ -69,7 +63,7 @@
 
     
     <ion-list>
-      <ion-button expand="block" [routerLink]="['/doc-list',{defaultWord:wordProfile.word}]">{{lang?.searchWord}}</ion-button>
+      <ion-button expand="block" [routerLink]="['/doc-list',{defaultWord:result.wti.profile.word}]">{{lang?.searchWord}}</ion-button>
     </ion-list>
 
   </ng-container>

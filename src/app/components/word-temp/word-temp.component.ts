@@ -47,11 +47,12 @@ export class WordTempComponent implements OnInit {
 
     var index = Math.floor(score * colorArray.length - 1);
     var color = colorArray[index];
-
+    
     return this.rgbToHex(color);
   }
 
   rgbToHex(rgb) {
+    if(!rgb)return "unset";
     return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1);
   }
 

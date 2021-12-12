@@ -62,6 +62,7 @@ type CommentType {
 }
 
 type GroupQuery {
+  id: String
   detail(id: String): GroupType
   userGroupList(
     keywords: String
@@ -156,7 +157,7 @@ input GroupInputType {
   id: String
   name: String
   photoUrl: String
-  groupTypeId: Int
+  groupTypeId: String
   description: String
   languages: String
 }

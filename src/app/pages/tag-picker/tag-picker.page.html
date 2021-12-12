@@ -36,40 +36,20 @@
     </ion-list>
   </ng-container>
 
-  <ng-container *ngIf="currentSegment == 'Word'">
-    <ion-spinner name="dots" [hidden]="wordProfile != null"></ion-spinner>
+  <ng-container *ngIf="currentSegment == 'Word' && (wordProfile | async)?.data as result">
+    <ion-spinner name="dots" [hidden]="result"></ion-spinner>
 
-    <ng-container *ngIf="wordProfile.word">
+    <ion-list name="word">
+      <ion-list-header>{{result.wti.profile.word}}</ion-list-header>
+    </ion-list>
+    <ion-list>
+      <ion-item>
+        <word-sound [word]="result.wti.profile.word" [lang]="targetLanguage"></word-sound>
+        <word-temp slot="end" [score]="result.wti.profile.score"></word-temp>
+      </ion-item>
+    </ion-list>
 
-      <ion-list name="word">
-        <ion-list-header>{{wordProfile.word}}</ion-list-header>
-      </ion-list>
-      <ion-list>
-        <ion-item>
-
-          <ng-container *ngIf="wordProfile.translationResult">
-
-            <word-sound [word]="wordProfile.word" [lang]="targetLanguage"></word-sound>
-            
-          </ng-container>
-          
-          <word-temp slot="end" [score]="wordProfile.score"></word-temp>
-
-        </ion-item>
-
-      </ion-list>
-    
-    
-    
-      <ng-container *ngIf="wordProfile.translationResult">
-        <word-dictionary [translationResult]="wordProfile.translationResult"></word-dictionary>
-      </ng-container>
-    
-      <ng-container *ngIf="wordTrends">
-        <word-trend [word]="word" [wordTrends]="wordTrends"></word-trend>
-      </ng-container>
-
-  
-    </ng-container>
+    <word-dictionary [translationResult]="result.wti.profile.translationResult"></word-dictionary>
+    <word-trend [word]="word" [wordTrends]="result.timeline.wordByMonth.data"></word-trend>
   </ng-container>
 </ion-content>

@@ -237,7 +237,7 @@ export type EntryType = {
 
 export type GroupInputType = {
   description?: InputMaybe<Scalars['String']>;
-  groupTypeId?: InputMaybe<Scalars['Int']>;
+  groupTypeId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
   languages?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
@@ -285,6 +285,7 @@ export type GroupQuery = {
   checkAvailable?: Maybe<Scalars['Boolean']>;
   detail?: Maybe<GroupType>;
   followers?: Maybe<Array<Maybe<UserViewType>>>;
+  id?: Maybe<Scalars['String']>;
   top?: Maybe<Array<Maybe<GroupType>>>;
   topByFollowers?: Maybe<Array<Maybe<GroupType>>>;
   userGroupList?: Maybe<Array<Maybe<GroupType>>>;
@@ -1161,7 +1162,7 @@ export type UserGroupListQueryVariables = Exact<{
 }>;
 
 
-export type UserGroupListQuery = { __typename?: 'Query', group?: { __typename?: 'GroupQuery', userGroupList?: Array<{ __typename?: 'GroupType', id: string, name: string, readCount?: number | null | undefined, memberCount?: number | null | undefined, creator?: string | null | undefined, description?: string | null | undefined, isAdmin?: boolean | null | undefined, isFollowed?: boolean | null | undefined, languages?: string | null | undefined, isDefault?: boolean | null | undefined } | null | undefined> | null | undefined } | null | undefined };
+export type UserGroupListQuery = { __typename?: 'Query', group?: { __typename?: 'GroupQuery', id?: string | null | undefined, userGroupList?: Array<{ __typename?: 'GroupType', id: string, name: string, readCount?: number | null | undefined, memberCount?: number | null | undefined, creator?: string | null | undefined, description?: string | null | undefined, isAdmin?: boolean | null | undefined, isFollowed?: boolean | null | undefined, languages?: string | null | undefined, isDefault?: boolean | null | undefined } | null | undefined> | null | undefined } | null | undefined };
 
 export type AllGroupListQueryVariables = Exact<{
   pageIndex?: InputMaybe<Scalars['Int']>;
@@ -2092,6 +2093,7 @@ export const CheckAvailableDocument = gql`
 export const UserGroupListDocument = gql`
     query userGroupList($pageIndex: Int, $pageSize: Int, $userId: String, $keywords: String, $includeDefault: Boolean) {
   group {
+    id
     userGroupList(
       pageIndex: $pageIndex
       pageSize: $pageSize

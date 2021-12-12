@@ -18,6 +18,7 @@ ion-col{
 
 .group-list{
   margin-bottom: 20px;
+  z-index: 1000;
 }
 
 .slide-left{
@@ -37,4 +38,5 @@ p[name=number-label]{
 
 ion-item[name=number-info] ion-col{
   margin: 0 auto;
+  text-align: center;
 }

@@ -123,6 +123,7 @@ div[quill-editor-toolbar]{
   top: 0;
   background-color:var(--ion-background-color);
   z-index: 100;
+  border:unset !important;
 }
 
 .viewerBar{

@@ -17,6 +17,10 @@ export class UserCardComponent implements OnInit {
     return `${environment.avatarUrl}/${this.user.id}`;
   }
 
+  get profileUrl(){
+    return `/social-profile/${this.user.id}`;
+  }
+
   @Input()
   public user:UserViewType
 

@@ -21,11 +21,6 @@ export class TopMostComponent implements OnInit {
 
   ngOnInit() {
 
-
-
-  }
-
-  ngAfterViewInit(){
     this.rangeChanged.pipe(
       debounceTime(300),
       distinctUntilChanged(),
@@ -34,7 +29,10 @@ export class TopMostComponent implements OnInit {
       this.loadTopmost(value, this.userId);
     });
 
-    // this.loadTopmost(100, this.userId);
+  }
+
+  ngAfterViewInit(){
+
   }
 
   loadData(){
@@ -42,6 +40,7 @@ export class TopMostComponent implements OnInit {
   }
 
   async loadTopmost(top:number, userId:string){
+    console.log("loading....");
     const factor = top / 1000;
 
     this.topList = null;
@@ -94,7 +93,6 @@ export class TopMostComponent implements OnInit {
   }
 
   onRangeChange(event){
-    console.log(event);
     this.rangeChanged.next(event.detail.value);
   }
 

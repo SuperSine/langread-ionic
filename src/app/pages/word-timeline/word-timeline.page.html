@@ -19,20 +19,13 @@
   </ion-segment>
 
   <div [style.display]="currentSegment == 'Topmost' ? 'inline':'none'" >
-    <!-- <ion-item [hidden]="topList == null">
-      <ion-range min="100" max="1000" pin color="secondary" (ionChange)='onRangeChange($event)'>
-        <ion-label slot="start" size="small" name="contrast">100</ion-label>
-        <ion-label slot="end" size="small" name="contrast">1000</ion-label>
-      </ion-range>
-    </ion-item>
 
-    <div  id="canvasContainer">
-      <ion-spinner name="dots" [hidden]="topList != null"></ion-spinner>
-      <div class="canvas" style="width:100%;height:90%;" #htmlCanvas [hidden]="topList == null" (click)="onCanvasClick($event)"></div>
-    </div> -->
-    <top-most [userId]="authService.UserId"></top-most>
   </div>
   
+  <ng-container *ngIf="currentSegment == 'Topmost'">
+    <top-most [userId]="authService.UserId"></top-most>
+  </ng-container>
+
   <ng-container *ngIf="currentSegment == 'Timeline'">
 
     <ion-searchbar [(ngModel)]="keywords"  showCancelButton="focus" debounce="500" (ionChange)='onSearch($event)'></ion-searchbar>

@@ -166,7 +166,6 @@ export class WordTimelinePage implements OnInit {
   }
 
   onRangeChange(event){
-    console.log(event);
     this.rangeChanged.next(event.detail.value);
   }
 
